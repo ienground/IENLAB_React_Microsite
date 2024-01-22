@@ -46,7 +46,6 @@ function Header() {
 const HeaderWrapper = styled.nav`
     display: flex;
     flex-direction: row;
-    //justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
