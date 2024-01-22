@@ -15,8 +15,10 @@ function Slideshow() {
 const SlideshowWrapper = styled.div`
     display: flex;
     aspect-ratio: 16 / 9;
-    //background-color: red;
+    background-color: #6a5a5d;
     border-radius: 1rem;
+    margin: 0 2rem 0 2rem;
+    padding: 1rem;
 `;
 
 export default Slideshow;

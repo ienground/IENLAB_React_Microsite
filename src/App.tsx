@@ -13,6 +13,7 @@ function App() {
                 rel="stylesheet"
                 href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
             />
+            <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
             <BrowserRouter>
                 <GlobalStyles/>
                 <ThemeProvider theme={theme}>
@@ -29,6 +30,7 @@ const AppContainer = styled.div`
     width: 100%;
     position: relative;
     margin: 0 auto;
+    font-family: Pretendard, sans-serif;
 `;
 
 export default App;

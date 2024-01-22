@@ -16,7 +16,7 @@ function Main() {
                 <Noticeboard />
                 <Contact />
             </NoticeContactWrapper>
-            <Sidebar />
+            {/*<Sidebar />*/}
             <Footer />
         </>
     )

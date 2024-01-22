@@ -12,7 +12,7 @@ import zIndex from "@mui/material/styles/zIndex";
 function Header() {
     const [navBg, setNavBg] = useState(false);
     const changeNavBg = () => {
-        window.scrollY >= 50 ? setNavBg(true) : setNavBg(false);
+        window.scrollY >= 10 ? setNavBg(true) : setNavBg(false);
         console.log(window.scrollY);
     }
 
@@ -23,22 +23,18 @@ function Header() {
         }
     }, []);
 
-    const style = {
-        backgroundColor: '#FF4081'
-    }
-
     const iconStyle = {
         color: navBg ? "#FFFFFF" : "#000000"
     }
 
     return (
-      <HeaderWrapper style={navBg ? { backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 999 } : {} }>
-          <NavIcons>
+      <HeaderWrapper style = { navBg ? { backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 999 } : {} }>
+          <NavIcons style = { { justifyContent: "start" } }>
               <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>menu</Icon></NavIconList>
               <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>search</Icon></NavIconList>
           </NavIcons>
-          <MainLogo style={ navBg ? { backgroundImage: mainIcon } : { backgroundImage: mainIcon } }/>
-          <NavIcons>
+          <MainLogo style = { navBg ? { backgroundImage: mainIconWhite } : { backgroundImage: mainIcon } }/>
+          <NavIcons style = { { justifyContent: "end" } }>
               <NavIconList><FontAwesomeIcon icon={faInstagram} size={"lg"} style={ iconStyle } /></NavIconList>
               <NavIconList><FontAwesomeIcon icon={faFacebook} size={"lg"} style={ iconStyle } /></NavIconList>
               <NavIconList><FontAwesomeIcon icon={faGithub} size={"lg"} style={ iconStyle } /></NavIconList>
@@ -50,23 +46,31 @@ function Header() {
 const HeaderWrapper = styled.nav`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    //justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    padding: 0.5rem;
+    margin: 0 2rem 0 2rem;
+    border-radius: 0 0 1rem 1rem;
+    padding: 0.5rem 0 0.5rem 0;
 `;
 
 const MainLogo = styled.div`
-    width: 14rem;
+    width: 20%;
     height: 2rem;
-    background-image: Main;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(${props => props.style?.backgroundImage || ''});
 `;
 
 const NavIcons = styled.ul`
+    width: 40%;
     list-style: none;
-    padding: 0;
+    padding: 0 1rem 0 1rem;
+    justify-content: ${props => props.style?.justifyContent};
     display: flex;
+    //background-color: aqua;
 `;
 
 const NavIconList = styled.li`
