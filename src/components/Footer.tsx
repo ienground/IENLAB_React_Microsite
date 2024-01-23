@@ -9,13 +9,9 @@ function Footer() {
     return (
         <FooterWrapper>
             <AuthorInfoWrapper>
-                <Image src={imgLogoFull}/>
-                <Text>Copyright (c) 2024 ienlab. 모든 권리 보유.</Text>
+                <Text>Copyright © 2024 ienlab. 모든 권리 보유.</Text>
             </AuthorInfoWrapper>
-            <TistoryInfoWrapper>
-                <Icon baseClassName={"material-icons-round"} fontSize={"small"} style={ { color: "red", marginRight: "0.5rem", fontSize: 16 } } >favorite</Icon>
-                <Image src={icTistory}/>
-            </TistoryInfoWrapper>
+            <Image src={imgLogoFull}/>
         </FooterWrapper>
     );
 }
@@ -23,6 +19,7 @@ function Footer() {
 const FooterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: ${props => props.theme.backgroundGray};
     height: 4rem;
     border-radius: 1rem;

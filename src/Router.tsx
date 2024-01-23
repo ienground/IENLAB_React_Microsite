@@ -7,9 +7,10 @@ function Router() {
     return (
         <>
             <Routes>
-                <Route path={"/main"} element={<Construction />} />
+                <Route path={"/"} element={<Main />} />
+                <Route path={"/dev"} element={<Construction />} />
                 <Route path={"/post"} element={<Post />} />
-                <Route path={"/*"} element={<Navigate to={"/main"} />} />
+                <Route path={"/*"} element={<Navigate to={"/"} />} />
             </Routes>
         </>
     );

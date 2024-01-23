@@ -7,6 +7,8 @@ import mainIcon from "../assets/img_logo_typo.png";
 import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
+import icTistory from "../assets/ic_tistory.svg";
+import React from "react";
 
 function Main() {
     return (
@@ -17,9 +19,10 @@ function Main() {
                     <TextTitle>Hello Pretendard Title!</TextTitle>
                     <TextDate>IT's date!</TextDate>
                 </Title>
-                <ImgThumbnail src={mainIcon} />
+                <embed src={icTistory} style={{color: "#FFFFFF", fill: "#F0F048", stroke: "#FF0000"}}/>
+                <ImgThumbnail src={mainIcon}/>
             </TitleWrapper>
-            <Footer />
+            <Footer/>
         </>
     )
 }

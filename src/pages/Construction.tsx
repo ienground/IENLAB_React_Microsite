@@ -8,6 +8,7 @@ import "../style/main.css"
 import styled from "styled-components";
 import imgPatternBg from "../assets/dev_page_nologo.png"
 import imgLogoWhite from "../assets/img_logo_full_white.png"
+import MD3Button from "@mui/material-next/Button"
 
 function Construction() {
     return (
@@ -17,6 +18,7 @@ function Construction() {
                 <Title>
                     <ImgLogo src={imgLogoWhite}/>
                     <TextInfo>Under construction :)</TextInfo>
+                    <MD3Button variant={"filled"} style={{marginTop: "1rem"}} href={"https://blog.ien.zone"} >블로그로 이동</MD3Button>
                 </Title>
             </PageWrapper>
         </>
