@@ -1,10 +1,19 @@
 
-const pinkBase = '#FF4081';
-const violetBase = '#7C4DFF';
-
-const theme = {
-    backgroundGray: "#f5f5f7"
+export const light = {
+    colors: {
+        colorBackground: "#FFFFFF",
+        colorBackgroundGray: "#f5f5f7",
+        colorBottomButton: "#dcdcdc"
+    }
 };
+
+export const dark = {
+    colors: {
+        colorBackground: "#FFFFFF",
+        colorBackgroundGray: "#FF4081",
+        colorBottomButton: "#074DFF"
+    }
+}
 
 /**
  * const theme = createTheme({
@@ -55,5 +64,3 @@ const theme = {
  *     }
  * })
  */
-
-export default theme;

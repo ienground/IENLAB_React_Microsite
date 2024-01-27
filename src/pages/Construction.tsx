@@ -18,7 +18,8 @@ function Construction() {
                 <Title>
                     <ImgLogo src={imgLogoWhite}/>
                     <TextInfo>Under construction :)</TextInfo>
-                    <MD3Button variant={"filled"} style={{marginTop: "1rem"}} href={"https://blog.ien.zone"} >블로그로 이동</MD3Button>
+                    <MD3Button variant={"filled"} style={{marginTop: "1rem"}} href={"https://blog.ien.zone"}>블로그로
+                        이동</MD3Button>
                 </Title>
             </PageWrapper>
         </>
@@ -34,10 +35,10 @@ const PageWrapper = styled.div`
     //aspect-ratio: 16/9;
     background-image: url(${props => props.style?.backgroundImage});
     background-size: cover;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
 
 const ImgPatternBg = styled.img`

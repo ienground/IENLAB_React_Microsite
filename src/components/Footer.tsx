@@ -20,7 +20,7 @@ const FooterWrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: ${props => props.theme.backgroundGray};
+    background-color: ${props => props.theme.colors.colorBackgroundGray};
     height: 4rem;
     border-radius: 1rem;
     margin: 1rem 2rem 2rem 2rem;

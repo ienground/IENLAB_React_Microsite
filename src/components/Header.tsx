@@ -9,12 +9,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faInstagram, faFacebook, faGithub } from "@fortawesome/free-brands-svg-icons"
 import {solid} from "@fortawesome/fontawesome-svg-core/import.macro";
 import zIndex from "@mui/material/styles/zIndex";
+import Sidebar, {SidebarProps} from "./Sidebar";
 
-function Header() {
+function Header({isOpen, setIsOpen}: SidebarProps) {
     const [navBg, setNavBg] = useState(false);
+
     const changeNavBg = () => {
         window.scrollY >= 10 ? setNavBg(true) : setNavBg(false);
         console.log(window.scrollY);
+    }
+    const toggleSidebar = () => {
+        setIsOpen(true);
     }
 
     useEffect(() => {
@@ -30,18 +35,21 @@ function Header() {
     }
 
     return (
-      <HeaderWrapper style = { navBg ? { backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 999 } : {} }>
-          <NavIcons style = { { justifyContent: "start" } }>
-              <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>menu</Icon></NavIconList>
-              <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>search</Icon></NavIconList>
-          </NavIcons>
-          <MainLogo style = { navBg ? { backgroundImage: mainIconWhite } : { backgroundImage: mainIcon } }/>
-          <NavIcons style = { { justifyContent: "end" } }>
-              <NavIconList><CustomIcon src={icTistory} style={iconStyle}/></NavIconList>
-              <NavIconList><FontAwesomeIcon icon={faInstagram} size={"lg"} style={ iconStyle } /></NavIconList>
-              <NavIconList><FontAwesomeIcon icon={faFacebook} size={"lg"} style={ iconStyle } /></NavIconList>
-              <NavIconList><FontAwesomeIcon icon={faGithub} size={"lg"} style={ iconStyle } /></NavIconList>
-          </NavIcons>
+      <HeaderWrapper>
+          <NavWrapper style = { navBg ? { backgroundColor: 'rgba(0,0,0,0.3)' } : {} }>
+              <NavIcons style = { { justifyContent: "start" } }>
+                  <NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>menu</Icon></NavIconList>
+                  <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>apps</Icon></NavIconList>
+                  <NavIconList><Icon baseClassName={"material-icons-round"} sx={ iconStyle }>search</Icon></NavIconList>
+              </NavIcons>
+              <MainLogo style = { navBg ? { backgroundImage: mainIconWhite } : { backgroundImage: mainIcon } }/>
+              <NavIcons style = { { justifyContent: "end" } }>
+                  <NavIconList><CustomIcon src={icTistory} style={iconStyle}/></NavIconList>
+                  <NavIconList><FontAwesomeIcon icon={faInstagram} size={"lg"} style={ iconStyle } /></NavIconList>
+                  <NavIconList><FontAwesomeIcon icon={faFacebook} size={"lg"} style={ iconStyle } /></NavIconList>
+                  <NavIconList><FontAwesomeIcon icon={faGithub} size={"lg"} style={ iconStyle } /></NavIconList>
+              </NavIcons>
+          </NavWrapper>
       </HeaderWrapper>
     );
 }
@@ -49,14 +57,21 @@ function Header() {
 const HeaderWrapper = styled.nav`
     display: flex;
     flex-direction: row;
-    align-items: center;
     position: sticky;
+    z-index: 990;
     top: 0;
+`;
+
+const NavWrapper = styled.nav`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
     margin: 0 2rem 0 2rem;
     border-radius: 0 0 1rem 1rem;
     padding: 0.5rem 0 0.5rem 0;
     transition: all 0.3s ease-in-out;
-`;
+`
 
 const MainLogo = styled.div`
     transition: all 0.3s ease-in-out;
@@ -77,8 +92,9 @@ const NavIcons = styled.ul`
     //background-color: aqua;
 `;
 
-const NavIconList = styled.li`
+const NavIconList = styled.button`
     padding: 1rem;
+    background: none;
     align-items: center;
     display: flex;
 `;
@@ -88,6 +104,4 @@ const CustomIcon = styled.img`
     height: 1.2rem;
     fill: #61dafb;
 `
-
-
 export default Header;

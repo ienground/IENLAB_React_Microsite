@@ -8,12 +8,14 @@ import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
 import icTistory from "../assets/ic_tistory.svg";
-import React from "react";
+import React, {useState} from "react";
 
 function Main() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     return (
         <>
-            <Header />
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
             <TitleWrapper>
                 <Title>
                     <TextTitle>Hello Pretendard Title!</TextTitle>

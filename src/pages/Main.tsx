@@ -6,21 +6,41 @@ import Noticeboard from "../components/Main/Noticeboard";
 import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
+import ButtonBottom from "../components/ButtonBottom";
+import {Icon} from "@mui/material";
+import React, {useState} from "react";
 
 function Main() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
     return (
-        <>
-            <Header />
+        <MainWrapper>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
             <Slideshow />
             <NoticeContactWrapper>
                 <Noticeboard />
                 <Contact />
             </NoticeContactWrapper>
-            {/*<Sidebar />*/}
             <Footer />
-        </>
+            <GroupButton>
+                <ButtonBottom><Icon baseClassName={"material-icons-round"}>keyboard_arrow_up</Icon></ButtonBottom>
+                <ButtonBottom><Icon baseClassName={"material-icons-round"}>dark_mode</Icon></ButtonBottom>
+            </GroupButton>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+        </MainWrapper>
     )
 }
+
+const MainWrapper = styled.div`
+    
+`
+
+const GroupButton = styled.div`
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    display: flex;
+`
 
 const NoticeContactWrapper = styled.div`
     display: flex;
