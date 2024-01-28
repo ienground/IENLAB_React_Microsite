@@ -28,7 +28,7 @@ const NoticeboardWrapper = styled.div`
     background-repeat: no-repeat;
     background-image: url(${ props => props.style?.backgroundImage });
     border-radius: 1rem;
-    margin: 1rem 1rem 0 2rem;
+    margin: 1rem 1rem 0 1rem;
     padding: 1rem;
 `
 

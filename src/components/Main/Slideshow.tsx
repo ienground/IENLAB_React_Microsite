@@ -30,10 +30,10 @@ function Slideshow() {
                     <SlideshowImage style={{'backgroundImage': `url(${images[0]})`}} />
                 </div>
                 <div className={"each-slide-effect"}>
-                    <SlideshowImage style={{'backgroundColor': `black`}} />
+                    <SlideshowImage style={{'backgroundColor': `lightskyblue`}} />
                 </div>
                 <div className={"each-slide-effect"}>
-                    <SlideshowImage style={{'backgroundColor': `red`}} />
+                    <SlideshowImage style={{'backgroundColor': `maroon`}} />
                 </div>
             </Slide>
         </SlideshowWrapper>
@@ -43,7 +43,7 @@ function Slideshow() {
 const SlideshowWrapper = styled.div`
     display: flex;
     border-radius: 1rem;
-    margin: 0 2rem 0 2rem;
+    margin: 0 1rem;
     
     & > div {
         display: flex;

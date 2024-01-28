@@ -1,25 +1,45 @@
 import styled from "styled-components";
 import React from "react";
+import LoremIpsum from "react-lorem-ipsum";
+import {Icon} from "@mui/material";
+import Ripples from "react-ripples"
+import {AppProps} from "../App";
 
 export interface SidebarProps {
     isOpen: boolean,
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function Sidebar({isOpen, setIsOpen}: SidebarProps) {
+type Props = SidebarProps & AppProps;
+
+function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
     const toggleSidebar = () => {
         setIsOpen(false)
     }
 
     const test = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log("hello world");
+    }
+
+    const toggleDarkMode = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setDarkMode(!darkMode);
     }
 
     return (
         <SidebarBackground onClick={toggleSidebar} className={isOpen ? 'open' : ''}>
             <SidebarWrapper onClick={test} className={isOpen ? 'open' : ''}>
-                sidebar {isOpen ? 1 : 0} yes!
+                <NavIcons style={{justifyContent: "space-between"}}>
+                    <NavIconListWrapper>
+                        <Ripples placeholder={"Back"}>
+                            <NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"}>arrow_back</Icon></NavIconList>
+                        </Ripples>
+                    </NavIconListWrapper>
+                    <NavIconListWrapper>
+                        <Ripples placeholder={"Dark mode"}><NavIconList style={{backgroundColor: "rgba(0,0,0,0.1)"}} onClick={toggleDarkMode}><Icon baseClassName={"material-icons-round"}>{ darkMode === true ? "dark_mode" : "light_mode"}</Icon></NavIconList></Ripples>
+                    </NavIconListWrapper>
+                </NavIcons>
+                {/*<LoremIpsum p={10} />*/}
             </SidebarWrapper>
         </SidebarBackground>
     );
@@ -36,7 +56,7 @@ const SidebarBackground = styled.div`
     visibility: hidden;
     background-color: rgba(0, 0, 0, 0.4);
     transition: all 0.5s ease;
-    
+
     &.open {
         visibility: visible;
         opacity: 100%;
@@ -44,15 +64,47 @@ const SidebarBackground = styled.div`
 `
 const SidebarWrapper = styled.div`
     position: fixed;
-    width: 40%;
+    width: 25%;
     height: 100%;
-    left: -40%;
+    left: -25%;
     top: 0;
-    background-color: ${props => props.theme.colors.colorBackground };
-    
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-radius: 0 1rem 1rem 0;
+    background-color: ${props => props.theme.colors.colorBackground};
     transition: all 0.5s ease;
+
     &.open {
         left: 0;
     }
 `
+
+const NavIcons = styled.ul`
+    list-style: none;
+    justify-content: ${props => props.style?.justifyContent};
+    display: flex;
+`;
+const NavIconListWrapper = styled.div`
+    border-radius: 2rem;
+    overflow: hidden;
+
+    & > div {
+        height: 100%;
+    }
+`
+
+const NavIconList = styled.button`
+    padding: 1rem;
+    border-radius: 2rem;
+    background: none;
+    align-items: center;
+    display: flex;
+    
+    & > span {
+        transition: color 0.5s ease;
+        color: ${props => props.theme.colors.colorOnSurface};
+    }
+`;
+
 export default Sidebar;

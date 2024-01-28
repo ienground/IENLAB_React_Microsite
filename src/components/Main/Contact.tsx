@@ -29,7 +29,7 @@ const ContactWrapper = styled.div`
     background-repeat: no-repeat;
     background-image: url(${ props => props.style?.backgroundImage });
     border-radius: 1rem;
-    margin: 1rem 2rem 0 0;
+    margin: 1rem 1rem 0 0;
     padding: 1rem;
 `
 

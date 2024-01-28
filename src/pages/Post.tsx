@@ -9,8 +9,9 @@ import "../style/main.css"
 import styled from "styled-components";
 import icTistory from "../assets/ic_tistory.svg";
 import React, {useState} from "react";
+import {AppProps} from "../App";
 
-function Main() {
+function Post({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
@@ -61,4 +62,4 @@ const ImgThumbnail = styled.img`
     object-fit: contain;
 `
 
-export default Main;
+export default Post;

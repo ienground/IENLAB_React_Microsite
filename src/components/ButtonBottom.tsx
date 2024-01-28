@@ -18,10 +18,12 @@ const ButtonWrapper = styled.button`
     height: 3rem;
     margin: 0 1rem 1rem 0;
     border-radius: 3rem;
-    background-color: ${props => props.theme.colors.colorBottomButton};
-    transition: all 0.3s ease-in-out;
+    background-color: ${props => props.theme.colors.colorPrimary};
+    transition: all 0.5s ease;
 
     & > span {
+        //width: 50%;
+        //height: 50%;
         display: inline-block;
         margin: auto;
     }

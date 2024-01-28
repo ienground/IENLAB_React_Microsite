@@ -9,8 +9,9 @@ import styled from "styled-components";
 import ButtonBottom from "../components/ButtonBottom";
 import {Icon} from "@mui/material";
 import React, {useState} from "react";
+import {AppProps} from "../App";
 
-function Main() {
+function Main({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
@@ -22,11 +23,7 @@ function Main() {
                 <Contact />
             </NoticeContactWrapper>
             <Footer />
-            <GroupButton>
-                <ButtonBottom><Icon baseClassName={"material-icons-round"}>keyboard_arrow_up</Icon></ButtonBottom>
-                <ButtonBottom><Icon baseClassName={"material-icons-round"}>dark_mode</Icon></ButtonBottom>
-            </GroupButton>
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </MainWrapper>
     )
 }
