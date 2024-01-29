@@ -42,3 +42,14 @@ button {
     transform: rotate(360deg);
   }
 }
+
+@keyframes Mount-animation {
+  from {
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

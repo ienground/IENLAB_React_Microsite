@@ -44,6 +44,7 @@ const SlideshowWrapper = styled.div`
     display: flex;
     border-radius: 1rem;
     margin: 0 1rem;
+    animation: Mount-animation 0.5s;
     
     & > div {
         display: flex;
@@ -81,7 +82,6 @@ const SlideshowImage = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     background-image: ${props => props.style?.backgroundImage};
-    
 `;
 
 const SlideshowButton = styled.button`

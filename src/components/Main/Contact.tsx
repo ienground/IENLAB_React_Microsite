@@ -31,6 +31,7 @@ const ContactWrapper = styled.div`
     border-radius: 1rem;
     margin: 1rem 1rem 0 0;
     padding: 1rem;
+    animation: Mount-animation 0.5s;
 `
 
 export default Contact;

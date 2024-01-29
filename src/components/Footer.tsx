@@ -15,13 +15,9 @@ function Footer() {
                 </AuthorInfoWrapper>
                 <Image src={imgLogoFull}/>
             </FooterWrapper>
-            <FakeFooter>.</FakeFooter>
         </>
     );
 }
-const FakeFooter = styled.div`
-    visibility: hidden;
-`
 
 const FooterWrapper = styled.div`
     transition: background-color 0.5s ease;
@@ -33,6 +29,7 @@ const FooterWrapper = styled.div`
     border-radius: 1rem;
     margin: 1rem;
     padding: 1rem;
+    animation: Mount-animation 0.5s;
 `
 
 const Text = styled.div`

@@ -14,8 +14,21 @@ export interface AppProps {
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+function detectMobileDevice(agent: string) {
+    const mobileRegex = [
+        /Android/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+
+    return mobileRegex.some(mobile => agent.match(mobile));
+}
+
 function App() {
-    const initialDarkMode = getBooleanWithExpiry(LocalStorageKey.IS_DARK_MODE) !== null ? getBooleanWithExpiry(LocalStorageKey.IS_DARK_MODE) : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialDarkMode = getBooleanWithExpiry(LocalStorageKey.IS_DARK_MODE, window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     const [darkMode, setDarkMode] = useState(initialDarkMode);
     let theme = darkMode ? dark : light;
 
@@ -26,6 +39,11 @@ function App() {
         } else {
             localStorage.removeItem(LocalStorageKey.IS_DARK_MODE)
         }
+        if (darkMode) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
     }, [darkMode]);
 
     return (
@@ -35,14 +53,16 @@ function App() {
                 href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
             />
             <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
-            <AnimatedCursor
-                clickables={['a', 'button']}
-                color={"255,255,255"}
-                innerSize={20}
-                innerScale={2}
-                innerStyle={{mixBlendMode: "exclusion"}}
-                outerSize={0}
-            />
+            { !detectMobileDevice(window.navigator.userAgent) &&
+                <AnimatedCursor
+                    clickables={['a', 'button']}
+                    color={"255,255,255"}
+                    innerSize={20}
+                    innerScale={2}
+                    innerStyle={{mixBlendMode: "exclusion"}}
+                    outerSize={0}
+                />
+            }
             <BrowserRouter>
                 <GlobalStyles/>
                 <ThemeProvider theme={theme}>
@@ -56,7 +76,6 @@ function App() {
 }
 const AppWrapper = styled.div`
     transition: background-color 0.5s ease;
-    background-color: ${props => props.theme.colors.colorSurface};
     color: ${props => props.theme.colors.colorOnSurface };
 `
 

@@ -28,7 +28,7 @@ export const light = {
         colorOnSurface: "#202020",
         colorOutline: "#847375",
         colorSurfaceVariant: "#dddddd",
-        colorOnSurfaceVariant: "#201a1b"
+        colorOnSurfaceVariant: "#777777"
     },
     palette: {
         primary: {
@@ -94,8 +94,8 @@ export const dark = {
         colorSurface: "#202020",
         colorOnSurface: "#e0e0e0",
         colorOutline: "#9e8c8f",
-        colorSurfaceVariant: "#434343",
-        colorOnSurfaceVariant: "#d6c2c4"
+        colorSurfaceVariant: "#5d5d5d",
+        colorOnSurfaceVariant: "#a0a0a0"
     }
 }
 

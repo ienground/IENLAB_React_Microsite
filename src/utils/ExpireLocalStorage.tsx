@@ -28,10 +28,16 @@ export function getStringWithExpiry(key: string) {
     return getWithExpiry(key);
 }
 
-export function getBooleanWithExpiry(key: string) {
+export function getBooleanWithExpiry(key: string, defaultValue: boolean) {
+    if (getWithExpiry(key) === null) {
+        return defaultValue;
+    }
     return getWithExpiry(key) === true;
 }
 
-export function getIntWithExpiry(key: string) {
+export function getIntWithExpiry(key: string, defaultValue: number) {
+    if (getWithExpiry(key) === null) {
+        return defaultValue;
+    }
     return Number(getWithExpiry(key));
 }

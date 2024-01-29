@@ -12,11 +12,13 @@ import zIndex from "@mui/material/styles/zIndex";
 import {SidebarProps} from "./Sidebar";
 import Ripples from "react-ripples";
 import {InputAdornment} from "@mui/material-next";
+import {useNavigate} from "react-router-dom";
 
 function Header({isOpen, setIsOpen}: SidebarProps) {
     const [navBg, setNavBg] = useState(false);
     const [showSearchbar, setShowSearchbar] = useState(false);
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const changeNavBg = () => {
         window.scrollY >= 10 ? setNavBg(true) : setNavBg(false);
@@ -37,20 +39,15 @@ function Header({isOpen, setIsOpen}: SidebarProps) {
         }
     }, []);
 
-    const iconStyle = theme.name === "light" ? {
+    const iconStyle = {
         transition: "all 0.5s ease",
         color: theme.colors.colorOnSurface,
-        filter: navBg ? "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)" : "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)"
-    } : {
-        color: theme.colors.colorOnSurface
+        filter: theme.name === "light" ? (navBg ? "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)" : "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)") : ""
     }
 
-    const customIconStyle = theme.name === "light" ? {
+    const customIconStyle = {
         transition: "all 0.5s ease",
-        filter: navBg ? "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)" : "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)"
-    } : {
-        transition: "none",
-        filter: "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)"
+        filter: (theme.name === "light" && !navBg) ? "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)" : "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)"
     }
 
     const searchBarStyle = {
@@ -80,11 +77,11 @@ function Header({isOpen, setIsOpen}: SidebarProps) {
             <NavWrapper style={navBg ? {backgroundColor: 'rgba(0,0,0,0.3)'} : {}}>
                 <NavIcons style={{justifyContent: "start"}}>
                     <NavIconListWrapper><Ripples placeholder={"Menu"}><NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>menu</Icon></NavIconList></Ripples></NavIconListWrapper>
-                    <NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList><Icon baseClassName={"material-icons-round"} sx={iconStyle}>apps</Icon></NavIconList></Ripples></NavIconListWrapper>
+                    {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList><Icon baseClassName={"material-icons-round"} sx={iconStyle}>apps</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
                     {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList onClick={toggleSearchbar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>search</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
                     {/*{Searchbar}*/}
                 </NavIcons>
-                <MainLogo style={navBg ? {backgroundImage: mainIconWhite} : {backgroundImage: mainIcon}}/>
+                <MainLogo onClick={ () => navigate("/") } style={navBg ? {backgroundImage: mainIconWhite} : {backgroundImage: mainIcon}}/>
                 <NavIcons style={{justifyContent: "end"}}>
                     <NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList href={"https://blog.ien.zone"}><CustomIcon src={icTistory} style={customIconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                     <NavIconListWrapper><Ripples placeholder={"Instagram"}><NavIconList href={"https://www.instagram.com/ienlab"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
@@ -113,13 +110,14 @@ const NavWrapper = styled.nav`
     transition: all 0.5s ease;
 `
 
-const MainLogo = styled.div`
+const MainLogo = styled.button`
     transition: all 0.5s ease;
     width: 20%;
     height: 2rem;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    background-color: transparent;
     background-image: url(${props => props.style?.backgroundImage || ''});
 `;
 

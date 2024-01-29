@@ -4,6 +4,7 @@ import LoremIpsum from "react-lorem-ipsum";
 import {Icon} from "@mui/material";
 import Ripples from "react-ripples"
 import {AppProps} from "../App";
+import {useNavigate} from "react-router-dom";
 
 export interface SidebarProps {
     isOpen: boolean,
@@ -13,6 +14,7 @@ export interface SidebarProps {
 type Props = SidebarProps & AppProps;
 
 function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
+    const navigate = useNavigate();
     const toggleSidebar = () => {
         setIsOpen(false)
     }
@@ -24,6 +26,11 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
     const toggleDarkMode = (e: React.MouseEvent) => {
         e.stopPropagation();
         setDarkMode(!darkMode);
+    }
+
+    const closeNavigate = (dest: string) => {
+        toggleSidebar();
+        navigate(dest);
     }
 
     return (
@@ -39,7 +46,13 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
                         <Ripples placeholder={"Dark mode"}><NavIconList style={{backgroundColor: "rgba(0,0,0,0.1)"}} onClick={toggleDarkMode}><Icon baseClassName={"material-icons-round"}>{ darkMode === true ? "dark_mode" : "light_mode"}</Icon></NavIconList></Ripples>
                     </NavIconListWrapper>
                 </NavIcons>
+                <NavList>
+                    <NavItem onClick={() => closeNavigate("/")}>Home</NavItem>
+                    <NavItem onClick={() => closeNavigate("/intro")}>Intro</NavItem>
+                </NavList>
+
                 {/*<LoremIpsum p={10} />*/}
+
             </SidebarWrapper>
         </SidebarBackground>
     );
@@ -93,7 +106,6 @@ const NavIconListWrapper = styled.div`
         height: 100%;
     }
 `
-
 const NavIconList = styled.button`
     padding: 1rem;
     border-radius: 2rem;
@@ -106,5 +118,15 @@ const NavIconList = styled.button`
         color: ${props => props.theme.colors.colorOnSurface};
     }
 `;
+
+const NavList = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+const NavItem = styled.button`
+    height: 2rem;
+    background-color: transparent;
+    color: ${props => props.theme.colors.colorOnSurface};
+`
 
 export default Sidebar;
