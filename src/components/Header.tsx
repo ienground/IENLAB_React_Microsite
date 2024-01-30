@@ -13,8 +13,14 @@ import {SidebarProps} from "./Sidebar";
 import Ripples from "react-ripples";
 import {InputAdornment} from "@mui/material-next";
 import {useNavigate} from "react-router-dom";
+import {AppProps} from "../App";
 
-function Header({isOpen, setIsOpen}: SidebarProps) {
+interface ConstructionProps {
+    className?: string
+}
+type Props = SidebarProps & ConstructionProps;
+
+function Header({isOpen, setIsOpen, className}: Props) {
     const [navBg, setNavBg] = useState(false);
     const [showSearchbar, setShowSearchbar] = useState(false);
     const theme = useTheme();
@@ -25,7 +31,7 @@ function Header({isOpen, setIsOpen}: SidebarProps) {
         console.log(window.scrollY);
     }
     const toggleSidebar = () => {
-        setIsOpen(true);
+        setIsOpen(!isOpen);
     }
 
     const toggleSearchbar = () => {
@@ -74,15 +80,15 @@ function Header({isOpen, setIsOpen}: SidebarProps) {
 
     return (
         <HeaderWrapper>
-            <NavWrapper style={navBg ? {backgroundColor: 'rgba(0,0,0,0.3)'} : {}}>
-                <NavIcons style={{justifyContent: "start"}}>
-                    <NavIconListWrapper><Ripples placeholder={"Menu"}><NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>menu</Icon></NavIconList></Ripples></NavIconListWrapper>
+            <NavWrapper style={navBg ? {backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: "blur(10px)"} : {}}>
+                <NavIcons style={{justifyContent: "start"}} className={"start"}>
+                    <NavIconListWrapper><Ripples placeholder={"Menu"}><NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{className === "construction" ? (isOpen ? "dark_mode" : "light_mode") : "menu"}</Icon></NavIconList></Ripples></NavIconListWrapper>
                     {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList><Icon baseClassName={"material-icons-round"} sx={iconStyle}>apps</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
                     {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList onClick={toggleSearchbar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>search</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
                     {/*{Searchbar}*/}
                 </NavIcons>
                 <MainLogo onClick={ () => navigate("/") } style={navBg ? {backgroundImage: mainIconWhite} : {backgroundImage: mainIcon}}/>
-                <NavIcons style={{justifyContent: "end"}}>
+                <NavIcons style={{justifyContent: "end"}} className={"end"}>
                     <NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList href={"https://blog.ien.zone"}><CustomIcon src={icTistory} style={customIconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                     <NavIconListWrapper><Ripples placeholder={"Instagram"}><NavIconList href={"https://www.instagram.com/ienlab"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                     <NavIconListWrapper><Ripples placeholder={"GitHub"}><NavIconList href={"https://github.com/ienground"}><FontAwesomeIcon icon={faGithub} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
@@ -107,7 +113,7 @@ const NavWrapper = styled.nav`
     width: 100%;
     border-radius: 0 0 1rem 1rem;
     padding: 0.5rem 0 0.5rem 0;
-    transition: all 0.5s ease;
+    transition: background-color 0.5s ease;
 `
 
 const MainLogo = styled.button`
@@ -119,6 +125,10 @@ const MainLogo = styled.button`
     background-repeat: no-repeat;
     background-color: transparent;
     background-image: url(${props => props.style?.backgroundImage || ''});
+
+    @media ${({ theme }) => theme.device.mobile} {
+        width: 60%;
+    }
 `;
 
 const NavIcons = styled.ul`
@@ -127,6 +137,13 @@ const NavIcons = styled.ul`
     padding: 0 1rem 0 1rem;
     justify-content: ${props => props.style?.justifyContent};
     display: flex;
+
+    @media ${({ theme }) => theme.device.mobile} {
+        width: 20%;
+        &.end > div{
+            display: none;
+        }
+    }
 `;
 const NavIconListWrapper = styled.div`
     border-radius: 2rem;

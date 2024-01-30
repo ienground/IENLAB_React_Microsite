@@ -9,60 +9,73 @@ import styled from "styled-components";
 import imgPatternBg from "../assets/dev_page_nologo.png"
 import imgLogoWhite from "../assets/img_logo_full_white.png"
 import MD3Button from "@mui/material-next/Button"
+import {AppProps} from "../App";
+import React, {useState} from "react";
+import {ButtonGo} from "../components/Main/TitleComponent";
 
-function Construction() {
+function Construction({darkMode, setDarkMode}: AppProps) {
     return (
-        <>
-            {/*<Header/>*/}
-            <PageWrapper style={{backgroundImage: imgPatternBg}}>
-                <Title>
-                    <ImgLogo src={imgLogoWhite}/>
-                    <TextInfo>Under construction :)</TextInfo>
-                    <MD3Button variant={"filled"} style={{marginTop: "1rem"}} href={"https://blog.ien.zone"}>블로그로
-                        이동</MD3Button>
-                </Title>
-            </PageWrapper>
-        </>
+        <PageWrapper>
+            <Header isOpen={darkMode} setIsOpen={setDarkMode} className={"construction"}/>
+            <Gallery style={{backgroundImage: imgPatternBg}}>
+                <BlurBackground darkMode={darkMode}>
+                    <TextTitle>Under Construction 🚧</TextTitle>
+                    <ButtonGo onClick={() => {
+                        window.location.href = "https://blog.ien.zone"
+                    }} style={{marginBottom: "auto", width: "auto", fontSize: "1rem", padding: "1rem", fontWeight: "bolder", transition: "none"}}>블로그로 이동</ButtonGo>
+                </BlurBackground>
+            </Gallery>
+            <Footer />
+        </PageWrapper>
     )
 }
 
 const PageWrapper = styled.div`
-    //display: flex;
-    //flex-direction: row;
-    background-color: #61dafb;
     width: 100%;
-    height: 100vh;
-    //aspect-ratio: 16/9;
-    background-image: url(${props => props.style?.backgroundImage});
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 `
 
-const ImgPatternBg = styled.img`
+const Gallery = styled.div`
+    display: flex;
+    width: calc(100% - 2rem);
+    aspect-ratio: 21 / 9;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    margin: 0 1rem;
+    background-image: url("${props => props.style?.backgroundImage}");
+    overflow: hidden;
+    animation: Mount-animation 0.5s;
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: ${props => props.style?.backgroundImage};
+
+    @media ${({ theme }) => theme.device.mobile} {
+        aspect-ratio: 9 / 16;
+    }
+`
+
+const BlurBackground = styled.div<{ darkMode: boolean }>`
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    position: relative;
-`
-
-const Title = styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: column;
+    backdrop-filter: blur(20px);
+    animation: Blur-animation 2s infinite;
+    animation-direction: alternate;
     align-items: center;
+    transition: background-color 0.5s ease;
+    background-color: ${(props) => props.darkMode ? "rgba(0, 0, 0, 0.3)" : "transparent" };
 `
 
-const ImgLogo = styled.img`
-    width: 40vh;
-
-`
-
-const TextInfo = styled.div`
-    color: white;
-    font-size: 2rem;
+const TextTitle = styled.div`
+    width: 80%;
+    text-align: center;
+    margin: auto auto 2rem auto;
+    transition: color 0.5s ease;
+    font-weight: bolder;
+    font-size: 3vmax;
 `
 
 export default Construction;

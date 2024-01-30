@@ -10,7 +10,7 @@ import * as LocalStorageKey from "./constant/LocalStorageKey";
 import {getBooleanWithExpiry, setWithExpiry} from "./utils/ExpireLocalStorage";
 
 export interface AppProps {
-    darkMode: Boolean,
+    darkMode: boolean,
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 

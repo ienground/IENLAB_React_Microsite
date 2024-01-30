@@ -33,6 +33,11 @@ const NoticeboardWrapper = styled.div`
     margin: 1rem 1rem 0 1rem;
     padding: 1rem;
     animation: Mount-animation 0.5s;
+
+    @media ${({ theme }) => theme.device.mobile} {
+        width: calc(100% - 2rem);
+        box-sizing: border-box;
+    }
 `
 
 export default Noticeboard;

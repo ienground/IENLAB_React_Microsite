@@ -1,7 +1,7 @@
 {
   "name": "ienlab_react_microsite",
-  "version": "0.1.4",
-  "homepage": "https://ien.zone",
+  "version": "0.1.6",
+  "homepage": "https://www.ien.zone",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",

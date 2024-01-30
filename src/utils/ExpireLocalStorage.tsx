@@ -32,7 +32,7 @@ export function getBooleanWithExpiry(key: string, defaultValue: boolean) {
     if (getWithExpiry(key) === null) {
         return defaultValue;
     }
-    return getWithExpiry(key) === true;
+    return getWithExpiry(key) === 'true';
 }
 
 export function getIntWithExpiry(key: string, defaultValue: number) {

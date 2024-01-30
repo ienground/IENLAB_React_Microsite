@@ -7,8 +7,8 @@ import Sidebar from "../components/Sidebar";
 import RecentProject from "../components/Intro/RecentProject";
 import AboutMe from "../components/Intro/AboutMe";
 import TechStack from "../components/Intro/TechStack";
-import DesignStack from "../components/Intro/DesignStack";
 import Contact from "../components/Intro/Contact";
+import {Spacer} from "../components/Component";
 
 function Intro({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,14 +17,18 @@ function Intro({darkMode, setDarkMode}: AppProps) {
         // window.scrollTo(0, 0)
     }, [])
 
+    const IntroSpacer = <Spacer orientation={"vertical"} size={"3rem"} />
     return (
         <IntroWrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
             <AboutMe />
+            {IntroSpacer}
             <TechStack />
-            <DesignStack />
+            {IntroSpacer}
             <RecentProject />
+            {IntroSpacer}
             <Contact />
+            {IntroSpacer}
             <Footer />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </IntroWrapper>

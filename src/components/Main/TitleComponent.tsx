@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 export const ButtonGo = styled.button`
+    display: flex;
     width: 3rem;
     height: 3rem;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 3rem;
     transition: all 0.5s ease;
+    align-items: center;
     
     &:hover {
         //border-radius: 0;

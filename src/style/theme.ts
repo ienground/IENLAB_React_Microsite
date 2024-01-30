@@ -1,7 +1,26 @@
 import {alpha, createTheme, getContrastRatio} from "@mui/material";
 
-const pinkBase = "#FF4081";
-const violetBase = "#7C4DFF";
+// const pinkBase = "#FF4081";
+// const violetBase = "#7C4DFF";
+
+const deviceSizes = {
+    mobile: 500,
+    tablet: 768,
+    laptop: 1280,
+};
+
+const brandColor = {
+    brandPink: "#FF4081",
+    brandPurple: "#7C4DFF",
+    brandSkyblue: "#03A9F4",
+    brandBlue: "#3F51B5"
+}
+
+const device = {
+    mobile: `screen and (max-width: ${deviceSizes.mobile}px)`,
+    tablet: `screen and (max-width: ${deviceSizes.tablet}px)`,
+    laptop: `screen and (max-width: ${deviceSizes.laptop}px)`,
+};
 
 export const light = {
     name: "light",
@@ -28,46 +47,11 @@ export const light = {
         colorOnSurface: "#202020",
         colorOutline: "#847375",
         colorSurfaceVariant: "#dddddd",
-        colorOnSurfaceVariant: "#777777"
+        colorOnSurfaceVariant: "#777777",
+        colorRed: "#d44c47",
+        brandColor
     },
-    palette: {
-        primary: {
-            main: alpha(pinkBase, 0.7),
-            light: alpha(pinkBase, 0.5),
-            dark: alpha(pinkBase, 0.9),
-            contrastText: getContrastRatio(alpha(pinkBase, 0.7), '#fff') > 4.5 ? '#fff' : '#111',
-        },
-        secondary: {
-            main: alpha(violetBase, 0.7),
-            light: alpha(violetBase, 0.5),
-            dark: alpha(violetBase, 0.9),
-            contrastText: getContrastRatio(alpha(violetBase, 0.7), '#fff') > 4.5 ? '#fff' : '#111',
-        },
-        error: {
-            main: '#d32f2f',
-            light: '#ef5350',
-            dark: '#c62828',
-            contrastText: '#ffffff',
-        },
-        warning: {
-            main: '#ed6c02',
-            light: '#ff9800',
-            dark: '#e65100',
-            contrastText: '#ffffff',
-        },
-        info: {
-            main: '#0288d1',
-            light: '#03a9f4',
-            dark: '#01579b',
-            contrastText: '#ffffff',
-        },
-        success: {
-            main: '#2e7d32',
-            light: '#4caf50',
-            dark: '#1b5e20',
-            contrastText: '#ffffff',
-        },
-    }
+    device
 };
 
 export const dark = {
@@ -95,8 +79,10 @@ export const dark = {
         colorOnSurface: "#e0e0e0",
         colorOutline: "#9e8c8f",
         colorSurfaceVariant: "#5d5d5d",
-        colorOnSurfaceVariant: "#a0a0a0"
-    }
+        colorOnSurfaceVariant: "#a0a0a0",
+        colorRed: "#e05355"
+    },
+    device
 }
 
 // // @ts-ignore

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {Button, Icon} from "@mui/material";
 import 'react-slideshow-image/dist/styles.css'
-import './slideshow.css'
 import {Slide} from "react-slideshow-image";
 import bgIenlab from "../../assets/background_ienlab.png"
 import bgCalarm from "../../assets/background_calarm.png"
@@ -75,6 +74,18 @@ const SlideshowWrapper = styled.div`
             margin-right: 0;
         }
     }
+
+    .each-slide-effect > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        aspect-ratio: 21 / 9;
+
+        @media ${({ theme }) => theme.device.mobile} {
+            aspect-ratio: 9 / 16;
+        }
+    }
 `;
 
 const SlideshowImage = styled.div`
@@ -97,6 +108,10 @@ const SlideshowButton = styled.button`
     & > span {
         display: inline-block;
         margin: auto;
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        visibility: hidden;
     }
 `
 

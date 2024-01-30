@@ -41,6 +41,12 @@ const GroupButton = styled.div`
 
 const NoticeContactWrapper = styled.div`
     display: flex;
+    flex-direction: row;
+    
+    @media ${({ theme }) => theme.device.mobile} {
+        width: 100%;
+        flex-direction: column;
+    }
 `
 
 export default Main;

@@ -48,7 +48,13 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
                 </NavIcons>
                 <NavList>
                     <NavItem onClick={() => closeNavigate("/")}>Home</NavItem>
+                    <NavItem onClick={() => closeNavigate("/under")}>DevPage</NavItem>
                     <NavItem onClick={() => closeNavigate("/intro")}>Intro</NavItem>
+                    <NavItem onClick={() => closeNavigate("/brand")}>Branding</NavItem>
+                    <NavItem onClick={() => closeNavigate("/brand/2023")}>Branding/2023</NavItem>
+                    <NavItem onClick={() => closeNavigate("/post")}>Post</NavItem>
+                    <NavItem onClick={() => closeNavigate("/dev")}>Dev</NavItem>
+                    <NavItem onClick={() => closeNavigate("/calarm")}>Dev/Calarm</NavItem>
                 </NavList>
 
                 {/*<LoremIpsum p={10} />*/}
@@ -69,7 +75,8 @@ const SidebarBackground = styled.div`
     visibility: hidden;
     background-color: rgba(0, 0, 0, 0.4);
     transition: all 0.5s ease;
-
+    backdrop-filter: blur(5px);
+    
     &.open {
         visibility: visible;
         opacity: 100%;
@@ -90,6 +97,12 @@ const SidebarWrapper = styled.div`
 
     &.open {
         left: 0;
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        width: 100%;
+        left: -100%;
+        border-radius: 0;
     }
 `
 
