@@ -52,10 +52,12 @@ function App() {
                 rel="stylesheet"
                 href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
             />
-            <link rel="stylesheet" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
-            { !detectMobileDevice(window.navigator.userAgent) &&
+            <link rel="stylesheet" as="style"
+                  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+
+            {!detectMobileDevice(window.navigator.userAgent) &&
                 <AnimatedCursor
-                    clickables={['a', 'button']}
+                    clickables={['a', 'button', 'input']}
                     color={"255,255,255"}
                     innerSize={20}
                     innerScale={2}
@@ -74,16 +76,17 @@ function App() {
         </AppWrapper>
     );
 }
+
 const AppWrapper = styled.div`
     transition: background-color 0.5s ease;
-    color: ${props => props.theme.colors.colorOnSurface };
+    color: ${props => props.theme.colors.colorOnSurface};
 `
 
 const AppContainer = styled.div`
     width: 100%;
     position: relative;
     margin: 0 auto;
-    font-family: Pretendard, sans-serif;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 `;
 
 export default App;

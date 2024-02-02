@@ -200,13 +200,17 @@ export const InnerWrapper = styled.div`
 
 export const InnerBoxWrapper = styled.div`
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 1rem;
     animation: Mount-animation 0.5s;
-    transition: scale 0.5s ease;
+    transition: scale 0.5s ease, background-color 0.5s ease;
     
     &:hover {
         scale: 1.01;
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        padding: 1rem;
     }
 `
 

@@ -114,7 +114,11 @@ const NavIcons = styled.ul`
 const NavIconListWrapper = styled.div`
     border-radius: 2rem;
     overflow: hidden;
-
+    transition: background-color 0.5s ease;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    
     & > div {
         height: 100%;
     }
