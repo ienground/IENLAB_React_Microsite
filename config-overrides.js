@@ -11,7 +11,9 @@ module.exports = function override(config) {
         "https": require.resolve("https-browserify"),
         "os": require.resolve("os-browserify"),
         "url": require.resolve("url"),
-        "path": require.resolve("path-browserify")
+        "path": require.resolve("path-browserify"),
+        "zlib": require.resolve("browserify-zlib"),
+        "querystring": require.resolve("querystring-es3")
     })
     config.resolve.fallback = fallback;
     config.plugins = (config.plugins || []).concat([

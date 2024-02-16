@@ -61,8 +61,9 @@ function App() {
                     color={"255,255,255"}
                     innerSize={20}
                     innerScale={2}
-                    innerStyle={{mixBlendMode: "exclusion"}}
-                    outerSize={0}
+                    innerStyle={{mixBlendMode: "difference"}}
+                    outerSize={5}
+                    outerScale={0}
                 />
             }
             <BrowserRouter>

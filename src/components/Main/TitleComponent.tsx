@@ -9,8 +9,8 @@ export const ButtonGo = styled.button`
     transition: all 0.5s ease;
     align-items: center;
     
-    &:hover {
-        //border-radius: 0;
+    & > span {
+        width: 100%;
     }
 `
 

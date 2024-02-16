@@ -1,14 +1,18 @@
-import styled from "styled-components";
+import styled, {useTheme} from "styled-components";
 import {Button, Icon} from "@mui/material";
 import 'react-slideshow-image/dist/styles.css'
 import {Slide} from "react-slideshow-image";
-import bgIenlab from "../../assets/background_ienlab.png"
+import bgIenlab from "../../assets/background_ienlab.png";
+import pattern from "../../assets/pattern_color.png";
+import patternBlack from "../../assets/pattern_black.png";
 import bgCalarm from "../../assets/background_calarm.png"
 import React from "react";
 
 function Slideshow() {
+    const theme = useTheme();
+    const darkMode = theme.name === "dark";
     const images = [
-        bgIenlab,bgCalarm
+        darkMode ? patternBlack : pattern, bgCalarm
     ];
 
     let indicators = (index?: number) => (<SlideshowIndicators />);
@@ -89,6 +93,7 @@ const SlideshowWrapper = styled.div`
 `;
 
 const SlideshowImage = styled.div`
+    transition: background-image 0.5s ease;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

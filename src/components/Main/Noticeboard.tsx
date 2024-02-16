@@ -4,6 +4,7 @@ import {Icon} from "@mui/material";
 import React from "react";
 import {ButtonGo, TextDate, TitleButtonWrapper, TextTitle} from "./TitleComponent";
 import {useNavigate} from "react-router-dom";
+
 function Noticeboard() {
     const navigate = useNavigate();
 

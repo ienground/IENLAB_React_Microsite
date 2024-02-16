@@ -16,19 +16,22 @@ import {useNavigate} from "react-router-dom";
 import {AppProps} from "../App";
 
 interface ConstructionProps {
-    className?: string
+    className?: string,
+    isAppHeaderAvailable?: boolean
 }
 type Props = SidebarProps & ConstructionProps;
 
-function Header({isOpen, setIsOpen, className}: Props) {
+function Header({isOpen, setIsOpen, className, isAppHeaderAvailable}: Props) {
     const [navBg, setNavBg] = useState(false);
     const [showSearchbar, setShowSearchbar] = useState(false);
     const theme = useTheme();
     const navigate = useNavigate();
+    const isSticky = isAppHeaderAvailable !== true;
 
+    let lastScroll = -1;
     const changeNavBg = () => {
-        window.scrollY >= 10 ? setNavBg(true) : setNavBg(false);
-        console.log(window.scrollY);
+        window.scrollY >= (isSticky ? 10 : 70) ? setNavBg(true) : setNavBg(false);
+        lastScroll = window.scrollY;
     }
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -79,8 +82,7 @@ function Header({isOpen, setIsOpen, className}: Props) {
         }}/>
 
     return (
-        <HeaderWrapper>
-            <NavWrapper style={navBg ? {backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: "blur(10px)"} : {}}>
+        <HeaderWrapper className={`${isSticky ? "sticky" : ""}`} style={navBg ? {backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: "blur(10px)"} : {}}>
                 <NavIcons style={{justifyContent: "start"}} className={"start"}>
                     <NavIconListWrapper><Ripples placeholder={"Menu"}><NavIconList onClick={toggleSidebar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{className === "construction" ? (isOpen ? "dark_mode" : "light_mode") : "menu"}</Icon></NavIconList></Ripples></NavIconListWrapper>
                     {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList><Icon baseClassName={"material-icons-round"} sx={iconStyle}>apps</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
@@ -93,7 +95,6 @@ function Header({isOpen, setIsOpen, className}: Props) {
                     <NavIconListWrapper><Ripples placeholder={"Instagram"}><NavIconList href={"https://www.instagram.com/ienlab"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                     <NavIconListWrapper><Ripples placeholder={"GitHub"}><NavIconList href={"https://github.com/ienground"}><FontAwesomeIcon icon={faGithub} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                 </NavIcons>
-            </NavWrapper>
         </HeaderWrapper>
     );
 }
@@ -101,20 +102,23 @@ function Header({isOpen, setIsOpen, className}: Props) {
 const HeaderWrapper = styled.nav`
     display: flex;
     flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0 0.5rem 0;
+    transition: background-color 0.5s ease, opacity 0.5s ease;
     position: sticky;
     z-index: 990;
     top: 0;
+    
+    &.sticky {
+        
+    }
+    
+    &.show-nav {
+        opacity: 1;
+        visibility: visible;
+    }
 `;
-
-const NavWrapper = styled.nav`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    border-radius: 0 0 1rem 1rem;
-    padding: 0.5rem 0 0.5rem 0;
-    transition: background-color 0.5s ease;
-`
 
 const MainLogo = styled.button`
     transition: all 0.5s ease;

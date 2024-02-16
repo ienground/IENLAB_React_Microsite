@@ -88,37 +88,31 @@ function Contact() {
                         <InnerBoxWrapper>
                             <ImgIcon src={icGitHub} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
+                            <TextContentTitle className={"black background"}>GitHub</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
                         </InnerBoxWrapper>
                         <InnerBoxWrapper>
                             <ImgIcon src={icBehance} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
+                            <TextContentTitle className={"black background"}>Behance</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
                         </InnerBoxWrapper>
                         <InnerBoxWrapper>
                             <ImgIcon src={icTistory} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icNaverBlog} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
+                            <TextContentTitle className={"black background"}>블로그</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
                         </InnerBoxWrapper>
                         <InnerBoxWrapper>
                             <ImgIcon src={icInstagram} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
+                            <TextContentTitle className={"black background"}>Instagram</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
                         </InnerBoxWrapper>
                         <InnerBoxWrapper>
                             <ImgIcon src={icFacebook} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>캘람</TextContentTitle><br />
+                            <TextContentTitle className={"black background"}>Facebook</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
                         </InnerBoxWrapper>
                     </GridContentWrapper>
@@ -178,6 +172,10 @@ const EmailJsForm = styled.form`
             
             &.Mui-focused {
                 color: ${props => props.theme.colors.colorPrimary };
+            }
+            
+            &.Mui-error {
+                color: ${props => props.theme.colors.colorError};
             }
         }
         & > div.MuiFilledInput-root {

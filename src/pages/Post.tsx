@@ -22,10 +22,11 @@ function Post({darkMode, setDarkMode}: AppProps) {
                     <TextTitle>Hello Pretendard Title!</TextTitle>
                     <TextDate>IT's date!</TextDate>
                 </Title>
-                <embed src={icTistory} style={{color: "#FFFFFF", fill: "#F0F048", stroke: "#FF0000"}}/>
+                {/*<embed src={icTistory} style={{color: "#FFFFFF", fill: "#F0F048", stroke: "#FF0000"}}/>*/}
                 <ImgThumbnail src={mainIcon}/>
             </TitleWrapper>
             <Footer/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </>
     )
 }
@@ -33,9 +34,10 @@ function Post({darkMode, setDarkMode}: AppProps) {
 const TitleWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 0 2rem 0 2rem;
+    margin: 0 1rem 0 1rem;
     border-radius: 1rem;
     background-color: rebeccapurple;
+    animation: Mount-animation 0.5s;
 `
 
 const Title = styled.div`

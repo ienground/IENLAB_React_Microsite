@@ -78,7 +78,7 @@ export const dark = {
         colorSurface: "#202020",
         colorOnSurface: "#e0e0e0",
         colorOutline: "#9e8c8f",
-        colorSurfaceVariant: "#5d5d5d",
+        colorSurfaceVariant: "#2a2a2a",
         colorOnSurfaceVariant: "#a0a0a0",
         colorRed: "#e05355"
     },

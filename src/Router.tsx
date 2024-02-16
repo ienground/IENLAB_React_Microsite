@@ -22,10 +22,10 @@ function Router({darkMode, setDarkMode}: AppProps) {
                 <Route path={"/intro"} element={<Intro darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/brand"} element={<Branding darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/post"} element={<Post darkMode={darkMode} setDarkMode={setDarkMode} />} />
-                <Route path={"/dev"} element={<DevPage />} />
+                <Route path={"/dev"} element={<DevPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
                 {/*Dev*/}
-                <Route path={"/calarm"} element={<Calarm />} />
+                <Route path={"/calarm"} element={<Calarm darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
                 {/*Branding*/}
                 <Route path={"/brand/2023"} element={<Branding2023 darkMode={darkMode} setDarkMode={setDarkMode} />} />

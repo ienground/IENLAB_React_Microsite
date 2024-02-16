@@ -58,8 +58,14 @@ const TistoryInfoWrapper = styled.div`
     align-items: center;
 `
 
-const Image = styled.img`
+const Image = styled.div<{src: string}>`
     height: 2rem;
+    aspect-ratio: 4.84;
+    transition: background-image 0.5s ease;
+    background-image: url(${props => props.src});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 `
 
 export default Footer;
