@@ -33,7 +33,7 @@ const NoticeboardWrapper = styled.div`
     border-radius: 1rem;
     margin: 1rem 1rem 0 1rem;
     padding: 1rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
 
     @media ${({ theme }) => theme.device.mobile} {
         width: calc(100% - 2rem);

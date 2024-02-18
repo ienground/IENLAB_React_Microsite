@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import imgProfile from "../../assets/img_ienground_profile.jpg";
+import imgProfile from "../../assets/image/img_ienground_profile.jpg";
 import LoremIpsum from "react-lorem-ipsum";
 import {Ahref, ContentWrapper, ImgIcon, InnerBoxWrapper, InnerContentWrapper, InnerTitleWrapper, InnerWrapper, TextContentContent, TextContentTitle, TextTitle} from "./CommonComponent/CommonComponent";
 import {BrCondition, Spacer} from "../Component";
-import icAndroid from "../../assets/ic_android.svg";
-import icIllustrator from "../../assets/ic_illustrator.svg";
-import icPhotoshop from "../../assets/ic_photoshop.svg";
-import icSogang from "../../assets/ic_sogang_univ.svg";
-import icFigma from "../../assets/ic_figma.svg";
-import icGssh from "../../assets/ic_gssh.webp";
+import icAndroid from "../../assets/icon/ic_android.svg";
+import icIllustrator from "../../assets/icon/ic_illustrator.svg";
+import icPhotoshop from "../../assets/icon/ic_photoshop.svg";
+import icSogang from "../../assets/icon/ic_sogang_univ.svg";
+import icFigma from "../../assets/icon/ic_figma.svg";
+import icGssh from "../../assets/icon/ic_gssh.webp";
 
 function AboutMe() {
     return (
@@ -32,14 +32,12 @@ function AboutMe() {
                         </TextContentContent>
                         <Spacer orientation={"vertical"} size={"1rem"} />
                         <TextContentContent>INTJ / 성격 좀 적당히 써보자.</TextContentContent>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
                         <InnerBoxWrapper>
                             <ImgIcon src={icAndroid} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
                             <TextContentTitle className={"black background"}>Android 개발</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>2017년부터</TextContentContent>
                         </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
                         <InnerBoxWrapper>
                             <ImgIcon src={icPhotoshop} style={{marginRight: "1rem"}}/>
                             <ImgIcon src={icIllustrator} style={{marginRight: "1rem"}}/>
@@ -48,7 +46,6 @@ function AboutMe() {
                             <TextContentTitle className={"black background"}>그래픽, UI·UX 디자인</TextContentTitle><br />
                             <TextContentContent fontWeight={"normal"} className={"black medium"}>2016년부터</TextContentContent>
                         </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
                         <InnerBoxWrapper>
                             <ImgIcon src={icSogang} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
@@ -66,7 +63,7 @@ const AboutMeWrapper = styled.div`
     display: flex;
     flex-direction: row;
     margin: 2rem 2rem 0 2rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     align-items: start;
 
     @media ${({ theme }) => theme.device.mobile} {

@@ -7,11 +7,12 @@ import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
 import imgPatternBg from "../assets/dev_page_nologo.png"
-import imgLogoWhite from "../assets/img_logo_full_white.png"
+import imgLogoWhite from "../assets/brand/img_logo_full_white.png"
 import MD3Button from "@mui/material-next/Button"
 import {AppProps} from "../App";
 import React, {useState} from "react";
 import {ButtonGo} from "../components/Main/TitleComponent";
+import ButtonToTop from "../components/ButtonToTop";
 
 function Construction({darkMode, setDarkMode}: AppProps) {
     return (
@@ -25,6 +26,7 @@ function Construction({darkMode, setDarkMode}: AppProps) {
                     }} style={{marginBottom: "auto", width: "auto", fontSize: "1rem", padding: "1rem", fontWeight: "bolder", transition: "none"}}>블로그로 이동</ButtonGo>
                 </BlurBackground>
             </Gallery>
+            <ButtonToTop />
             <Footer />
         </PageWrapper>
     )
@@ -44,7 +46,7 @@ const Gallery = styled.div`
     margin: 0 1rem;
     background-image: url("${props => props.style?.backgroundImage}");
     overflow: hidden;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     
     background-size: cover;
     background-position: center;

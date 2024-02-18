@@ -7,19 +7,24 @@ const deviceSizes = {
     mobile: 500,
     tablet: 768,
     laptop: 1280,
+    pc: 1440
 };
 
-const brandColor = {
-    brandPink: "#FF4081",
-    brandPurple: "#7C4DFF",
-    brandSkyblue: "#03A9F4",
-    brandBlue: "#3F51B5"
+const brand = {
+    pink: "#FF4081",
+    purple: "#7C4DFF",
+    skyblue: "#03A9F4",
+    blue: "#3F51B5"
+}
+const common = {
+    darkBlue: "#11171a"
 }
 
 const device = {
     mobile: `screen and (max-width: ${deviceSizes.mobile}px)`,
     tablet: `screen and (max-width: ${deviceSizes.tablet}px)`,
     laptop: `screen and (max-width: ${deviceSizes.laptop}px)`,
+    pc: `screen and (max-width: ${deviceSizes.pc}px)`,
 };
 
 export const light = {
@@ -49,7 +54,7 @@ export const light = {
         colorSurfaceVariant: "#dddddd",
         colorOnSurfaceVariant: "#777777",
         colorRed: "#d44c47",
-        brandColor
+        brand, common
     },
     device
 };
@@ -80,7 +85,8 @@ export const dark = {
         colorOutline: "#9e8c8f",
         colorSurfaceVariant: "#2a2a2a",
         colorOnSurfaceVariant: "#a0a0a0",
-        colorRed: "#e05355"
+        colorRed: "#e05355",
+        brand, common
     },
     device
 }

@@ -1,8 +1,8 @@
 import styled, {useTheme} from "styled-components";
-import imgLogoFull from "../assets/img_logo_full.png";
-import imgLogoFullWhite from "../assets/img_logo_full_white.png";
-import icTistory from "../assets/ic_tistory.svg";
-import imgPattern from "../assets/pattern.png";
+import imgLogoFull from "../assets/brand/img_logo_full.png";
+import imgLogoFullWhite from "../assets/brand/img_logo_full_white.png";
+import icTistory from "../assets/icon/ic_tistory.svg";
+import imgPattern from "../assets/brand/pattern.png";
 import {Icon} from "@mui/material";
 import React from "react";
 
@@ -31,7 +31,7 @@ const FooterWrapper = styled.div`
     border-radius: 1rem;
     margin: 1rem;
     padding: 1rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
 
     @media ${({ theme }) => theme.device.mobile} {
         flex-direction: column-reverse;

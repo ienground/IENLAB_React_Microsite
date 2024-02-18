@@ -5,7 +5,13 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import DesignHeader from "../components/Branding/DesignHeader";
-import imgLogoFull from "../assets/img_logo_full.png";
+import imgLogoFull from "../assets/brand/img_logo_full.png";
+import imgLogoShort from "../assets/brand/img_logo_short.png";
+import {ImgTitle} from "../components/Branding/CommonComponent";
+import logoColor from "../assets/branding/2024/logo_color_transparent.png";
+import BrandSystem from "../components/Branding/BrandSystem";
+import ApplicationUsages from "../components/Branding/ApplicationUsages";
+import ButtonToTop from "../components/ButtonToTop";
 
 function Branding({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,8 +19,14 @@ function Branding({darkMode, setDarkMode}: AppProps) {
     return (
         <BrandingWrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-            <DesignHeader icon={imgLogoFull} title={"ienlab"} />
+            <ImgTitle>
+                <img src={logoColor} />
+            </ImgTitle>
+            <DesignHeader icon={imgLogoFull} shortIcon={imgLogoShort} title={"Brand Identity"} />
+            <BrandSystem />
+            <ApplicationUsages />
             <Footer />
+            <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </BrandingWrapper>
     )

@@ -1,81 +1,88 @@
 import styled from "styled-components";
 import LoremIpsum from "react-lorem-ipsum";
 import {ContentWrapper, ImgIcon, ImgTitleIcon, InnerBoxWrapper, InnerContentWrapper, InnerTitleWrapper, InnerWrapper, TextContentContent, TextContentTitle, TextTitle} from "./CommonComponent/CommonComponent";
-import icAndroid from "../../assets/ic_android.svg";
-import icWeb from "../../assets/ic_web.png";
-import icFirebase from "../../assets/ic_firebase.svg";
-import icKotlin from "../../assets/ic_kotlin.svg";
-import icGoogleCloud from "../../assets/ic_google_cloud.svg";
-import icReact from "../../assets/ic_react.svg";
-import icHtml from "../../assets/ic_html.svg";
-import icTypescript from "../../assets/ic_typescript.svg";
-import icCss from "../../assets/ic_css.svg";
+import icAndroid from "../../assets/icon/ic_android.svg";
+import icWeb from "../../assets/icon/ic_web.png";
+import icFirebase from "../../assets/icon/ic_firebase.svg";
+import icKotlin from "../../assets/icon/ic_kotlin.svg";
+import icGoogleCloud from "../../assets/icon/ic_google_cloud.svg";
+import icReact from "../../assets/icon/ic_react.svg";
+import icHtml from "../../assets/icon/ic_html.svg";
+import icTypescript from "../../assets/icon/ic_typescript.svg";
+import icCss from "../../assets/icon/ic_css.svg";
 import {Spacer} from "../Component";
 
 function TechStack() {
+    const techStackList = [
+        {
+            icon: icAndroid,
+            title: "Android",
+            content: [
+                {
+                    icons: [icKotlin],
+                    title: "Kotlin",
+                    content: "코틀린 설명"
+                },
+                {
+                    icons: [icFirebase],
+                    title: "Firebase",
+                    content: "파베 설명"
+                },
+                {
+                    icons: [icGoogleCloud],
+                    title: "Google Cloud",
+                    content: "구글 클라우드 설명"
+                },
+            ]
+        },
+        {
+            icon: icWeb,
+            title: "Web",
+            content: [
+                {
+                    icons: [icReact],
+                    title: "React",
+                    content: "React 설명"
+                },
+                {
+                    icons: [icHtml, icCss],
+                    title: "HTML·CSS",
+                    content: "HTML 설명"
+                },
+                {
+                    icons: [icTypescript],
+                    title: "Typescript",
+                    content: "Typescript 설명"
+                },
+            ]
+        },
+    ];
+
     return (
         <TechStackWrapper>
             <TextTitle>기술 스택</TextTitle>
             <ContentWrapper>
-                <InnerWrapper>
-                    <InnerTitleWrapper className={"mobile-horizontal"}>
-                        <ImgTitleIcon src={icAndroid} />
-                        <Spacer orientation={"vertical"} size={"1rem"} />
-                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>Android</TextContentTitle>
-                    </InnerTitleWrapper>
-                    <InnerContentWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icKotlin} />
+                {techStackList.map((category) => (
+                    <InnerWrapper>
+                        <InnerTitleWrapper className={"mobile-horizontal"}>
+                            <ImgTitleIcon src={category.icon} />
                             <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Kotlin</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icFirebase} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Firebase</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icGoogleCloud} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Google Cloud</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                    </InnerContentWrapper>
-                </InnerWrapper>
-                <InnerWrapper>
-                    <InnerTitleWrapper className={"mobile-horizontal"}>
-                        <ImgTitleIcon src={icWeb} />
-                        <Spacer orientation={"vertical"} size={"1rem"} />
-                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>Web</TextContentTitle>
-                    </InnerTitleWrapper>
-                    <InnerContentWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icReact} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>React</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icHtml} style={{marginRight: "1rem"}} />
-                            <ImgIcon src={icCss} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>HTML·CSS</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                        <Spacer orientation={"vertical"} size={"2rem"} />
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icTypescript} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Typescript</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>쓸 줄 아는 것들을 적어야 하나.</TextContentContent>
-                        </InnerBoxWrapper>
-                    </InnerContentWrapper>
-                </InnerWrapper>
+                            <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>{category.title}</TextContentTitle>
+                        </InnerTitleWrapper>
+                        <InnerContentWrapper>
+                            {category.content.map((content) => (
+                                <InnerBoxWrapper>
+                                    {content.icons.map((icon) => (
+                                        <ImgIcon src={icon} style={{marginRight: "1rem"}} />
+                                    ))}
+                                    <Spacer orientation={"vertical"} size={"1rem"} />
+                                    <TextContentTitle className={"black background"}>{content.title}</TextContentTitle><br />
+                                    <TextContentContent fontWeight={"normal"} className={"black medium"}>{content.content}</TextContentContent>
+                                </InnerBoxWrapper>
+                            ))}
+                        </InnerContentWrapper>
+                    </InnerWrapper>
+                ))}
             </ContentWrapper>
         </TechStackWrapper>
     );
@@ -85,7 +92,7 @@ const TechStackWrapper = styled.div`
     display: flex;
     flex-direction: row;
     margin: 1rem 2rem 0 2rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     align-items: start;
 
     @media ${({ theme }) => theme.device.mobile} {

@@ -6,17 +6,17 @@ import {TextFieldsRounded} from "@mui/icons-material";
 import {Icon, TextField} from "@mui/material";
 import {FilledInput} from "@mui/material-next";
 import {Spacer} from "../Component";
-import icAndroid from "../../assets/ic_android.svg";
-import icCall from "../../assets/ic_call.svg";
-import icMail from "../../assets/ic_mail.svg";
-import icInstagram from "../../assets/ic_instagram.svg";
-import icGitHub from "../../assets/ic_github.svg";
-import icFacebook from "../../assets/ic_facebook.svg";
-import icNaverBlog from "../../assets/ic_naver_blog.svg"
-import icTistory from "../../assets/ic_tistory.svg"
-import icBehance from "../../assets/ic_behance.svg"
+import icAndroid from "../../assets/icon/ic_android.svg";
+import icCall from "../../assets/icon/ic_call.svg";
+import icMail from "../../assets/icon/ic_mail.svg";
+import icInstagram from "../../assets/icon/ic_instagram.svg";
+import icGitHub from "../../assets/icon/ic_github.svg";
+import icFacebook from "../../assets/icon/ic_facebook.svg";
+import icNaverBlog from "../../assets/icon/ic_naver_blog.svg"
+import icTistory from "../../assets/icon/ic_tistory.svg"
+import icBehance from "../../assets/icon/ic_behance.svg"
 import Ripples from "react-ripples";
-import icAppCalarm from "../../assets/ic_app_calarm.png";
+import icAppCalarm from "../../assets/icon/ic_app_calarm.png";
 
 function Contact() {
     const form = useRef(null)
@@ -151,7 +151,7 @@ const ContactWrapper = styled.div`
     display: flex;
     flex-direction: row;
     margin: 1rem 2rem 0 2rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     align-items: start;
 
     @media ${({theme}) => theme.device.mobile} {
@@ -313,13 +313,17 @@ export const GridContentWrapper = styled.div`
     grid-template-columns: 1fr 1fr;
     column-gap: 2rem;
     row-gap: 2rem;
+
+    @media ${({ theme }) => theme.device.tablet} {
+        grid-template-columns: 1fr;
+        column-gap: 1rem;
+        row-gap: 1rem;
+    }
     
     @media ${({ theme }) => theme.device.mobile} {
         width: 100%;
         margin-left: 0;
-        grid-template-columns: 1fr;
-        column-gap: 1rem;
-        row-gap: 1rem;
+        
     }
 `
 

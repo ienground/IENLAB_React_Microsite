@@ -1,8 +1,8 @@
 import styled, {useTheme} from "styled-components";
 import {Icon, SvgIcon, TextField} from "@mui/material";
-import mainIcon from "../assets/img_logo_typo.png";
-import mainIconWhite from "../assets/img_logo_typo_white.png";
-import icTistory from "../assets/ic_tistory.svg";
+import mainIcon from "../assets/brand/img_logo_typo.png";
+import mainIconWhite from "../assets/brand/img_logo_typo_white.png";
+import icTistory from "../assets/icon/ic_tistory.svg";
 import "../style/main.css"
 import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

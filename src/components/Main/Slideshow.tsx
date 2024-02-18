@@ -2,9 +2,9 @@ import styled, {useTheme} from "styled-components";
 import {Button, Icon} from "@mui/material";
 import 'react-slideshow-image/dist/styles.css'
 import {Slide} from "react-slideshow-image";
-import bgIenlab from "../../assets/background_ienlab.png";
-import pattern from "../../assets/pattern_color.png";
-import patternBlack from "../../assets/pattern_black.png";
+import bgIenlab from "../../assets/brand/background_ienlab.png";
+import pattern from "../../assets/brand/pattern_color.png";
+import patternBlack from "../../assets/brand/pattern_black.png";
 import bgCalarm from "../../assets/background_calarm.png"
 import React from "react";
 
@@ -24,7 +24,6 @@ function Slideshow() {
         <SlideshowButton>
             <Icon baseClassName={"material-icons-round"}>arrow_forward</Icon>
         </SlideshowButton>
-
 
     return (
         <SlideshowWrapper className={"wrapper"}>
@@ -47,7 +46,7 @@ const SlideshowWrapper = styled.div`
     display: flex;
     border-radius: 1rem;
     margin: 0 1rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     
     & > div {
         display: flex;
@@ -55,7 +54,6 @@ const SlideshowWrapper = styled.div`
         width: 100%;
         border-radius: 1rem;
         overflow: hidden;
-        background-color: #61dafb;
         align-items: end;
     }
     

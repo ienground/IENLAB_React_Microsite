@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
 import {getFirestoreData} from "../../utils/FirebaseData";
 import {Firestore} from "firebase/firestore";
-import icPlayStore from "../../assets/ic_google_play.svg";
+import icPlayStore from "../../assets/icon/ic_google_play.svg";
 import {ImgTitleVersionText} from "./CommonComponent";
 import {convertRemToPixels} from "../../utils/Utils";
 import appHeader from "./AppHeader";
@@ -96,6 +96,7 @@ const AppHeaderWrapper = styled.div`
     top: 4.5rem;
     z-index: 980;
     
+    animation: Mount-animation-header 1s ease;
     transition: background-color 0.5s ease;
 `
 

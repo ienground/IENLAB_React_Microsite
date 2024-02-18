@@ -22,7 +22,7 @@ const RecentChangeWrapper = styled.div`
     overflow: hidden;
     padding: 1rem;
     border-top: 1px solid ${props => props.theme.colors.colorOnSurface};
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     
     & > span {
         transition: color 0.5s ease;

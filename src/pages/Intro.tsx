@@ -9,6 +9,7 @@ import AboutMe from "../components/Intro/AboutMe";
 import TechStack from "../components/Intro/TechStack";
 import Contact from "../components/Intro/Contact";
 import {Spacer} from "../components/Component";
+import ButtonToTop from "../components/ButtonToTop";
 
 function Intro({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -30,6 +31,7 @@ function Intro({darkMode, setDarkMode}: AppProps) {
             <Contact />
             {IntroSpacer}
             <Footer />
+            <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </IntroWrapper>
     )

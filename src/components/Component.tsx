@@ -9,7 +9,7 @@ export interface SpacerProps {
 
 export const Spacer = ({orientation, size}: SpacerProps) => {
     const theme = useTheme();
-    const isMobile = window.matchMedia(theme.device.mobile).matches
+    const isMobile = window.matchMedia(theme.device.mobile).matches;
 
     if (orientation === "vertical") {
         return (

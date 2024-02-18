@@ -10,6 +10,7 @@ import ButtonBottom from "../components/ButtonBottom";
 import {Icon} from "@mui/material";
 import React, {useState} from "react";
 import {AppProps} from "../App";
+import ButtonToTop from "../components/ButtonToTop";
 
 function Main({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,6 +24,7 @@ function Main({darkMode, setDarkMode}: AppProps) {
                 <Contact />
             </NoticeContactWrapper>
             <Footer />
+            <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </MainWrapper>
     )

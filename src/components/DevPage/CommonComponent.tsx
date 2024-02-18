@@ -13,12 +13,11 @@ export const ImgTitle = styled.div`
     position: relative;
     z-index: 985;
     transition: background-image 0.5s ease;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: ${props => props.style?.backgroundImage};
 
     @media ${({ theme }) => theme.device.mobile} {
         aspect-ratio: 9 / 16;
@@ -159,7 +158,7 @@ export const ContentWrapper = styled.div`
     flex-direction: row;
     justify-content: center;
     overflow: hidden;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     
     &:nth-child(4) {
         margin-top: 1rem;

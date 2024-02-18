@@ -1,23 +1,25 @@
-import styled from "styled-components";
+import styled, {useTheme} from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
 import {getFirestoreData} from "../../utils/FirebaseData";
 import {Firestore} from "firebase/firestore";
-import icPlayStore from "../../assets/ic_google_play.svg";
+import icPlayStore from "../../assets/icon/ic_google_play.svg";
 // import {ImgTitleVersionText} from "./CommonComponent";
 import {convertRemToPixels} from "../../utils/Utils";
 
 interface AppHeaderProp {
-    icon: string
+    icon: string,
+    shortIcon: string,
     title: string,
 }
 
-function AppHeader({icon, title} : AppHeaderProp) {
+function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
     const appHeaderRef = useRef<HTMLDivElement | null>(null);
+    const theme = useTheme();
+    const isMobile = window.matchMedia(theme.device.mobile).matches;
+
     const scrollListener = () => {
         let headerY = appHeaderRef.current?.getBoundingClientRect().y;
-        console.log("headerY:" + headerY);
-        console.log("value:" + convertRemToPixels(4.5));
         if (headerY) {
             if (headerY <= convertRemToPixels(4.5)) {
                 document.querySelector(".bottom-line")?.classList.add("visible-line");
@@ -25,8 +27,6 @@ function AppHeader({icon, title} : AppHeaderProp) {
                 document.querySelector(".bottom-line")?.classList.remove("visible-line");
             }
         }
-        // console.log(appHeaderRef.current?.getBoundingClientRect().y);
-
     }
 
     useEffect(() => {
@@ -37,7 +37,7 @@ function AppHeader({icon, title} : AppHeaderProp) {
         <AppHeaderWrapper ref={appHeaderRef}>
             <InnerWrapper>
                 <Area>
-                    <ImgAppIcon src={icon} />
+                    <ImgAppIcon src={isMobile ? shortIcon : icon} />
                     <TextTitle>{title}</TextTitle>
                     {/*<ImgTitleVersionText>{appVersion}</ImgTitleVersionText>*/}
                 </Area>
@@ -73,7 +73,8 @@ const AppHeaderWrapper = styled.div`
     align-items: center;
     top: 4.5rem;
     z-index: 980;
-    
+
+    animation: Mount-animation-header 1s ease;
     transition: background-color 0.5s ease;
 `
 
@@ -95,7 +96,6 @@ const TextTitle = styled.div`
 
 const ImgAppIcon = styled.img`
     height: 2rem;
-    
 `
 
 const Area = styled.div`

@@ -5,8 +5,8 @@ import Sidebar from "../../components/Sidebar";
 import React, {useEffect, useRef, useState} from "react";
 import {AppProps} from "../../App";
 import imgCalarmPattern  from "../../assets/img_calarm_pattern.png";
-import icCalarm from "../../assets/ic_calarm.png";
-import patternBlack from "../../assets/pattern_black.png";
+import icCalarm from "../../assets/icon/ic_calarm.png";
+import patternBlack from "../../assets/brand/pattern_black.png";
 import {ContentContent, ContentScreenshot, ContentSpan, ContentTitle, ContentWrapper, GooglePlayDownload, ImgTitle, ImgTitleContent, ImgTitleSectionLeft, ImgTitleText, ImgTitleVersionText, PreviewPhoneWrapper, SafeArea} from "../../components/DevPage/CommonComponent";
 import {Slide} from "react-slideshow-image";
 import imgScreenshot01 from "../../assets/devpage/calarm/screenshot_01.png";
@@ -21,6 +21,7 @@ import LoremIpsum from "react-lorem-ipsum";
 import AppHeader from "../../components/DevPage/AppHeader";
 import {getFirestoreData} from "../../utils/FirebaseData";
 import appHeader from "../../components/DevPage/AppHeader";
+import ButtonToTop from "../../components/ButtonToTop";
 
 function Calarm({darkMode, setDarkMode}: AppProps) {
     const packageName = "zone.ien.calarm";
@@ -166,7 +167,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
                 {GooglePlayDownload(packageName)}
                 <PreviewPhoneWrapper className={"title"}>
                     <Slide easing={"ease"} arrows={false}>
-                        {screenshots.map((image: string) => (
+                        {screenshots.map((image) => (
                             <div className={"each-slide-effect"}>
                                 <SlideshowImage style={{'backgroundImage': `url(${image})`}}/>
                             </div>
@@ -175,7 +176,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
                 </PreviewPhoneWrapper>
             </ImgTitle>
             <AppHeader packageName={packageName} appIcon={icCalarm} appName={appName} appDesc={appDesc} appVersion={versionName}/>
-            {contents.map((value: { category: string; title: string; content: string; screenshots: string[] }, index) => (
+            {contents.map((value, index) => (
                 <ContentWrapper>
                     <SafeArea className={index % 2 !== 0 ? "reverse" : ""}>
                         {screenshotView(value.screenshots, index % 2 !== 0)}
@@ -184,6 +185,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
                 </ContentWrapper>
             ))}
             <RecentChange changelog={changelog} />
+            <ButtonToTop />
             <Footer/>
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </DevDetailWrapper>

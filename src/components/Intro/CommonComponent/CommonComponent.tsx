@@ -202,7 +202,7 @@ export const InnerBoxWrapper = styled.div`
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
     padding: 2rem;
     border-radius: 1rem;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
     transition: scale 0.5s ease, background-color 0.5s ease;
     
     &:hover {
@@ -237,6 +237,9 @@ export const InnerTitleWrapper = styled.div`
 export const InnerContentWrapper = styled.div`
     width: calc(70% - 2rem);
     margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     @media ${({ theme }) => theme.device.mobile} {
         width: 100%;
         margin-left: 0;

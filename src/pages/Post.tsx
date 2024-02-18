@@ -3,13 +3,14 @@ import Slideshow from "../components/Main/Slideshow";
 import Sidebar from "../components/Sidebar";
 import Contact from "../components/Main/Contact";
 import Noticeboard from "../components/Main/Noticeboard";
-import mainIcon from "../assets/img_logo_typo.png";
+import mainIcon from "../assets/brand/img_logo_typo.png";
 import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
-import icTistory from "../assets/ic_tistory.svg";
+import icTistory from "../assets/icon/ic_tistory.svg";
 import React, {useState} from "react";
 import {AppProps} from "../App";
+import ButtonToTop from "../components/ButtonToTop";
 
 function Post({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -26,6 +27,7 @@ function Post({darkMode, setDarkMode}: AppProps) {
                 <ImgThumbnail src={mainIcon}/>
             </TitleWrapper>
             <Footer/>
+            <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </>
     )
@@ -37,7 +39,7 @@ const TitleWrapper = styled.div`
     margin: 0 1rem 0 1rem;
     border-radius: 1rem;
     background-color: rebeccapurple;
-    animation: Mount-animation 0.5s;
+    animation: Mount-animation 0.5s ease;
 `
 
 const Title = styled.div`
