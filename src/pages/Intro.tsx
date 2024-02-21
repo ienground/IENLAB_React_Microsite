@@ -10,8 +10,11 @@ import TechStack from "../components/Intro/TechStack";
 import Contact from "../components/Intro/Contact";
 import {Spacer} from "../components/Component";
 import ButtonToTop from "../components/ButtonToTop";
+import LastEdit from "../components/LastEdit";
+import {useLocation} from "react-router-dom";
 
 function Intro({darkMode, setDarkMode}: AppProps) {
+    const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
@@ -30,6 +33,7 @@ function Intro({darkMode, setDarkMode}: AppProps) {
             {IntroSpacer}
             <Contact />
             {IntroSpacer}
+            <LastEdit link={location.pathname} />
             <Footer />
             <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>

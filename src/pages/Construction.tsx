@@ -26,8 +26,8 @@ function Construction({darkMode, setDarkMode}: AppProps) {
                     }} style={{marginBottom: "auto", width: "auto", fontSize: "1rem", padding: "1rem", fontWeight: "bolder", transition: "none"}}>블로그로 이동</ButtonGo>
                 </BlurBackground>
             </Gallery>
-            <ButtonToTop />
             <Footer />
+            <ButtonToTop />
         </PageWrapper>
     )
 }

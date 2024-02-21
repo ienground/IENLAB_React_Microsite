@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
-import {getFirestoreData} from "../../utils/FirebaseData";
+import {getAppInfo} from "../../../utils/FirebaseData";
 import {Firestore} from "firebase/firestore";
-import icPlayStore from "../../assets/icon/ic_google_play.svg";
-import {ImgTitleVersionText} from "./CommonComponent";
-import {convertRemToPixels} from "../../utils/Utils";
+import icPlayStore from "../../../assets/icon/ic_google_play.svg";
+import {ImgTitleVersionText} from "../CommonComponent";
+import {convertRemToPixels} from "../../../utils/Utils";
 import appHeader from "./AppHeader";
 
 interface AppHeaderProp {
@@ -21,8 +21,6 @@ function AppHeader({packageName, appIcon, appName, appDesc, appVersion} : AppHea
     const appHeaderRef = useRef<HTMLDivElement | null>(null);
     const scrollListener = () => {
         let headerY = appHeaderRef.current?.getBoundingClientRect().y;
-        console.log("headerY:" + headerY);
-        console.log("value:" + convertRemToPixels(4.5));
         if (headerY) {
             if (headerY <= convertRemToPixels(4.5)) {
                 document.querySelector(".bottom-line")?.classList.add("visible-line");

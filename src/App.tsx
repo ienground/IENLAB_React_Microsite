@@ -8,6 +8,10 @@ import {BrowserRouter} from "react-router-dom";
 import AnimatedCursor from "react-animated-cursor";
 import * as LocalStorageKey from "./constant/LocalStorageKey";
 import {getBooleanWithExpiry, setWithExpiry} from "./utils/ExpireLocalStorage";
+import {initializeApp} from "firebase/app";
+import {getFirestore} from "firebase/firestore";
+import {getNoticeItem, getRecentNoticeDate} from "./utils/FirebaseData";
+import {LastEditData} from "./data/LastEditData";
 
 export interface AppProps {
     darkMode: boolean,
@@ -31,6 +35,17 @@ function App() {
     const initialDarkMode = getBooleanWithExpiry(LocalStorageKey.IS_DARK_MODE, window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     const [darkMode, setDarkMode] = useState(initialDarkMode);
     let theme = darkMode ? dark : light;
+    const firebaseConfig = {
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
+        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+    };
+    const app = initializeApp(firebaseConfig);
+    const firestore = getFirestore(app);
 
     useEffect(() => {
         let defaultMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -45,6 +60,14 @@ function App() {
             document.body.classList.remove('dark');
         }
     }, [darkMode]);
+
+    useEffect(() => {
+        const processing = async () => {
+            let recentNoticeDate = await getRecentNoticeDate(firestore);
+            LastEditData.set("/notice", [recentNoticeDate.getFullYear(), recentNoticeDate.getMonth() + 1, recentNoticeDate.getDate(), recentNoticeDate.getHours(), recentNoticeDate.getMinutes()]);
+        };
+        processing();
+    }, []);
 
     return (
         <AppWrapper theme={theme}>

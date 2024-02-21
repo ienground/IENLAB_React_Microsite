@@ -27,16 +27,24 @@ function Slideshow() {
 
     return (
         <SlideshowWrapper className={"wrapper"}>
-            <Slide prevArrow={prevButton} nextArrow={nextButton} indicators={indicators} easing={"ease"}>
+            <Slide prevArrow={prevButton} nextArrow={nextButton} indicators={indicators} easing={"ease"} duration={10000}>
                 <div className={"each-slide-effect"}>
-                    <SlideshowImage style={{'backgroundImage': `url(${images[0]})`}} />
+                    <SlideshowImage style={{'backgroundImage': `url(${images[0]})`}}>
+                        <BlurBackground darkMode={darkMode}>
+                            Welcome to ienlab.
+                        </BlurBackground>
+                    </SlideshowImage>
                 </div>
-                <div className={"each-slide-effect"}>
-                    <SlideshowImage style={{'backgroundColor': `lightskyblue`}} />
-                </div>
-                <div className={"each-slide-effect"}>
-                    <SlideshowImage style={{'backgroundColor': `maroon`}} />
-                </div>
+                {/*<div className={"each-slide-effect"}>*/}
+                {/*    <SlideshowImage style={{'backgroundColor': `lightskyblue`}}>*/}
+                {/*        */}
+                {/*    </SlideshowImage>*/}
+                {/*</div>*/}
+                {/*<div className={"each-slide-effect"}>*/}
+                {/*    <SlideshowImage style={{'backgroundColor': `maroon`}}>*/}
+                {/*        */}
+                {/*    </SlideshowImage>*/}
+                {/*</div>*/}
             </Slide>
         </SlideshowWrapper>
     );
@@ -96,7 +104,20 @@ const SlideshowImage = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     background-image: ${props => props.style?.backgroundImage};
+    
 `;
+
+const BlurBackground = styled.div<{ darkMode: boolean }>`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    animation: Blur-animation 3s infinite;
+    animation-direction: alternate;
+    align-items: center;
+    transition: background-color 0.5s ease;
+    background-color: ${(props) => props.darkMode ? "rgba(0, 0, 0, 0.3)" : "transparent" };
+`
 
 const SlideshowButton = styled.button`
     display: flex;

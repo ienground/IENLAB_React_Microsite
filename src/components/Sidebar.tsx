@@ -7,6 +7,8 @@ import {AppProps} from "../App";
 import {useLocation, useNavigate} from "react-router-dom";
 import icCalarm from "../assets/icon/ic_calarm.png";
 import icIenlab from "../assets/brand/ic_ienlab.svg";
+import imgLogoFull from "../assets/brand/img_logo_full.png";
+import {LastEditData} from "../data/LastEditData";
 
 export interface SidebarProps {
     isOpen: boolean,
@@ -37,16 +39,22 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
         navigate(dest);
     }
 
-    const divider = { icon: "", title: "", link: "", isMark: false, contents: [] };
+    const divider = { icon: "", title: "", link: "", contents: [] };
     const navItems = [
-        { icon: "home", title: "홈", link: "/", isMark: false, contents: [] },
+        { icon: "home", title: "홈", link: "/", contents: [] },
         divider,
-        { icon: "", svg: icIenlab, title: "아이엔 IENGROUND", link: "/intro", isMark: false, contents: [] },
-        { icon: "brush", title: "브랜드 아이덴티티", link: "/brand", isMark: false, contents: [] },
-        { icon: "code", title: "개발", link: "/dev", isMark: false, contents: [
-            { icon: icCalarm, title: "캘람", link: "/calarm", isMark: false },
+        { icon: "", svg: icIenlab, title: "아이엔 IENGROUND", link: "/intro", contents: [] },
+        { icon: "brush", title: "브랜드 아이덴티티", link: "/brand", contents: [] },
+        { icon: "code", title: "개발", link: "/dev", contents: [
+            { icon: icCalarm, title: "캘람", link: "/calarm" },
         ] },
     ];
+
+    const navBottomItems = [
+        { icon: "notifications", title: "공지사항", link: "/notice" },
+        { icon: "policy", title: "개인정보처리방침", link: "/privacy" },
+    ]
+
     const navDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         let parent = e.currentTarget.parentNode?.parentElement;
@@ -58,20 +66,34 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
         }
     };
 
-    const defaultVisible = (item: {icon: string, title: string, link: string, isMark: boolean, contents: {icon: string, title: string, link: string, isMark: boolean}[]}) => {
+    const defaultVisible = (item: {icon: string, title: string, link: string, contents: {icon: string, title: string, link: string}[]}) => {
         let result = false;
         if (item.link === location.pathname) {
             result = true;
         }
         for (let content of item.contents) {
             if (content.link === location.pathname) {
-                console.log(item.title, content.link, location.pathname, (content.link === location.pathname ? "true" : "false"));
                 result = true;
                 break;
             }
         }
         return result;
     };
+
+    const checkMark = (item: {icon: string, title: string, link: string}) => {
+        const date = new Date();
+        const currentDate = new Date();
+        const data = LastEditData.get(item.link);
+
+        if (data !== undefined) {
+            date.setFullYear(data[0], data[1] - 1, data[2]);
+            date.setHours(data[3], data[4], 0);
+        }
+
+        let diff = Math.abs(currentDate.getTime() - date.getTime());
+
+        return data !== undefined && Math.ceil(diff / (1000 * 3600 * 24)) <= 7;
+    }
 
     return (
         <SidebarBackground onClick={toggleSidebar} className={isOpen ? 'open' : ''}>
@@ -91,28 +113,40 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
                         (item.icon === "" && item.title === "" && item.link === "") ?
                             <NavDivider /> :
                             <NavItemWrapper className={defaultVisible(item) ? "visible" : ""}>
-                                <NavItem onClick={() => closeNavigate(item.link)} className={location.pathname === item.link ? "selected" : ""}>
+                                <NavItem onClick={() => closeNavigate(item.link)} className={item.link !== "/" && location.pathname.includes(item.link) ? "selected" : (location.pathname === item.link ? "selected" : "")}>
                                     {item.icon !== "" ? <Icon baseClassName={"material-icons-round"}>{item.icon}</Icon> : <></>}
                                     {item.svg !== undefined ? <img src={item.svg} className={"icon"}/> : <></>}
                                     <div className={"title"}>{item.title}</div>
-                                    {item.isMark ? <div className={"mark"} /> : <></> }
+                                    {checkMark(item) ? <div className={"mark"} /> : <></> }
                                     {item.contents.length !== 0 ? <button onClick={navDropdown}><Icon baseClassName={"material-icons-round"}>arrow_drop_down</Icon></button> : <></> }
                                 </NavItem>
                                 {item.contents.length !== 0 ? <NavSubItemWrapper className={"sub-items"}>
                                     {item.contents.map((content) => (
-                                        <NavItem onClick={() => closeNavigate(content.link)} className={location.pathname === content.link ? "selected" : ""}>
+                                        <NavItem onClick={() => closeNavigate(content.link)} className={location.pathname.includes(content.link) ? "selected" : ""}>
                                             <img src={content.icon} />
                                             <div className={"title"}>{content.title}</div>
-                                            {content.isMark ? <div className={"mark"} /> : <></> }
+                                            {checkMark(content) ? <div className={"mark"} /> : <></> }
                                         </NavItem>
                                     ))}
                                 </NavSubItemWrapper> : <></>}
                             </NavItemWrapper>
                     ))}
                 </NavList>
-
-                {/*<LoremIpsum p={10} />*/}
-
+                <NavDivider className={"bottom"}/>
+                <NavList className={"bottom"}>
+                    {navBottomItems.map((item) => (
+                        (item.icon === "" && item.title === "" && item.link === "") ?
+                            <NavDivider /> :
+                            <NavItemWrapper>
+                                <NavItem onClick={() => closeNavigate(item.link)} className={location.pathname.includes(item.link) ? "selected" : ""}>
+                                    {item.icon !== "" ? <Icon baseClassName={"material-icons-round"}>{item.icon}</Icon> : <></>}
+                                    <div className={"title"}>{item.title}</div>
+                                    {checkMark(item) ? <div className={"mark"} /> : <></> }
+                                </NavItem>
+                            </NavItemWrapper>
+                    ))}
+                </NavList>
+                <img src={imgLogoFull} />
             </SidebarWrapper>
         </SidebarBackground>
     );
@@ -144,13 +178,24 @@ const SidebarWrapper = styled.div`
     top: 0;
     padding: 0.5rem 0;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     border-radius: 0 1rem 1rem 0;
-    background-color: ${props => props.theme.colors.colorBackground};
+    background-color: ${props => props.theme.colors.colorSurface};
     transition: all 0.5s ease;
-
     &.open {
         left: 0;
+    }
+    
+    & > img {
+        width: 40%;
+        margin: 1rem auto 1rem auto;
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        width: 50%;
+        left: -50%;
     }
 
     @media ${({ theme }) => theme.device.mobile} {
@@ -197,13 +242,21 @@ const NavList = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
+
+    &.bottom {
+        margin-top: 0;
+    }
 `;
 
 const NavDivider = styled.div`
     margin: 0.5rem 0;
     width: 100%;
     height: 1px;
-    background: ${props => props.theme.colors.colorOnSurface};
+    background-color: ${props => props.theme.colors.colorOnSurface};
+    transition: background-color 0.5s ease;
+    &.bottom {
+        margin-top: auto;
+    }
 `
 
 const NavItemWrapper = styled.div`
@@ -294,6 +347,7 @@ const NavItem = styled.button`
     }
 
     & > span {
+        transition: color 0.5s ease;
         margin-left: 0.5rem;
     }
 
@@ -320,7 +374,10 @@ const NavItem = styled.button`
         padding: 0;
         align-items: center;
         transition: rotate 0.5s ease;
-
+        
+        & > span {
+            transition: color 0.5s ease;
+        }
     }
 `
 

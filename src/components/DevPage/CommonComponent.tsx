@@ -44,6 +44,25 @@ export const ImgTitleText = styled.div`
     font-size: 4vmax;
     display: flex;
     flex-direction: row;
+    
+    .version-test-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        
+        & > div {
+            grid-row: 1;
+            grid-column: 1;
+        }
+
+        & > .skeleton {
+            z-index: 500;
+        }
+
+        & > .data {
+            z-index: 501;
+        }
+    }
 `
 
 export const ImgTitleContent = styled.span`
@@ -52,6 +71,8 @@ export const ImgTitleContent = styled.span`
 `
 
 export const ImgTitleVersionText = styled.span`
+    grid-column: 1;
+    grid-row: 1;
     align-self: center;
     height: fit-content;
     padding: 0.5rem;
@@ -143,7 +164,10 @@ export const PreviewPhoneWrapper = styled.div`
     }
 `
 
-export const GooglePlayDownload = (packageName: string) => {
+interface PackageProps {
+    packageName: string
+}
+export function GooglePlayDownload({packageName}: PackageProps) {
     return (
         <ImgTitleDownloadButton href={'https://play.google.com/store/apps/details?id=' + packageName + '&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'}>
             <img style={{width: "100%"}} alt='Get it on Google Play'

@@ -12,10 +12,12 @@ import logoColor from "../assets/branding/2024/logo_color_transparent.png";
 import BrandSystem from "../components/Branding/BrandSystem";
 import ApplicationUsages from "../components/Branding/ApplicationUsages";
 import ButtonToTop from "../components/ButtonToTop";
+import LastEdit from "../components/LastEdit";
+import {useLocation} from "react-router-dom";
 
 function Branding({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+    const location = useLocation();
     return (
         <BrandingWrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
@@ -25,6 +27,7 @@ function Branding({darkMode, setDarkMode}: AppProps) {
             <DesignHeader icon={imgLogoFull} shortIcon={imgLogoShort} title={"Brand Identity"} />
             <BrandSystem />
             <ApplicationUsages />
+            <LastEdit link={location.pathname} />
             <Footer />
             <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>

@@ -12,8 +12,8 @@ function Branding2023({darkMode, setDarkMode}: AppProps) {
     return (
         <BrandingWrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-            <ButtonToTop />
             <Footer />
+            <ButtonToTop />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </BrandingWrapper>
     )

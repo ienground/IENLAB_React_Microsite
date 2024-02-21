@@ -1,34 +1,24 @@
 import styled, {useTheme} from "styled-components";
 import {ContentTitle, ContentWrapper, TextTitle} from "./CommonComponent";
-import {Fade, Slide} from "react-slideshow-image";
-import React from "react";
+import {Slide} from "react-slideshow-image";
+import React, {useEffect, useState} from "react";
 import brandingBlack from "../../assets/branding/2024/branding_black.png";
 import brandingColor from "../../assets/branding/2024/branding_color.png";
 import brandingWhite from "../../assets/branding/2024/branding_white.png";
 import brandingBlueprint from "../../assets/branding/2024/branding_blueprint.png";
 import pattern from "../../assets/brand/pattern.png";
 import {Spacer} from "../Component";
-const luminance = (r: number, g: number, b: number) => {
-    let a = [r, g, b].map((v) => {
-        v /= 255;
-        return (v <= 0.03928) ? (v / 12.92) : (Math.pow( (v + 0.055) / 1.055, 2.4 ));
-    });
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-};
-const checkBlackText = (color: {red: number, green: number, blue: number}) => {
-    const colorLuminance = luminance(color.red, color.green, color.blue);
-    const blackLuminance = luminance(0, 0, 0);
-    const ratio = colorLuminance > blackLuminance
-        ? ((blackLuminance + 0.05) / (colorLuminance + 0.05))
-        : ((colorLuminance + 0.05) / (blackLuminance + 0.05));
-    console.log(ratio);
-    return (ratio < 1 / 3);
-};
+import ColorPalette from "./BrandSystem/ColorPalette";
+import {Fade} from "@mui/material";
+import {sleep} from "../../utils/Utils";
 
 function BrandSystem() {
     const theme = useTheme();
     const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
-    const indicators = (index?: number) => (<SlideshowIndicators />);
+    // const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
+    const [indicatorIndex, setIndicatorIndex] = useState(0);
+    let checkValid = 0;
+    const indicators = (index?: number) => (<SlideshowIndicators className={index === indicatorIndex ? "active" : ""}/>);
     const brandColorInfo = [
         {
             title: "Charming Pink",
@@ -55,31 +45,41 @@ function BrandSystem() {
             code: theme.colors.brand.blue
         },
     ];
+    const previewData = {
+        "weight" : "Thin |ExtraLight |Light |Regular |Medium |SemiBold |Bold |ExtraBold |Black",
+        "english" : "The |Quick |Brown |Fox |Jumps |Over |The |Lazy |Dog",
+        "korean" : "다람쥐 |헌 |쳇바퀴에 |타고파 |정 참판 |양반댁 |규수 |큰 교자 타고 |혼례 치른 날"
+    }
+
+    useEffect(() => {
+        (async () => {
+            await sleep(5);
+            setIndicatorIndex((indicatorIndex + 1) % brandingSlide.length);
+        })()
+    }, [indicatorIndex]);
 
     return (
         <Wrapper>
             <TextTitle><div className={"number"}><div /><span>01</span></div>Brand Elements & System</TextTitle>
             <ContentWrapper>
                 <SlideshowWrapper>
-                    <Slide indicators={indicators} easing={"ease"} >
-                        {brandingSlide.map((source) => (
-                            <div className={"each-slide-effect"}>
+                    <div className={"fade-wrapper"}>
+                        {brandingSlide.map((source, index) => (
+                            <Fade in={indicatorIndex === index} >
                                 <SlideshowImage style={{'backgroundImage': `url(${source})`}}/>
-                            </div>
+                            </Fade>
                         ))}
-                    </Slide>
+                    </div>
+                    <ul className={"indicators"}>
+                        {brandingSlide.map((source, index) => (
+                            indicators(index)
+                        ))}
+                    </ul>
                 </SlideshowWrapper>
                 <ContentTitle>Color Palettes</ContentTitle>
                 <ColorPaletteWrapper>
                     {brandColorInfo.map((color) => (
-                        <ColorPalette style={{backgroundColor: color.code}} color={color.rgb}>
-                            <div className={"title"}>{color.title}</div>
-                            <div className={"colors"}>
-                                <span><span className={"color"}>R</span>{color.rgb.red} <span className={"color"}>G</span>{color.rgb.green} <span className={"color"}>B</span>{color.rgb.blue}</span><br />
-                                <span><span className={"color"}>C</span>{color.cmyk.cyan} <span className={"color"}>M</span>{color.cmyk.magenta} <span className={"color"}>Y</span>{color.cmyk.yellow} <span className={"color"}>K</span>{color.cmyk.black}</span>
-                            </div>
-                            <div className={"code"}>{color.code}</div>
-                        </ColorPalette>
+                        <ColorPalette color={color} />
                     ))}
                 </ColorPaletteWrapper>
                 <ContentTitle>Patterns</ContentTitle>
@@ -89,51 +89,30 @@ function BrandSystem() {
                     <div className={"left"}>
                         <div className={"title"}>Pretendard</div>
                         <div className={"weight"}>
-                            <span style={{fontWeight: "100"}}>Thin </span>
-                            <span style={{fontWeight: "200"}}>ExtraLight </span>
-                            <span style={{fontWeight: "300"}}>Light </span>
-                            <span style={{fontWeight: "400"}}>Regular </span>
-                            <span style={{fontWeight: "500"}}>Medium </span>
-                            <span style={{fontWeight: "600"}}>SemiBold </span>
-                            <span style={{fontWeight: "700"}}>Bold </span>
-                            <span style={{fontWeight: "800"}}>ExtraBold </span>
-                            <span style={{fontWeight: "900"}}>Black</span>
+                            {previewData.weight.split("|").map((word, index) => (
+                                <span style={{fontWeight: 100 * (index + 1)}}>{word}</span>
+                            ))}
                         </div>
                         <div className={"preview"}>Aa</div>
                     </div>
                     <div className={"right"}>
                         <div className={"preview"}>
-                            <span style={{fontWeight: "100"}}>The </span>
-                            <span style={{fontWeight: "200"}}>Quick </span>
-                            <span style={{fontWeight: "300"}}>Brown </span>
-                            <span style={{fontWeight: "400"}}>Fox </span>
-                            <span style={{fontWeight: "500"}}>Jumps </span>
-                            <span style={{fontWeight: "600"}}>Over </span>
-                            <span style={{fontWeight: "700"}}>The </span>
-                            <span style={{fontWeight: "800"}}>Lazy </span>
-                            <span style={{fontWeight: "900"}}>Dog </span>
+                            {previewData.english.split("|").map((word, index) => (
+                                <span style={{fontWeight: 100 * (index + 1)}}>{word}</span>
+                            ))}
                         </div>
                         <Spacer orientation={"vertical"} size={"1rem"} />
                         <div className={"preview"}>
-                            <span style={{fontWeight: "100"}}>다람쥐 </span>
-                            <span style={{fontWeight: "200"}}>헌 </span>
-                            <span style={{fontWeight: "300"}}>쳇바퀴에 </span>
-                            <span style={{fontWeight: "400"}}>타고파</span><br/>
-                            <span style={{fontWeight: "500"}}>정 참판 </span>
-                            <span style={{fontWeight: "600"}}>양반댁 </span>
-                            <span style={{fontWeight: "700"}}>규수 </span>
-                            <span style={{fontWeight: "800"}}>큰 교자 타고 </span>
-                            <span style={{fontWeight: "900"}}>혼례 치른 날 </span>
+                            {previewData.korean.split("|").map((word, index) => (
+                                <>
+                                    <span style={{fontWeight: 100 * (index + 1)}}>{word}</span>
+                                    {index === 5 ? <br /> : <></>}
+                                </>
+                            ))}
                         </div>
-                        <div className={"alphabat"}>
-                            AaBbCcDdEeFfGgHhIiJjKkLlMnNnOoPpQqRrSsTtUuVvWwXxYyZz
-                        </div>
-                        <div className={"number"}>
-                            0123456789
-                        </div>
-                        <div className={"symbol"}>
-                            !@#$%^&*()_+?,.:;
-                        </div>
+                        <div className={"alphabat"}>AaBbCcDdEeFfGgHhIiJjKkLlMnNnOoPpQqRrSsTtUuVvWwXxYyZz</div>
+                        <div className={"number"}>0123456789</div>
+                        <div className={"symbol"}>!@#$%^&*()_+?,.:;</div>
                     </div>
                 </TypefaceWrapper>
             </ContentWrapper>
@@ -155,36 +134,56 @@ const Wrapper = styled.div`
 `
 
 const SlideshowWrapper = styled.div`
+    width: 100%;
+    aspect-ratio: 16 / 9;
     display: flex;
     border-radius: 1rem;
     overflow: hidden;
+    position: relative;
     animation: Mount-animation 0.5s ease;
-
-    & > div {
-        display: flex;
-        flex-direction: row;
+    
+    & > div.fade-wrapper {
         width: 100%;
-        overflow: hidden;
-        align-items: end;
-        position: relative;
-    }
-
-    .react-slideshow-container {
-        width: 100%;
-
-        & > button {
-            visibility: hidden;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
+        position: absolute;
+        z-index: 500;
+        
+        & > div {
+            grid-column: 1;
+            grid-row: 1;
+            width: 100%;
         }
     }
 
+    //& > div {
+    //    display: flex;
+    //    flex-direction: row;
+    //    width: 100%;
+    //    overflow: hidden;
+    //    align-items: end;
+    //    position: relative;
+    //}
+    //
+    //.react-slideshow-container {
+    //    width: 100%;
+    //
+    //    & > button {
+    //        visibility: hidden;
+    //    }
+    //}
+
     ul.indicators {
         height: 2rem;
+        display: flex;
         position: absolute;
         margin-bottom: 2rem;
         align-items: center;
         left: 50%;
+        bottom: 0;
         transform: translate(-50%, 0);
-        z-index: 500;
+        z-index: 600;
 
         & > button {
             margin-right: 0.5rem;
@@ -198,14 +197,13 @@ const SlideshowWrapper = styled.div`
         margin-top: 1rem;
         
         ul.indicators {
-            margin-bottom: 1rem;
+            margin-bottom: 0;
         }
     }
 `
 const SlideshowImage = styled.div`
     aspect-ratio: 16 / 9;
     width: 100%;
-    //height: 20rem; //todo
     transition: background-image 0.5s ease;
     background-size: contain;
     background-position: center;
@@ -240,45 +238,6 @@ const ColorPaletteWrapper = styled.div`
     
     @media ${({ theme }) => theme.device.tablet} {
         grid-template-columns: 1fr;
-    }
-`
-
-const ColorPalette = styled.div<{color: {red: number, green: number, blue: number}}>`
-    flex: 0.25;
-    aspect-ratio: 2 / 3;
-    border-radius: 1rem;
-    padding: 2rem;
-    transition: scale 0.5s ease;
-    display: flex;
-    flex-direction: column;
-    color: ${props => checkBlackText(props.color) ? "black" : "white"};
-
-    @media ${({ theme }) => theme.device.pc} {
-        aspect-ratio: 3 / 2;
-    }
-    
-    &:hover {
-        scale: 1.05;
-    }
-    
-    & > .title {
-        font-weight: 700;
-        font-size: xx-large;
-    }
-     
-    & > .colors {
-        margin-top: 1rem;
-        margin-bottom: auto;
-        
-        & > span > span.color {
-            font-weight: 700;
-        }
-    }
-    
-    & > .code {
-        font-weight: 900;
-        font-size: xx-large;
-        text-align: end;
     }
 `
 

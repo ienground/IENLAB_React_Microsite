@@ -68,9 +68,9 @@ button {
 
 @keyframes Blur-animation {
   from {
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(0px);
   }
   to {
-    backdrop-filter: blur(50px);
+    backdrop-filter: blur(30px);
   }
 }

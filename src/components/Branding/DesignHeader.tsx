@@ -1,6 +1,6 @@
 import styled, {useTheme} from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
-import {getFirestoreData} from "../../utils/FirebaseData";
+import {getAppInfo} from "../../utils/FirebaseData";
 import {Firestore} from "firebase/firestore";
 import icPlayStore from "../../assets/icon/ic_google_play.svg";
 // import {ImgTitleVersionText} from "./CommonComponent";

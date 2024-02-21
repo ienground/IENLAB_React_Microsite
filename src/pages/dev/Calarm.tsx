@@ -11,25 +11,25 @@ import {ContentContent, ContentScreenshot, ContentSpan, ContentTitle, ContentWra
 import {Slide} from "react-slideshow-image";
 import imgScreenshot01 from "../../assets/devpage/calarm/screenshot_01.png";
 import imgScreenshot02 from "../../assets/devpage/calarm/screenshot_02.png";
-import imgPreviewPhone2 from "../../assets/frame_test.png";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getFirestore, getDoc, getDocs, doc, collection, query, where, DocumentData, Firestore } from "firebase/firestore";
 import RecentChange from "../../components/DevPage/RecentChange";
-import TechStack from "../../components/Intro/TechStack";
-import LoremIpsum from "react-lorem-ipsum";
-import AppHeader from "../../components/DevPage/AppHeader";
-import {getFirestoreData} from "../../utils/FirebaseData";
-import appHeader from "../../components/DevPage/AppHeader";
+import AppHeader from "../../components/DevPage/Detail/AppHeader";
+import {getAppInfo} from "../../utils/FirebaseData";
 import ButtonToTop from "../../components/ButtonToTop";
+import LastEdit from "../../components/LastEdit";
+import {useLocation} from "react-router-dom";
+import ScreenshotView from "../../components/DevPage/Detail/ScreenshotView";
+import ContentView from "../../components/DevPage/Detail/ContentView";
+import {Fade, Skeleton} from "@mui/material";
 
 function Calarm({darkMode, setDarkMode}: AppProps) {
+    const location = useLocation();
     const packageName = "zone.ien.calarm";
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [versionName, setVersionName] = useState("-");
     const [changelog, setChangelog] = useState("-");
-    const [appName, setAppName] = useState("-");
-    const [appDesc, setAppDesc] = useState("-");
+    const [isPrepared, setIsPrepared] = useState(false);
     const screenshots = [
         imgScreenshot01,
         imgScreenshot01,
@@ -60,16 +60,12 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
             threshold: 0.5
         });
         const processing = async () => {
-            let result = await getFirestoreData(firestore, packageName);
+            let result = await getAppInfo(firestore, packageName);
             let versionCode = -1;
             let tempVersionName = "-";
             let tempChangelog = "-";
             result.forEach((data, code) => {
-                if (code === "app_name") {
-                    setAppName(data.toString());
-                } else if (code === "app_desc") {
-                    setAppDesc(data.toString());
-                } else if (versionCode < Number(code)) {
+                if (versionCode < Number(code)) {
                     versionCode = Number(code);
                     tempVersionName = data.versionName;
                     tempChangelog = data.changelog;
@@ -81,6 +77,8 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
         processing();
     }, []);
 
+    const appName = "캘람";
+    const appDesc = "내 일정을 아는 똑똑한 알람";
     const contents = [
         {
             category: "알람",
@@ -129,42 +127,28 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
         },
     ]
 
-    let screenshotView = (screenshots: string[], isReverse: boolean) => {
-        const result = [];
-        for (let i = 0; i < screenshots.length; i++) {
-            result.push(
-                <PreviewPhoneWrapper>
-                    <div style={{backgroundImage: `url(${screenshots[i]})`}} />
-                </PreviewPhoneWrapper>
-            );
-        }
-
-        return (
-            <ContentScreenshot className={isReverse ? "reverse" : ""}>
-                {result}
-            </ContentScreenshot>
-        );
-    }
-
-    let contentView = (category: string, title: string, content: string) => {
-        return (
-            <ContentSpan titleColor={"#FF4081"}>
-                <span className={"category"}>{category}</span>
-                <span className={"title"}>{title}</span>
-                <span className={"content"}>{content}</span>
-            </ContentSpan>
-        );
-    }
-
     return (
         <DevDetailWrapper>
             <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true}/>
             <ImgTitle style={{backgroundImage: darkMode ? patternBlack : imgCalarmPattern}}>
                 <ImgTitleSectionLeft>
-                    <ImgTitleText>{appName}<ImgTitleVersionText>{versionName}</ImgTitleVersionText></ImgTitleText>
+                    <ImgTitleText>{appName}
+                        <div className="version-test-wrapper">
+                            <Fade className={"skeleton"} in={versionName === "-"} addEndListener={() => { setIsPrepared(true); }}>
+                                <ImgTitleVersionText>
+                                    <Skeleton width={40}/>
+                                </ImgTitleVersionText>
+                            </Fade>
+                            <Fade className={"data"} in={isPrepared && versionName !== "-"}>
+                                <ImgTitleVersionText>
+                                    {versionName}
+                                </ImgTitleVersionText>
+                            </Fade>
+                        </div>
+                    </ImgTitleText>
                     <ImgTitleContent>{appDesc}</ImgTitleContent>
                 </ImgTitleSectionLeft>
-                {GooglePlayDownload(packageName)}
+                <GooglePlayDownload packageName={packageName} />
                 <PreviewPhoneWrapper className={"title"}>
                     <Slide easing={"ease"} arrows={false}>
                         {screenshots.map((image) => (
@@ -179,14 +163,15 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
             {contents.map((value, index) => (
                 <ContentWrapper>
                     <SafeArea className={index % 2 !== 0 ? "reverse" : ""}>
-                        {screenshotView(value.screenshots, index % 2 !== 0)}
-                        {contentView(value.category, value.title, value.content)}
+                        <ScreenshotView screenshots={value.screenshots} isReverse={index % 2 !== 0} />
+                        <ContentView category={value.category} title={value.title} content={value.content} />
                     </SafeArea>
                 </ContentWrapper>
             ))}
             <RecentChange changelog={changelog} />
+            <LastEdit link={location.pathname} />
+            <Footer />
             <ButtonToTop />
-            <Footer/>
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
         </DevDetailWrapper>
     );

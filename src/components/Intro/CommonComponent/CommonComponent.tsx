@@ -203,10 +203,11 @@ export const InnerBoxWrapper = styled.div`
     padding: 2rem;
     border-radius: 1rem;
     animation: Mount-animation 0.5s ease;
-    transition: scale 0.5s ease, background-color 0.5s ease;
+    transition: background-color 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
     
     &:hover {
-        scale: 1.01;
+        transform: translateY(-0.5rem);
+        box-shadow: 0 0 40px -0.5rem black;
     }
 
     @media ${({ theme }) => theme.device.mobile} {

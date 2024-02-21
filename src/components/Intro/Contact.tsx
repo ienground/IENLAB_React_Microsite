@@ -16,7 +16,6 @@ import icNaverBlog from "../../assets/icon/ic_naver_blog.svg"
 import icTistory from "../../assets/icon/ic_tistory.svg"
 import icBehance from "../../assets/icon/ic_behance.svg"
 import Ripples from "react-ripples";
-import icAppCalarm from "../../assets/icon/ic_app_calarm.png";
 
 function Contact() {
     const form = useRef(null)
@@ -30,6 +29,15 @@ function Contact() {
     const [message, setMessage] = useState("");
     const [sendError, setSendError] = useState(false);
 
+    const contactData = [
+        { icon: icCall, title: "전화", content: "010-4815-7296", link: "tel:01048157296" },
+        { icon: icMail, title: "메일", content: "my@ien.zone", link: "mailto:my@ien.zone"},
+        { icon: icGitHub, title: "GitHub", content: "github.com/ienground", link: "https://github.com/ienground" },
+        { icon: icBehance, title: "Behance", content: "behance.net/ericanorhee", link: "https://behance.net/ericanorhee" },
+        { icon: icTistory, title: "티스토리", content: "blog.ien.zone", link: "https://blog.ien.zone" },
+        { icon: icInstagram, title: "Instagram", content: "@ienlab", link: "https://www.instagram.com/ienlab" },
+        { icon: icFacebook, title: "Facebook", content: "@ienlab", link: "https://fb.com/ienlab" },
+    ]
     const sendEmail = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -39,13 +47,11 @@ function Contact() {
             // @ts-ignore
             emailjs.sendForm(process.env.REACT_APP_EMAILJS_SERVICE_ID, process.env.REACT_APP_EMAILJS_TEMPLATE_ID, form.current, process.env.REACT_APP_EMAILJS_PUBLIC_KEY)
                 .then((result) => {
-                    console.log(result.text);
                     setName("");
                     setEmail("");
                     setTitle("");
                     setMessage("");
                 }, (error) => {
-                    console.log(error.text);
                     setSendError(true);
                 })
                 .finally(() => {
@@ -73,48 +79,14 @@ function Contact() {
                         <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>Mail</TextContentTitle>
                     </InnerTitleWrapper>
                     <GridContentWrapper>
-                        <InnerBoxWrapper onClick={() => {}}>
-                            <ImgIcon src={icCall} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>전화</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>010-4815-7296</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icMail} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>메일</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>my@ien.zone</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icGitHub} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>GitHub</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icBehance} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Behance</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icTistory} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>블로그</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icInstagram} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Instagram</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
-                        <InnerBoxWrapper>
-                            <ImgIcon src={icFacebook} />
-                            <Spacer orientation={"vertical"} size={"1rem"} />
-                            <TextContentTitle className={"black background"}>Facebook</TextContentTitle><br />
-                            <TextContentContent fontWeight={"normal"} className={"black medium"}>내 일정을 아는 똑똑한 알람</TextContentContent>
-                        </InnerBoxWrapper>
+                        {contactData.map((contact) => (
+                            <InnerBoxWrapper onClick={() => { window.location.href=contact.link }}>
+                                <ImgIcon src={contact.icon} />
+                                <Spacer orientation={"vertical"} size={"1rem"} />
+                                <TextContentTitle className={"black background"}>{contact.title}</TextContentTitle><br />
+                                <TextContentContent fontWeight={"normal"} className={"black medium"}>{contact.content}</TextContentContent>
+                            </InnerBoxWrapper>
+                        ))}
                     </GridContentWrapper>
                 </InnerWrapper>
                 <InnerWrapper>
@@ -311,13 +283,11 @@ export const GridContentWrapper = styled.div`
     margin-left: 2rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 2rem;
-    row-gap: 2rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
 
-    @media ${({ theme }) => theme.device.tablet} {
+    @media ${({ theme }) => theme.device.pc} {
         grid-template-columns: 1fr;
-        column-gap: 1rem;
-        row-gap: 1rem;
     }
     
     @media ${({ theme }) => theme.device.mobile} {

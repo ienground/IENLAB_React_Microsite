@@ -11,6 +11,7 @@ import icHtml from "../../assets/icon/ic_html.svg";
 import icTypescript from "../../assets/icon/ic_typescript.svg";
 import icCss from "../../assets/icon/ic_css.svg";
 import {Spacer} from "../Component";
+import Item from "./TechStack/Item";
 
 function TechStack() {
     const techStackList = [
@@ -71,14 +72,7 @@ function TechStack() {
                         </InnerTitleWrapper>
                         <InnerContentWrapper>
                             {category.content.map((content) => (
-                                <InnerBoxWrapper>
-                                    {content.icons.map((icon) => (
-                                        <ImgIcon src={icon} style={{marginRight: "1rem"}} />
-                                    ))}
-                                    <Spacer orientation={"vertical"} size={"1rem"} />
-                                    <TextContentTitle className={"black background"}>{content.title}</TextContentTitle><br />
-                                    <TextContentContent fontWeight={"normal"} className={"black medium"}>{content.content}</TextContentContent>
-                                </InnerBoxWrapper>
+                                <Item item={content} />
                             ))}
                         </InnerContentWrapper>
                     </InnerWrapper>

@@ -9,11 +9,12 @@ import React from "react";
 function Footer() {
     const theme = useTheme();
     const darkMode = theme.name === "dark";
+    const date = new Date();
 
     return (
         <FooterWrapper>
             <AuthorInfoWrapper>
-                <Text>Copyright © 2024 ienlab. 모든 권리 보유.</Text>
+                <Text>Copyright © 2014-{date.getFullYear()} ienlab. 모든 권리 보유.</Text>
             </AuthorInfoWrapper>
             <Image src={darkMode ? imgLogoFullWhite : imgLogoFull}/>
         </FooterWrapper>
@@ -40,6 +41,7 @@ const FooterWrapper = styled.div`
 
 const Text = styled.div`
     margin-left: 1rem;
+    transition: background-color 0.5s ease, color 0.5s ease;
     @media ${({ theme }) => theme.device.mobile} {
         margin: 0;
         font-size: small;
@@ -47,12 +49,6 @@ const Text = styled.div`
 `
 
 const AuthorInfoWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`
-
-const TistoryInfoWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -1,6 +1,6 @@
 {
   "name": "ienlab_react_microsite",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "homepage": "https://www.ien.zone",
   "private": true,
   "dependencies": {
@@ -36,10 +36,13 @@
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-lorem-ipsum": "^1.4.10",
+    "react-markdown": "^9.0.1",
     "react-ripples": "^2.2.1",
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.3.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^4.0.0",
     "styled-components": "^6.1.6",
     "styled-reset": "^4.5.2",
     "typescript": "^4.9.5",

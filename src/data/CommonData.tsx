@@ -1,5 +1,5 @@
 import icAndroid from "../assets/icon/ic_android.svg";
-import icAppCalarm from "../assets/icon/ic_app_calarm.png";
+import icCalarm from "../assets/icon/ic_calarm.png";
 import backgroundCalarm from "../assets/background_calarm.png";
 export const appList = [
     {
@@ -7,7 +7,7 @@ export const appList = [
         icon: icAndroid,
         content: [
             {
-                icon: icAppCalarm,
+                icon: icCalarm,
                 title: "캘람",
                 content: "내 일정을 아는 똑똑한 알람",
                 background: backgroundCalarm,
