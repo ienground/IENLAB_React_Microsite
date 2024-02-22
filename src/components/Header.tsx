@@ -89,7 +89,7 @@ function Header({isOpen, setIsOpen, className, isAppHeaderAvailable}: Props) {
                     {/*<NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList onClick={toggleSearchbar}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>search</Icon></NavIconList></Ripples></NavIconListWrapper>*/}
                     {/*{Searchbar}*/}
                 </NavIcons>
-                <MainLogo onClick={ () => navigate("/") } style={navBg ? {backgroundImage: mainIconWhite} : {backgroundImage: mainIcon}}/>
+                <MainLogo onClick={ () => navigate("/") } style={navBg ? {backgroundImage: `url(${mainIconWhite})`} : {backgroundImage: `url(${mainIcon})`}}/>
                 <NavIcons style={{justifyContent: "end"}} className={"end"}>
                     <NavIconListWrapper><Ripples placeholder={"Tistory"}><NavIconList href={"https://blog.ien.zone"}><CustomIcon src={icTistory} style={customIconStyle}/></NavIconList></Ripples></NavIconListWrapper>
                     <NavIconListWrapper><Ripples placeholder={"Instagram"}><NavIconList href={"https://www.instagram.com/ienlab"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></NavIconList></Ripples></NavIconListWrapper>
@@ -128,7 +128,6 @@ const MainLogo = styled.button`
     background-position: center;
     background-repeat: no-repeat;
     background-color: transparent;
-    background-image: url(${props => props.style?.backgroundImage || ''});
 
     @media ${({ theme }) => theme.device.mobile} {
         width: 60%;

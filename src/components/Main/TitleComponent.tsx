@@ -17,20 +17,32 @@ export const ButtonGo = styled.button`
 export const TextDate = styled.div`
     margin-right: auto;
     margin-top: auto;
-    margin-bottom: 1rem;
     padding: 0.5rem;
     background-color: black;
     color: white;
+
+    @media ${({ theme }) => theme.device.tablet} {
+        font-size: small;
+    }
 `
-export const TextTitle = styled.span`
-    display: inline-block;
-    font-weight: bold;
-    font-size: xx-large;
-    background-color: black;
-    line-break: auto;
-    color: white;
-    padding: 0.5rem;
+export const TextTitle = styled.h1`
     margin-right: auto;
+    
+    & > span {
+        padding: 0.5rem;
+        font-weight: bold;
+        font-size: xx-large;
+        word-break: keep-all;
+        line-height: 2;
+        background-color: black;
+        color: white;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+
+        @media ${({ theme }) => theme.device.tablet} {
+            font-size: large;
+        }
+    }
 `
 
 export const TitleButtonWrapper = styled.div`

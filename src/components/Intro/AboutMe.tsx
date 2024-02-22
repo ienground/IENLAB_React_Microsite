@@ -25,7 +25,7 @@ function AboutMe() {
                         <Ahref href={"mailto:my@ien.zone"}><TextContentContent className={"black x-large"} fontWeight={"600"}>my@ien.zone</TextContentContent></Ahref><br />
                     </InnerTitleWrapper>
                     <InnerContentWrapper>
-                        <TextContentTitle>안녕하세요👋<br /><span className={"black background"}>아이엔 IENGROUND</span>입니다.</TextContentTitle><br />
+                        <TextContentTitle>안녕하세요👋<br /><span className={"black background"}>아이엔 IENGROUND</span> 입니다.</TextContentTitle><br />
                         <TextContentContent fontWeight={"normal"} className={"xx-large"}><span className={"black bold"}>저</span>와 <span className={"black bold"}>다른 사람</span>이 <span className={"black bold"}>필요한 것</span>에 관심을 가지고 <span className={"red bold underline"}>만드는 것</span>을 좋아합니다.<br />
                             <span className={"red bold underline"}>간단한 것이 최고</span>라는 마음 아래, 생활 속 불편함을 해결하기 위한 다양한 시도를 하고 있습니다.
                         </TextContentContent>

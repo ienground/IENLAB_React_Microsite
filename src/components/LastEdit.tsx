@@ -31,6 +31,10 @@ const LastEditWrapper = styled.div`
     margin: 1rem;
     font-style: italic;
     text-align: end;
+
+    @media ${({ theme }) => theme.device.mobile} {
+        font-size: x-small;
+    }
 `
 
 export default LastEdit;

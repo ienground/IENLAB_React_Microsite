@@ -104,19 +104,13 @@ const ContentWrapper = styled.div`
     margin: 0 1rem 0 1rem;
     animation: Mount-animation 0.5s ease;
     align-items: start;
-
-    @media ${({theme}) => theme.device.mobile} {
-        flex-direction: column;
-        margin: 1rem 1rem 0 1rem;
-    }
 `
 
 const AreaTitle = styled.div<{backgroundImage: string}>`
-    width: calc(100% - 2rem);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
     aspect-ratio: 32 / 9;
     border-radius: 1rem;
     background-size: cover;
@@ -140,16 +134,23 @@ const AreaTitle = styled.div<{backgroundImage: string}>`
             z-index: 501;
         }
 
-        @media ${({theme}) => theme.device.mobile} {
-            width: 100%;
+        @media ${({theme}) => theme.device.tablet} {
+            width: calc(100% - 2rem);
         }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        aspect-ratio: 9 / 16;
     }
 `
 
 const FadeTitleWrapper = styled.div`
     grid-row: 1;
     grid-column: 1;
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    vertical-align: bottom;
     
     & > div.category {
         width: fit-content;
@@ -157,7 +158,17 @@ const FadeTitleWrapper = styled.div`
         border-radius: 1rem;
         background-color: ${props => props.theme.colors.colorSurface}80;
         color: ${props => props.theme.colors.colorOnSurface};
+        margin-top: auto;
         transition: background-color 0.5s ease, color 0.5s ease;
+
+        @media ${({theme}) => theme.device.tablet} {
+            font-size: small;
+            padding: 0.25rem 0.5rem;
+            
+            span {
+                padding: 0.25rem;
+            }
+        }
     }
 
     & > h1.title {
@@ -177,8 +188,8 @@ const FadeTitleWrapper = styled.div`
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        @media ${({theme}) => theme.device.mobile} {
-            font-size: x-large;
+        @media ${({theme}) => theme.device.tablet} {
+            font-size: xx-large;
             
             span {
                 padding: 0.25rem;
@@ -200,8 +211,9 @@ const FadeTitleWrapper = styled.div`
             transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        @media ${({theme}) => theme.device.mobile} {
+        @media ${({theme}) => theme.device.tablet} {
             font-size: small;
+            margin-top: 0.5rem;
             
             span {
                 padding: 0.25rem;
@@ -220,11 +232,11 @@ const ButtonBack = () => {
 }
 
 const InnerContentWrapper = styled.div`
-    width: calc(100% - 2rem);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    margin-top: 1rem;
     transition: background-color 0.5s ease;
 
     & > div {
@@ -236,6 +248,7 @@ const InnerContentWrapper = styled.div`
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
+        margin-top: 1rem;
         
         & > div {
             grid-row: 1;
@@ -249,11 +262,16 @@ const InnerContentWrapper = styled.div`
         & > .data {
             z-index: 501;
         }
+
+        @media ${({ theme }) => theme.device.tablet} {
+            width: 100%;
+        }
     }
 
     @media ${({ theme }) => theme.device.mobile} {
         width: 100%;
         margin-left: 0;
+        margin-top: 0;
         padding: 1rem 0 0 0;
 
         & > .content-wrapper {

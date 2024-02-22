@@ -18,7 +18,7 @@ function Construction({darkMode, setDarkMode}: AppProps) {
     return (
         <PageWrapper>
             <Header isOpen={darkMode} setIsOpen={setDarkMode} className={"construction"}/>
-            <Gallery style={{backgroundImage: imgPatternBg}}>
+            <Gallery style={{backgroundImage: `url(${imgPatternBg})`}}>
                 <BlurBackground darkMode={darkMode}>
                     <TextTitle>Under Construction 🚧</TextTitle>
                     <ButtonGo onClick={() => {
@@ -44,14 +44,12 @@ const Gallery = styled.div`
     justify-content: center;
     border-radius: 1rem;
     margin: 0 1rem;
-    background-image: url("${props => props.style?.backgroundImage}");
     overflow: hidden;
     animation: Mount-animation 0.5s ease;
     
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: ${props => props.style?.backgroundImage};
 
     @media ${({ theme }) => theme.device.mobile} {
         aspect-ratio: 9 / 16;

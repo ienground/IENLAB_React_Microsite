@@ -27,8 +27,8 @@ function AppPreview({app}: AppPreviewProps) {
                 </InnerBoxWrapper>
                 <ButtonLinkWrapper>
                     <Ripples placeholder={"web"}><ImgButton onClick={() => navigate(app.page)}><Icon baseClassName={"material-icons-round"}>language</Icon></ImgButton></Ripples>
-                    {app.aosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: icPlayStore}} /></Ripples> : <></>}
-                    {app.iosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: icIosStore}} /></Ripples> : <></>}
+                    {app.aosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}} /></Ripples> : <></>}
+                    {app.iosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}} /></Ripples> : <></>}
                 </ButtonLinkWrapper>
             </BoxButtonWrapper>
         </HeaderWrapper>
@@ -98,7 +98,6 @@ const ImgButton = styled.button`
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(${props => props.style?.backgroundImage});
     margin: 1rem;
 
     & > span {

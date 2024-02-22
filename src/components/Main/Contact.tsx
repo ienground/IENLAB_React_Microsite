@@ -7,12 +7,15 @@ import React from "react";
 function Contact() {
 
     return (
-        <ContactWrapper style={{backgroundImage: background}}>
+        <ContactWrapper>
+        {/*<ContactWrapper style={{backgroundImage: `url(${background})`}}>*/}
             {/*<TextDate>Contact on</TextDate>*/}
-            <TitleButtonWrapper>
-                {/*<TextTitle>my@ien.zone</TextTitle>*/}
-                {/*<ButtonGo onClick={sendMail}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></ButtonGo>*/}
-            </TitleButtonWrapper>
+            <div>아직 공사 중!</div>
+            {/*<TitleButtonWrapper>*/}
+
+            {/*    /!*<TextTitle>my@ien.zone</TextTitle>*!/*/}
+            {/*    /!*<ButtonGo onClick={sendMail}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></ButtonGo>*!/*/}
+            {/*</TitleButtonWrapper>*/}
         </ContactWrapper>
     );
 }
@@ -27,11 +30,17 @@ const ContactWrapper = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(${ props => props.style?.backgroundImage });
     border-radius: 1rem;
     margin: 1rem 1rem 0 0;
     padding: 1rem;
     animation: Mount-animation 0.5s ease;
+    align-items: center;
+    background-color: ${props => props.theme.colors.colorSurfaceVariant};
+    
+    & > div {
+        margin: auto;
+        font-size: xx-large;
+    }
 
     @media ${({ theme }) => theme.device.mobile} {
         width: calc(100% - 2rem);

@@ -52,7 +52,7 @@ function Sidebar({ isOpen, setIsOpen, darkMode, setDarkMode } : Props) {
 
     const navBottomItems = [
         { icon: "notifications", title: "공지사항", link: "/notice" },
-        { icon: "policy", title: "개인정보처리방침", link: "/privacy" },
+        { icon: "policy", title: "개인정보 처리방침", link: "/privacy" },
     ]
 
     const navDropdown = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -191,6 +191,11 @@ const SidebarWrapper = styled.div`
     & > img {
         width: 40%;
         margin: 1rem auto 1rem auto;
+    }
+    
+    @media ${({ theme }) => theme.device.laptop } {
+        width: 40%;
+        left: -40%;
     }
 
     @media ${({ theme }) => theme.device.tablet} {

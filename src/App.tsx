@@ -89,7 +89,7 @@ function App() {
                     outerScale={0}
                 />
             }
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <GlobalStyles/>
                 <ThemeProvider theme={theme}>
                     <AppContainer>

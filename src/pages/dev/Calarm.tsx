@@ -130,7 +130,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
     return (
         <DevDetailWrapper>
             <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true}/>
-            <ImgTitle style={{backgroundImage: darkMode ? patternBlack : imgCalarmPattern}}>
+            <ImgTitle style={{backgroundImage: darkMode ? `url(${patternBlack})` : `url(${imgCalarmPattern})`}}>
                 <ImgTitleSectionLeft>
                     <ImgTitleText>{appName}
                         <div className="version-test-wrapper">
@@ -185,7 +185,6 @@ const SlideshowImage = styled.div`
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: ${props => props.style?.backgroundImage};
 `;
 
 

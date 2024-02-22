@@ -40,6 +40,7 @@
     "react-ripples": "^2.2.1",
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.0",
     "react-slideshow-image": "^4.3.0",
     "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0",
@@ -76,6 +77,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-scroll": "^1.8.10",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",

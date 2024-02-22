@@ -13,7 +13,7 @@ import icInstagram from "../../assets/icon/ic_instagram.svg";
 import icGitHub from "../../assets/icon/ic_github.svg";
 import icFacebook from "../../assets/icon/ic_facebook.svg";
 import icNaverBlog from "../../assets/icon/ic_naver_blog.svg"
-import icTistory from "../../assets/icon/ic_tistory.svg"
+import icTistory from "../../assets/icon/ic_tistory_orange.svg"
 import icBehance from "../../assets/icon/ic_behance.svg"
 import Ripples from "react-ripples";
 
@@ -76,7 +76,7 @@ function Contact() {
                     <InnerTitleWrapper>
                         <ImgTitleIcon src={icCall} />
                         <Spacer orientation={"vertical"} size={"1rem"} />
-                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>Mail</TextContentTitle>
+                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>연락처</TextContentTitle>
                     </InnerTitleWrapper>
                     <GridContentWrapper>
                         {contactData.map((contact) => (
@@ -93,7 +93,7 @@ function Contact() {
                     <InnerTitleWrapper>
                         <ImgTitleIcon src={icMail} />
                         <Spacer orientation={"vertical"} size={"1rem"} />
-                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>Mail</TextContentTitle>
+                        <TextContentTitle className={"black xxx-large"} fontWeight={"600"}>메일 보내기</TextContentTitle>
                     </InnerTitleWrapper>
                     <InnerContentWrapper>
                         <EmailJsForm ref={form} onSubmit={sendEmail}>
@@ -218,7 +218,6 @@ const ImgButton = styled.button`
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(${props => props.style?.backgroundImage});
     margin: 1rem;
 
     & > span {

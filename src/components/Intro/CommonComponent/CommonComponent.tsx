@@ -48,6 +48,7 @@ export const TextContentTitle = styled.span<{fontWeight?: string, letterSpacing?
     font-weight: ${props => props.fontWeight ? props.fontWeight : 'bold'};
     font-size: xxx-large;
     letter-spacing: ${props => props.letterSpacing ? props.letterSpacing : '0'};
+    word-break: keep-all;
     line-height: 1.2;
     color: ${props => props.theme.colors.colorOnSurfaceVariant};
     transition: color 0.5s ease;
@@ -86,6 +87,8 @@ export const TextContentTitle = styled.span<{fontWeight?: string, letterSpacing?
         color: ${props => props.theme.colors.colorSurface};
         padding: 0 0.5rem;
         margin-right: 0.5rem;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
 
         @media ${({ theme }) => theme.device.mobile} {
             padding: 0 0.25rem;

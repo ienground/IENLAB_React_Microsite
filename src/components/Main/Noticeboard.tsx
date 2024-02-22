@@ -9,10 +9,10 @@ function Noticeboard() {
     const navigate = useNavigate();
 
     return (
-        <NoticeboardWrapper style={{backgroundImage: background}}>
-            <TextDate>Date</TextDate>
+        <NoticeboardWrapper style={{backgroundImage: `url(${background})`}}>
+            <TextDate>Introduce Myself</TextDate>
             <TitleButtonWrapper>
-                <TextTitle>This is IENGROUND</TextTitle>
+                <TextTitle><span>This is IENGROUND</span></TextTitle>
                 <ButtonGo onClick={() => navigate("/intro")}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></ButtonGo>
             </TitleButtonWrapper>
         </NoticeboardWrapper>
@@ -29,7 +29,6 @@ const NoticeboardWrapper = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(${ props => props.style?.backgroundImage });
     border-radius: 1rem;
     margin: 1rem 1rem 0 1rem;
     padding: 1rem;

@@ -157,23 +157,6 @@ const SlideshowWrapper = styled.div`
         }
     }
 
-    //& > div {
-    //    display: flex;
-    //    flex-direction: row;
-    //    width: 100%;
-    //    overflow: hidden;
-    //    align-items: end;
-    //    position: relative;
-    //}
-    //
-    //.react-slideshow-container {
-    //    width: 100%;
-    //
-    //    & > button {
-    //        visibility: hidden;
-    //    }
-    //}
-
     ul.indicators {
         height: 2rem;
         display: flex;
