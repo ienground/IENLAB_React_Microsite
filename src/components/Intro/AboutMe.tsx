@@ -2,7 +2,7 @@ import styled from "styled-components";
 import imgProfile from "../../assets/image/img_ienground_profile.jpg";
 import LoremIpsum from "react-lorem-ipsum";
 import {Ahref, ContentWrapper, ImgIcon, InnerBoxWrapper, InnerContentWrapper, InnerTitleWrapper, InnerWrapper, TextContentContent, TextContentTitle, TextTitle} from "./CommonComponent/CommonComponent";
-import {BrCondition, Spacer} from "../Component";
+import {Spacer} from "../Component";
 import icAndroid from "../../assets/icon/ic_android.svg";
 import icIllustrator from "../../assets/icon/ic_illustrator.svg";
 import icPhotoshop from "../../assets/icon/ic_photoshop.svg";

@@ -1,7 +1,6 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import Main from "./pages/Main";
 import Post from "./pages/Post";
-import Construction from "./pages/Construction";
 import {SidebarProps} from "./components/Sidebar";
 import {AppProps} from "./App";
 import Intro from "./pages/Intro";
@@ -22,7 +21,6 @@ function Router({darkMode, setDarkMode}: AppProps) {
             <Routes>
                 <Route path={"/"} element={<Main darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 {/*<Route path={"/"} element={<Construction darkMode={darkMode} setDarkMode={setDarkMode} />} />*/}
-                <Route path={"/under"} element={<Construction darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/intro"} element={<Intro darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/privacy"} element={<Privacy darkMode={darkMode} setDarkMode={setDarkMode} />} />
 

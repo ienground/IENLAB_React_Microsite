@@ -28,9 +28,20 @@ export const Spacer = ({orientation, size}: SpacerProps) => {
     }
 }
 
-export const BrCondition = styled.br`
-    display: none;
+export const TitleBox = styled.div`
+    width: 100%;
+    aspect-ratio: 32 / 9;
+    animation: Mount-animation 0.5s ease;
+
+    @media ${({ theme }) => theme.device.laptop} {
+        aspect-ratio: 21 / 9;
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        aspect-ratio: 16 / 9;
+    }
+
     @media ${({ theme }) => theme.device.mobile} {
-        display: inherit;
+        aspect-ratio: 9 / 16;
     }
 `

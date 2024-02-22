@@ -6,62 +6,84 @@ import imgPattern from "../assets/brand/pattern.png";
 import {Icon} from "@mui/material";
 import React from "react";
 
-function Footer() {
+export default function Footer() {
     const theme = useTheme();
     const darkMode = theme.name === "dark";
     const date = new Date();
 
+    // return (
+    //     <FooterWrapper>
+    //         <AuthorInfoWrapper>
+    //             <Text>Copyright © 2014-{date.getFullYear()} ienlab. 모든 권리 보유.</Text>
+    //         </AuthorInfoWrapper>
+    //         <Image src={darkMode ? imgLogoFullWhite : imgLogoFull}/>
+    //     </FooterWrapper>
+    // );
+
     return (
-        <FooterWrapper>
-            <AuthorInfoWrapper>
-                <Text>Copyright © 2014-{date.getFullYear()} ienlab. 모든 권리 보유.</Text>
-            </AuthorInfoWrapper>
-            <Image src={darkMode ? imgLogoFullWhite : imgLogoFull}/>
-        </FooterWrapper>
+        <Wrapper>
+            <div className="author"></div>
+            <img src={imgLogoFull}/>
+        </Wrapper>
     );
 }
 
-const FooterWrapper = styled.div`
-    transition: background-color 0.5s ease;
+const Wrapper = styled.footer`
+    width: calc(100% - 2rem);
+    height: calc(6rem - 2rem);
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    background-color: ${props => props.theme.colors.colorSurfaceVariant};
-    height: 4rem;
-    border-radius: 1rem;
-    margin: 1rem;
+    margin-top: 1rem;
     padding: 1rem;
-    animation: Mount-animation 0.5s ease;
-
-    @media ${({ theme }) => theme.device.mobile} {
-        flex-direction: column-reverse;
+    
+    background-color: ${props => props.theme.colors.colorSurfaceVariant};
+    
+    & > img {
+        height: 2rem;
     }
 `
 
-const Text = styled.div`
-    margin-left: 1rem;
-    transition: background-color 0.5s ease, color 0.5s ease;
-    @media ${({ theme }) => theme.device.mobile} {
-        margin: 0;
-        font-size: small;
-    }
-`
-
-const AuthorInfoWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`
-
-const Image = styled.div<{src: string}>`
-    height: 2rem;
-    aspect-ratio: 4.84;
-    transition: background-image 0.5s ease;
-    background-image: url(${props => props.src});
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-`
-
-export default Footer;
+// const FooterWrapper = styled.div`
+//     transition: background-color 0.5s ease;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+//     align-items: center;
+//     background-color: ${props => props.theme.colors.colorSurfaceVariant};
+//     height: 4rem;
+//     border-radius: 1rem;
+//     margin: 1rem;
+//     padding: 1rem;
+//     animation: Mount-animation 0.5s ease;
+//
+//     @media ${({ theme }) => theme.device.mobile} {
+//         flex-direction: column-reverse;
+//     }
+// `
+//
+// const Text = styled.div`
+//     margin-left: 1rem;
+//     transition: background-color 0.5s ease, color 0.5s ease;
+//     @media ${({ theme }) => theme.device.mobile} {
+//         margin: 0;
+//         font-size: small;
+//     }
+// `
+//
+// const AuthorInfoWrapper = styled.div`
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+// `
+//
+// const Image = styled.div<{src: string}>`
+//     height: 2rem;
+//     aspect-ratio: 4.84;
+//     transition: background-image 0.5s ease;
+//     background-image: url(${props => props.src});
+//     background-size: contain;
+//     background-position: center;
+//     background-repeat: no-repeat;
+// `
