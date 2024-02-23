@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, setIsOpen} : Props) {
             result = true;
         }
         for (let content of item.contents) {
-            if (content.link === location.pathname) {
+            if (location.pathname.includes(content.link)) {
                 result = true;
                 break;
             }

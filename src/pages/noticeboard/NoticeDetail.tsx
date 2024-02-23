@@ -102,7 +102,7 @@ export default function NoticeDetail({darkMode, setDarkMode}: AppProps) {
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id="wrap">
-                <TitleBox>
+                <TitleBox style={{backgroundImage: `url(${darkMode ? patternBlack : patternBlack})`}}>
                     <div className="title-wrapper">
                         <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => setIsPrepared(true)}>
                             <div>
@@ -121,12 +121,16 @@ export default function NoticeDetail({darkMode, setDarkMode}: AppProps) {
                 <div className="content-wrapper">
                     <Fade className={"skeleton"} in={!noticeItem}>
                         <div>
-
+                            <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+                            <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+                            <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+                            <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+                            <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
                         </div>
                     </Fade>
                     <Fade className={"data"} in={isPrepared && noticeItem !== undefined}>
                         <div>
-
+                            <Markdown text={noticeItem?.content ? noticeItem.content : ""}/>
                         </div>
                     </Fade>
                 </div>
@@ -144,194 +148,124 @@ const Wrapper = styled.div`
         flex-direction: column;
         align-items: center;
         
-        background-color: black;
-        
-        & > div > .title-wrapper {
-            height: 100%;
-            background-color: red;
-        }
-    }
-    
-`
-
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0 1rem 0 1rem;
-    animation: Mount-animation 0.5s ease;
-    align-items: start;
-`
-
-const AreaTitle = styled.div<{backgroundImage: string}>`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    aspect-ratio: 32 / 9;
-    border-radius: 1rem;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(${props => props.backgroundImage});
-    transition: background-image 0.5s ease;
-
-    & > .title-wrapper {
-        margin-top: auto;
-        display: grid;
-        width: 60%;
-        grid-template-rows: 1fr;
-        grid-template-columns: 1fr;
-
-        & > .skeleton {
-            z-index: 500;
-        }
-
-        & > .data {
-            z-index: 501;
-        }
-
-        @media ${({theme}) => theme.device.tablet} {
-            width: calc(100% - 2rem);
-        }
-    }
-
-    @media ${({ theme }) => theme.device.mobile} {
-        aspect-ratio: 9 / 16;
-    }
-`
-
-const FadeTitleWrapper = styled.div`
-    grid-row: 1;
-    grid-column: 1;
-    margin-bottom: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    vertical-align: bottom;
-    
-    & > div.category {
-        width: fit-content;
-        padding: 0.5rem 1rem;
-        border-radius: 1rem;
-        background-color: ${props => props.theme.colors.colorSurface}80;
-        color: ${props => props.theme.colors.colorOnSurface};
-        margin-top: auto;
-        transition: background-color 0.5s ease, color 0.5s ease;
-
-        @media ${({theme}) => theme.device.tablet} {
-            font-size: small;
-            padding: 0.25rem 0.5rem;
-            
-            span {
-                padding: 0.25rem;
-            }
-        }
-    }
-
-    & > h1.title {
-        width: 100%;
-        font-weight: bolder;
-        font-size: 3vmax;
-        word-break: break-all;
-        transition: color 0.5s ease;
-
-        span {
-            background-color: ${props => props.theme.colors.colorOnSurface};
-            color: ${props => props.theme.colors.colorSurface};
-            padding: 0.5rem;
-            box-decoration-break: clone;
-            -webkit-box-decoration-break: clone;
-            line-height: 2;
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        @media ${({theme}) => theme.device.tablet} {
-            font-size: xx-large;
-            
-            span {
-                padding: 0.25rem;
-            }
-        }
-    }
-
-    & > h3.timestamp {
-        width: 100%;
-        margin-top: 1rem;
-
-        span {
-            background-color: ${props => props.theme.colors.colorOnSurface};
-            color: ${props => props.theme.colors.colorSurface};
-            padding: 0.5rem;
-            box-decoration-break: clone;
-            -webkit-box-decoration-break: clone;
-            line-height: 2;
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        @media ${({theme}) => theme.device.tablet} {
-            font-size: small;
-            margin-top: 0.5rem;
-            
-            span {
-                padding: 0.25rem;
-            }
-        }
-    }
-`
-
-const ButtonBack = () => {
-    const navigate = useNavigate();
-    return (
-        <Ripples placeholder={""}><button onClick={() => { navigate(-1); }}>
-            <Icon baseClassName={"material-icons-round"}>arrow_back</Icon>
-        </button></Ripples>
-    );
-}
-
-const InnerContentWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1rem;
-    transition: background-color 0.5s ease;
-
-    & > div {
-        width: 100%;
-    }
-    
-    & > .content-wrapper {
-        width: 60%;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        margin-top: 1rem;
-        
         & > div {
-            grid-row: 1;
-            grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease;
+            
+            & > .title-wrapper {
+                max-width: 1440px;
+                width: 100%;
+                height: calc(100% - 2rem);
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr;
+                padding: 1rem 0;
+                
+                & > .skeleton {
+                    z-index: 501;
+                }
+                
+                & > .data {
+                    z-index: 500;
+                }
+                
+                & > div {
+                    grid-row: 1;
+                    grid-column: 1;
+                    display: flex;
+                    flex-direction: column;
+                    
+                    & > :first-child {
+                        margin-top: auto;
+                    }
+                    
+                    & > div.category {
+                        width: fit-content;
+                        padding: 0.5rem 1rem;
+                        margin-bottom: 1rem;
+                        border-radius: 1rem;
+                        background-color: ${props => props.theme.colors.colorSurface}80;
+                        color: ${props => props.theme.colors.colorOnSurface};
+                        transition: background-color 0.5s ease, color 0.5s ease;
+                    }
+                    
+                    & > h1.title {
+                        margin-bottom: -0.5rem;
+                        font-weight: 800;
+                        font-size: xxx-large;
+                        word-break: break-all;
+                        color: ${props => props.theme.colors.colorSurface};
+                        transition: color 0.5s ease;
+                        
+                        & > span {
+                            padding: 0.5rem;
+                            box-decoration-break: clone;
+                            -webkit-box-decoration-break: clone;
+                            line-height: 2;
+                            background-color: ${props => props.theme.colors.colorOnSurface};
+                            
+                            transition: background-color 0.5s ease;
+                        }
+
+                        @media ${({ theme }) => theme.device.tablet} {
+                            font-size: xx-large;
+                        }
+                    }
+                    
+                    & > h3.timestamp {
+                        font-weight: 500;
+                        font-size: medium;
+                        word-break: break-all;
+                        color: ${props => props.theme.colors.colorSurface};
+                        transition: color 0.5s ease;
+
+                        & > span {
+                            padding: 0.5rem;
+                            box-decoration-break: clone;
+                            -webkit-box-decoration-break: clone;
+                            line-height: 2;
+                            background-color: ${props => props.theme.colors.colorOnSurface};
+                        }
+                    }
+                }
+
+                @media ${({ theme }) => theme.device.pc} {
+                    width: calc(100% - 2rem);
+                    padding: 1rem;
+                }
+            }
         }
-
-        & > .skeleton {
-            z-index: 500;
-        }
-
-        & > .data {
-            z-index: 501;
-        }
-
-        @media ${({ theme }) => theme.device.tablet} {
-            width: 100%;
-        }
-    }
-
-    @media ${({ theme }) => theme.device.mobile} {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 0;
-        padding: 1rem 0 0 0;
-
+        
         & > .content-wrapper {
+            max-width: 1440px;
             width: 100%;
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr;
+            margin-top: 1rem;
+            
+            & > .skeleton {
+                z-index: 501;
+            }
+            
+            & > .data {
+                z-index: 500;
+            }
+            
+            & > div {
+                grid-row: 1;
+                grid-column: 1;
+            }
+
+            @media ${({ theme }) => theme.device.pc} {
+                width: calc(100% - 2rem);
+                padding: 0 1rem;
+            }
         }
     }
 `
