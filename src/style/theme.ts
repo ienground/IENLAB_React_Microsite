@@ -24,7 +24,7 @@ const device = {
     mobile: `screen and (max-width: ${deviceSizes.mobile}px)`,
     tablet: `screen and (max-width: ${deviceSizes.tablet}px)`,
     laptop: `screen and (max-width: ${deviceSizes.laptop}px)`,
-    pc: `screen and (max-width: ${deviceSizes.pc}px)`,
+    pc: `screen and (max-width: calc(${deviceSizes.pc}px + 2rem))`,
 };
 
 export const light = {

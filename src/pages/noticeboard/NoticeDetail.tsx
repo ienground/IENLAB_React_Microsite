@@ -102,8 +102,8 @@ export default function NoticeDetail({darkMode, setDarkMode}: AppProps) {
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id="wrap">
-                <TitleBox style={{backgroundImage: `url(${darkMode ? patternBlack : patternBlack})`}}>
-                    <div className="title-wrapper">
+                <TitleBox className={"title-wrapper"} style={{backgroundImage: `url(${darkMode ? patternBlack : patternBlack})`}}>
+                    <div>
                         <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => setIsPrepared(true)}>
                             <div>
                                 <TitleSkeleton />
@@ -148,7 +148,7 @@ const Wrapper = styled.div`
         flex-direction: column;
         align-items: center;
         
-        & > div {
+        & > .title-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -157,7 +157,7 @@ const Wrapper = styled.div`
             background-repeat: no-repeat;
             transition: background-image 0.5s ease;
             
-            & > .title-wrapper {
+            & > div {
                 max-width: 1440px;
                 width: 100%;
                 height: calc(100% - 2rem);

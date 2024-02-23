@@ -22,26 +22,41 @@ export default function Footer() {
 
     return (
         <Wrapper>
-            <div className="author"></div>
-            <img src={imgLogoFull}/>
+            <div>
+                <div className="author"></div>
+                <img src={imgLogoFull}/>
+            </div>
+
         </Wrapper>
     );
 }
 
 const Wrapper = styled.footer`
-    width: calc(100% - 2rem);
-    height: calc(6rem - 2rem);
+    width: 100%;
+    height: 6rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     margin-top: 1rem;
-    padding: 1rem;
-    
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
     
-    & > img {
-        height: 2rem;
+    & > div {
+        max-width: 1440px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        
+        & > img {
+            height: 2rem;
+        }
+
+        @media ${({ theme }) => theme.device.pc} {
+            width: calc(100% - 2rem);
+            margin: 0 1rem;
+        }
     }
 `
 

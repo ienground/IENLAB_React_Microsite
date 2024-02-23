@@ -21,10 +21,38 @@ export default function LastEdit({link}: LastEditProps) {
     //     day: "numeric"
     // };
 
+    // return (
+    //     <LastEditWrapper>마지막 수정 시각 : {date.toLocaleString("ko-kr")}</LastEditWrapper>
+    // );
+
     return (
-        <LastEditWrapper>마지막 수정 시각 : {date.toLocaleString("ko-kr")}</LastEditWrapper>
+        <Wrapper>
+            <div>
+                마지막 수정 시각 : {date.toLocaleString("ko-kr")}
+            </div>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    & > div {
+        max-width: 1440px;
+        width: 100%;
+        font-style: italic;
+        text-align: end;
+
+        @media ${({ theme }) => theme.device.pc} {
+            width: calc(100% - 2rem);
+            padding: 0 1rem;
+        }
+    }
+    
+`
+
 
 const LastEditWrapper = styled.div`
     width: calc(100% - 2rem);
