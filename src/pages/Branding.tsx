@@ -15,12 +15,12 @@ import ButtonToTop from "../components/ButtonToTop";
 import LastEdit from "../components/LastEdit";
 import {useLocation} from "react-router-dom";
 
-function Branding({darkMode, setDarkMode}: AppProps) {
+export default function Branding({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
     return (
         <BrandingWrapper>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <ImgTitle>
                 <img src={logoColor} />
             </ImgTitle>
@@ -30,7 +30,7 @@ function Branding({darkMode, setDarkMode}: AppProps) {
             <LastEdit link={location.pathname} />
             <Footer />
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </BrandingWrapper>
     )
 }
@@ -38,6 +38,3 @@ function Branding({darkMode, setDarkMode}: AppProps) {
 const BrandingWrapper = styled.div`
     
 `
-
-
-export default Branding;

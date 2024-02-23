@@ -1,8 +1,6 @@
 import Header from "../components/Header";
 import Slideshow from "../components/Main/Slideshow";
 import Sidebar from "../components/Sidebar";
-import Contact from "../components/Main/Contact";
-import Noticeboard from "../components/Main/Noticeboard";
 import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
@@ -21,14 +19,13 @@ export default function Main({darkMode, setDarkMode}: AppProps) {
 
     return (
         <Wrapper>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id={"wrap"}>
                 <Slideshow />
                 <div className={"content"}>
                     <div className={"left"}>
                         <img src={imgIengroundProfile}/>
                         <div>
-                            <h3><span>Introduce Myself</span></h3>
                             <h1><span>This is IENGROUND</span></h1>
                         </div>
                         <button onClick={() => {
@@ -47,7 +44,7 @@ export default function Main({darkMode, setDarkMode}: AppProps) {
             </div>
             <Footer/>
             <ButtonToTop/>
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </Wrapper>
     )
 }
@@ -156,6 +153,18 @@ const Wrapper = styled.div`
                 & > span {
                     color: ${props => props.theme.colors.colorOnSurface};
                     transition: color 0.5s ease;
+                }
+            }
+
+            @media ${({ theme }) => theme.device.pc} {
+                & > .left {
+                    width: calc(60% - 3rem);
+                    margin-left: 1rem;
+                }
+                
+                & > .right {
+                    width: calc(40% - 3rem);
+                    margin-right: 1rem;
                 }
             }
 

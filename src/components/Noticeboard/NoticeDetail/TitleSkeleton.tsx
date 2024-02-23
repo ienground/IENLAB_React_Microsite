@@ -1,7 +1,7 @@
 import {Skeleton, Typography} from "@mui/material";
 import styled from "styled-components";
 
-function TitleSkeleton() {
+export default function TitleSkeleton() {
     return (
         <Wrapper>
             <div className={"category"}>
@@ -27,5 +27,3 @@ const Wrapper = styled.div`
         transition: color 0.5s ease, background-color 0.5s ease;
     }
 `
-
-export default TitleSkeleton;

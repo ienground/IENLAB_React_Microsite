@@ -12,7 +12,7 @@ interface AppHeaderProp {
     title: string,
 }
 
-function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
+export default function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
     const appHeaderRef = useRef<HTMLDivElement | null>(null);
     const theme = useTheme();
@@ -132,4 +132,3 @@ const StoreButton = styled.button`
         transition: color 0.5s ease;
     }
 `
-export default AppHeader;

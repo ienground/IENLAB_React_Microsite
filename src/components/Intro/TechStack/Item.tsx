@@ -5,7 +5,7 @@ interface ItemProps {
     item: {icons: string[], title: string, content: string}
 }
 
-function Item({item} : ItemProps) {
+export default function Item({item} : ItemProps) {
     return (
         <InnerBoxWrapper>
             {item.icons.map((icon) => (
@@ -17,5 +17,3 @@ function Item({item} : ItemProps) {
         </InnerBoxWrapper>
     )
 }
-
-export default Item;

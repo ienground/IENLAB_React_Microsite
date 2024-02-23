@@ -2,7 +2,7 @@ import {Link} from "react-scroll";
 import React from "react";
 import styled from "styled-components";
 
-function PrivacyContent() {
+export default function PrivacyContent() {
     const chapter = [
         "개인정보 처리 목적", "개인정보의 처리 및 보유기간", "처리하는 개인정보의 항목", "개인정보의 파기절차 및 파기방법", "정보주체와 법정대리인의 권리 · 의무 및 그 행사방법에 관한 사항", "개인정보의 안전성 확보조치에 관한 사항",
         "개인정보를 자동으로 수집하는 장치의 설치 · 운영 및 그 거부에 관한 사항", "행태정보의 수집 · 이용 · 제공 및 거부 등에 관한 사항", "추가적인 이용 · 제공 판단기준", "개인정보 보호책임자에 관한 사항", "개인정보의 열람청구를 접수 · 처리하는 부서",
@@ -349,5 +349,3 @@ export const ContentWrapper = styled.div`
         }
     }
 `
-
-export default PrivacyContent;

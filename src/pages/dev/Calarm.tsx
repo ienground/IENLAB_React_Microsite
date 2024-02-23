@@ -23,7 +23,7 @@ import ScreenshotView from "../../components/DevPage/Detail/ScreenshotView";
 import ContentView from "../../components/DevPage/Detail/ContentView";
 import {Fade, Skeleton} from "@mui/material";
 
-function Calarm({darkMode, setDarkMode}: AppProps) {
+export default function Calarm({darkMode, setDarkMode}: AppProps) {
     const location = useLocation();
     const packageName = "zone.ien.calarm";
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -129,7 +129,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
 
     return (
         <DevDetailWrapper>
-            <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true}/>
+            <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <ImgTitle style={{backgroundImage: darkMode ? `url(${patternBlack})` : `url(${imgCalarmPattern})`}}>
                 <ImgTitleSectionLeft>
                     <ImgTitleText>{appName}
@@ -172,7 +172,7 @@ function Calarm({darkMode, setDarkMode}: AppProps) {
             <LastEdit link={location.pathname} />
             <Footer />
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </DevDetailWrapper>
     );
 }
@@ -186,6 +186,3 @@ const SlideshowImage = styled.div`
     background-position: center;
     background-repeat: no-repeat;
 `;
-
-
-export default Calarm;

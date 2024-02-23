@@ -16,7 +16,7 @@ interface AppHeaderProp {
     appVersion: string
 }
 
-function AppHeader({packageName, appIcon, appName, appDesc, appVersion} : AppHeaderProp) {
+export default function AppHeader({packageName, appIcon, appName, appDesc, appVersion} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
     const appHeaderRef = useRef<HTMLDivElement | null>(null);
     const scrollListener = () => {
@@ -153,4 +153,3 @@ const StoreButton = styled.button`
         transition: color 0.5s ease;
     }
 `
-export default AppHeader;

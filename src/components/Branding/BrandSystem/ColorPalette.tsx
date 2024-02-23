@@ -21,7 +21,7 @@ const checkBlackText = (color: {red: number, green: number, blue: number}) => {
     return (ratio < 1 / 3);
 };
 
-function ColorPalette({color}: ColorPaletteProps) {
+export default function ColorPalette({color}: ColorPaletteProps) {
     return (
         <Wrapper style={{backgroundColor: color.code}} color={color.rgb}>
             <div className={"title"}>{color.title}</div>
@@ -47,10 +47,12 @@ const Wrapper = styled.div<{color: {red: number, green: number, blue: number}}>`
     @media ${({ theme }) => theme.device.pc} {
         aspect-ratio: 3 / 2;
     }
-    
-    &:hover {
-        transform: translateY(-0.5rem);
-        box-shadow: 0 0 40px -0.5rem black;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 0 40px -0.5rem black;
+        }
     }
     
     & > .title {
@@ -73,5 +75,3 @@ const Wrapper = styled.div<{color: {red: number, green: number, blue: number}}>`
         text-align: end;
     }
 `
-
-export default ColorPalette;

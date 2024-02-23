@@ -22,9 +22,14 @@ export const Ahref = styled.a`
         transform: translate3d(-100%, 0, 0);
     }
     
-    &:hover::after,
     &:focus::after {
         transform: translate3d(0, 0, 0);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover::after {
+            transition: translate3d(0, 0, 0);
+        }
     }
 `
 
@@ -207,10 +212,12 @@ export const InnerBoxWrapper = styled.div`
     border-radius: 1rem;
     animation: Mount-animation 0.5s ease;
     transition: background-color 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
-    
-    &:hover {
-        transform: translateY(-0.5rem);
-        box-shadow: 0 0 40px -0.5rem black;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 0 40px -0.5rem black;
+        }
     }
 
     @media ${({ theme }) => theme.device.mobile} {

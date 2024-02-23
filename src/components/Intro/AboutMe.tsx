@@ -10,7 +10,7 @@ import icSogang from "../../assets/icon/ic_sogang_univ.svg";
 import icFigma from "../../assets/icon/ic_figma.svg";
 import icGssh from "../../assets/icon/ic_gssh.webp";
 
-function AboutMe() {
+export default function AboutMe() {
     return (
         <AboutMeWrapper>
             <TextTitle>소개</TextTitle>
@@ -76,5 +76,3 @@ const ImgProfile = styled.img`
     border-radius: 1rem;
     object-fit: contain;
 `
-
-export default AboutMe;

@@ -17,7 +17,7 @@ import NoticePostSkeleton from "../components/Noticeboard/NoticePostSkeleton";
 export interface NoticePostProps {
     item: {id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string}
 }
-function Noticeboard({darkMode, setDarkMode}: AppProps) {
+export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -46,100 +46,135 @@ function Noticeboard({darkMode, setDarkMode}: AppProps) {
         processing();
     }, []);
 
+    // return (
+    //     <>
+    //
+    //         <ContentWrapper>
+    //             <TextTitle>공지사항</TextTitle>
+    //             <div className={"content-wrapper"}>
+    //                 <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
+    //                     <InnerContentWrapper>
+    //                         <NoticePostSkeleton />
+    //                         <NoticePostSkeleton />
+    //                         <NoticePostSkeleton />
+    //                     </InnerContentWrapper>
+    //                 </Fade>
+    //                 <Fade className={"data"} in={isPrepared && noticeList?.length !== 0}>
+    //                     <InnerContentWrapper>
+    //                         {noticeList?.map((post) => (
+    //                             <NoticePost item={post} />
+    //                         ))}
+    //                     </InnerContentWrapper>
+    //                 </Fade>
+    //             </div>
+    //         </ContentWrapper>
+
+    //     </>
+    // );
+
+    useEffect(() => {
+        console.log("isPrepared:" + (isPrepared ? "true" : "false"));
+        console.log("noticeList:" + noticeList);
+    }, [isPrepared, noticeList]);
+
     return (
-        <>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-            <ContentWrapper>
-                <TextTitle>공지사항</TextTitle>
-                <div className={"content-wrapper"}>
-                    <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
-                        <InnerContentWrapper>
-                            <NoticePostSkeleton />
-                            <NoticePostSkeleton />
-                            <NoticePostSkeleton />
-                        </InnerContentWrapper>
-                    </Fade>
-                    <Fade className={"data"} in={isPrepared && noticeList?.length !== 0}>
-                        <InnerContentWrapper>
-                            {noticeList?.map((post) => (
-                                <NoticePost item={post} />
-                            ))}
-                        </InnerContentWrapper>
-                    </Fade>
+        <Wrapper>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <div id="wrap">
+                <div className="content">
+                    <div className="title">
+                        공지사항
+                    </div>
+                    <div className="content-wrapper">
+                        <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
+                            <div>
+                                <NoticePostSkeleton />
+                                <NoticePostSkeleton />
+                                <NoticePostSkeleton />
+                            </div>
+                        </Fade>
+                        <Fade className={"data"} in={isPrepared && noticeList?.length !== 0}>
+                            <div>
+                                {noticeList?.map((post) => (
+                                    <NoticePost item={post} />
+                                ))}
+                            </div>
+                        </Fade>
+                    </div>
                 </div>
-            </ContentWrapper>
+            </div>
             <Footer />
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
-        </>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+        </Wrapper>
     );
 }
 
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 1rem 1rem 0 2rem;
-    animation: Mount-animation 0.5s ease;
-    align-items: start;
-
-    & > .content-wrapper {
-        width: calc(70% - 1rem);
-        margin-left: 1rem;
-        margin-top: 1rem;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        
-        & > .skeleton {
-            z-index: 500;
-        }
-        
-        & > .data {
-            z-index: 501;
-        }
-    }
-
-    @media ${({theme}) => theme.device.mobile} {
+const Wrapper = styled.div`
+    & > #wrap {
+        display: flex;
         flex-direction: column;
-        margin: 1rem 1rem 0 1rem;
+        align-items: center;
+        animation: Mount-animation 0.5s ease;
         
-        & > .content-wrapper {
+        & > .content {
+            max-width: 1440px;
             width: 100%;
-            margin-left: 0;
+            height: 20rem;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            
+            & > .title {
+                width: 20%;
+                position: sticky;
+                top: 6.5rem;
+                z-index: 100;
+                font-weight: 800;
+                font-size: xxx-large;
+                transition: color 0.5s ease;
+            }
+            
+            & > .content-wrapper {
+                width: 80%;
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr;
+                
+                & > div {
+                    grid-row: 1;
+                    grid-column: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                
+                & > .skeleton {
+                    z-index: 501;
+                }
+                
+                & > .data {
+                    z-index: 500;
+                }
+            }
+
+            @media ${({ theme }) => theme.device.pc} {
+                width: calc(100% - 2rem);
+                padding: 0 1rem;
+            }
+
+            @media ${({ theme }) => theme.device.tablet} {
+                flex-direction: column;
+                
+                & > .title {
+                    width: 100%;
+                    position: initial;
+                }
+                
+                & > .content-wrapper {
+                    width: 100%;
+                }
+            }
         }
     }
 `
-
-export const InnerContentWrapper = styled.div`
-    grid-column: 1;
-    grid-row: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    @media ${({ theme }) => theme.device.mobile} {
-        width: 100%;
-        margin-left: 0;
-    }
-`
-
-export const TextTitle = styled.span`
-    width: 30%;
-    font-weight: bolder;
-    font-size: 3vmax;
-    position: sticky;
-    top: 6.5rem;
-    z-index: 100;
-    margin-top: 1rem;
-    transition: color 0.5s ease;
-    
-    @media ${({ theme }) => theme.device.mobile} {
-        width: 100%;
-        position: relative;
-        font-size: xxx-large;
-        margin-top: 0;
-        top: 0;
-    }
-`
-
-export default Noticeboard;

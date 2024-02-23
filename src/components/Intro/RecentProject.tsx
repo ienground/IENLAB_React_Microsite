@@ -11,7 +11,7 @@ import {appList} from "../../data/CommonData";
 import icIosStore from "../../assets/icon/ic_ios_store.svg";
 import Item from "./RecentProject/Item";
 
-function RecentProject() {
+export default function RecentProject() {
     return (
         <RecentProjectWrapper>
             <TextTitle>프로젝트</TextTitle>
@@ -44,5 +44,3 @@ const TechStackWrapper = styled.div`
     animation: Mount-animation 0.5s ease;
     align-items: start;
 `
-
-export default RecentProject;

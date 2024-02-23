@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {NoticePostProps} from "../../pages/Noticeboard";
 import {Skeleton} from "@mui/material";
 
-function NoticePostSkeleton() {
+export default function NoticePostSkeleton() {
     return (
         <Wrapper>
             <div className={"category"}>
@@ -19,8 +19,8 @@ const Wrapper = styled.div`
     width: calc(100% - 2rem);
     display: flex;
     flex-direction: column;
-    border-radius: 1rem;
     padding: 1rem;
+    border-radius: 1rem;
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
     transition: background-color 0.5s ease;
     
@@ -44,7 +44,6 @@ const Wrapper = styled.div`
     }
     
     & > .create_time {
-        font-weight: 500;
+        font-weight: 400;
     }
 `
-export default NoticePostSkeleton;

@@ -14,7 +14,7 @@ import icAlbatrossReminder from "../assets/icon/ic_albatross_reminder.png";
 import backgroundPrivacy from "../assets/background_ienlab.png"
 import PrivacyContent from "../components/Privacy/PrivacyContent";
 
-function Privacy({darkMode, setDarkMode}: AppProps) {
+export default function Privacy({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +27,7 @@ function Privacy({darkMode, setDarkMode}: AppProps) {
 
     return (
         <>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <Title>
                 <div className={"wrapper"}>
                     <h3 className={"description"}><span>운영 어플리케이션을 위한 공통 버전</span></h3>
@@ -51,7 +51,7 @@ function Privacy({darkMode, setDarkMode}: AppProps) {
             <LastEdit link={location.pathname}/>
             <Footer/>
             <ButtonToTop/>
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </>
     );
 }
@@ -233,5 +233,3 @@ const ServiceApp = styled.div`
         }
     }
 `
-
-export default Privacy;

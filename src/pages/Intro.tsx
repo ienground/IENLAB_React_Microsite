@@ -13,7 +13,7 @@ import ButtonToTop from "../components/ButtonToTop";
 import LastEdit from "../components/LastEdit";
 import {useLocation} from "react-router-dom";
 
-function Intro({darkMode, setDarkMode}: AppProps) {
+export default function Intro({darkMode, setDarkMode}: AppProps) {
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -24,7 +24,7 @@ function Intro({darkMode, setDarkMode}: AppProps) {
     const IntroSpacer = <Spacer orientation={"vertical"} size={"3rem"} />
     return (
         <IntroWrapper>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <AboutMe />
             {IntroSpacer}
             <TechStack />
@@ -36,7 +36,7 @@ function Intro({darkMode, setDarkMode}: AppProps) {
             <LastEdit link={location.pathname} />
             <Footer />
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </IntroWrapper>
     )
 }
@@ -44,5 +44,3 @@ function Intro({darkMode, setDarkMode}: AppProps) {
 const IntroWrapper = styled.div`
     
 `
-
-export default Intro;

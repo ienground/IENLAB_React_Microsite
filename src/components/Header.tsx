@@ -1,5 +1,5 @@
 import styled, {useTheme} from "styled-components";
-import {Icon, SvgIcon, TextField} from "@mui/material";
+import {Fade, Icon, SvgIcon, TextField} from "@mui/material";
 import mainIcon from "../assets/brand/img_logo_typo.png";
 import mainIconWhite from "../assets/brand/img_logo_typo_white.png";
 import icTistory from "../assets/icon/ic_tistory.svg";
@@ -13,15 +13,16 @@ import {SidebarProps} from "./Sidebar";
 import Ripples from "react-ripples";
 import {InputAdornment} from "@mui/material-next";
 import {useNavigate} from "react-router-dom";
-import {AppProps} from "../App";
+import {AppProps, detectMobileDevice} from "../App";
 
 interface ConstructionProps {
     className?: string,
     isAppHeaderAvailable?: boolean
 }
-type Props = SidebarProps & ConstructionProps;
+type Props = SidebarProps & ConstructionProps & AppProps;
 
-export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailable}: Props) {
+const isMobile = detectMobileDevice(window.navigator.userAgent);
+export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailable, darkMode, setDarkMode}: Props) {
     const [navBg, setNavBg] = useState(false);
     const [showSearchbar, setShowSearchbar] = useState(false);
     const theme = useTheme();
@@ -30,11 +31,15 @@ export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailab
 
     let lastScroll = -1;
     const changeNavBg = () => {
-        window.scrollY >= (isSticky ? 10 : 70) ? setNavBg(true) : setNavBg(false);
+        window.scrollY >= (isSticky ? 30 : 70) ? setNavBg(true) : setNavBg(false);
         lastScroll = window.scrollY;
     }
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
+    }
+
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
     }
 
     useEffect(() => {
@@ -44,25 +49,36 @@ export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailab
     const iconStyle = {
         transition: "all 0.5s ease",
         color: theme.colors.colorOnSurface,
-        filter: theme.name === "light" ? (navBg ? "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)" : "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)") : ""
+        filter: theme.name === "light" ? ("invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)") : ""
     };
 
     const customIconStyle = {
         transition: "all 0.5s ease",
-        filter: (theme.name === "light" && !navBg) ? "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)" : "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)"
+        filter: theme.name === "light" ? "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)" : "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)"
     };
 
     return (
         <Wrapper className={navBg ? "nav-bg" : ""}>
             <div>
                 <div className={"start"}>
-                    <li><Ripples onClick={toggleSidebar} placeholder={"menu"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{className === "construction" ? (isOpen ? "dark_mode" : "light_mode") : "menu"}</Icon></Ripples></li>
+                    <li className={isOpen ? "open" : ""}><Ripples onMouseEnter={() => { if (!isMobile && !isOpen) setIsOpen(true); }} onClick={() => { if (isOpen) setIsOpen(false); else if (isMobile) setIsOpen(true); }} placeholder={"menu"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>expand_more</Icon></Ripples></li>
                 </div>
                 <button className={navBg ? "nav-bg" : ""} onClick={() => { navigate("/"); }}/>
                 <div className={"end"}>
-                    <li><Ripples onClick={() => { window.location.href = "https://blog.ien.zone"; }} placeholder={"tistory"}><img src={icTistory} style={customIconStyle}/></Ripples></li>
-                    <li><Ripples onClick={() => { window.location.href = "https://www.instagram.com/ienlab"; }} placeholder={"instagram"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></Ripples></li>
-                    <li><Ripples onClick={() => { window.location.href = "https://github.com/ienground"; }} placeholder={"github"}><FontAwesomeIcon icon={faGithub} size={"lg"} style={iconStyle}/></Ripples></li>
+                    <Fade in={isOpen}><li className={"dark-mode"}>
+                        <Ripples onClick={toggleDarkMode} placeholder={"Dark mode"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{darkMode === true ? "dark_mode" : "light_mode"}</Icon></Ripples>
+                    </li></Fade>
+                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                        window.location.href = "https://blog.ien.zone";
+                    }} placeholder={"tistory"}><img src={icTistory} style={customIconStyle}/></Ripples></li></Fade>
+                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                        window.location.href = "https://www.instagram.com/ienlab";
+                    }} placeholder={"instagram"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></Ripples>
+                    </li></Fade>
+                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                        window.location.href = "https://github.com/ienground";
+                    }} placeholder={"github"}><FontAwesomeIcon icon={faGithub} size={"lg"} style={iconStyle}/></Ripples>
+                    </li></Fade>
                 </div>
             </div>
         </Wrapper>
@@ -76,13 +92,18 @@ const Wrapper = styled.nav`
     flex-direction: column;
     align-items: center;
     position: sticky;
-    z-index: 990;
+    background-color: ${props => props.theme.colors.colorSurface};
+    z-index: 991;
     top: 0;
-    transition: background-color 0.5s ease, backdrop-filter 0.5s ease;
+    transition: box-shadow 0.5s ease, background-color 0.5s ease;
+
+    @media ${({ theme }) => theme.device.pc} {
+        width: calc(100% - 2rem);
+        padding: 0 1rem;
+    }
 
     &.nav-bg {
-        background-color: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 0 30px -1rem black;
     }
 
     & > div {
@@ -97,6 +118,7 @@ const Wrapper = styled.nav`
             width: 40%;
             display: flex;
             flex-direction: row;
+            align-items: center;
 
             & > li {
                 list-style: none;
@@ -105,8 +127,10 @@ const Wrapper = styled.nav`
                     padding: 1rem;
                     border-radius: 50%;
                     transition: background-color 0.5s ease;
-                    &:hover {
-                        background-color: rgba(0, 0, 0, 0.1);
+                    @media (hover: hover) and (pointer: fine) {
+                        &:hover {
+                            background-color: rgba(0, 0, 0, 0.1);
+                        }
                     }
 
                     & > img {
@@ -118,11 +142,28 @@ const Wrapper = styled.nav`
 
             &.start {
                 justify-content: start;
+                
+                & > li {
+                    & > div > span {
+                        transition: rotate 0.5s ease;
+                    }
+                    
+                    &.open > div > span {
+                        rotate: 180deg;
+                    }
+                }
             }
 
             &.end {
+                position: relative;
                 justify-content: end;
                 
+                & > li.dark-mode {
+                    position: absolute;
+                    background-color: ${props => props.theme.colors.colorOnSurface}19;
+                    border-radius: 50%;
+                    transition: background-color 0.5s ease;
+                }
             }
 
             @media ${({ theme }) => theme.device.mobile} {
@@ -130,6 +171,11 @@ const Wrapper = styled.nav`
                 
                 &.end > li {
                     display: none;
+                    
+                    & > div > span {
+                        color: ${props => props.theme.colors.colorOnSurface};
+                        transition: color 0.5s ease;
+                    }
                 }
             }
         }
@@ -143,10 +189,6 @@ const Wrapper = styled.nav`
             background-color: transparent;
             background-image: url(${mainIcon});
             transition: background-image 0.5s ease;
-
-            &.nav-bg {
-                background-image: url(${mainIconWhite});
-            }
 
             @media ${({ theme }) => theme.device.mobile} {
                 width: 60%;

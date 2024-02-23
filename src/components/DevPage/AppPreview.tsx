@@ -12,7 +12,7 @@ interface AppPreviewProps {
     app: {icon: string, title: string, content: string, background: string, showIntro: boolean, page: string, aosLink: string, iosLink: string}
 }
 
-function AppPreview({app}: AppPreviewProps) {
+export default function AppPreview({app}: AppPreviewProps) {
     const navigate = useNavigate();
 
     return (
@@ -48,15 +48,19 @@ const HeaderWrapper = styled.div`
         border-radius: 0;
         flex: 1;
 
-        &:hover {
-            transform: none;
-            box-shadow: none;
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                transform: none;
+                box-shadow: none;
+            }
         }
     }
 
-    &:hover {
-        transform: translateY(-0.5rem);
-        box-shadow: 0 0 40px -0.5rem black;
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: translateY(-0.5rem);
+            box-shadow: 0 0 40px -0.5rem black;
+        }
     }
 `
 
@@ -74,8 +78,11 @@ const ButtonLinkWrapper = styled.div`
     & > div {
         border-radius: 5rem;
         transition: background-color 0.5s ease;
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
         }
     }
 
@@ -119,5 +126,3 @@ const ImgButton = styled.button`
         }
     }
 `
-
-export default AppPreview;

@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Icon} from "@mui/material";
 
-function ButtonToTop() {
+export default function ButtonToTop() {
     const [buttonVisible, setButtonVisible] = useState(false);
 
     const changeButtonVisible = () => {
@@ -50,6 +50,3 @@ const ButtonWrapper = styled.button`
         transition: color 0.5s ease;
     }
 `
-
-
-export default ButtonToTop;

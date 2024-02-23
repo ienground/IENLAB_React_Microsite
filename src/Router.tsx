@@ -14,7 +14,7 @@ import Noticeboard from "./pages/Noticeboard";
 import NoticeDetail from "./pages/noticeboard/NoticeDetail";
 import Error404 from "./pages/Error404";
 
-function Router({darkMode, setDarkMode}: AppProps) {
+export default function Router({darkMode, setDarkMode}: AppProps) {
     return (
         <>
             <ScrollToTop />
@@ -46,5 +46,3 @@ function Router({darkMode, setDarkMode}: AppProps) {
         </>
     );
 }
-
-export default Router;

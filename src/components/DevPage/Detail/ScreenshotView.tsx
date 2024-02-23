@@ -6,7 +6,7 @@ interface ScreenshotViewProps {
     isReverse: boolean
 }
 
-function ScreenshotView({screenshots, isReverse}: ScreenshotViewProps) {
+export default function ScreenshotView({screenshots, isReverse}: ScreenshotViewProps) {
     const result = [];
     for (let i = 0; i < screenshots.length; i++) {
         result.push(
@@ -22,5 +22,3 @@ function ScreenshotView({screenshots, isReverse}: ScreenshotViewProps) {
         </ContentScreenshot>
     );
 }
-
-export default ScreenshotView;

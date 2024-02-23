@@ -1,8 +1,6 @@
 import Header from "../components/Header";
 import Slideshow from "../components/Main/Slideshow";
 import Sidebar from "../components/Sidebar";
-import Contact from "../components/Main/Contact";
-import Noticeboard from "../components/Main/Noticeboard";
 import mainIcon from "../assets/brand/img_logo_typo.png";
 import Footer from "../components/Footer";
 import "../style/main.css"
@@ -12,12 +10,12 @@ import React, {useState} from "react";
 import {AppProps} from "../App";
 import ButtonToTop from "../components/ButtonToTop";
 
-function Post({darkMode, setDarkMode}: AppProps) {
+export default function Post({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
         <>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <TitleWrapper>
                 <Title>
                     <TextTitle>Hello Pretendard Title!</TextTitle>
@@ -28,7 +26,7 @@ function Post({darkMode, setDarkMode}: AppProps) {
             </TitleWrapper>
             <Footer/>
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </>
     )
 }
@@ -65,5 +63,3 @@ const ImgThumbnail = styled.img`
     aspect-ratio: 16 / 9;
     object-fit: contain;
 `
-
-export default Post;

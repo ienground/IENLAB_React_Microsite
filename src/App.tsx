@@ -18,7 +18,7 @@ export interface AppProps {
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function detectMobileDevice(agent: string) {
+export function detectMobileDevice(agent: string) {
     const mobileRegex = [
         /Android/i,
         /iPhone/i,
@@ -31,7 +31,7 @@ function detectMobileDevice(agent: string) {
     return mobileRegex.some(mobile => agent.match(mobile));
 }
 
-function App() {
+export default function App() {
     const initialDarkMode = getBooleanWithExpiry(LocalStorageKey.IS_DARK_MODE, window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     const [darkMode, setDarkMode] = useState(initialDarkMode);
     let theme = darkMode ? dark : light;
@@ -112,5 +112,3 @@ const AppContainer = styled.div`
     margin: 0 auto;
     font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 `;
-
-export default App;

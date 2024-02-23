@@ -15,12 +15,12 @@ import {useNavigate} from "react-router-dom";
 import {appList} from "../data/CommonData";
 import AppPreview from "../components/DevPage/AppPreview";
 
-function DevPage({darkMode, setDarkMode}: AppProps) {
+export default function DevPage({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
         <DevPageWrapper>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <ContentWrapper>
                 {appList.map((category) => (
                     category.content.map((app) => (
@@ -30,7 +30,7 @@ function DevPage({darkMode, setDarkMode}: AppProps) {
             </ContentWrapper>
             <Footer />
             <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
         </DevPageWrapper>
     );
 }
@@ -51,5 +51,3 @@ const ContentWrapper = styled.div`
         grid-template-columns: 1fr;
     }
 `
-
-export default DevPage;

@@ -7,7 +7,7 @@ interface RecentChangeProps {
     changelog: string
 }
 
-function RecentChange({changelog}: RecentChangeProps) {
+export default function RecentChange({changelog}: RecentChangeProps) {
     const [isPrepared, setIsPrepared] = useState(false);
 
     return (
@@ -79,5 +79,3 @@ const TextContent = styled.span`
     font-size: medium;
     align-items: center;
 `
-
-export default RecentChange;

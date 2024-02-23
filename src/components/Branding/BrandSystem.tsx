@@ -12,7 +12,7 @@ import ColorPalette from "./BrandSystem/ColorPalette";
 import {Fade} from "@mui/material";
 import {sleep} from "../../utils/Utils";
 
-function BrandSystem() {
+export default function BrandSystem() {
     const theme = useTheme();
     const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
     // const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
@@ -312,5 +312,3 @@ const TypefaceWrapper = styled.div`
         }
     }
 `
-
-export default BrandSystem;

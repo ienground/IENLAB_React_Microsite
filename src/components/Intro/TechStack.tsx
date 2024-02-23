@@ -13,7 +13,7 @@ import icCss from "../../assets/icon/ic_css.svg";
 import {Spacer} from "../Component";
 import Item from "./TechStack/Item";
 
-function TechStack() {
+export default function TechStack() {
     const techStackList = [
         {
             icon: icAndroid,
@@ -94,5 +94,3 @@ const TechStackWrapper = styled.div`
         margin: 1rem 1rem 0 1rem;
     }
 `
-
-export default TechStack;

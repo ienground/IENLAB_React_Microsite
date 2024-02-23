@@ -19,8 +19,9 @@ import patternColor from "../../assets/brand/pattern_color.png";
 import patternBlack from "../../assets/brand/pattern_black.png";
 import LoremIpsum from "react-lorem-ipsum";
 import TitleSkeleton from "../../components/Noticeboard/NoticeDetail/TitleSkeleton";
+import {TitleBox} from "../../components/Component";
 
-function NoticeDetail({darkMode, setDarkMode}: AppProps) {
+export default function NoticeDetail({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -52,51 +53,106 @@ function NoticeDetail({darkMode, setDarkMode}: AppProps) {
         processing();
     }, []);
 
+    // return (
+    //     <>
+    //         <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+    //         <ContentWrapper>
+    //             <AreaTitle backgroundImage={darkMode ? patternBlack : patternColor}>
+    //                 <div className={"title-wrapper"}>
+    //                     <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => { setIsPrepared(true); } }>
+    //                         <FadeTitleWrapper>
+    //                             <TitleSkeleton />
+    //                         </FadeTitleWrapper>
+    //                     </Fade>
+    //                     <Fade className={"data"} in={(isPrepared && noticeItem !== undefined)}>
+    //                         <FadeTitleWrapper>
+    //                             <div className={"category"}>{noticeItem?.category}</div>
+    //                             <h3 className={"timestamp"}><span>{noticeItem?.create_time?.toLocaleString()}</span></h3>
+    //                             <h1 className={"title"}><span>{noticeItem?.title}</span></h1>
+    //                         </FadeTitleWrapper>
+    //                     </Fade>
+    //                 </div>
+    //             </AreaTitle>
+    //             <InnerContentWrapper>
+    //                 <div className="content-wrapper">
+    //                     <Fade className={"skeleton"} in={!noticeItem}>
+    //                         <div>
+    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
+    //                         </div>
+    //                     </Fade>
+    //                     <Fade className={"data"} in={isPrepared && noticeItem !== undefined}>
+    //                         <div>
+    //                             <Markdown text={noticeItem?.content ? noticeItem.content : ""}/>
+    //                         </div>
+    //                     </Fade>
+    //                 </div>
+    //             </InnerContentWrapper>
+    //         </ContentWrapper>
+    //         <Footer />
+    //         <ButtonToTop />
+    //         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+    //     </>
+    // );
+
     return (
-        <>
-            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-            <ContentWrapper>
-                <AreaTitle backgroundImage={darkMode ? patternBlack : patternColor}>
-                    <div className={"title-wrapper"}>
-                        <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => { setIsPrepared(true); } }>
-                            <FadeTitleWrapper>
+        <Wrapper>
+            <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
+            <div id="wrap">
+                <TitleBox>
+                    <div className="title-wrapper">
+                        <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => setIsPrepared(true)}>
+                            <div>
                                 <TitleSkeleton />
-                            </FadeTitleWrapper>
+                            </div>
                         </Fade>
                         <Fade className={"data"} in={(isPrepared && noticeItem !== undefined)}>
-                            <FadeTitleWrapper>
-                                <div className={"category"}>{noticeItem?.category}</div>
-                                <h3 className={"timestamp"}><span>{noticeItem?.create_time?.toLocaleString()}</span></h3>
-                                <h1 className={"title"}><span>{noticeItem?.title}</span></h1>
-                            </FadeTitleWrapper>
-                        </Fade>
-                    </div>
-                </AreaTitle>
-                <InnerContentWrapper>
-                    <div className="content-wrapper">
-                        <Fade className={"skeleton"} in={!noticeItem}>
                             <div>
-                                <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-                                <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-                                <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-                                <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-                                <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-                            </div>
-                        </Fade>
-                        <Fade className={"data"} in={isPrepared && noticeItem !== undefined}>
-                            <div>
-                                <Markdown text={noticeItem?.content ? noticeItem.content : ""}/>
+                                <div className="category">{noticeItem?.category}</div>
+                                <h3 className="timestamp"><span>{noticeItem?.create_time?.toLocaleString()}</span></h3>
+                                <h1 className="title"><span>{noticeItem?.title}</span></h1>
                             </div>
                         </Fade>
                     </div>
-                </InnerContentWrapper>
-            </ContentWrapper>
-            <Footer />
-            <ButtonToTop />
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
-        </>
+                </TitleBox>
+                <div className="content-wrapper">
+                    <Fade className={"skeleton"} in={!noticeItem}>
+                        <div>
+
+                        </div>
+                    </Fade>
+                    <Fade className={"data"} in={isPrepared && noticeItem !== undefined}>
+                        <div>
+
+                        </div>
+                    </Fade>
+                </div>
+            </div>
+            <Footer/>
+            <ButtonToTop/>
+            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    & > #wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        background-color: black;
+        
+        & > div > .title-wrapper {
+            height: 100%;
+            background-color: red;
+        }
+    }
+    
+`
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -279,5 +335,3 @@ const InnerContentWrapper = styled.div`
         }
     }
 `
-
-export default NoticeDetail;

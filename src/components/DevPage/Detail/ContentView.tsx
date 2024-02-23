@@ -7,7 +7,7 @@ interface ContentViewProps {
     content: string
 }
 
-function ContentView({category, title, content}: ContentViewProps) {
+export default function ContentView({category, title, content}: ContentViewProps) {
     return (
         <ContentSpan titleColor={"#FF4081"}>
             <span className={"category"}>{category}</span>
@@ -16,5 +16,3 @@ function ContentView({category, title, content}: ContentViewProps) {
         </ContentSpan>
     );
 }
-
-export default ContentView;

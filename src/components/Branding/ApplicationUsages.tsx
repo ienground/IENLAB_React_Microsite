@@ -6,7 +6,7 @@ import pinButton from "../../assets/branding/2024/mockup/pin_button.png"
 import pinButton2 from "../../assets/branding/2024/mockup/pin_button2.png"
 import squareSticker from "../../assets/branding/2024/mockup/square_sticker.png"
 
-function ApplicationUsages() {
+export default function ApplicationUsages() {
     return (
         <Wrapper>
             <TextTitle><div className={"number"}><div /><span>02</span></div>Application Usages</TextTitle>
@@ -32,4 +32,3 @@ const Wrapper = styled.div`
         margin: 1rem 1rem 0 1rem;
     }
 `
-export default ApplicationUsages;

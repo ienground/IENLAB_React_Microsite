@@ -17,7 +17,7 @@ import icTistory from "../../assets/icon/ic_tistory_orange.svg"
 import icBehance from "../../assets/icon/ic_behance.svg"
 import Ripples from "react-ripples";
 
-function Contact() {
+export default function Contact() {
     const form = useRef(null)
     const [errorName, setErrorName] = useState(false);
     const [name, setName] = useState("");
@@ -248,8 +248,11 @@ const ButtonWrapper = styled.div`
 
     & > div {
         transition: background-color 0.5s ease;
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
         }
     }
 `
@@ -295,5 +298,3 @@ export const GridContentWrapper = styled.div`
         
     }
 `
-
-export default Contact;

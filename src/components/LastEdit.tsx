@@ -5,7 +5,7 @@ interface LastEditProps {
     link: string
 }
 
-function LastEdit({link}: LastEditProps) {
+export default function LastEdit({link}: LastEditProps) {
     const date = new Date();
     const data = LastEditData.get(link);
 
@@ -36,5 +36,3 @@ const LastEditWrapper = styled.div`
         font-size: x-small;
     }
 `
-
-export default LastEdit;
