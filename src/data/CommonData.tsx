@@ -14,7 +14,7 @@ export const appList = [
                 showIntro: true,
                 page: "/calarm",
                 aosLink: "zone.ien.calarm",
-                iosLink: ""
+                iosLink: "ddd"
             }
         ]
     }

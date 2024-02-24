@@ -31,6 +31,7 @@ export const Spacer = ({orientation, size}: SpacerProps) => {
 export const TitleBox = styled.div`
     width: 100%;
     aspect-ratio: 32 / 9;
+    overflow: hidden;
     animation: Mount-animation 0.5s ease;
 
     @media ${({ theme }) => theme.device.laptop} {

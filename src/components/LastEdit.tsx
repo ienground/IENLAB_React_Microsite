@@ -38,12 +38,14 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 1rem;
     
     & > div {
         max-width: 1440px;
         width: 100%;
         font-style: italic;
         text-align: end;
+        transition: color 0.5s ease;
 
         @media ${({ theme }) => theme.device.pc} {
             width: calc(100% - 2rem);

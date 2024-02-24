@@ -51,6 +51,10 @@ export const light = {
         colorOutline: "#847375",
         colorSurfaceVariant: "#dddddd",
         colorOnSurfaceVariant: "#777777",
+        colorSurfaceReverse: "#202020",
+        colorOnSurfaceReverse: "#e0e0e0",
+        colorSurfaceVariantReverse: "#2a2a2a",
+        colorOnSurfaceVariantReverse: "#a0a0a0",
         colorRed: "#d44c47",
         brand, common
     },
@@ -81,6 +85,10 @@ export const dark = {
         colorOutline: "#9e8c8f",
         colorSurfaceVariant: "#2a2a2a",
         colorOnSurfaceVariant: "#a0a0a0",
+        colorSurfaceReverse: "#f0f0f0",
+        colorOnSurfaceReverse: "#202020",
+        colorSurfaceVariantReverse: "#dddddd",
+        colorOnSurfaceVariantReverse: "#777777",
         colorRed: "#e05355",
         brand, common
     },

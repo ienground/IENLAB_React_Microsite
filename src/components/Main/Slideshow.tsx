@@ -16,7 +16,9 @@ import {useNavigate} from "react-router-dom";
 import {PreviewPhoneWrapper} from "../DevPage/CommonComponent";
 import calarmScreenshot01 from "../../assets/devpage/calarm/screenshot_01.png";
 import calarmScreenshot02 from "../../assets/devpage/calarm/screenshot_02.png";
+import imgProfile from "../../assets/image/img_ienground_profile.jpg";
 import {TitleBox} from "../Component";
+import LoremIpsum from "react-lorem-ipsum";
 
 export default function Slideshow() {
     const theme = useTheme();
@@ -69,7 +71,6 @@ export default function Slideshow() {
                     {/*</div>*/}
                     <TitleBox className={"slide-wrapper"} style={{backgroundImage: `url(${darkMode ? patternBlack : pattern}`}}>
                         <div>
-                            <div></div>
                         </div>
                     </TitleBox>
                     <TitleBox className={"slide-wrapper"} style={{backgroundImage: `url(${imgCalarmPattern}`}}>

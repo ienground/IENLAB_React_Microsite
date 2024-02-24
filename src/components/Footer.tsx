@@ -39,6 +39,7 @@ const Wrapper = styled.footer`
     align-items: center;
     margin-top: 1rem;
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
+    transition: background-color 0.5s ease;
     
     & > div {
         max-width: 1440px;

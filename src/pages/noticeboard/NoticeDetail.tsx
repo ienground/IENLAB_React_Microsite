@@ -208,7 +208,6 @@ const Wrapper = styled.div`
                             -webkit-box-decoration-break: clone;
                             line-height: 2;
                             background-color: ${props => props.theme.colors.colorOnSurface};
-                            
                             transition: background-color 0.5s ease;
                         }
 
@@ -230,6 +229,7 @@ const Wrapper = styled.div`
                             -webkit-box-decoration-break: clone;
                             line-height: 2;
                             background-color: ${props => props.theme.colors.colorOnSurface};
+                            transition: background-color 0.5s ease;
                         }
                     }
                 }

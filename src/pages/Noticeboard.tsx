@@ -46,45 +46,12 @@ export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
         processing();
     }, []);
 
-    // return (
-    //     <>
-    //
-    //         <ContentWrapper>
-    //             <TextTitle>공지사항</TextTitle>
-    //             <div className={"content-wrapper"}>
-    //                 <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
-    //                     <InnerContentWrapper>
-    //                         <NoticePostSkeleton />
-    //                         <NoticePostSkeleton />
-    //                         <NoticePostSkeleton />
-    //                     </InnerContentWrapper>
-    //                 </Fade>
-    //                 <Fade className={"data"} in={isPrepared && noticeList?.length !== 0}>
-    //                     <InnerContentWrapper>
-    //                         {noticeList?.map((post) => (
-    //                             <NoticePost item={post} />
-    //                         ))}
-    //                     </InnerContentWrapper>
-    //                 </Fade>
-    //             </div>
-    //         </ContentWrapper>
-
-    //     </>
-    // );
-
-    useEffect(() => {
-        console.log("isPrepared:" + (isPrepared ? "true" : "false"));
-        console.log("noticeList:" + noticeList);
-    }, [isPrepared, noticeList]);
-
     return (
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id="wrap">
-                <div className="content">
-                    <div className="title">
-                        공지사항
-                    </div>
+                <div>
+                    <div className="title">공지사항</div>
                     <div className="content-wrapper">
                         <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
                             <div>
@@ -117,7 +84,7 @@ const Wrapper = styled.div`
         align-items: center;
         animation: Mount-animation 0.5s ease;
         
-        & > .content {
+        & > div {
             max-width: 1440px;
             width: 100%;
             height: 20rem;
@@ -126,7 +93,7 @@ const Wrapper = styled.div`
             gap: 1rem;
             
             & > .title {
-                width: 20%;
+                width: 30%;
                 position: sticky;
                 top: 6.5rem;
                 z-index: 100;
@@ -136,7 +103,7 @@ const Wrapper = styled.div`
             }
             
             & > .content-wrapper {
-                width: 80%;
+                width: 70%;
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr;

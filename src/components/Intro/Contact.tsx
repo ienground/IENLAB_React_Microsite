@@ -18,7 +18,7 @@ import icBehance from "../../assets/icon/ic_behance.svg"
 import Ripples from "react-ripples";
 
 export default function Contact() {
-    const form = useRef(null)
+    const form = useRef(null);
     const [errorName, setErrorName] = useState(false);
     const [name, setName] = useState("");
     const [errorEmail, setErrorEmail] = useState(false);
@@ -207,7 +207,6 @@ const EmailJsForm = styled.form`
             border-bottom-color: ${props => props.theme.colors.colorError};
         }
     }
-    
 `
 
 const ImgButton = styled.button`
