@@ -984,7 +984,7 @@ const EmailJsForm = styled.form`
         & > .button {
             width: 4rem;
             height: 4rem;
-            border-radius: 50%;
+            border-radius: 10rem;
             overflow: hidden;
             
             & > div {

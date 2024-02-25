@@ -125,7 +125,7 @@ const Wrapper = styled.nav`
 
                 & > div {
                     padding: 1rem;
-                    border-radius: 50%;
+                    border-radius: 10rem;
                     transition: background-color 0.5s ease;
                     @media (hover: hover) and (pointer: fine) {
                         &:hover {
@@ -161,7 +161,7 @@ const Wrapper = styled.nav`
                 & > li.dark-mode {
                     position: absolute;
                     background-color: ${props => props.theme.colors.colorOnSurface}19;
-                    border-radius: 50%;
+                    border-radius: 10rem;
                     transition: background-color 0.5s ease;
                 }
             }

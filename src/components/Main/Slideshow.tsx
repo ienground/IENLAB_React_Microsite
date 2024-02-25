@@ -256,7 +256,7 @@ const Wrapper = styled.div`
 const SlideshowButton = styled.button`
     width: 4rem;
     height: 4rem;
-    border-radius: 50%;
+    border-radius: 10rem;
     background-color: rgba(255, 255, 255, 0.5);
     
     & > span {
@@ -292,7 +292,7 @@ const SlideshowIndicator = styled.button`
     width: 0.5rem;
     height: 0.5rem;
     padding: 0;
-    border-radius: 50%;
+    border-radius: 10rem;
     background-color: white;
     box-shadow: 0 0 10px -0.1rem gray;
     transition: width 0.5s ease, height 0.5s ease;

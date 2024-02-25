@@ -22,6 +22,8 @@ import {useLocation} from "react-router-dom";
 import ScreenshotView from "../../components/DevPage/Detail/ScreenshotView";
 import ContentView from "../../components/DevPage/Detail/ContentView";
 import {Fade, Skeleton} from "@mui/material";
+import {TitleBox} from "../../components/Component";
+import LoremIpsum from "react-lorem-ipsum";
 
 export default function Calarm({darkMode, setDarkMode}: AppProps) {
     const location = useLocation();
@@ -79,6 +81,7 @@ export default function Calarm({darkMode, setDarkMode}: AppProps) {
 
     const appName = "캘람";
     const appDesc = "내 일정을 아는 똑똑한 알람";
+    const appColor = "#464670";
     const contents = [
         {
             category: "알람",
@@ -127,55 +130,177 @@ export default function Calarm({darkMode, setDarkMode}: AppProps) {
         },
     ]
 
+    // return (
+    //     <DevDetailWrapper>
+    //         <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true} darkMode={darkMode} setDarkMode={setDarkMode}/>
+    //         <ImgTitle style={{backgroundImage: darkMode ? `url(${patternBlack})` : `url(${imgCalarmPattern})`}}>
+    //             <ImgTitleSectionLeft>
+    //                 <ImgTitleText>{appName}
+    //                     <div className="version-test-wrapper">
+    //                         <Fade className={"skeleton"} in={versionName === "-"} addEndListener={() => { setIsPrepared(true); }}>
+    //                             <ImgTitleVersionText>
+    //                                 <Skeleton width={40}/>
+    //                             </ImgTitleVersionText>
+    //                         </Fade>
+    //                         <Fade className={"data"} in={isPrepared && versionName !== "-"}>
+    //                             <ImgTitleVersionText>
+    //                                 {versionName}
+    //                             </ImgTitleVersionText>
+    //                         </Fade>
+    //                     </div>
+    //                 </ImgTitleText>
+    //                 <ImgTitleContent>{appDesc}</ImgTitleContent>
+    //             </ImgTitleSectionLeft>
+    //             <GooglePlayDownload packageName={packageName} />
+    //             <PreviewPhoneWrapper className={"title"}>
+    //                 <Slide easing={"ease"} arrows={false}>
+    //                     {screenshots.map((image) => (
+    //                         <div className={"each-slide-effect"}>
+    //                             <SlideshowImage style={{'backgroundImage': `url(${image})`}}/>
+    //                         </div>
+    //                     ))}
+    //                 </Slide>
+    //             </PreviewPhoneWrapper>
+    //         </ImgTitle>
+    //         <AppHeader packageName={packageName} appIcon={icCalarm} appName={appName} appDesc={appDesc} appVersion={versionName}/>
+    //         {contents.map((value, index) => (
+    //             <ContentWrapper>
+    //                 <SafeArea className={index % 2 !== 0 ? "reverse" : ""}>
+    //                     <ScreenshotView screenshots={value.screenshots} isReverse={index % 2 !== 0} />
+    //                     <ContentView category={value.category} title={value.title} content={value.content} />
+    //                 </SafeArea>
+    //             </ContentWrapper>
+    //         ))}
+    //         <RecentChange changelog={changelog} />
+    //         <LastEdit link={location.pathname} />
+    //         <Footer />
+    //         <ButtonToTop />
+    //         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
+    //     </DevDetailWrapper>
+    // );
+
     return (
-        <DevDetailWrapper>
+        <Wrapper>
             <Header className={"app-header"} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} isAppHeaderAvailable={true} darkMode={darkMode} setDarkMode={setDarkMode}/>
-            <ImgTitle style={{backgroundImage: darkMode ? `url(${patternBlack})` : `url(${imgCalarmPattern})`}}>
-                <ImgTitleSectionLeft>
-                    <ImgTitleText>{appName}
-                        <div className="version-test-wrapper">
-                            <Fade className={"skeleton"} in={versionName === "-"} addEndListener={() => { setIsPrepared(true); }}>
-                                <ImgTitleVersionText>
-                                    <Skeleton width={40}/>
-                                </ImgTitleVersionText>
-                            </Fade>
-                            <Fade className={"data"} in={isPrepared && versionName !== "-"}>
-                                <ImgTitleVersionText>
-                                    {versionName}
-                                </ImgTitleVersionText>
-                            </Fade>
-                        </div>
-                    </ImgTitleText>
-                    <ImgTitleContent>{appDesc}</ImgTitleContent>
-                </ImgTitleSectionLeft>
-                <GooglePlayDownload packageName={packageName} />
-                <PreviewPhoneWrapper className={"title"}>
-                    <Slide easing={"ease"} arrows={false}>
-                        {screenshots.map((image) => (
-                            <div className={"each-slide-effect"}>
-                                <SlideshowImage style={{'backgroundImage': `url(${image})`}}/>
+            <div id="wrap">
+                <TitleBox className={"title-wrapper"} style={{backgroundImage: darkMode ? `url(${patternBlack})` : `url(${imgCalarmPattern})`}}>
+                    <div>
+
+                    </div>
+                </TitleBox>
+                <AppHeader packageName={packageName} appIcon={icCalarm} appName={appName} appDesc={appDesc} appVersion={versionName} />
+                {contents.map((value, index) => (
+                    <div className={"content-wrapper" + (index % 2 !== 0 ? " reverse" : "") + (index === 0 ? " top" : "")}>
+                        <div><div>
+                            <div className={"screenshots"}>
+                                {value.screenshots.map((screenshot) => (
+                                    <div style={{backgroundImage: `url(${screenshot})`}}/>
+                                ))}
                             </div>
-                        ))}
-                    </Slide>
-                </PreviewPhoneWrapper>
-            </ImgTitle>
-            <AppHeader packageName={packageName} appIcon={icCalarm} appName={appName} appDesc={appDesc} appVersion={versionName}/>
-            {contents.map((value, index) => (
-                <ContentWrapper>
-                    <SafeArea className={index % 2 !== 0 ? "reverse" : ""}>
-                        <ScreenshotView screenshots={value.screenshots} isReverse={index % 2 !== 0} />
-                        <ContentView category={value.category} title={value.title} content={value.content} />
-                    </SafeArea>
-                </ContentWrapper>
-            ))}
-            <RecentChange changelog={changelog} />
-            <LastEdit link={location.pathname} />
-            <Footer />
-            <ButtonToTop />
+                            <div className={"text"}>
+                                <span className={"category"}>{value.category}</span>
+                                <span className={"title"}>{value.title}</span>
+                                <span className={"content"}>{value.content}</span>
+                            </div>
+                        </div></div>
+                    </div>
+                ))}
+                <LastEdit link={location.pathname}/>
+            </div>
+            <Footer/>
+            <ButtonToTop/>
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-        </DevDetailWrapper>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    & > #wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & > .title-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 985;
+            transition: background-image 0.5s ease;
+            
+            & > div {
+                max-width: 1440px;
+                width: 100%;
+                height: calc(100% - 2rem);
+                padding: 1rem 0;
+                
+                @media ${({ theme }) => theme.device.pc} {
+                    width: calc(100% - 2rem);
+                    padding: 1rem;
+                }
+            }
+        }
+        
+        & > .content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: ${props => props.theme.colors.colorSurfaceVariant};
+            transition: background-color 0.5s ease;
+            
+            &.top {
+                margin-top: 2rem;
+            }
+            
+            & > div {
+                max-width: 1440px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                background-color: skyblue;
+                
+                & > div {
+                    width: 70%;
+                    aspect-ratio: 4 / 3;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    background-color: pink;
+                    
+                    & > .screenshots {
+                        
+                    }
+
+                    & > .text {
+
+                    }
+                }
+            }
+            
+            &.reverse {
+                background-color: ${props => props.theme.colors.colorSurface};
+                & > div > div {
+                    flex-direction: row-reverse;
+                    background-color: hotpink;
+                }
+                
+                & > div {
+                    background-color: deepskyblue;
+                }
+            }
+            
+            @media ${({ theme }) => theme.device.pc} {
+                width: calc(100% - 2rem);
+                padding: 1rem;
+            }
+        }
+    }
+`
 
 const DevDetailWrapper = styled.div`
 `
