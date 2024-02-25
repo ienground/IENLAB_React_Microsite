@@ -182,7 +182,7 @@ const Wrapper = styled.div`
     flex-direction: column;
 
     & > .title {
-        margin: 1rem 0;
+        margin: 2rem 0 1rem 0;
         font-size: xxx-large;
         font-weight: 800;
         word-break: keep-all;
@@ -199,10 +199,7 @@ const Wrapper = styled.div`
         counter-reset: circle 0;
         transition: color 0.5s ease;
         
-        //background-color: red;
-        
         & > li {
-            //position: relative;
             padding-left: 20px;
             text-indent: -20px;
             list-style: decimal;
@@ -296,7 +293,7 @@ const Wrapper = styled.div`
             }
         }
 
-        @media ${({ theme }) => theme.device.laptop} {
+        @media ${({ theme }) => theme.device.netbook} {
             grid-template-columns: repeat(4, 1fr);
         }
 

@@ -60,8 +60,8 @@ const Wrapper = styled.div`
             width: 100%;
             display: flex;
             flex-direction: row;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 2rem;
+            margin-top: 2rem;
             animation: Mount-animation 0.5s ease;
             
             & > .left, & > .right {

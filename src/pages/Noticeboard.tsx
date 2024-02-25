@@ -87,13 +87,12 @@ const Wrapper = styled.div`
         & > div {
             max-width: 1440px;
             width: 100%;
-            height: 20rem;
             display: flex;
             flex-direction: row;
-            gap: 1rem;
+            gap: 2rem;
             
             & > .title {
-                width: 30%;
+                width: 20%;
                 position: sticky;
                 top: 6.5rem;
                 z-index: 100;
@@ -103,7 +102,7 @@ const Wrapper = styled.div`
             }
             
             & > .content-wrapper {
-                width: 70%;
+                width: 80%;
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr;
@@ -111,9 +110,17 @@ const Wrapper = styled.div`
                 & > div {
                     grid-row: 1;
                     grid-column: 1;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
+                    height: fit-content;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-auto-rows: 1fr;
+                    column-gap: 1rem;
+                    row-gap: 1rem;
+                    
+                    @media ${({ theme }) => theme.device.tablet} {
+                        grid-template-columns: 1fr;
+                        grid-auto-rows: initial;
+                    }
                 }
                 
                 & > .skeleton {

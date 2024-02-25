@@ -219,7 +219,7 @@ const Wrapper = styled.div`
                     column-gap: 1rem;
                     row-gap: 1rem;
 
-                    @media ${({ theme }) => theme.device.laptop} {
+                    @media ${({ theme }) => theme.device.netbook} {
                         grid-template-columns: 1fr 1fr;
                     }
 
@@ -260,7 +260,7 @@ const Wrapper = styled.div`
                     padding: 0 1rem;
                 }
 
-                @media ${({ theme }) => theme.device.laptop} {
+                @media ${({ theme }) => theme.device.netbook} {
                     grid-template-columns: 1fr 2px 2fr;
                 }
 

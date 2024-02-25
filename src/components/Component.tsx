@@ -30,11 +30,17 @@ export const Spacer = ({orientation, size}: SpacerProps) => {
 
 export const TitleBox = styled.div`
     width: 100%;
+    height: 405px;
     aspect-ratio: 32 / 9;
     overflow: hidden;
     animation: Mount-animation 0.5s ease;
+    
+    @media ${({ theme }) => theme.device.pc} {
+        height: auto;
+        aspect-ratio: 32 / 9;
+    }
 
-    @media ${({ theme }) => theme.device.laptop} {
+    @media ${({ theme }) => theme.device.netbook} {
         aspect-ratio: 21 / 9;
     }
 
@@ -44,5 +50,9 @@ export const TitleBox = styled.div`
 
     @media ${({ theme }) => theme.device.mobile} {
         aspect-ratio: 9 / 16;
+        
+        &.mobile-free {
+            aspect-ratio: initial;
+        }
     }
 `

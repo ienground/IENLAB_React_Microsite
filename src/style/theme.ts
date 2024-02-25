@@ -1,11 +1,7 @@
-import {alpha, createTheme, getContrastRatio} from "@mui/material";
-
-// const pinkBase = "#FF4081";
-// const violetBase = "#7C4DFF";
-
 const deviceSizes = {
     mobile: 500,
     tablet: 768,
+    netbook: 1024,
     laptop: 1280,
     pc: 1440
 };
@@ -23,6 +19,7 @@ const common = {
 const device = {
     mobile: `screen and (max-width: ${deviceSizes.mobile}px)`,
     tablet: `screen and (max-width: ${deviceSizes.tablet}px)`,
+    netbook: `screen and (max-width: ${deviceSizes.netbook}px)`,
     laptop: `screen and (max-width: ${deviceSizes.laptop}px)`,
     pc: `screen and (max-width: calc(${deviceSizes.pc}px + 2rem))`,
 };
@@ -51,11 +48,9 @@ export const light = {
         colorOutline: "#847375",
         colorSurfaceVariant: "#dddddd",
         colorOnSurfaceVariant: "#777777",
-        colorSurfaceReverse: "#202020",
-        colorOnSurfaceReverse: "#e0e0e0",
-        colorSurfaceVariantReverse: "#2a2a2a",
-        colorOnSurfaceVariantReverse: "#a0a0a0",
         colorRed: "#d44c47",
+        colorWhite: "#FFFFFF",
+        colorBlack: "#000000",
         brand, common
     },
     device
@@ -85,11 +80,9 @@ export const dark = {
         colorOutline: "#9e8c8f",
         colorSurfaceVariant: "#2a2a2a",
         colorOnSurfaceVariant: "#a0a0a0",
-        colorSurfaceReverse: "#f0f0f0",
-        colorOnSurfaceReverse: "#202020",
-        colorSurfaceVariantReverse: "#dddddd",
-        colorOnSurfaceVariantReverse: "#777777",
         colorRed: "#e05355",
+        colorWhite: "#000000",
+        colorBlack: "#FFFFFF",
         brand, common
     },
     device

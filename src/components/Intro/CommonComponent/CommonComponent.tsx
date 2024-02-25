@@ -1,54 +1,5 @@
 import styled from "styled-components";
 
-export const Ahref = styled.a`
-    display: block;
-    position: relative;
-    padding: 0 0 0.2rem 0;
-    text-decoration: none;
-    overflow: hidden;
-    width: fit-content;
-    block-size: fit-content;
-    
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 0.2em;
-        background-color: ${props => props.theme.colors.colorOnSurface};
-        transition: opacity 300ms, transform 300ms;
-        opacity: 1;
-        transform: translate3d(-100%, 0, 0);
-    }
-    
-    &:focus::after {
-        transform: translate3d(0, 0, 0);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        &:hover::after {
-            transition: translate3d(0, 0, 0);
-        }
-    }
-`
-
-export const TextTitle = styled.span`
-    width: 15%;
-    font-weight: bolder;
-    font-size: 3vmax;
-    position: sticky;
-    top: 6.5rem;
-    z-index: 100;
-
-    @media ${({ theme }) => theme.device.mobile} {
-        width: 100%;
-        position: relative;
-        font-size: xxx-large;
-        top: 0;
-    }
-`
-
 export const TextContentTitle = styled.span<{fontWeight?: string, letterSpacing?: string}>`
     font-weight: ${props => props.fontWeight ? props.fontWeight : 'bold'};
     font-size: xxx-large;

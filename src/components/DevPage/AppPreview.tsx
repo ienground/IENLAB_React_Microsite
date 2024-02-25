@@ -15,114 +15,149 @@ interface AppPreviewProps {
 export default function AppPreview({app}: AppPreviewProps) {
     const navigate = useNavigate();
 
+    // return (
+    //     <HeaderWrapper onClick={() => navigate(app.page)}>
+    //         <ImgHeader src={app.background} />
+    //         <BoxButtonWrapper>
+    //             <InnerBoxWrapper>
+    //                 <ImgIcon src={app.icon} />
+    //                 <Spacer orientation={"vertical"} size={"1rem"} />
+    //                 <TextContentTitle className={"black background"}>{app.title}</TextContentTitle><br />
+    //                 <TextContentContent fontWeight={"normal"} className={"black medium"}>{app.content}</TextContentContent>
+    //             </InnerBoxWrapper>
+    //             <ButtonLinkWrapper>
+    //                 <Ripples placeholder={"web"}><ImgButton onClick={() => navigate(app.page)}><Icon baseClassName={"material-icons-round"}>language</Icon></ImgButton></Ripples>
+    //                 {app.aosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}} /></Ripples> : <></>}
+    //                 {app.iosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}} /></Ripples> : <></>}
+    //             </ButtonLinkWrapper>
+    //         </BoxButtonWrapper>
+    //     </HeaderWrapper>
+    // );
+
     return (
-        <HeaderWrapper onClick={() => navigate(app.page)}>
-            <ImgHeader src={app.background} />
-            <BoxButtonWrapper>
-                <InnerBoxWrapper>
-                    <ImgIcon src={app.icon} />
-                    <Spacer orientation={"vertical"} size={"1rem"} />
-                    <TextContentTitle className={"black background"}>{app.title}</TextContentTitle><br />
-                    <TextContentContent fontWeight={"normal"} className={"black medium"}>{app.content}</TextContentContent>
-                </InnerBoxWrapper>
-                <ButtonLinkWrapper>
-                    <Ripples placeholder={"web"}><ImgButton onClick={() => navigate(app.page)}><Icon baseClassName={"material-icons-round"}>language</Icon></ImgButton></Ripples>
-                    {app.aosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}} /></Ripples> : <></>}
-                    {app.iosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}} /></Ripples> : <></>}
-                </ButtonLinkWrapper>
-            </BoxButtonWrapper>
-        </HeaderWrapper>
+        <Wrapper onClick={() => navigate(app.page)}>
+            <img src={app.background}/>
+            <div>
+                <div className={"info"}>
+                    <img src={app.icon}/>
+                    <div className="title">{app.title}</div>
+                    <div className="content">{app.content}</div>
+                </div>
+                <div className={"buttons"}>
+                    <Ripples placeholder={"web"}>
+                        <button onClick={() => navigate("/calarm")}>
+                            <Icon baseClassName={"material-icons-round"}>language</Icon></button>
+                    </Ripples>
+                    {app.aosLink !== "" ? <Ripples placeholder={"store"}>
+                        <button onClick={() => window.location.href = `https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}}/>
+                    </Ripples> : <></>}
+                    {app.iosLink !== "" ? <Ripples placeholder={"store"}>
+                        <button onClick={() => window.location.href = `https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}}/>
+                    </Ripples> : <></>}
+                </div>
+            </div>
+        </Wrapper>
     );
 }
 
-const HeaderWrapper = styled.div`
+const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: ${props => props.theme.colors.colorSurfaceVariant};
-    border-radius: 1rem;
+    padding: 0;
     overflow: hidden;
-    transition: background-color 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    border-radius: 1rem;
+    background-color: ${props => props.theme.colors.colorSurfaceVariant};
 
-    & > div > :first-child {
-        background-color: transparent;
-        border-radius: 0;
-        flex: 1;
-
-        @media (hover: hover) and (pointer: fine) {
-            &:hover {
-                transform: none;
-                box-shadow: none;
-            }
-        }
+    & img {
+        max-width: none;
+        max-height: none;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        &:hover {
-            transform: translateY(-0.5rem);
-            box-shadow: 0 0 40px -0.5rem black;
-        }
+    & > img {
+        width: 100%;
     }
-`
-
-const BoxButtonWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-`
-
-const ButtonLinkWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-    margin-top: auto;
 
     & > div {
-        border-radius: 5rem;
-        transition: background-color 0.5s ease;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem;
 
-        @media (hover: hover) and (pointer: fine) {
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.1);
+        & > .info {
+
+            & > img {
+                width: 4rem;
+            }
+
+            & > .title {
+                margin-top: 1rem;
+                font-weight: 700;
+                font-size: xx-large;
+                color: ${props => props.theme.colors.colorOnSurface};
+                transition: color 0.5s ease;
+            }
+
+            & > .content {
+                margin-top: 0.5rem;
+                font-size: medium;
+                font-weight: 400;
+                color: ${props => props.theme.colors.colorOnSurface};
+                transition: color 0.5s ease;
             }
         }
-    }
 
-    @media ${({ theme }) => theme.device.tablet} {
-        flex-direction: column;
-        padding: 0.5rem;
-    }
-`
+        & > .buttons {
+            height: fit-content;
+            display: flex;
+            flex-direction: row;
+            margin-top: auto;
 
-const ImgHeader = styled.img`
-    width: 100%;
-    border-radius: 0 0 1rem 1rem;
-`
+            & > div {
+                border-radius: 5rem;
+                transition: background-color 0.5s ease;
 
-const ImgButton = styled.button`
-    width: 2rem;
-    height: 2rem;
-    position: relative;
-    background-color: transparent;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 1rem;
+                @media (hover: hover) and (pointer: fine) {
+                    &:hover {
+                        background-color: rgba(0, 0, 0, 0.1);
+                    }
+                }
+                
+                & > button {
+                    width: 2rem;
+                    height: 2rem;
+                    position: relative;
+                    margin: 1rem;
+                    background-color: transparent;
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
 
-    & > span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        font-size: 2rem;
-        transition: color 0.5s ease;
-        color: ${props => props.theme.colors.colorOnSurface};
-    }
+                    & > span {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        font-size: 2rem;
+                        transition: color 0.5s ease;
+                        color: ${props => props.theme.colors.colorOnSurface};
+                    }
 
-    @media ${({ theme }) => theme.device.mobile} {
-        width: 1rem;
-        height: 1rem;
-        margin: 0.5rem;
-        
-        & > span {
-            font-size: 1rem;
+                    @media ${({ theme }) => theme.device.laptop} {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        margin: 0.5rem;
+
+                        & > span {
+                            font-size: 1.5rem;
+                        }
+                    }
+                }
+            }
+            
+            @media ${({ theme }) => theme.device.laptop} {
+                flex-direction: column;
+                align-items: start;
+                margin-top: 0;
+            }
         }
     }
 `

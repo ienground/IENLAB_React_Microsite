@@ -14,17 +14,17 @@ interface AppHeaderProp {
 
 export default function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
-    const appHeaderRef = useRef<HTMLDivElement | null>(null);
     const theme = useTheme();
     const isMobile = window.matchMedia(theme.device.mobile).matches;
 
     const scrollListener = () => {
-        let headerY = appHeaderRef.current?.getBoundingClientRect().y;
+        let app_header = document.querySelector("#app-header")
+        let headerY = app_header?.getBoundingClientRect().y;
         if (headerY) {
             if (headerY <= convertRemToPixels(4.5)) {
-                document.querySelector(".bottom-line")?.classList.add("visible-line");
+                app_header?.classList.add("visible-shadow");
             } else {
-                document.querySelector(".bottom-line")?.classList.remove("visible-line");
+                app_header?.classList.remove("visible-shadow");
             }
         }
     }
@@ -33,25 +33,93 @@ export default function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
         window.addEventListener('scroll', scrollListener);
     }, []);
 
+    // return (
+    //     <AppHeaderWrapper ref={appHeaderRef}>
+    //         <InnerWrapper>
+    //             <Area>
+    //                 <ImgAppIcon src={isMobile ? shortIcon : icon} />
+    //                 <TextTitle>{title}</TextTitle>
+    //                 {/*<ImgTitleVersionText>{appVersion}</ImgTitleVersionText>*/}
+    //             </Area>
+    //             <Area>
+    //                 {/*<StoreButton onClick={() => window.location.href='https://play.google.com/store/apps/details?id=' + packageName}>*/}
+    //                 {/*    <img src={icPlayStore} />*/}
+    //                 {/*    <span>설치</span>*/}
+    //                 {/*</StoreButton>*/}
+    //             </Area>
+    //         </InnerWrapper>
+    //         <BottomLine className={"bottom-line"}/>
+    //     </AppHeaderWrapper>
+    // );
+
     return (
-        <AppHeaderWrapper ref={appHeaderRef}>
-            <InnerWrapper>
-                <Area>
-                    <ImgAppIcon src={isMobile ? shortIcon : icon} />
-                    <TextTitle>{title}</TextTitle>
-                    {/*<ImgTitleVersionText>{appVersion}</ImgTitleVersionText>*/}
-                </Area>
-                <Area>
-                    {/*<StoreButton onClick={() => window.location.href='https://play.google.com/store/apps/details?id=' + packageName}>*/}
-                    {/*    <img src={icPlayStore} />*/}
-                    {/*    <span>설치</span>*/}
-                    {/*</StoreButton>*/}
-                </Area>
-            </InnerWrapper>
-            <BottomLine className={"bottom-line"}/>
-        </AppHeaderWrapper>
+        <Wrapper id={"app-header"} icon={icon} shortIcon={shortIcon}>
+            <div>
+                <div>
+                    <img />
+                    <div>{title}</div>
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div<{icon: string, shortIcon: string}>`
+    width: 100%;
+    height: 4rem;
+    margin-top: calc(-4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 4.5rem;
+    background-color: ${props => props.theme.colors.colorSurface};
+    z-index: 980;
+    transition: box-shadow 0.5s ease;
+    animation: Mount-animation-header 1s ease;
+    
+    &.visible-shadow {
+        box-shadow: 0 0 30px -1rem black;
+    }
+    
+    & > div {
+        max-width: 1440px;
+        width: 100%;
+        height: 100%;
+
+        & > div {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: center;
+
+            & > img {
+                height: 2rem;
+                content: url("${props => props.icon}");
+            }
+
+            & > div {
+                font-weight: 700;
+                font-size: x-large;
+            }
+        }
+        
+        @media ${({ theme }) => theme.device.pc} {
+            width: calc(100% - 2rem);
+            padding: 0 1rem;
+        }
+        
+        @media ${({ theme }) => theme.device.mobile} {
+            & > div > img {
+                content: url("${props => props.shortIcon}");
+            }
+        }
+    }
+`
 
 const BottomLine = styled.div`
     width: 40%;

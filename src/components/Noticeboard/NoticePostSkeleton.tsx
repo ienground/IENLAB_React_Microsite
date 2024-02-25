@@ -28,6 +28,7 @@ const Wrapper = styled.div`
         color: ${props => props.theme.colors.colorOnSurface};
         transition: color 0.5s ease;
     }
+    
     & > .category {
         width: fit-content;
         padding: 0.5rem 1rem;

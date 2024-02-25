@@ -40,7 +40,7 @@ export default function BrandSystem() {
         },
         {
             title: "Neptunian Blue",
-            rgb: { red: 63, green : 81, blue: 81 },
+            rgb: { red: 63, green : 81, blue: 181 },
             cmyk: { cyan: 83, magenta: 72, yellow: 0, black: 0 },
             code: theme.colors.brand.blue
         },

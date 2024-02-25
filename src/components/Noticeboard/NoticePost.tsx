@@ -16,7 +16,6 @@ export default function NoticePost({item}: NoticePostProps) {
 
 const Wrapper = styled.button`
     width: 100%;
-    height: fit-content;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -40,6 +39,7 @@ const Wrapper = styled.button`
     }
     
     & > .title {
+        margin-top: auto;
         font-weight: 700;
         font-size: xx-large;
     }

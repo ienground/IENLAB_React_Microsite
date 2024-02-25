@@ -19,24 +19,85 @@ export default function DevPage({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <DevPageWrapper>
+        <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
-            <ContentWrapper>
-                {appList.map((category) => (
-                    category.content.map((app) => (
-                        <AppPreview app={app} />
-                    ))
-                ))}
-            </ContentWrapper>
-            <Footer />
-            <ButtonToTop />
+            <div id="wrap">
+                <div>
+                    <div className="title">프로젝트</div>
+                    <div className="content-wrapper">
+                        {appList.map((category) => (
+                            category.content.map((app) => (
+                                <AppPreview app={app}/>
+                            ))
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <Footer/>
+            <ButtonToTop/>
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-        </DevPageWrapper>
+        </Wrapper>
     );
 }
 
-const DevPageWrapper = styled.div`
-    
+const Wrapper = styled.div`
+    & > #wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: Mount-animation 0.5s ease;
+        
+        & > div {
+            max-width: 1440px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+
+            & > .title {
+                width: 20%;
+                position: sticky;
+                top: 6.5rem;
+                z-index: 100;
+                font-weight: 800;
+                font-size: xxx-large;
+                transition: color 0.5s ease;
+            }
+
+            & > .content-wrapper {
+                width: 80%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-auto-rows: 1fr;
+                column-gap: 1rem;
+                row-gap: 1rem;
+                animation: Mount-animation 0.5s ease;
+                
+                @media ${({ theme }) => theme.device.tablet} {
+                    grid-template-columns: 1fr;
+                    grid-auto-rows: initial;
+                }
+            }
+            
+            @media ${({ theme }) => theme.device.pc} {
+                width: calc(100% - 2rem);
+                padding: 0 1rem;
+            }
+            
+            @media ${({ theme }) => theme.device.tablet} {
+                flex-direction: column;
+            
+                & > .title {
+                    width: 100%;
+                    position: initial;
+                }
+                
+                & > .content-wrapper {
+                    width: 100%;
+                }
+            }
+        }
+    }
 `
 
 const ContentWrapper = styled.div`
@@ -45,7 +106,6 @@ const ContentWrapper = styled.div`
     grid-template-columns: 1fr 1fr;
     column-gap: 1rem;
     row-gap: 1rem;
-    animation: Mount-animation 0.5s ease;
 
     @media ${({ theme }) => theme.device.mobile} {
         grid-template-columns: 1fr;

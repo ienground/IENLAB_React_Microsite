@@ -4,10 +4,6 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
-import RecentProject from "../components/Intro/RecentProject";
-import AboutMe from "../components/Intro/AboutMe";
-import TechStack from "../components/Intro/TechStack";
-import Contact from "../components/Intro/Contact";
 import {Spacer, TitleBox} from "../components/Component";
 import ButtonToTop from "../components/ButtonToTop";
 import LastEdit from "../components/LastEdit";
@@ -151,18 +147,32 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id="wrap">
-                <TitleBox className={"title-wrapper" + (darkMode ? " dark" : "")}>
+                <TitleBox className={"mobile-free title-wrapper" + (darkMode ? " dark" : "")}>
                     <div>
-                        <img src={imgProfile}/>
-                        <div>
-                            <h1>안녕하세요👋<br /><span>아이엔 IENGROUND</span> 입니다.</h1>
-                            <span><span className={"bold black"}>저</span>와 <span className={"bold black"}>다른 사람</span>이 <span className={"bold black"}>필요한 것</span>에 관심을 가지고 <span className={"red underline bold"}>만드는 것</span>을 좋아합니다. <span className={"red underline bold"}>간단한 것</span>이 최고라는 마음 아래, 생활 속 불편함을 해결하기 위한 다양한 시도를 하고 있습니다.</span>
-                            <div className={"bio"}>
-                                <div>이현우</div>
-                                <a href={"tel:010-4815-7296"}>010-4815-7296</a>
-                                <a href={"mailto:my@ien.zone"}>my@ien.zone</a>
+                        <div className={"left"}>
+                            <img src={imgProfile}/>
+                            <div>
+                                <div className={"title"}>이현우</div>
+                                <div className={"contact"}>
+                                    <a href={"tel:010-4815-7296"}>
+                                        <div>010-4815-7296</div>
+                                    </a>
+                                    <a href={"mailto:my@ien.zone"}>
+                                        <div>my@ien.zone</div>
+                                    </a>
+                                </div>
                             </div>
-                            <div className={"skill"}>
+                        </div>
+                        <div className={"right"}>
+                            <div className={"top"}>
+                                <h1>안녕하세요👋<br/><span>아이엔 IENGROUND</span> 입니다.</h1>
+                            </div>
+                            <div className={"center"}>
+                                <div>
+                                    <span><span className={"bold black"}>저</span>와 <span className={"bold black"}>다른 사람</span>이 <span className={"bold black"}>필요한 것</span>에 관심을 가지고 <span className={"red underline bold"}>만드는 것</span>을 좋아합니다. <span className={"red underline bold"}>간단한 것</span>이 최고라는 마음 아래, 생활 속 불편함을 해결하기 위한 다양한 시도를 하고 있습니다.</span>
+                                </div>
+                            </div>
+                            <div className="bottom">
                                 <div>
                                     <div>
                                         <img src={icAndroid}/>
@@ -172,19 +182,17 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                                 </div>
                                 <div>
                                     <div>
-                                        <img src={icPhotoshop}/>
                                         <img src={icIllustrator}/>
-                                        <img src={icFigma}/>
                                     </div>
-                                    <span className="title">그래픽, UI·UX 디자인</span>
+                                    <span className="title">그래픽 디자인</span>
                                     <span className="description">2016년부터</span>
                                 </div>
                                 <div>
                                     <div>
                                         <img src={icSogang}/>
                                     </div>
-                                    <span className="title">서강대학교 <span className={"small"}>아트&테크놀로지학과</span></span>
-                                    <span className="description">2020학년도 입학 / 컴퓨터공학과 복수전공</span>
+                                    <span className="title">서강대학교</span>
+                                    <span className="description">아트&테크놀로지 20</span>
                                 </div>
                             </div>
                         </div>
@@ -297,8 +305,8 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                         </div>
                     </div>
                 </div>
+                <LastEdit link={location.pathname} />
             </div>
-            <LastEdit link={location.pathname} />
             <ButtonToTop />
             <Footer />
             <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
@@ -319,13 +327,8 @@ const Wrapper = styled.div`
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            //background-image: url(${patternColor});
-            background-color: ${props => props.theme.colors.colorSurfaceReverse};
-            transition: background-image 0.5s ease, background-color 0.5s ease;
-            
-            &.dark {
-                //background-image: url(${patternBlack});
-            }
+            background-color: ${props => props.theme.colors.colorSurfaceVariant};
+            transition: background-color 0.5s ease;
             
             & > div {
                 max-width: 1440px;
@@ -338,151 +341,260 @@ const Wrapper = styled.div`
                 backdrop-filter: blur(10px);
                 overflow: hidden;
                 
-                & > img {
+                & > .left {
+                    width: 20%;
+                    position: relative;
                     border-radius: 1rem;
-                    height: 100%;
-                }
-                
-                & > div {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
+                    overflow: hidden;
                     
-                    & > h1 {
-                        font-weight: 700;
-                        font-size: xxx-large;
-                        word-break: break-all;
-                        color: ${props => props.theme.colors.colorOnSurfaceVariantReverse};
-                        transition: color 0.5s ease;
-
-                        & > span {
-                            padding: 0 0.5rem;
-                            box-decoration-break: clone;
-                            -webkit-box-decoration-break: clone;
-                            line-height: 1.4;
-                            color: ${props => props.theme.colors.colorOnSurface};
-                            background-color: ${props => props.theme.colors.colorSurface};
-                            transition: background-color 0.5s ease;
-                        }
+                    & > img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
                     }
                     
-                    & > span {
-                        margin-top: 1rem;
-                        font-size: xx-large;
-                        line-height: 1.3;
-                        color: ${props => props.theme.colors.colorOnSurfaceVariantReverse};
-                        transition: color 0.5s ease;
-                        
-                        & > span {
+                    & > div {
+                        width: calc(100% - 2rem);
+                        position: absolute;
+                        bottom: 0;
+                        padding: 1rem;
+                        backdrop-filter: blur(10px);
+
+                        & > .title {
+                            margin-bottom: 1rem;
+                            font-weight: 800;
+                            font-size: xx-large;
+                            letter-spacing: -2px;
+                            color: black;
                             transition: color 0.5s ease;
                         }
-                        
-                        & > .bold {
-                            font-weight: 700;
-                        }
-                        
-                        & > .black {
-                            color: ${props => props.theme.colors.colorSurface};
-                        }
-                        
-                        & > .red {
-                            color: ${props => props.theme.colors.colorRed};
-                        }
-                        
-                        & > .underline {
-                            text-decoration: underline;
-                            text-underline-position: under;
-                        }
-                    }
-                    
-                    & > div.bio {
-                        color: ${props => props.theme.colors.colorOnSurfaceReverse};
-                        transition: color 0.5s ease;
-                        margin-top: auto;
-                        
-                        & > a {
-                            display: block;
-                            position: relative;
-                            padding: 0 0 0.2rem 0;
-                            text-decoration: none;
-                            overflow: hidden;
-                            width: fit-content;
-                            block-size: fit-content;
 
-                            &::after {
-                                content: '';
-                                position: absolute;
-                                bottom: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 0.2em;
-                                background-color: ${props => props.theme.colors.colorOnSurface};
-                                transition: opacity 300ms, transform 300ms;
-                                opacity: 1;
-                                transform: translate3d(-100%, 0, 0);
-                            }
+                        & > .contact {
+                            & > a {
+                                display: block;
+                                position: relative;
+                                padding: 0 0 0.2rem 0;
+                                text-decoration: none;
+                                overflow: hidden;
+                                width: fit-content;
+                                block-size: fit-content;
 
-                            &:focus::after {
-                                transform: translate3d(0, 0, 0);
-                            }
+                                & > div {
+                                    font-weight: 700;
+                                    font-size: medium;
+                                    letter-spacing: -1px;
+                                    line-height: 1.3;
+                                    color: black;
+                                    transition: color 0.5s ease;
+                                }
 
-                            @media (hover: hover) and (pointer: fine) {
-                                &:hover::after {
-                                    transition: translate3d(0, 0, 0);
+                                &::after {
+                                    content: '';
+                                    position: absolute;
+                                    bottom: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 2px;
+                                    background-color: black;
+                                    transition: opacity 300ms, transform 300ms;
+                                    opacity: 1;
+                                    transform: translate3d(-100%, 0, 0);
+                                }
+
+                                &:focus::after {
+                                    transform: translate3d(0, 0, 0);
+                                }
+
+                                @media (hover: hover) and (pointer: fine) {
+                                    &:hover::after {
+                                        transform: translate3d(0, 0, 0);
+                                    }
                                 }
                             }
                         }
                     }
                     
-                    & > div.skill {
+                    @media ${({ theme }) => theme.device.netbook} {
+                        width: 40%;
+                    }
+                }
+                
+                & > .right {
+                    width: 80%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    
+                    & > .top {
+                        & > h1 {
+                            font-weight: 700;
+                            font-size: xxx-large;
+                            word-break: break-all;
+                            color: ${props => props.theme.colors.colorOnSurfaceVariant};
+                            transition: color 0.5s ease;
+
+                            & > span {
+                                padding: 0 0.5rem;
+                                box-decoration-break: clone;
+                                -webkit-box-decoration-break: clone;
+                                line-height: 1.4;
+                                color: ${props => props.theme.colors.colorSurface};
+                                background-color: ${props => props.theme.colors.colorOnSurface};
+                                transition: background-color 0.5s ease, color 0.5s ease;
+                            }
+                            
+                            @media ${({ theme }) => theme.device.pc} {
+                                font-size: xx-large;
+                            }
+                            
+                            @media ${({ theme }) => theme.device.tablet} {
+                                font-size: x-large;
+                            }
+                            
+                            @media ${({ theme }) => theme.device.mobile} {
+                                font-size: xx-large;
+                                word-break: keep-all;
+                            }
+                        }
+                    }
+                    
+                    & > .center {
+                        width: 100%;
+                        height: fit-content;
                         display: flex;
                         flex-direction: row;
                         gap: 1rem;
-                        margin-top: 1rem;
+                        
+                        & > div {
+                            & > span {
+                                margin-top: 1rem;
+                                font-size: xx-large;
+                                line-height: 1.3;
+                                color: ${props => props.theme.colors.colorOnSurfaceVariant};
+                                transition: color 0.5s ease;
+
+                                & > span {
+                                    transition: color 0.5s ease;
+                                }
+
+                                & > .bold {
+                                    font-weight: 700;
+                                }
+
+                                & > .black {
+                                    color: ${props => props.theme.colors.colorOnSurface};
+                                }
+
+                                & > .red {
+                                    color: ${props => props.theme.colors.colorRed};
+                                }
+
+                                & > .underline {
+                                    text-decoration: underline;
+                                    text-underline-position: under;
+                                }
+                                
+                                @media ${({ theme }) => theme.device.pc} {
+                                    font-size: x-large;
+                                }
+                                
+                                @media ${({ theme }) => theme.device.netbook} {
+                                    font-size: medium;
+                                }
+                            }
+                        }
+                    }
+
+                    & > .bottom {
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        column-gap: 1rem;
+                        row-gap: 1rem;
+                        margin-top: auto;
                         
                         & > div {
                             display: flex;
                             flex-direction: column;
-                            padding: 1rem;
+                            position: relative;
+                            background-color: ${props => props.theme.colors.colorSurface};
                             border-radius: 1rem;
-                            background-color: ${props => props.theme.colors.colorSurfaceVariantReverse};
+                            overflow: hidden;
+                            padding: 1rem;
                             transition: background-color 0.5s ease;
-                            
+
                             & > div {
                                 display: flex;
                                 flex-direction: row;
-                                gap: 1rem;
+                                gap: 0.5rem;
+                                position: absolute;
+                                left: -0.5rem;
+                                bottom: -1rem;
+                                opacity: 0.3;
                                 
+                                z-index: 300;
+
                                 & > img {
-                                    height: 2rem;
+                                    height: 5rem;
                                 }
                             }
-                            
+
                             & > span {
-                                color: ${props => props.theme.colors.colorOnSurfaceReverse};
+                                color: ${props => props.theme.colors.colorOnSurface};
+                                z-index: 301;
                                 transition: color 0.5s ease;
                             }
-                            
+
                             & > span.title {
-                                margin-top: 0.5rem;
                                 font-weight: 700;
                                 font-size: x-large;
-                                
+                                word-break: break-all;
+
                                 & > span.small {
                                     font-size: smaller;
                                 }
-                            }
-                            
-                            & > span.description {
                                 
+                                @media ${({ theme }) => theme.device.netbook} {
+                                    font-size: large;
+                                }
+                            }
+
+                            & > span.description {
+                                margin-top: auto;
+                                font-size: small;
                             }
                         }
+                        
+                        @media ${({ theme }) => theme.device.netbook} {
+                            grid-template-columns: 1fr 1fr;
+                        }
+                    }
+                    
+                    @media ${({ theme }) => theme.device.netbook} {
+                        width: 60%;
                     }
                 }
-
+                
                 @media ${({ theme }) => theme.device.pc} {
                     width: calc(100% - 2rem);
                     padding: 1rem;
+                }
+
+                @media ${({ theme }) => theme.device.mobile} {
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+                    padding: 0;
+                    
+                    & > .left {
+                        width: 100%;
+                        border-radius: 0;
+                    }
+                    
+                    & > .right {
+                        width: calc(100% - 2rem);
+                        height: calc(100% - 1rem);
+                        padding: 0 1rem 1rem 1rem;
+                    }
                 }
             }
         }
@@ -493,11 +605,11 @@ const Wrapper = styled.div`
             display: flex;
             flex-direction: row;
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 2rem;
             animation: Mount-animation 0.5s ease;
             
             & > .title {
-                width: 30%;
+                width: 20%;
                 height: fit-content;
                 position: sticky;
                 top: 5.5rem;
@@ -506,10 +618,19 @@ const Wrapper = styled.div`
                 overflow: hidden;
                 color: ${props => props.theme.colors.colorOnSurface};
                 transition: color 0.5s ease;
+                
+                @media ${({ theme }) => theme.device.netbook} {
+                    width: 40%;
+                }
+                
+                @media ${({ theme }) => theme.device.mobile} {
+                    width: 100%;
+                    position: initial;
+                }
             }
             
             & > .content {
-                width: 70%;
+                width: 80%;
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
@@ -521,8 +642,10 @@ const Wrapper = styled.div`
                     gap: 1rem;
                     
                     & > .title {
-                        width: calc(200% / 7);
+                        width: calc(300% / 8);
                         height: fit-content;
+                        display: flex;
+                        flex-direction: column;
                         position: sticky;
                         top: 5.5rem;
                         overflow: hidden;
@@ -530,24 +653,40 @@ const Wrapper = styled.div`
                         transition: color 0.5s ease;
                         
                         & > img {
-                            width: 30%;
+                            width: 4rem;
                         }
                         
                         & > div {
+                            height: fit-content;
                             margin-top: 1rem;
-                            font-size: xxx-large;
+                            font-size: xx-large;
                             font-weight: 700;
+                        }
+                        
+                        @media ${({ theme }) => theme.device.netbook} {
+                            flex-direction: row;
+                            align-items: center;
+                            
+                            & > img {
+                                width: auto;
+                                max-width: 3rem;
+                                height: 3rem;
+                            }
+                            
+                            & > div {
+                                margin-left: 1rem;
+                                margin-top: 0;
+                            }
                         }
                     }
                     
                     & > .content {
-                        width: calc(500% / 7);
+                        width: calc(500% / 8);
                         display: grid;
                         grid-template-columns: 1fr 1fr;
                         grid-auto-rows: 1fr;
                         column-gap: 1rem;
                         row-gap: 1rem;
-                        overflow: hidden;
                         
                         & > div {
                             display: flex;
@@ -557,7 +696,7 @@ const Wrapper = styled.div`
                             border-radius: 1rem;
                             overflow: hidden;
                             background-color: ${props => props.theme.colors.colorSurfaceVariant};
-                            transition: background-color 0.5s ease;
+                            transition: background-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
                             
                             & > .icons {
                                 display: flex;
@@ -667,9 +806,10 @@ const Wrapper = styled.div`
                                                     color: ${props => props.theme.colors.colorOnSurface};
                                                 }
 
-                                                @media ${({ theme }) => theme.device.mobile} {
+                                                @media ${({ theme }) => theme.device.tablet} {
                                                     width: 1.5rem;
                                                     height: 1.5rem;
+                                                    margin: 0.5rem;
 
                                                     & > span {
                                                         font-size: 1.5rem;
@@ -677,7 +817,20 @@ const Wrapper = styled.div`
                                                 }
                                             }
                                         }
+                                        
+                                        @media ${({ theme }) => theme.device.tablet} {
+                                            flex-direction: column;
+                                            align-items: start;
+                                            margin-top: 0;
+                                        }
                                     }
+                                }
+                            }
+                            
+                            @media (hover: hover) and (pointer: fine) {
+                                &:hover {
+                                    transform: translateY(-0.5rem);
+                                    box-shadow: 0 0 40px -0.5rem black;
                                 }
                             }
                         }
@@ -687,12 +840,43 @@ const Wrapper = styled.div`
                             flex-direction: column;
                         }
                     }
+                    
+                    @media ${({ theme }) => theme.device.netbook} {
+                        flex-direction: column;
+                        
+                        & > .title {
+                            width: 100%;
+                            position: initial;
+                        }
+                        
+                        & > .content {
+                            width: 100%;
+                        }
+                    }
+                    
+                    @media ${({ theme }) => theme.device.tablet} {
+                        & > .content {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                }
+                
+                @media ${({ theme }) => theme.device.netbook} {
+                    width: 60%;
+                }
+                
+                @media ${({ theme }) => theme.device.mobile} {
+                    width: 100%;
                 }
             }
             
             @media ${({ theme }) => theme.device.pc} {
                 width: calc(100% - 2rem);
                 padding: 0 1rem;
+            }
+            
+            @media ${({ theme }) => theme.device.mobile} {
+                flex-direction: column;
             }
         }
     }
@@ -829,16 +1013,6 @@ const EmailJsForm = styled.form`
                         font-size: 2rem;
                         transition: color 0.5s ease;
                         color: ${props => props.theme.colors.colorOnSurface};
-                    }
-
-                    @media ${({ theme }) => theme.device.mobile} {
-                        width: 1.5rem;
-                        height: 1.5rem;
-                        margin: 0.5rem;
-
-                        & > span {
-                            font-size: 1.5rem;
-                        }
                     }
                 }
             }

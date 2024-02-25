@@ -21,10 +21,6 @@ export default function LastEdit({link}: LastEditProps) {
     //     day: "numeric"
     // };
 
-    // return (
-    //     <LastEditWrapper>마지막 수정 시각 : {date.toLocaleString("ko-kr")}</LastEditWrapper>
-    // );
-
     return (
         <Wrapper>
             <div>
@@ -35,6 +31,7 @@ export default function LastEdit({link}: LastEditProps) {
 }
 
 const Wrapper = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,18 +48,10 @@ const Wrapper = styled.div`
             width: calc(100% - 2rem);
             padding: 0 1rem;
         }
+        
+        @media ${({ theme }) => theme.device.mobile} {
+            font-size: small;
+        }
     }
     
-`
-
-
-const LastEditWrapper = styled.div`
-    width: calc(100% - 2rem);
-    margin: 1rem;
-    font-style: italic;
-    text-align: end;
-
-    @media ${({ theme }) => theme.device.mobile} {
-        font-size: x-small;
-    }
 `
