@@ -34,7 +34,7 @@ export default function Slideshow() {
                 <Slide prevArrow={prevButton} nextArrow={nextButton} indicators={indicators} easing={"ease"} duration={10000000}>
                     <TitleBox className={"slide-wrapper"} style={{backgroundImage: `url(${darkMode ? patternBlack : pattern}`}}>
                         <span id={"slide-1"}>
-                            <span className={"bold"}>SIMPLE,</span> The <span className={"bold"}>Best</span> Worth.
+                            <span className={"bold new-line"}>SIMPLE,</span> The <span className={"bold"}>Best</span> Worth.
                         </span>
                     </TitleBox>
                     <TitleBox className={"slide-wrapper"} style={{backgroundImage: `url(${darkMode ? patternBlack : imgCalarmPattern}`}}>
@@ -115,6 +115,10 @@ const Wrapper = styled.div`
                     width: 100%;
                     height: 100%;
                 }
+                
+                @media ${({ theme }) => theme.device.laptop} {
+                    width: calc(100% - 10rem);
+                }
 
                 @media ${({ theme }) => theme.device.mobile} {
                     width: calc(100% - 2rem);
@@ -123,7 +127,7 @@ const Wrapper = styled.div`
             
             & > #slide-1 {
                 margin: auto;
-                font-size: xx-large;
+                font-size: xxx-large;
                 color: ${props => props.theme.colors.colorSurface};
                 transition: color 0.5s ease;
                 
@@ -131,8 +135,17 @@ const Wrapper = styled.div`
                     font-weight: 800;
                 }
                 
+                @media ${({ theme }) => theme.device.tablet} {
+                    font-size: xx-large;
+                }
+                
                 @media ${({ theme }) => theme.device.mobile} {
-                    font-size: x-large;
+                    font-size: xx-large;
+
+                    & > .new-line::after {
+                        content: "\\a";
+                        white-space: pre;
+                    }
                 }
             }
             
@@ -329,6 +342,15 @@ const SlideshowButton = styled.button`
 
         &.next {
             margin-right: 1rem;
+        }
+    }
+    
+    @media ${({ theme }) => theme.device.laptop} {
+        width: 3rem;
+        height: 3rem;
+        
+        & > span {
+            font-size: 18px;
         }
     }
     

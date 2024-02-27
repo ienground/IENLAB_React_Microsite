@@ -23,6 +23,7 @@ import icHtmlDark from "../assets/icon/ic_html_dark.svg";
 import icCss from "../assets/icon/ic_css.svg";
 import icCssDark from "../assets/icon/ic_css_dark.svg";
 import icTypescript from "../assets/icon/ic_typescript.svg";
+import icP5js from "../assets/icon/ic_p5js.svg";
 import icCall from "../assets/icon/ic_call.svg";
 import icMail from "../assets/icon/ic_mail.svg";
 import icGitHub from "../assets/icon/ic_github.svg";
@@ -99,6 +100,11 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                     title: "Typescript",
                     content: "Typescript 설명"
                 },
+                {
+                    icons: [icP5js],
+                    title: "p5.js",
+                    content: ""
+                }
             ]
         },
     ];
@@ -246,9 +252,10 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                                                     <div className="content">{app.content}</div>
                                                 </div>
                                                 <div className={"buttons"}>
-                                                    <Ripples placeholder={"web"}><button onClick={() => navigate("/calarm")}><Icon baseClassName={"material-icons-round"}>language</Icon></button></Ripples>
+                                                    <Ripples placeholder={"web"}><button onClick={() => navigate(app.page)}><Icon baseClassName={"material-icons-round"}>language</Icon></button></Ripples>
                                                     {app.aosLink !== "" ? <Ripples placeholder={"store"}><button onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}} /></Ripples> : <></>}
                                                     {app.iosLink !== "" ? <Ripples placeholder={"store"}><button onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}} /></Ripples> : <></>}
+                                                    {app.gitLink !== "" ? <Ripples placeholder={"store"}><button onClick={() => window.location.href=`https://github.com/${app.gitLink}`} style={{backgroundImage: `url(${darkMode ? icGitHubDark : icGitHub})`}} /></Ripples> : <></>}
                                                 </div>
                                             </div>
                                         </div> : <></>

@@ -2,16 +2,20 @@ import Ripples from "react-ripples";
 import {Icon} from "@mui/material";
 import icPlayStore from "../../assets/icon/ic_google_play.svg";
 import icIosStore from "../../assets/icon/ic_ios_store.svg";
+import icGitHub from "../../assets/icon/ic_github.svg";
+import icGitHubDark from "../../assets/icon/ic_github_dark.svg";
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import styled from "styled-components";
+import styled, {useTheme} from "styled-components";
 
 interface AppPreviewProps {
-    app: {icon: string, title: string, content: string, background: string, showIntro: boolean, page: string, aosLink: string, iosLink: string}
+    app: {icon: string, title: string, content: string, background: string, showIntro: boolean, page: string, aosLink: string, iosLink: string, gitLink: string}
 }
 
 export default function AppPreview({app}: AppPreviewProps) {
     const navigate = useNavigate();
+    const theme = useTheme();
+    const darkMode = (theme.name === "dark");
 
     return (
         <Wrapper onClick={() => navigate(app.page)}>
@@ -24,7 +28,7 @@ export default function AppPreview({app}: AppPreviewProps) {
                 </div>
                 <div className={"buttons"}>
                     <Ripples placeholder={"web"}>
-                        <button onClick={() => navigate("/calarm")}>
+                        <button onClick={() => navigate(app.page)}>
                             <Icon baseClassName={"material-icons-round"}>language</Icon></button>
                     </Ripples>
                     {app.aosLink !== "" ? <Ripples placeholder={"store"}>
@@ -32,6 +36,9 @@ export default function AppPreview({app}: AppPreviewProps) {
                     </Ripples> : <></>}
                     {app.iosLink !== "" ? <Ripples placeholder={"store"}>
                         <button onClick={() => window.location.href = `https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}}/>
+                    </Ripples> : <></>}
+                    {app.gitLink !== "" ? <Ripples placeholder={"store"}>
+                        <button onClick={() => window.location.href = `https://github.com/${app.gitLink}`} style={{backgroundImage: `url(${darkMode ? icGitHubDark : icGitHub})`}}/>
                     </Ripples> : <></>}
                 </div>
             </div>
@@ -55,6 +62,8 @@ const Wrapper = styled.div`
 
     & > img {
         width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
     }
 
     & > div {
