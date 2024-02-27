@@ -342,7 +342,7 @@ const Wrapper = styled.div`
                 overflow: hidden;
                 
                 & > .left {
-                    width: 20%;
+                    width: 30%;
                     position: relative;
                     border-radius: 1rem;
                     overflow: hidden;
@@ -420,7 +420,7 @@ const Wrapper = styled.div`
                 }
                 
                 & > .right {
-                    width: 80%;
+                    width: 70%;
                     display: flex;
                     flex-direction: column;
                     gap: 0.5rem;
@@ -495,7 +495,7 @@ const Wrapper = styled.div`
                                 }
                                 
                                 @media ${({ theme }) => theme.device.pc} {
-                                    font-size: x-large;
+                                    //font-size: x-large;
                                 }
                                 
                                 @media ${({ theme }) => theme.device.netbook} {
