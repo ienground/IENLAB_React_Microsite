@@ -7,10 +7,7 @@ import Sidebar from "../components/Sidebar";
 import DesignHeader from "../components/Branding/DesignHeader";
 import imgLogoFull from "../assets/brand/img_logo_full.png";
 import imgLogoShort from "../assets/brand/img_logo_short.png";
-import {ImgTitle} from "../components/Branding/CommonComponent";
 import logoColor from "../assets/branding/2024/logo_color_transparent.png";
-import BrandSystem from "../components/Branding/BrandSystem";
-import ApplicationUsages from "../components/Branding/ApplicationUsages";
 import ButtonToTop from "../components/ButtonToTop";
 import LastEdit from "../components/LastEdit";
 import {useLocation} from "react-router-dom";
@@ -34,6 +31,8 @@ export default function Branding({darkMode, setDarkMode}: AppProps) {
     const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
     // const brandingSlide = [brandingColor, brandingWhite, brandingBlack, brandingBlueprint];
     const [indicatorIndex, setIndicatorIndex] = useState(0);
+
+    window.document.title = "브랜드 아이덴티티 | 아이엔랩 ienlab";
 
     const indicators = (index?: number) => (<SlideshowIndicators className={index === indicatorIndex ? "active" : ""}/>);
     const brandColorInfo = [
@@ -99,7 +98,7 @@ export default function Branding({darkMode, setDarkMode}: AppProps) {
                         <img src={logoColor} />
                     </div>
                 </TitleBox>
-                <DesignHeader icon={imgLogoFull} shortIcon={imgLogoShort} title={"Brand Identity"} />
+                <DesignHeader icon={imgLogoFull} shortIcon={imgLogoShort} title={"Brand Identity"} darkMode={darkMode} />
                 <div className="content-wrapper">
                     <div className="title">
                         <span><div/>01</span>
@@ -275,6 +274,7 @@ const Wrapper = styled.div`
                         margin-right: 1rem;
                         border-radius: 3rem;
                         background-color: ${props => props.theme.colors.colorOnSurface};
+                        transition: background-color 0.5s ease;
                     }
                 }
 
@@ -315,6 +315,7 @@ const Wrapper = styled.div`
                         top: 10.5rem;
                         font-size: xx-large;
                         font-weight: 700;
+                        transition: color 0.5s ease;
                     }
                     
                     & > .content {
@@ -389,7 +390,7 @@ const Wrapper = styled.div`
                                     font-weight: 700;
                                     font-size: xx-large;
                                     background-color: ${props => props.theme.colors.colorWhite};
-                                    transition: background-color 0.5s ease;
+                                    transition: background-color 0.5s ease, color 0.5s ease;
                                 }
 
                                 & > .colors {
@@ -516,7 +517,7 @@ const Wrapper = styled.div`
                             padding: 1rem;
                             border-radius: 1rem;
                             background-color: ${props => props.theme.colors.colorSurfaceVariant};
-                            transition: background-color 0.5s ease;
+                            transition: background-color 0.5s ease, color 0.5s ease;
 
                             & > .title {
                                 grid-area: title;

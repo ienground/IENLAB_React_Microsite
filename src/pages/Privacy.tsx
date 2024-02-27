@@ -20,6 +20,8 @@ export default function Privacy({darkMode, setDarkMode}: AppProps) {
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+    window.document.title = "개인정보 처리방침 | 아이엔랩 ienlab";
+
     const appList = [
         { icon: icCalarm, title: "캘람" },
         { icon: icBlogPlanner, title: "블로그 플래너" },

@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import React, {useEffect, useRef, useState} from "react";
-import {getAppInfo} from "../../../utils/FirebaseData";
-import {Firestore} from "firebase/firestore";
 import icPlayStore from "../../../assets/icon/ic_google_play.svg";
-import {ImgTitleVersionText} from "../CommonComponent";
 import {convertRemToPixels} from "../../../utils/Utils";
-import appHeader from "./AppHeader";
 
 interface AppHeaderProp {
     // ref: React.MutableRefObject<any>
+    darkMode: boolean,
     packageName: string,
     appIcon: string
     appName: string,
@@ -16,7 +13,7 @@ interface AppHeaderProp {
     appVersion: string
 }
 
-export default function AppHeader({packageName, appIcon, appName, appDesc, appVersion} : AppHeaderProp) {
+export default function AppHeader({darkMode, packageName, appIcon, appName, appDesc, appVersion} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
 
     const scrollListener = () => {
@@ -51,7 +48,12 @@ export default function AppHeader({packageName, appIcon, appName, appDesc, appVe
 
          */
         window.addEventListener('scroll', scrollListener);
+        scrollListener();
     }, []);
+
+    useEffect(() => {
+        scrollListener();
+    }, [darkMode]);
 
     return (
         <Wrapper id={"app-header"}>
@@ -82,7 +84,7 @@ const Wrapper = styled.div`
     top: 4.5rem;
     background-color: ${props => props.theme.colors.colorSurface};
     z-index: 980;
-    transition: box-shadow 0.5s ease;
+    transition: box-shadow 0.5s ease, background-color 0.5s ease;
     animation: Mount-animation-header 1s ease;
     
     &.visible-shadow {
@@ -114,6 +116,7 @@ const Wrapper = styled.div`
                 & > div {
                     font-weight: 700;
                     font-size: x-large;
+                    transition: color 0.5s ease;
                 }
             }
             
@@ -126,6 +129,7 @@ const Wrapper = styled.div`
                     align-items: center;
                     padding: 0 1rem;
                     border-radius: 10rem;
+                    background-color: ${props => props.theme.colors.colorOnSurfaceVariant};
                     transition: background-color 0.5s ease;
                     
                     & > img {
@@ -145,7 +149,7 @@ const Wrapper = styled.div`
         
         @media ${({ theme }) => theme.device.pc} {
             width: calc(100% - 2rem);
-            padding: 0 1rem;
+            padding: 1rem;
         }
     }
 `

@@ -46,57 +46,17 @@ export default function NoticeDetail({darkMode, setDarkMode}: AppProps) {
     useEffect(() => {
         const processing = async () => {
             if (id !== null) {
-                let result = await getNoticeItem(firestore, id);
-                setNoticeItem(result);
+                await getNoticeItem(firestore, id)
+                    .then((result) => {
+                        setNoticeItem(result);
+                    })
+                    .catch((err) => {
+                        navigate("/404");
+                    })
             }
         };
         processing();
     }, []);
-
-    // return (
-    //     <>
-    //         <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
-    //         <ContentWrapper>
-    //             <AreaTitle backgroundImage={darkMode ? patternBlack : patternColor}>
-    //                 <div className={"title-wrapper"}>
-    //                     <Fade className={"skeleton"} in={!noticeItem} addEndListener={() => { setIsPrepared(true); } }>
-    //                         <FadeTitleWrapper>
-    //                             <TitleSkeleton />
-    //                         </FadeTitleWrapper>
-    //                     </Fade>
-    //                     <Fade className={"data"} in={(isPrepared && noticeItem !== undefined)}>
-    //                         <FadeTitleWrapper>
-    //                             <div className={"category"}>{noticeItem?.category}</div>
-    //                             <h3 className={"timestamp"}><span>{noticeItem?.create_time?.toLocaleString()}</span></h3>
-    //                             <h1 className={"title"}><span>{noticeItem?.title}</span></h1>
-    //                         </FadeTitleWrapper>
-    //                     </Fade>
-    //                 </div>
-    //             </AreaTitle>
-    //             <InnerContentWrapper>
-    //                 <div className="content-wrapper">
-    //                     <Fade className={"skeleton"} in={!noticeItem}>
-    //                         <div>
-    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-    //                             <Skeleton variant={"text"} sx={{fontSize: "x-large"}}/>
-    //                         </div>
-    //                     </Fade>
-    //                     <Fade className={"data"} in={isPrepared && noticeItem !== undefined}>
-    //                         <div>
-    //                             <Markdown text={noticeItem?.content ? noticeItem.content : ""}/>
-    //                         </div>
-    //                     </Fade>
-    //                 </div>
-    //             </InnerContentWrapper>
-    //         </ContentWrapper>
-    //         <Footer />
-    //         <ButtonToTop />
-    //         <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen}/>
-    //     </>
-    // );
 
     return (
         <Wrapper>
@@ -247,7 +207,8 @@ const Wrapper = styled.div`
             display: grid;
             grid-template-rows: 1fr;
             grid-template-columns: 1fr;
-            margin-top: 1rem;
+            margin-top: 2rem;
+            animation: Mount-animation 0.5s ease;
             
             & > .skeleton {
                 z-index: 501;

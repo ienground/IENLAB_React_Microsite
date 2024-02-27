@@ -1,13 +1,16 @@
 import styled, {useTheme} from "styled-components";
 import imgLogoFull from "../assets/brand/img_logo_full.png";
+import imgLogoShort from "../assets/brand/img_logo_short.png";
 import imgLogoFullWhite from "../assets/brand/img_logo_full_white.png";
 import icTistory from "../assets/icon/ic_tistory.svg";
 import imgPattern from "../assets/brand/pattern.png";
 import {Icon} from "@mui/material";
 import React from "react";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function Footer() {
     const theme = useTheme();
+    const navigate = useNavigate();
     const darkMode = theme.name === "dark";
     const date = new Date();
 
@@ -23,8 +26,15 @@ export default function Footer() {
     return (
         <Wrapper>
             <div>
-                <div className="author"></div>
-                <img src={imgLogoFull}/>
+                <div>
+                    <div className="author">Copyright © 2014-{date.getFullYear()} ienlab. 모든 권리 보유.</div>
+                    <div className={"link"}>
+                        <Link to={"/notice"}>공지사항</Link>
+                        |
+                        <Link to={"/privacy"}>개인정보 처리방침</Link>
+                    </div>
+                </div>
+                <img/>
             </div>
 
         </Wrapper>
@@ -49,14 +59,53 @@ const Wrapper = styled.footer`
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
+        transition: color 0.5s ease;
+        
+        & > div > * {
+            font-size: medium;
+        }
+        
+        & > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            
+            & > .link {
+                display: flex;
+                flex-direction: row;
+                gap: 0.5rem;
+                
+                & > a {
+                    color: ${props => props.theme.colors.brand.blue};
+                }
+            }
+        }
         
         & > img {
             height: 2rem;
+            content: url(${imgLogoFull});
         }
 
         @media ${({ theme }) => theme.device.pc} {
             width: calc(100% - 2rem);
             margin: 0 1rem;
+        }
+        
+        @media ${({ theme }) => theme.device.tablet} {
+            & > div > * {
+                font-size: small;
+            }
+        }
+        
+        @media ${({ theme }) => theme.device.mobile} {
+            & > div > * {
+                font-size: x-small;
+            }
+            
+            & > img {
+                content: url(${imgLogoShort});
+            }
         }
     }
 `

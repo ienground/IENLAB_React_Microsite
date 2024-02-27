@@ -5,18 +5,13 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import ButtonToTop from "../components/ButtonToTop";
-import {ImgIcon, InnerBoxWrapper, TextContentContent, TextContentTitle} from "../components/Intro/CommonComponent/CommonComponent";
-import {Spacer} from "../components/Component";
-import Ripples from "react-ripples";
-import {Icon} from "@mui/material";
-import icPlayStore from "../assets/icon/ic_google_play.svg";
-import icIosStore from "../assets/icon/ic_ios_store.svg";
-import {useNavigate} from "react-router-dom";
 import {appList} from "../data/CommonData";
 import AppPreview from "../components/DevPage/AppPreview";
 
 export default function DevPage({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    window.document.title = "프로젝트 | 아이엔랩 ienlab";
 
     return (
         <Wrapper>

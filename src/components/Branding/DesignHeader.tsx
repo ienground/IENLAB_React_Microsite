@@ -10,9 +10,10 @@ interface AppHeaderProp {
     icon: string,
     shortIcon: string,
     title: string,
+    darkMode: boolean
 }
 
-export default function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
+export default function AppHeader({icon, shortIcon, title, darkMode} : AppHeaderProp) {
     const [navBg, setNavBg] = useState(false);
     const theme = useTheme();
 
@@ -30,7 +31,12 @@ export default function AppHeader({icon, shortIcon, title} : AppHeaderProp) {
 
     useEffect(() => {
         window.addEventListener('scroll', scrollListener);
+        scrollListener();
     }, []);
+
+    useEffect(() => {
+        scrollListener();
+    }, [darkMode]);
 
     return (
         <Wrapper id={"app-header"} icon={icon} shortIcon={shortIcon}>
@@ -58,7 +64,7 @@ const Wrapper = styled.div<{icon: string, shortIcon: string}>`
     top: 4.5rem;
     background-color: ${props => props.theme.colors.colorSurface};
     z-index: 980;
-    transition: box-shadow 0.5s ease;
+    transition: box-shadow 0.5s ease, background-color 0.5s ease;
     animation: Mount-animation-header 1s ease;
     
     &.visible-shadow {
@@ -85,6 +91,7 @@ const Wrapper = styled.div<{icon: string, shortIcon: string}>`
             & > div {
                 font-weight: 700;
                 font-size: x-large;
+                transition: color 0.5s ease;
             }
         }
         

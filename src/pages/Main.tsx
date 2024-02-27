@@ -4,7 +4,6 @@ import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import "../style/main.css"
 import styled from "styled-components";
-import ButtonBottom from "../components/ButtonBottom";
 import {Icon} from "@mui/material";
 import React, {useState} from "react";
 import {AppProps} from "../App";
@@ -16,6 +15,8 @@ import patternColor from "../assets/brand/pattern_color.png";
 export default function Main({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    window.document.title = "아이엔랩 ienlab";
 
     return (
         <Wrapper>

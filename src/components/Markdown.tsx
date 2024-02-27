@@ -16,21 +16,25 @@ export default function Markdown({text}: MarkdownProps) {
 
 const MarkdownStyle = styled.div`
     transition: color 0.5s ease;
+
+    * {
+        line-height: 1.2;
+    }
     
     h1 {
-        font-size: xx-large;
+        font-size: xxx-large;
         font-weight: 700;
         margin-bottom: 1rem;
     }
     
     h2 {
-        font-size: x-large;
+        font-size: xx-large;
         font-weight: 600;
         margin-bottom: 1rem;
     }
     
     h3 {
-        font-size: large;
+        font-size: x-large;
         font-weight: 500;
         margin-bottom: 1rem;
     }
@@ -50,6 +54,7 @@ const MarkdownStyle = styled.div`
     blockquote {
         border-left: 2px solid ${props => props.theme.colors.colorPrimary};
         padding-left: 1rem;
+        transition: border-left-color 0.5s ease;
     }
     
     ul {

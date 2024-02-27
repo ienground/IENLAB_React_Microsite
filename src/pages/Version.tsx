@@ -8,9 +8,18 @@ import styled from "styled-components";
 import patternColor from "../assets/brand/pattern_color.png";
 import patternBlack from "../assets/brand/pattern_black.png";
 import {TitleBox} from "../components/Component";
+import {LastEditData} from "../data/LastEditData";
 
-export default function Error404({darkMode, setDarkMode}: AppProps) {
+export default function Version({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const date = new Date();
+    const data = LastEditData.get("/version");
+
+    if (data !== undefined) {
+        date.setFullYear(data[0], data[1] - 1, data[2]);
+        date.setHours(data[3], data[4], 0);
+    }
 
     return (
         <Wrapper>
@@ -18,8 +27,8 @@ export default function Error404({darkMode, setDarkMode}: AppProps) {
             <div id="wrap">
                 <TitleBox className={"title-wrapper"} style={{backgroundImage: `url(${darkMode ? patternBlack : patternColor})`}}>
                     <div>
-                        <h3 className="timestamp"><span>제대로 입력하신 게 맞나요?</span></h3>
-                        <h1 className="title"><span>찾으시는 페이지가 없습니다🥲</span></h1>
+                        <h3 className="timestamp"><span>{date.toLocaleString()}</span></h3>
+                        <h1 className="title"><span>{process.env.REACT_APP_VERSION}</span></h1>
                     </div>
                 </TitleBox>
             </div>

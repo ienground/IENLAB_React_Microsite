@@ -24,7 +24,6 @@ type Props = SidebarProps & ConstructionProps & AppProps;
 const isMobile = detectMobileDevice(window.navigator.userAgent);
 export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailable, darkMode, setDarkMode}: Props) {
     const [navBg, setNavBg] = useState(false);
-    const [showSearchbar, setShowSearchbar] = useState(false);
     const theme = useTheme();
     const navigate = useNavigate();
     const isSticky = isAppHeaderAvailable !== true;
@@ -34,26 +33,23 @@ export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailab
         window.scrollY >= (isSticky ? 30 : 70) ? setNavBg(true) : setNavBg(false);
         lastScroll = window.scrollY;
     }
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    }
-
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
     }
 
     useEffect(() => {
         window.addEventListener('scroll', changeNavBg);
+        changeNavBg();
     }, []);
 
     const iconStyle = {
-        transition: "all 0.5s ease",
+        transition: "color 0.5s ease, filter 0.5s ease",
         color: theme.colors.colorOnSurface,
         filter: theme.name === "light" ? ("invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)") : ""
     };
 
     const customIconStyle = {
-        transition: "all 0.5s ease",
+        transition: "filter 0.5s ease",
         filter: theme.name === "light" ? "invert(11%) sepia(11%) saturate(17%) hue-rotate(346deg) brightness(92%) contrast(95%)" : "invert(100%) sepia(0%) saturate(15%) hue-rotate(303deg) brightness(106%) contrast(105%)"
     };
 
@@ -145,7 +141,7 @@ const Wrapper = styled.nav`
                 
                 & > li {
                     & > div > span {
-                        transition: rotate 0.5s ease;
+                        transition: color 0.5s ease, rotate 0.5s ease;
                     }
                     
                     &.open > div > span {
@@ -175,6 +171,10 @@ const Wrapper = styled.nav`
                     & > div > span {
                         color: ${props => props.theme.colors.colorOnSurface};
                         transition: color 0.5s ease;
+                    }
+                    
+                    &.dark-mode {
+                        display: initial;
                     }
                 }
             }

@@ -31,8 +31,6 @@ import icBehance from "../assets/icon/ic_behance.svg";
 import icTistory from "../assets/icon/ic_tistory_orange.svg";
 import icInstagram from "../assets/icon/ic_instagram.svg";
 import icFacebook from "../assets/icon/ic_facebook.svg";
-import {ImgIcon} from "../components/Intro/CommonComponent/CommonComponent";
-import icPhotoshop from "../assets/icon/ic_photoshop.svg";
 import icIllustrator from "../assets/icon/ic_illustrator.svg";
 import icFigma from "../assets/icon/ic_figma.svg";
 import icSogang from "../assets/icon/ic_sogang_univ.svg";
@@ -57,6 +55,8 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
     const [errorMessage, setErrorMessage] = useState(false);
     const [message, setMessage] = useState("");
     const [sendError, setSendError] = useState(false);
+
+    window.document.title = "소개 | 아이엔랩 ienlab";
 
     const techStackList = [
         {
@@ -217,7 +217,7 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                                             </div>
                                             <div className={"info"}>
                                                 <div className="title">{content.title}</div>
-                                                <div className="content">{content.content}</div>
+                                                {/*<div className="content">{content.content}</div>*/}
                                             </div>
                                         </div>
                                     ))}

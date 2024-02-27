@@ -1,5 +1,3 @@
-import {ImgIcon, InnerBoxWrapper, TextContentContent, TextContentTitle} from "../Intro/CommonComponent/CommonComponent";
-import {Spacer} from "../Component";
 import Ripples from "react-ripples";
 import {Icon} from "@mui/material";
 import icPlayStore from "../../assets/icon/ic_google_play.svg";
@@ -14,25 +12,6 @@ interface AppPreviewProps {
 
 export default function AppPreview({app}: AppPreviewProps) {
     const navigate = useNavigate();
-
-    // return (
-    //     <HeaderWrapper onClick={() => navigate(app.page)}>
-    //         <ImgHeader src={app.background} />
-    //         <BoxButtonWrapper>
-    //             <InnerBoxWrapper>
-    //                 <ImgIcon src={app.icon} />
-    //                 <Spacer orientation={"vertical"} size={"1rem"} />
-    //                 <TextContentTitle className={"black background"}>{app.title}</TextContentTitle><br />
-    //                 <TextContentContent fontWeight={"normal"} className={"black medium"}>{app.content}</TextContentContent>
-    //             </InnerBoxWrapper>
-    //             <ButtonLinkWrapper>
-    //                 <Ripples placeholder={"web"}><ImgButton onClick={() => navigate(app.page)}><Icon baseClassName={"material-icons-round"}>language</Icon></ImgButton></Ripples>
-    //                 {app.aosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://play.google.com/store/apps/details?id=${app.aosLink}`} style={{backgroundImage: `url(${icPlayStore})`}} /></Ripples> : <></>}
-    //                 {app.iosLink !== "" ? <Ripples placeholder={"store"}><ImgButton onClick={() => window.location.href=`https://apps.apple.com/kr/app/${app.iosLink}`} style={{backgroundImage: `url(${icIosStore})`}} /></Ripples> : <></>}
-    //             </ButtonLinkWrapper>
-    //         </BoxButtonWrapper>
-    //     </HeaderWrapper>
-    // );
 
     return (
         <Wrapper onClick={() => navigate(app.page)}>
@@ -67,6 +46,7 @@ const Wrapper = styled.div`
     overflow: hidden;
     border-radius: 1rem;
     background-color: ${props => props.theme.colors.colorSurfaceVariant};
+    transition: background-color 0.5s ease;
 
     & img {
         max-width: none;

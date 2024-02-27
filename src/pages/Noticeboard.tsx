@@ -24,6 +24,8 @@ export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
     const [noticeList, setNoticeList] = useState<{ id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string }[]>();
     const [isPrepared, setIsPrepared] = useState(false);
 
+    window.document.title = "공지사항 | 아이엔랩 ienlab";
+
     const firebaseConfig = {
         apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

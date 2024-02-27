@@ -13,6 +13,7 @@ import Privacy from "./pages/Privacy";
 import Noticeboard from "./pages/Noticeboard";
 import NoticeDetail from "./pages/noticeboard/NoticeDetail";
 import Error404 from "./pages/Error404";
+import Version from "./pages/Version";
 
 export default function Router({darkMode, setDarkMode}: AppProps) {
     return (
@@ -40,8 +41,10 @@ export default function Router({darkMode, setDarkMode}: AppProps) {
 
                 {/*Error*/}
                 <Route path={"/404"} element={<Error404 darkMode={darkMode} setDarkMode={setDarkMode} />} />
-
                 <Route path={"/*"} element={<Navigate to={"/404"} />} />
+
+                {/*ETC*/}
+                <Route path={"/version"} element={<Version darkMode={darkMode} setDarkMode={setDarkMode} />} />
             </Routes>
         </>
     );
