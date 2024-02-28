@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ee8c0443.css",
-    "main.js": "/static/js/main.a0d4c189.js",
+    "main.js": "/static/js/main.97eb307d.js",
     "static/js/787.921075f1.chunk.js": "/static/js/787.921075f1.chunk.js",
     "static/media/pin_button2.png": "/static/media/pin_button2.6b44e9c2e1b62aa10036.png",
     "static/media/pin_button.png": "/static/media/pin_button.c2713cab72493c931d6c.png",
@@ -16,10 +16,12 @@
     "static/media/img_calarm_pattern.png": "/static/media/img_calarm_pattern.1b6eaf9d660d4a694305.png",
     "static/media/screensaver_02.png": "/static/media/screensaver_02.05ca60724f3d0a48b2f4.png",
     "static/media/screensaver_01.png": "/static/media/screensaver_01.a33641f5c53998ea48d4.png",
+    "static/media/img_blogplanner_pattern.png": "/static/media/img_blogplanner_pattern.6265525dc3d77eb27f99.png",
     "static/media/img_jam_phonics.png": "/static/media/img_jam_phonics.82750be383ad8f30403a.png",
     "static/media/calendar_alarm_02.png": "/static/media/calendar_alarm_02.d55015a4d6fefd83ff66.png",
     "static/media/cycled_timer_02.png": "/static/media/cycled_timer_02.d55015a4d6fefd83ff66.png",
     "static/media/pattern_black.png": "/static/media/pattern_black.6652d262b3c3866a790f.png",
+    "static/media/bp6.png": "/static/media/bp6.064218a2e85d49da5b2e.png",
     "static/media/timer_01.png": "/static/media/timer_01.89c2c54505f5c42884ab.png",
     "static/media/cycled_timer_01.png": "/static/media/cycled_timer_01.c013d244613cdd8de914.png",
     "static/media/calendar_alarm_01.png": "/static/media/calendar_alarm_01.0b703cb5401e0c1d0cbb.png",
@@ -27,12 +29,17 @@
     "static/media/stopwatch_01.png": "/static/media/stopwatch_01.79cf48d2b21850433c52.png",
     "static/media/ic_albatross_reminder.png": "/static/media/ic_albatross_reminder.155d544a441565b7c7b4.png",
     "static/media/branding_blueprint.png": "/static/media/branding_blueprint.2758b1d82b2dd1f1ac94.png",
+    "static/media/bp5.png": "/static/media/bp5.6a51f909559db4aaf995.png",
     "static/media/alarm_01.png": "/static/media/alarm_01.c14bc55f60fb5060ee77.png",
+    "static/media/bp1.png": "/static/media/bp1.a54424535e9dcd7a83cb.png",
+    "static/media/bp2.png": "/static/media/bp2.f60fa748ef85fb3d220b.png",
     "static/media/ic_calarm.png": "/static/media/ic_calarm.43a54ecf4acffa33350d.png",
+    "static/media/bp3.png": "/static/media/bp3.7c48b46f8f4d7728008c.png",
     "static/media/img_background_tetris_rpg.png": "/static/media/img_background_tetris_rpg.c3501e8da11587061d54.png",
     "static/media/timer_02.png": "/static/media/timer_02.997cd82af28dac15f749.png",
     "static/media/alarm_02.png": "/static/media/alarm_02.85200c146e94b14fa4be.png",
     "static/media/stopwatch_02.png": "/static/media/stopwatch_02.ff5a37f22074bd7c1fab.png",
+    "static/media/bp4.png": "/static/media/bp4.0d0df87b47893e3a9993.png",
     "static/media/logo_color_transparent.png": "/static/media/logo_color_transparent.bf796e41270a96b16d1f.png",
     "static/media/ic_web.png": "/static/media/ic_web.f7df4bafdc01279a895b.png",
     "static/media/branding_color.png": "/static/media/branding_color.9d1ccfe6699b44b073c2.png",
@@ -70,11 +77,11 @@
     "static/media/ic_kotlin.svg": "/static/media/ic_kotlin.f052beae009c61bfdeca08a089024aed.svg",
     "static/media/ic_react.svg": "/static/media/ic_react.928f956d9c8ebcffb98a8e917154a81a.svg",
     "main.ee8c0443.css.map": "/static/css/main.ee8c0443.css.map",
-    "main.a0d4c189.js.map": "/static/js/main.a0d4c189.js.map",
+    "main.97eb307d.js.map": "/static/js/main.97eb307d.js.map",
     "787.921075f1.chunk.js.map": "/static/js/787.921075f1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ee8c0443.css",
-    "static/js/main.a0d4c189.js"
+    "static/js/main.97eb307d.js"
   ]
 }
