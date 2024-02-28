@@ -6,6 +6,7 @@ import Ripples from "react-ripples"
 import {AppProps} from "../App";
 import {useLocation, useNavigate} from "react-router-dom";
 import icCalarm from "../assets/icon/ic_calarm.png";
+import icBlogPlanner from "../assets/icon/ic_blogplanner.png";
 import icTetris from "../assets/icon/ic_tetris_rpg.png";
 import icIenlab from "../assets/brand/ic_ienlab.svg";
 import imgLogoFull from "../assets/brand/img_logo_full.png";
@@ -42,6 +43,7 @@ export default function Sidebar({ isOpen, setIsOpen} : Props) {
         { icon: "brush", title: "브랜드 아이덴티티", link: "/brand", contents: [] },
         { icon: "code", title: "개발", link: "/dev", contents: [
             { icon: "", svg: icCalarm, title: "캘람", link: "/calarm" },
+            { icon: "", svg: icBlogPlanner, title: "블로그 플래너", link: "/blogplanner" },
             { icon: "", svg: icTetris, title: "테트리스 RPG", link: "/tetris" },
         ] },
     ];

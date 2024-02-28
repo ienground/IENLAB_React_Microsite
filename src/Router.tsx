@@ -16,6 +16,7 @@ import Error404 from "./pages/Error404";
 import Version from "./pages/Version";
 import TetrisRPG from "./pages/dev/TetrisRPG";
 import JamPhonics from "./pages/privacy/JamPhonics";
+import BlogPlanner from "./pages/dev/BlogPlanner";
 
 export default function Router({darkMode, setDarkMode}: AppProps) {
     return (
@@ -36,6 +37,7 @@ export default function Router({darkMode, setDarkMode}: AppProps) {
 
                 {/*Dev*/}
                 <Route path={"/dev"} element={<DevPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                <Route path={"/blogplanner"} element={<BlogPlanner darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/calarm"} element={<Calarm darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/tetris"} element={<TetrisRPG darkMode={darkMode} setDarkMode={setDarkMode} />} />
 

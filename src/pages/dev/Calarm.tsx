@@ -200,7 +200,7 @@ export default function Calarm({darkMode, setDarkMode}: AppProps) {
     );
 }
 
-const Wrapper = styled.div<{color: string}>`
+export const Wrapper = styled.div<{color: string}>`
     & > #wrap {
         display: flex;
         flex-direction: column;

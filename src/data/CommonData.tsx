@@ -4,6 +4,7 @@ import icCalarm from "../assets/icon/ic_calarm.png";
 import icBlogPlanner from "../assets/icon/ic_blogplanner.png";
 import icTetrisRPG from "../assets/icon/ic_tetris_rpg.png";
 import backgroundCalarm from "../assets/background_calarm.png";
+import imgBlogPlannerPattern from "../assets/img_blogplanner_pattern.png";
 import backgroundTetris from "../assets/image/img_background_tetris_rpg.png";
 export const appList = [
     {
@@ -18,6 +19,17 @@ export const appList = [
                 showIntro: true,
                 page: "/calarm",
                 aosLink: "zone.ien.calarm",
+                iosLink: "",
+                gitLink: ""
+            },
+            {
+                icon: icBlogPlanner,
+                title: "블로그 플래너",
+                content: "규칙적인 블로그 생활을 위해",
+                background: imgBlogPlannerPattern,
+                showIntro: true,
+                page: "/blogplanner",
+                aosLink: "net.ienlab.blogplanner",
                 iosLink: "",
                 gitLink: ""
             },
