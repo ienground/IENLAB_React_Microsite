@@ -25,7 +25,6 @@ export default function TetrisRPG({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const id = queryParams.get("id");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     window.document.title = "테트리스 RPG | 아이엔랩 ienlab";

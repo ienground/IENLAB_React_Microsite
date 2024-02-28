@@ -288,7 +288,7 @@ const Wrapper = styled.div`
                 max-height: 50%;
                 transition: max-height 0.8s ease-in, background-color 0.5s ease;
 
-                @media ${({ theme }) => theme.device.tablet} {
+                @media ${({ theme }) => theme.device.laptop} {
                     max-height: 100%;
                 }
             }

@@ -1,5 +1,5 @@
 export const LastEditData = new Map([
-    ["/version", [2024, 2, 28, 2, 56]],
+    ["/version", [2024, 2, 28, 12, 28]],
     ["/notice", [2023, 1, 1, 0, 0]],
     ["/privacy", [2024, 2, 19, 1, 12]],
     ["/calarm", [2024, 2, 27, 22, 48]],
