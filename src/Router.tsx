@@ -15,6 +15,7 @@ import NoticeDetail from "./pages/noticeboard/NoticeDetail";
 import Error404 from "./pages/Error404";
 import Version from "./pages/Version";
 import TetrisRPG from "./pages/dev/TetrisRPG";
+import JamPhonics from "./pages/privacy/JamPhonics";
 
 export default function Router({darkMode, setDarkMode}: AppProps) {
     return (
@@ -25,6 +26,7 @@ export default function Router({darkMode, setDarkMode}: AppProps) {
                 {/*<Route path={"/"} element={<Construction darkMode={darkMode} setDarkMode={setDarkMode} />} />*/}
                 <Route path={"/intro"} element={<Intro darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/privacy"} element={<Privacy darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                <Route path={"/privacy/jamphonics"} element={<JamPhonics darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
                 <Route path={"/post"} element={<Post darkMode={darkMode} setDarkMode={setDarkMode} />} />
 

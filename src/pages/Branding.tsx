@@ -367,6 +367,10 @@ const Wrapper = styled.div`
                             & > :last-child {
                                 margin-right: 0;
                             }
+                            
+                            @media ${({ theme }) => theme.device.tablet} {
+                                margin-bottom: 1rem;
+                            }
                         }
                     }
                     

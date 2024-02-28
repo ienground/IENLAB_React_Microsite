@@ -32,7 +32,7 @@ export default function Privacy({darkMode, setDarkMode}: AppProps) {
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
             <div id="wrap">
-                <TitleBox className="title-wrapper">
+                <TitleBox className="title-wrapper" style={{backgroundImage: `url(${backgroundPrivacy})`}}>
                     <div>
                         <h3 className={"description"}><span>운영 어플리케이션을 위한 공통 버전</span></h3>
                         <h1 className={"title"}><span>개인정보 처리방침</span></h1>
@@ -48,7 +48,7 @@ export default function Privacy({darkMode, setDarkMode}: AppProps) {
                             </div>
                         ))}
                     </div>
-                    <PrivacyContent />
+                    <PrivacyContent company={"아이엔랩 ienlab"} name={"이현우"} email={"my@ien.zone"} charge={"개발자, 디자이너"} level={"개발자, 디자이너"} date={{year: 2024, month: 2, day: 22}} processPrivacy={false}/>
                 </div>
                 <LastEdit link={location.pathname}/>
             </div>
@@ -59,7 +59,7 @@ export default function Privacy({darkMode, setDarkMode}: AppProps) {
     );
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
     & > #wrap {
         display: flex;
         flex-direction: column;
@@ -72,7 +72,6 @@ const Wrapper = styled.div`
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: url(${backgroundPrivacy});
             transition: background-image 0.5s ease;
             
             & > div {

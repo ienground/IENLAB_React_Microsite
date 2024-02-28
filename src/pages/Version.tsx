@@ -21,6 +21,8 @@ export default function Version({darkMode, setDarkMode}: AppProps) {
         date.setHours(data[3], data[4], 0);
     }
 
+    window.document.title = `버전 ${process.env.REACT_APP_VERSION} | 아이엔랩 ienlab`;
+
     return (
         <Wrapper>
             <Header isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} darkMode={darkMode} setDarkMode={setDarkMode}/>
