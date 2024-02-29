@@ -1,4 +1,4 @@
-import {collection, doc, DocumentData, Firestore, getDoc, getDocs} from "firebase/firestore";
+import {collection, doc, DocumentData, Firestore, getDoc, getDocs, Timestamp, updateDoc, deleteDoc, addDoc} from "firebase/firestore";
 
 export async function getAppInfo(db: Firestore, packageName: string) {
     const versionRef = collection(db, "ienlab_microsite", packageName, "version");
@@ -66,4 +66,34 @@ export async function getNoticeItem(db: Firestore, id: string) {
         "category": itemSnapshot.get("category")
     };
     return result;
+}
+
+export async function updateNoticeItem(db: Firestore, id: string, title: string, content: string, category: string) {
+    const itemRef = doc(db, "ienlab_microsite", "manage", "notice", id);
+
+    await updateDoc(itemRef, {
+        "title": title,
+        "content": content,
+        "category": category,
+        "edit_time": Timestamp.fromDate(new Date())
+    });
+}
+
+export async function addNoticeItem(db: Firestore, title: string, content: string, category: string) {
+    const noticeRef = collection(db, "ienlab_microsite", "manage", "notice");
+    const noticeSnapshot = await getDocs(noticeRef);
+
+    await addDoc(noticeRef, {
+        "title": title,
+        "content": content,
+        "category": category,
+        "edit_time": Timestamp.fromDate(new Date()),
+        "create_time": Timestamp.fromDate(new Date())
+    });
+}
+
+export async function deleteNoticeItem(db: Firestore, id: string) {
+    const itemRef = doc(db, "ienlab_microsite", "manage", "notice", id);
+
+    await deleteDoc(itemRef);
 }

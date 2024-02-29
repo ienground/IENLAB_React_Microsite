@@ -99,7 +99,7 @@ export default function Branding({darkMode, setDarkMode}: AppProps) {
                     </div>
                 </TitleBox>
                 <DesignHeader icon={imgLogoFull} shortIcon={imgLogoShort} title={"Brand Identity"} darkMode={darkMode} />
-                <div className="content-wrapper">
+                <div className="content-wrapper top">
                     <div className="title">
                         <span><div/>01</span>
                         <div>브랜드 요소 & 시스템</div>
@@ -251,8 +251,12 @@ const Wrapper = styled.div`
             display: flex;
             flex-direction: row;
             gap: 1rem;
-            margin-top: 2rem;
+            margin-top: 1rem;
             animation: Mount-animation 0.5s ease;
+            
+            &.top {
+                margin-top: 2rem;
+            }
 
             & > .title {
                 width: 20%;

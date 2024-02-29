@@ -19,15 +19,6 @@ export default function PrivacyContent({processPrivacy, company, name, charge, l
         "정보주체의 권익침해에 대한 구제방법", "개인정보 처리방침 변경"
     ];
 
-// private fun getCompleteWord(word: String, firstValue: String, secondValue: String): String {
-//         val lastName = word.last().code
-//         if (lastName < 0xAC00 || lastName > 0xD7A3) {
-//             return ""
-//         }
-//
-//         return if ((lastName - 0xAC00) % 28 > 0) firstValue else secondValue
-//     }
-
     function getCompleteWord(word: string, firstValue: string, secondValue: string) {
         let lastName = word[word.length - 1].charCodeAt(0);
         if (lastName < 0xAC00 || lastName > 0xD7A3) {

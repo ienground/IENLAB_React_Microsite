@@ -13,7 +13,7 @@ import Privacy from "./pages/Privacy";
 import Noticeboard from "./pages/Noticeboard";
 import NoticeDetail from "./pages/noticeboard/NoticeDetail";
 import Error404 from "./pages/Error404";
-import Version from "./pages/Version";
+import Management from "./pages/Management";
 import TetrisRPG from "./pages/dev/TetrisRPG";
 import JamPhonics from "./pages/privacy/JamPhonics";
 import BlogPlanner from "./pages/dev/BlogPlanner";
@@ -50,7 +50,7 @@ export default function Router({darkMode, setDarkMode}: AppProps) {
                 <Route path={"/*"} element={<Navigate to={"/404"} />} />
 
                 {/*ETC*/}
-                <Route path={"/version"} element={<Version darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                <Route path={"/manage"} element={<Management darkMode={darkMode} setDarkMode={setDarkMode} />} />
             </Routes>
         </>
     );

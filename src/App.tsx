@@ -11,6 +11,7 @@ import {getBooleanWithExpiry, setWithExpiry} from "./utils/ExpireLocalStorage";
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "firebase/firestore";
 import {getNoticeItem, getRecentNoticeDate} from "./utils/FirebaseData";
+import {getAuth, signInWithPopup, GoogleAuthProvider, setPersistence, browserSessionPersistence} from "firebase/auth";
 import {LastEditData} from "./data/LastEditData";
 
 export interface AppProps {
@@ -46,6 +47,22 @@ export default function App() {
     };
     const app = initializeApp(firebaseConfig);
     const firestore = getFirestore(app);
+    const auth = getAuth(app);
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            localStorage.setItem(
+                'user',
+                JSON.stringify({
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL
+                })
+            );
+            console.log("auth changed");
+        }
+    });
 
     useEffect(() => {
         let defaultMode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)

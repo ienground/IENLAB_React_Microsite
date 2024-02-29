@@ -14,7 +14,7 @@ export default function NoticePost({item}: NoticePostProps) {
     );
 }
 
-const Wrapper = styled.button`
+export const Wrapper = styled.button`
     width: 100%;
     display: flex;
     flex-direction: column;

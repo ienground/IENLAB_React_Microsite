@@ -204,7 +204,7 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                         </div>
                     </div>
                 </TitleBox>
-                <div className="content-wrapper">
+                <div className="content-wrapper top">
                     <div className="title">기술 스택</div>
                     <div className="content">
                         {techStackList.map((category) => (
@@ -612,8 +612,12 @@ const Wrapper = styled.div`
             display: flex;
             flex-direction: row;
             gap: 1rem;
-            margin-top: 2rem;
+            margin-top: 1rem;
             animation: Mount-animation 0.5s ease;
+            
+            &.top {
+                margin-top: 2rem;
+            }
             
             & > .title {
                 width: 20%;
