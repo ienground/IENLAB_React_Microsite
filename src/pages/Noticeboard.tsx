@@ -15,13 +15,13 @@ import {Skeleton, Fade} from "@mui/material";
 import NoticePostSkeleton from "../components/Noticeboard/NoticePostSkeleton";
 
 export interface NoticePostProps {
-    item: {id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string}
+    item: {id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string, isPrivate: boolean}
 }
 export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [noticeList, setNoticeList] = useState<{ id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string }[]>();
+    const [noticeList, setNoticeList] = useState<{ id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string, isPrivate: boolean }[]>();
     const [isPrepared, setIsPrepared] = useState(false);
 
     window.document.title = "공지사항 | 아이엔랩 ienlab";
@@ -65,7 +65,7 @@ export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
                         <Fade className={"data"} in={isPrepared && noticeList?.length !== 0}>
                             <div>
                                 {noticeList?.map((post) => (
-                                    <NoticePost item={post} />
+                                    post.isPrivate ? <></> : <NoticePost item={post} />
                                 ))}
                             </div>
                         </Fade>

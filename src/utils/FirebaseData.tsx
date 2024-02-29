@@ -20,7 +20,7 @@ export async function getNoticeboards(db: Firestore) {
     const noticeRef = collection(db, "ienlab_microsite", "manage", "notice");
     const noticeSnapshot = await getDocs(noticeRef);
 
-    const result: { id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string }[] = [];
+    const result: { id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string, isPrivate: boolean }[] = [];
     noticeSnapshot.forEach((doc) => {
         let data = {
             id: doc.id,
@@ -28,7 +28,8 @@ export async function getNoticeboards(db: Firestore) {
             content: doc.data().content,
             create_time: doc.data().create_time.toDate(),
             edit_time: doc.data().edit_time.toDate(),
-            category: doc.data().category
+            category: doc.data().category,
+            isPrivate: doc.data().isPrivate
         }
         result.push(data);
     });
@@ -57,29 +58,31 @@ export async function getNoticeItem(db: Firestore, id: string) {
     const itemRef = doc(db, "ienlab_microsite", "manage", "notice", id);
     const itemSnapshot = await getDoc(itemRef);
 
-    const result: { id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string } = {
+    const result: { id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string, isPrivate: boolean } = {
         "id" : itemSnapshot.id,
         "title" : itemSnapshot.get("title"),
         "content" : itemSnapshot.get("content"),
         "create_time" : itemSnapshot.get("create_time").toDate(),
         "edit_time" : itemSnapshot.get("edit_time").toDate(),
-        "category": itemSnapshot.get("category")
+        "category": itemSnapshot.get("category"),
+        "isPrivate": itemSnapshot.get("isPrivate")
     };
     return result;
 }
 
-export async function updateNoticeItem(db: Firestore, id: string, title: string, content: string, category: string) {
+export async function updateNoticeItem(db: Firestore, id: string, title: string, content: string, category: string, isPrivate: boolean) {
     const itemRef = doc(db, "ienlab_microsite", "manage", "notice", id);
 
     await updateDoc(itemRef, {
         "title": title,
         "content": content,
         "category": category,
-        "edit_time": Timestamp.fromDate(new Date())
+        "edit_time": Timestamp.fromDate(new Date()),
+        "isPrivate": isPrivate
     });
 }
 
-export async function addNoticeItem(db: Firestore, title: string, content: string, category: string) {
+export async function addNoticeItem(db: Firestore, title: string, content: string, category: string, isPrivate: boolean) {
     const noticeRef = collection(db, "ienlab_microsite", "manage", "notice");
     const noticeSnapshot = await getDocs(noticeRef);
 
@@ -87,6 +90,7 @@ export async function addNoticeItem(db: Firestore, title: string, content: strin
         "title": title,
         "content": content,
         "category": category,
+        "isPrivate": isPrivate,
         "edit_time": Timestamp.fromDate(new Date()),
         "create_time": Timestamp.fromDate(new Date())
     });

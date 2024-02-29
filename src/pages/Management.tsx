@@ -14,16 +14,17 @@ import {initializeApp} from "firebase/app";
 import {getFirestore, collection, doc, DocumentData, Firestore, getDoc, getDocs, updateDoc, Timestamp} from "firebase/firestore";
 import {getAuth, signInWithPopup, GoogleAuthProvider, setPersistence, browserSessionPersistence} from "firebase/auth";
 import {addNoticeItem, deleteNoticeItem, getNoticeboards, getNoticeItem, updateNoticeItem} from "../utils/FirebaseData";
-import {Fade, Icon, TextField} from "@mui/material";
+import {Checkbox, Fade, FormControlLabel, Icon, TextField} from "@mui/material";
 import NoticePostSkeleton from "../components/Noticeboard/NoticePostSkeleton";
 import * as NoticePostWrapper from "../components/Noticeboard/NoticePost";
 import {NoticePostProps} from "./Noticeboard";
 import {useNavigate} from "react-router-dom";
 import Markdown from "../components/Markdown";
+import {CheckBox} from "@mui/icons-material";
 
 export default function Management({darkMode, setDarkMode}: AppProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [noticeList, setNoticeList] = useState<{ id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string }[]>();
+    const [noticeList, setNoticeList] = useState<{ id: string, title: string, content: string, create_time: Date, edit_time: Date, category: string, isPrivate: boolean }[]>();
     const [isPrepared, setIsPrepared] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
 
@@ -31,6 +32,7 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [category, setCategory] = useState("");
+    const [isPrivate, setIsPrivate] = useState(false);
 
     const date = new Date();
     const data = LastEditData.get("/version");
@@ -80,7 +82,7 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
 
     const saveData = async() => {
         if (contentId === "-") {
-            addNoticeItem(firestore, title, content, category)
+            addNoticeItem(firestore, title, content, category, isPrivate)
                 .then(() => {
                     let saveMessage = window.document.getElementById("save_message");
                     if (saveMessage !== null) {
@@ -99,7 +101,7 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
                     processing();
                 });
         } else if (contentId !== "") {
-            updateNoticeItem(firestore, contentId, title, content, category)
+            updateNoticeItem(firestore, contentId, title, content, category, isPrivate)
                 .then(() => {
                     let saveMessage = window.document.getElementById("save_message");
                     if (saveMessage !== null) {
@@ -150,11 +152,13 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
                         setTitle(result.title);
                         setContent(result.content);
                         setCategory(result.category);
+                        setIsPrepared(result.isPrivate);
                     })
             } else if (contentId === "-") {
                 setTitle("");
                 setContent("");
                 setCategory("");
+                setIsPrepared(false);
             }
         };
         getContent();
@@ -228,9 +232,13 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
                                     <TextField className="text-area" label={"제목"} variant={"filled"} fullWidth={true} type={"message"} name={"title"} minRows={1} multiline={true} id={"textfield-title"} value={title} onChange={(e) => {
                                         setTitle(e.target.value);
                                     }}/>
+                                    <FormControlLabel  control={<Checkbox checked={isPrivate} onChange={(event, checked) => {
+                                        setIsPrivate(event.target.checked);
+                                        console.log(event.target.checked);
+                                    }}/>} label={"비공개"} />
                                 </div>
                                 <div className={"content"}>
-                                    <TextField className="text-area" label={"내용"} variant={"filled"} type={"message"} name={"message"} minRows={10} multiline={true} id={"textfield-message"} value={content} onChange={(e) => {
+                                    <TextField className="text-area" label={"제목"} variant={"filled"} fullWidth={true} type={"message"} name={"title"} minRows={10} multiline={true} id={"textfield-title"} value={content} onChange={(e) => {
                                         setContent(e.target.value);
                                     }}/>
                                     <Markdown text={content}/>
@@ -353,9 +361,10 @@ const Wrapper = styled.div`
         & > .content-wrapper {
             max-width: 1440px;
             width: 100%;
-            display: flex;
-            flex-direction: row;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: 2fr 8fr;
+            column-gap: 1rem;
+            row-gap: 1rem;
             margin-top: 1rem;
             
             &.top {
@@ -363,7 +372,6 @@ const Wrapper = styled.div`
             }
             
             & > .buttons {
-                width: 20%;
                 display: grid;
                 grid-template-rows: 1fr;
                 grid-template-columns: 1fr;
@@ -383,14 +391,19 @@ const Wrapper = styled.div`
                         transition: background-color 0.5s ease;
 
                         & > span {
+                            color: ${props => props.theme.colors.colorOnSurface};
                             transition: color 0.5s ease;
                         }
+                    }
+                    
+                    @media ${({ theme }) => theme.device.tablet} {
+                        flex-direction: row;
+                        justify-content: space-between;
                     }
                 }
             }
             
             & > .content {
-                width: 80%;
                 display: grid;
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr;
@@ -445,6 +458,12 @@ const Wrapper = styled.div`
                         display: grid;
                         grid-template-columns: 1fr 1fr;
                         column-gap: 1rem;
+                        row-gap: 1rem;
+                        
+                        @media ${({ theme }) => theme.device.tablet} {
+                            grid-template-columns: none;
+                            grid-template-rows: 1fr 1fr;
+                        }
                     }
                     
                     & > .save {
@@ -470,6 +489,82 @@ const Wrapper = styled.div`
                             align-items: center;
                             gap: 1rem;
                             background-color: transparent;
+                            
+                            & > span, & > div {
+                                color: ${props => props.theme.colors.colorOnSurface};
+                                transition: color 0.5s ease;
+                            }
+                        }
+                    }
+                    
+                    & div.MuiTextField-root {
+                        & > label {
+                            font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                            color: ${props => props.theme.name === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.6)" };
+                            
+                            &.Mui-focused {
+                                color: ${props => props.theme.colors.colorPrimary };
+                            }
+                            
+                            &.Mui-error {
+                                color: ${props => props.theme.colors.colorError};
+                            }
+                        }
+                        & > div.MuiFilledInput-root {
+                            font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                            background-color: ${props => props.theme.name === "light" ? "rgba(0, 0, 0, 0.06)" : "rgba(255, 255, 255, 0.06)" };
+                            border-radius: 0.5rem 0.5rem 0 0;
+                        }
+                        
+                        &:has(:-webkit-autofill) > label {
+                            color: #000000;
+                            &.Mui-focused {
+                                color: ${props => props.theme.colors.colorPrimary };
+                            }
+                        }
+                
+                        & > div.MuiFilledInput-root > input, textarea {
+                            transition: background-color 0.5s ease, color 0.5s ease !important;
+                            color: ${props => props.theme.colors.colorOnSurface };
+                            
+                            &:-webkit-autofill,
+                            &:-webkit-autofill:hover,
+                            &:-webkit-autofill:focus,
+                            &:-webkit-autofill:active {
+                                animation-name: none;
+                                //background-color: transparent !important;
+                                // background-color:  ${props => props.theme.colors.colorSurfaceVariant} !important;
+                                // -webkit-box-shadow: 0 0 0 30px ${props => props.theme.colors.colorSurfaceVariant} inset !important;
+                            }
+                        }
+                        
+                        & > p {
+                            color: ${props => props.theme.colors.colorOnSurface};
+                            &.Mui-error {
+                                color: ${props => props.theme.colors.colorError};
+                            }
+                        }
+                    }
+                    
+                    & div.MuiTextField-root > div.MuiFilledInput-root {
+                        &::before {
+                            border-bottom-color: ${props => props.theme.name === "light" ? "rgba(0, 0, 0, 0.42)" : "rgba(255, 255, 255, 0.42)" };
+                
+                            &:invalid {
+                                //background-color: red;
+                            }
+                        }
+                        
+                        &::after {
+                            border-bottom-color: ${props => props.theme.colors.colorPrimary };
+                        }
+                
+                        &.Mui-error::before {
+                            border-bottom-color: ${props => props.theme.colors.colorError};
+                        }
+                
+                        &.Mui-error::after {
+                            border-bottom-color: ${props => props.theme.colors.colorError};
                         }
                     }
                 }
@@ -478,6 +573,10 @@ const Wrapper = styled.div`
             @media ${({ theme }) => theme.device.pc} {
                 width: calc(100% - 2rem);
                 padding: 0 1rem;
+            }
+            
+            @media ${({ theme }) => theme.device.tablet} {
+                grid-template-columns: 1fr;
             }
         }
         
