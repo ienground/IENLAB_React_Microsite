@@ -90,6 +90,7 @@ const MarkdownStyle = styled.div`
     }
     
     a {
-        color: #0969da;
+        color: ${props => props.theme.colors.colorLink};
+        transition: color 0.5s ease;
     }
 `

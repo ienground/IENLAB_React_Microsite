@@ -77,7 +77,8 @@ const Wrapper = styled.footer`
                 gap: 0.5rem;
                 
                 & > a {
-                    color: ${props => props.theme.colors.brand.blue};
+                    color: ${props => props.theme.colors.colorLink};
+                    transition: color 0.5s ease;
                 }
             }
         }
