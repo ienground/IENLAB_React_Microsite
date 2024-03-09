@@ -24,22 +24,18 @@ export default function Main({darkMode, setDarkMode}: AppProps) {
             <div id={"wrap"}>
                 <Slideshow />
                 <div className={"content"}>
-                    <div className={"left"}>
+                    <div className={"left link"} onClick={() => navigate("/intro")}>
                         <img src={imgIengroundProfile}/>
                         <div>
                             <h1><span>This is IENGROUND</span></h1>
                         </div>
-                        <button onClick={() => {
-                            navigate("/intro");
-                        }}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></button>
+                        <button onClick={() => navigate("/intro")}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></button>
                     </div>
-                    <div className="right">
+                    <div className={"right link"} onClick={() => navigate("/brand")}>
                         <div>
                             <h1><span>브랜드 아이덴티티</span></h1>
                         </div>
-                        <button onClick={() => {
-                            navigate("/brand");
-                        }}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></button>
+                        <button onClick={() => navigate("/brand")}><Icon baseClassName={"material-icons-round"}>arrow_forward</Icon></button>
                     </div>
                 </div>
             </div>

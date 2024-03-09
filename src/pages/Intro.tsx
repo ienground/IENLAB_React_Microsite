@@ -243,7 +243,7 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                                 </div>
                                 <div className="content no-grid">
                                     {category.content.map((app) => (
-                                        app.showIntro ? <div className={"app-page"} onClick={() => navigate(app.page)}>
+                                        app.showIntro ? <div className={"app-page link"} onClick={() => navigate(app.page)}>
                                             <img src={app.background} />
                                             <div>
                                                 <div className={"info"}>
@@ -275,7 +275,7 @@ export default function Intro({darkMode, setDarkMode}: AppProps) {
                             </div>
                             <div className="content">
                                 {contactList.map((contact) => (
-                                    <div onClick={() => { window.location.href = contact.link; }}>
+                                    <div className={"link"} onClick={() => { window.location.href = contact.link; }}>
                                         <img src={contact.icon} />
                                         <div className={"info"}>
                                             <div className="title">{contact.title}</div>

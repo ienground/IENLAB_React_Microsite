@@ -232,7 +232,7 @@ export default function Management({darkMode, setDarkMode}: AppProps) {
                                     <TextField className="text-area" label={"제목"} variant={"filled"} fullWidth={true} type={"message"} name={"title"} minRows={1} multiline={true} id={"textfield-title"} value={title} onChange={(e) => {
                                         setTitle(e.target.value);
                                     }}/>
-                                    <FormControlLabel  control={<Checkbox checked={isPrivate} onChange={(event, checked) => {
+                                    <FormControlLabel  control={<Checkbox defaultChecked={isPrivate} checked={isPrivate} onChange={(event, checked) => {
                                         setIsPrivate(event.target.checked);
                                         console.log(event.target.checked);
                                     }}/>} label={"비공개"} />

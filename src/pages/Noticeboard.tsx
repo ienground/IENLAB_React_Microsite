@@ -55,7 +55,7 @@ export default function Noticeboard({darkMode, setDarkMode}: AppProps) {
                 <div>
                     <div className="title">공지사항</div>
                     <div className="content-wrapper">
-                        <Fade className={"skeleton"} in={!noticeList} addEndListener={() => { setIsPrepared(true); } }>
+                        <Fade className={"skeleton"} in={!noticeList} unmountOnExit={true} addEndListener={() => { setIsPrepared(true); } }>
                             <div>
                                 <NoticePostSkeleton />
                                 <NoticePostSkeleton />

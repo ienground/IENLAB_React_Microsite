@@ -7,11 +7,13 @@ import patternBlack from "../../assets/brand/pattern_black.png";
 import imgCalarmPattern from "../../assets/img_calarm_pattern.png";
 import icCalarm from "../../assets/icon/ic_calarm.png";
 import icPlayStore from "../../assets/icon/ic_google_play.svg";
+import icWeb from "../../assets/icon/ic_google_play.svg";
 import screenshotCalarmAlarm from "../../assets/devpage/calarm/alarm_01.png";
 import screenshotCalarmCalarm from "../../assets/devpage/calarm/calendar_alarm_01.png";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {TitleBox} from "../Component";
+import Ripples from "react-ripples";
 
 export default function Slideshow() {
     const theme = useTheme();
@@ -51,7 +53,17 @@ export default function Slideshow() {
                                     </div>
                                 </div>
                                 <div className={"button"}>
-                                    <button onClick={() => window.location.href = "https://play.google.com/store/apps/details?id=zone.ien.calarm"}/>
+                                    {/*<button className={"play-store"} onClick={() => window.location.href = "https://play.google.com/store/apps/details?id=zone.ien.calarm"} style={{backgroundImage: `url(${icPlayStore})`}} />*/}
+                                    {/*<button className={"web"} onClick={() => window.location.href = "https://play.google.com/store/apps/details?id=zone.ien.calarm"}>*/}
+                                    {/*    <Icon baseClassName={"material-icons-round"}>language</Icon>*/}
+                                    {/*</button>*/}
+                                    <Ripples placeholder={"store"}>
+                                        <button onClick={() => window.location.href = `https://play.google.com/store/apps/details?id=zone.ien.calarm`} style={{backgroundImage: `url(${icPlayStore})`}}/>
+                                    </Ripples>
+                                    <Ripples placeholder={"web"}>
+                                        <button onClick={() => navigate("/calarm")}>
+                                            <Icon baseClassName={"material-icons-round"}>language</Icon></button>
+                                    </Ripples>
                                 </div>
                             </div>
                             <div className={"right"}>
@@ -75,7 +87,9 @@ const Wrapper = styled.div`
         position: relative;
 
         & > .react-slideshow-container {
-
+            & > .nav {
+                cursor: none;
+            }
         }
 
         & > ul.indicators {
@@ -205,15 +219,47 @@ const Wrapper = styled.div`
                         display: flex;
                         flex-direction: row;
                         align-items: start;
-                        
-                        & > button {
-                            width: 2rem;
-                            height: 2rem;
-                            background-color: transparent;
-                            background-image: url(${icPlayStore});
-                            background-repeat: no-repeat;
-                            background-size: contain;
-                            background-position: center;
+
+                        & > div {
+                            transform: translate(-1rem, -1rem);
+                            border-radius: 5rem;
+                            transition: background-color 0.5s ease;
+
+                            @media (hover: hover) and (pointer: fine) {
+                                &:hover {
+                                    background-color: rgba(0, 0, 0, 0.1);
+                                }
+                            }
+
+                            & > button {
+                                width: 2rem;
+                                height: 2rem;
+                                position: relative;
+                                margin: 1rem;
+                                background-color: transparent;
+                                background-size: contain;
+                                background-position: center;
+                                background-repeat: no-repeat;
+
+                                & > span {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    font-size: 2rem;
+                                    transition: color 0.5s ease;
+                                    color: ${props => props.theme.colors.colorOnSurface};
+                                }
+
+                                @media ${({ theme }) => theme.device.laptop} {
+                                    width: 1.5rem;
+                                    height: 1.5rem;
+                                    margin: 0.5rem;
+
+                                    & > span {
+                                        font-size: 1.5rem;
+                                    }
+                                }
+                            }
                         }
                     }
                     

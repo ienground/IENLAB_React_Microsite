@@ -57,21 +57,21 @@ export default function Header({isOpen, setIsOpen, className, isAppHeaderAvailab
         <Wrapper className={navBg ? "nav-bg" : ""}>
             <div>
                 <div className={"start"}>
-                    <li className={isOpen ? "open" : ""}><Ripples onMouseEnter={() => { if (!isMobile && !isOpen) setIsOpen(true); }} onClick={() => { if (isOpen) setIsOpen(false); else if (isMobile) setIsOpen(true); }} placeholder={"menu"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>expand_more</Icon></Ripples></li>
+                    <li className={"link" + (isOpen ? " open" : "")}><Ripples onMouseEnter={() => { if (!isMobile && !isOpen) setIsOpen(true); }} onClick={() => { if (isOpen) setIsOpen(false); else if (isMobile) setIsOpen(true); }} placeholder={"menu"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>expand_more</Icon></Ripples></li>
                 </div>
                 <button className={navBg ? "nav-bg" : ""} onClick={() => { navigate("/"); }}/>
                 <div className={"end"}>
                     <Fade in={isOpen}><li className={"dark-mode"}>
-                        <Ripples onClick={toggleDarkMode} placeholder={"Dark mode"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{darkMode === true ? "dark_mode" : "light_mode"}</Icon></Ripples>
+                        <Ripples onClick={toggleDarkMode} placeholder={"Dark mode"}><Icon baseClassName={"material-icons-round"} sx={iconStyle}>{darkMode ? "dark_mode" : "light_mode"}</Icon></Ripples>
                     </li></Fade>
-                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                    <Fade in={!isOpen} className={"link"}><li><Ripples onClick={() => {
                         window.location.href = "https://blog.ien.zone";
                     }} placeholder={"tistory"}><img src={icTistory} style={customIconStyle}/></Ripples></li></Fade>
-                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                    <Fade in={!isOpen} className={"link"}><li><Ripples onClick={() => {
                         window.location.href = "https://www.instagram.com/ienlab";
                     }} placeholder={"instagram"}><FontAwesomeIcon icon={faInstagram} size={"lg"} style={iconStyle}/></Ripples>
                     </li></Fade>
-                    <Fade in={!isOpen}><li><Ripples onClick={() => {
+                    <Fade in={!isOpen} className={"link"}><li><Ripples onClick={() => {
                         window.location.href = "https://github.com/ienground";
                     }} placeholder={"github"}><FontAwesomeIcon icon={faGithub} size={"lg"} style={iconStyle}/></Ripples>
                     </li></Fade>

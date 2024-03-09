@@ -18,7 +18,7 @@ export default function AppPreview({app}: AppPreviewProps) {
     const darkMode = (theme.name === "dark");
 
     return (
-        <Wrapper onClick={() => navigate(app.page)}>
+        <Wrapper onClick={() => navigate(app.page)} className={"link"}>
             <img src={app.background}/>
             <div>
                 <div className={"info"}>
