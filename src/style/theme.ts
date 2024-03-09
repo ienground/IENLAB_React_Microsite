@@ -51,6 +51,10 @@ export const light = {
         colorRed: "#d44c47",
         colorWhite: "#FFFFFF",
         colorBlack: "#000000",
+
+        // markdown
+        colorBorder: "#d0d7de",
+        colorLink: "#0969da",
         brand, common
     },
     device
@@ -83,6 +87,10 @@ export const dark = {
         colorRed: "#e05355",
         colorWhite: "#000000",
         colorBlack: "#FFFFFF",
+
+        // markdown
+        colorBorder: "#4f5862",
+        colorLink: "#58a6ff",
         brand, common
     },
     device
