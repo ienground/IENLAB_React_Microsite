@@ -89,7 +89,7 @@ export default function App() {
     }, []);
 
 
-    const [position, setPosition] = useState({x: window.innerWidth / 2, y: window.innerHeight / 2});
+    const [position, setPosition] = useState({x: 0, y: 0});
     const [hidden, setHidden] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [linkHovered, setLinkHovered] = useState(false);

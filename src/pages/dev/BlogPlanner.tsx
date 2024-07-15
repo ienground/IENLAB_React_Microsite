@@ -23,7 +23,7 @@ import bg3 from "../../assets/devpage/blogplanner/bp3.png";
 import bg4 from "../../assets/devpage/blogplanner/bp4.png";
 import bg5 from "../../assets/devpage/blogplanner/bp5.png";
 import bg6 from "../../assets/devpage/blogplanner/bp6.png";
-import {Wrapper} from "./Calarm";
+import {Wrapper} from "./calarm/Calarm";
 
 export default function BlogPlanner({darkMode, setDarkMode}: AppProps) {
     const location = useLocation();

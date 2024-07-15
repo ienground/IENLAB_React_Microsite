@@ -41,7 +41,7 @@ export default function Sidebar({ isOpen, setIsOpen} : Props) {
     const navItems = [
         { icon: "", svg: icIenlab, title: "아이엔 IENGROUND", link: "/intro", contents: [] },
         { icon: "brush", title: "브랜드 아이덴티티", link: "/brand", contents: [] },
-        { icon: "code", title: "개발", link: "/dev", contents: [
+        { icon: "code", title: "프로젝트", link: "/dev", contents: [
             { icon: "", svg: icCalarm, title: "캘람", link: "/calarm" },
             { icon: "", svg: icBlogPlanner, title: "블로그 플래너", link: "/blogplanner" },
             { icon: "", svg: icTetris, title: "테트리스 RPG", link: "/tetris" },

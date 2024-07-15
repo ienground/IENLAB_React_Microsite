@@ -6,7 +6,7 @@ import {AppProps} from "./App";
 import Intro from "./pages/Intro";
 import Branding from "./pages/Branding";
 import ScrollToTop from "./utils/ScrollToTop";
-import Calarm from "./pages/dev/Calarm";
+import Calarm from "./pages/dev/calarm/Calarm";
 import DevPage from "./pages/DevPage";
 import Branding2023 from "./pages/design/Branding2023";
 import Privacy from "./pages/Privacy";
@@ -17,6 +17,7 @@ import Management from "./pages/Management";
 import TetrisRPG from "./pages/dev/TetrisRPG";
 import JamPhonics from "./pages/privacy/JamPhonics";
 import BlogPlanner from "./pages/dev/BlogPlanner";
+import CalarmGuide from "./pages/dev/calarm/Guide";
 
 export default function Router({darkMode, setDarkMode}: AppProps) {
     return (
@@ -39,6 +40,7 @@ export default function Router({darkMode, setDarkMode}: AppProps) {
                 <Route path={"/dev"} element={<DevPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/blogplanner"} element={<BlogPlanner darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/calarm"} element={<Calarm darkMode={darkMode} setDarkMode={setDarkMode} />} />
+                <Route path={"/calarm/guide"} element={<CalarmGuide darkMode={darkMode} setDarkMode={setDarkMode} />} />
                 <Route path={"/tetris"} element={<TetrisRPG darkMode={darkMode} setDarkMode={setDarkMode} />} />
 
                 {/*Brand*/}
