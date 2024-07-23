@@ -25,8 +25,8 @@ import cycledTimer1 from "../../../assets/devpage/calarm/cycled_timer_01.png";
 import cycledTimer2 from "../../../assets/devpage/calarm/cycled_timer_02.png";
 import timer1 from "../../../assets/devpage/calarm/timer_01.png";
 import timer2 from "../../../assets/devpage/calarm/timer_02.png";
-import screensaver1 from "../../../assets/devpage/calarm/screensaver_01.png";
-import screensaver2 from "../../../assets/devpage/calarm/screensaver_02.png";
+import screensaver1 from "../../../assets/devpage/calarm/deskclock_01.png";
+import screensaver2 from "../../../assets/devpage/calarm/deskclock_02.png";
 import stopwatch1 from "../../../assets/devpage/calarm/stopwatch_01.png";
 import stopwatch2 from "../../../assets/devpage/calarm/stopwatch_02.png";
 
@@ -120,7 +120,7 @@ export default function Calarm({darkMode, setDarkMode}: AppProps) {
             screenshots: [stopwatch1, stopwatch2]
         },
         {
-            category: "탁상시계 및 화면 보호기",
+            category: "탁상시계",
             title: "바쁠 땐 탁상시계로",
             content: "공부나 작업 중에 휴대폰을 탁상시계로 사용할 수 있어요.",
             screenshots: [screensaver1, screensaver2]
@@ -335,7 +335,7 @@ export const Wrapper = styled.div<{color: string}>`
                     
                     & > div {
                         height: 100%;
-                        aspect-ratio: 18 / 39;
+                        aspect-ratio: 1080 / 2412;
                         margin-left: auto;
                         padding: 0.5rem;
                         border-radius: 1.5rem;
@@ -353,7 +353,7 @@ export const Wrapper = styled.div<{color: string}>`
                             
                             & .react-slideshow-container {
                                 height: 100%;
-                                aspect-ratio: 18 / 39;
+                                aspect-ratio: 1080 / 2412;
                                 overflow: hidden;
                                 border-radius: 1rem;
                                 
@@ -361,7 +361,7 @@ export const Wrapper = styled.div<{color: string}>`
                                     height: 100%;
                                     
                                     & .each-slide {
-                                        aspect-ratio: 18 / 39;
+                                        aspect-ratio: 1080 / 2412;
                                         justify-content: center;
                                         background-size: cover;
                                         background-position: center;
@@ -466,7 +466,7 @@ export const Wrapper = styled.div<{color: string}>`
                         
                         & > div {
                             height: calc(100% - 1rem);
-                            aspect-ratio: 18 / 39;
+                            aspect-ratio: 1080 / 2412;
                             display: flex;
                             flex-direction: row;
                             position: absolute;
