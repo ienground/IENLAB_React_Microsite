@@ -170,7 +170,9 @@ export default function RootScreen() {
                           간단한 유틸리티부터 커뮤니티, 복잡한 네이티브 기능까지.
                         </div>
                       </div>
-                      <div className="card-wrapper visible-animation">
+                      <div
+                        className="card-wrapper visible-animation"
+                      >
                         <HistoryCard
                           radius="lg"
                           style={{ aspectRatio: "1" }}
@@ -473,17 +475,30 @@ const SectionWrapper = styled.div`
               display: flex;
               flex-direction: column;
               gap: 1rem;
-              
               opacity: 0;
-              transition: opacity 1s ease-in-out;
               
               & > .description {
                 margin: 0 1rem;
                 font-weight: bold;
               }
-              
+
               &.start {
-                opacity: 1;
+                animation-name: fadeSlideIn;
+                animation-duration: 0.8s;
+                animation-timing-function: ease-out;
+                animation-fill-mode: forwards; /* 애니메이션 종료 후 최종 상태 유지 */
+              }
+
+              &:nth-child(1) {
+                animation-delay: 0s;
+              }
+
+              &:nth-child(2) {
+                animation-delay: 0.5s;
+              }
+
+              &:nth-child(3) {
+                animation-delay: 1s;
               }
             }
           }
