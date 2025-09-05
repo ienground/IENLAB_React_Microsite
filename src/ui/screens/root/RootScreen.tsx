@@ -122,8 +122,6 @@ export default function RootScreen() {
         data[key] = value;
       }
     }
-
-    console.log("data", data);
   };
 
 
@@ -155,7 +153,8 @@ export default function RootScreen() {
                       아이엔입니다
                     </div>
                     <div className="description">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda commodi corporis est ipsum labore natus omnis provident qui. Accusamus accusantium autem consequuntur cum, deleniti dolorum laborum nostrum optio saepe sed?
+                      두루뭉술한 아이디어를 현실로 만들어드립니다.<br />
+                      UI/UX부터 개발, 어플리케이션 퍼블리싱까지 맡겨주세요!
                     </div>
                     <div className="buttons">
                       <Button
