@@ -1,5 +1,9 @@
+import DefaultLayout from "../../../utils/layout/DefaultLayout.tsx";
+
 export default function IntroScreen() {
   return (
-    <>dd</>
+    <DefaultLayout>
+      Intro
+    </DefaultLayout>
   );
 }

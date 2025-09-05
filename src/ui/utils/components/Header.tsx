@@ -3,14 +3,13 @@ import {
   Link,
   Navbar,
   NavbarBrand,
-  NavbarContent, NavbarItem, Popover, PopoverContent, PopoverTrigger,
+  NavbarContent, NavbarItem,
 } from "@heroui/react";
 import styled from "styled-components";
 import imgLogoTypo from "../../../assets/brand/img_logo_typo.png";
 import {RootDestination} from "../../screens/root/RootDestination.ts";
 import {ThemeSwitcher} from "./ThemeSwitcher.tsx";
-import {useEffect, useState} from "react";
-import {motion, useAnimation, useMotionValue, useTransform} from "motion/react";
+import {useState} from "react";
 import {mapRange} from "../utils.ts";
 import {
   BellSimpleRingingIcon,
@@ -24,6 +23,7 @@ import TistoryIcon from "../../../assets/icon/ic_tistory.svg?react";
 import IenlabSolidIcon from "../../../assets/icon/ic_ienlab_solid.svg?react";
 import {IntroDestination} from "../../screens/root/intro/IntroDestination.ts";
 import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts";
+import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 
 export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
   const scrollThreshold = 100;
@@ -145,7 +145,7 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/" >
+          <Link color="foreground" href={BrandDestination.route} >
             디자인
           </Link>
         </NavbarItem>
@@ -213,6 +213,7 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
             color="primary"
             href="https://github.com/heroui-inc/heroui"
             variant="solid"
+            radius="sm"
           >
             외주 문의
           </Button>
@@ -329,7 +330,7 @@ const FloatingNavbar = styled(Navbar)`
   & > header {
     padding-inline: 1rem;
     
-    max-width: calc(1440px - 4rem);
+    max-width: calc(1440px + 2rem);
     
     & > .content {
       //width: 40%;

@@ -405,7 +405,7 @@ export default function RootScreen() {
                           <div className="header">
                             <h2>연락처 정보</h2>
                           </div>
-                          <div className="body">
+                          <div className="body info">
                             <Button
                               as={Link}
                               size="lg"
@@ -470,7 +470,7 @@ export default function RootScreen() {
                           <div className="header">
                             <h2>프로젝트 유형</h2>
                           </div>
-                          <div className="body">
+                          <div className="body project">
                             {
                               projectTypes.map((item) => (
                                 <Button
@@ -968,6 +968,14 @@ const SectionWrapper = styled.div`
                 grid-template-columns: repeat(2, 1fr);
                 row-gap: 1rem;
                 column-gap: 1rem;
+                
+                &.info {
+                  grid-template-columns: repeat(2, 1fr);
+                }
+                
+                &.project {
+                  grid-template-columns: repeat(3, 1fr);
+                }
                 
                 & > .contact-detail {
                   height: fit-content;
