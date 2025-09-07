@@ -4,7 +4,9 @@ import styled from "styled-components";
 export default function BrandScreen() {
   return (
     <DefaultLayout>
-      Brand!
+      <Wrapper>
+
+      </Wrapper>
     </DefaultLayout>
   );
 }

@@ -37,6 +37,12 @@ const Wrapper = styled.div<{isFullscreen: boolean}>`
     
   }
   
+  & > .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
   //& > .content {
   //  width: 100%;
   //  

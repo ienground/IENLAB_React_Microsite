@@ -10,7 +10,7 @@ import BrandScreen from "../screens/root/brand/BrandScreen.tsx";
 import {PrivacyDestination} from "../screens/root/privacy/PrivacyDestination.ts";
 import PrivacyScreen from "../screens/root/privacy/PrivacyScreen.tsx";
 import {EstimateDestination} from "../screens/root/estimate/EstimateDestination.ts";
-import EstimateScreen from "../screens/root/estimate/EstimateScreen.tsx";
+import EstimateSearchScreen from "../screens/root/estimate/search/EstimateSearchScreen.tsx";
 
 export default function RootRouter() {
   return (
@@ -21,7 +21,7 @@ export default function RootRouter() {
       <Route path={NoticeDestination.route} element={<NoticeScreen />} />
       <Route path={BrandDestination.route} element={<BrandScreen />} />
       <Route path={PrivacyDestination.route} element={<PrivacyScreen />} />
-      <Route path={EstimateDestination.route} element={<EstimateScreen />} />
+      <Route path={EstimateDestination.route} element={<EstimateSearchScreen />} />
     </Routes>
   );
 }

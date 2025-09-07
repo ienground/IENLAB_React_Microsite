@@ -152,7 +152,7 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href={EstimateDestination.route} >
-            견적 확인
+            견적 조회
           </Link>
         </NavbarItem>
       </NavbarContent>

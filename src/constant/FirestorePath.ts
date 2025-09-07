@@ -6,6 +6,7 @@ export const FirestorePath = {
   UPDATE_AT: "updateAt",
 
   Estimate: {
+    IDENTIFIER: "identifier",
     EXPIRE_AT: "expireAt",
     NAME: "name",
     COMPANY: "company",
