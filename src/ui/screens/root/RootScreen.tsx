@@ -21,6 +21,7 @@ import 'swiper/css/navigation';
 import { Mousewheel, Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
 
 import {
+  addToast,
   Button,
   Card,
   CardBody,
@@ -41,10 +42,21 @@ import {
   SuitcaseSimpleIcon,
   SunIcon, ToolboxIcon, UsersFourIcon
 } from "@phosphor-icons/react";
-import {type FormEvent, useEffect, useState} from "react";
+import {type ChangeEvent, ChangeEventHandler, type FormEvent, useEffect, useState} from "react";
 import {useTheme} from "@heroui/use-theme";
-import {useDarkmode} from "../../utils/utils.ts";
+import {getValueAsString, useDarkmode} from "../../utils/utils.ts";
 import LiquidGlass from "@nkzw/liquid-glass";
+import {
+  type Estimate, type EstimateBudget,
+  type EstimatePlatform,
+  estimateStatus,
+  EstimateToHashmap,
+  type EstimateType
+} from "../../../data/estimate/Estimate.ts";
+import {collection, addDoc, serverTimestamp, Timestamp} from "firebase/firestore";
+import {FirestorePath} from "../../../constant/FirestorePath.ts";
+import {firestore} from "../../../constant/FirebaseConfig.ts";
+import {addDays, addYears} from "date-fns";
 
 export default function RootScreen() {
   const viewModel = useRootViewModel();
@@ -103,7 +115,7 @@ export default function RootScreen() {
     { key: "bluetooth", icon: <BluetoothIcon size={32} weight="bold" />, label: "블루투스 통신 앱 개발" },
   ];
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -122,12 +134,46 @@ export default function RootScreen() {
         data[key] = value;
       }
     }
+
+    const item: Estimate = {
+      id: "",
+      createAt: Timestamp.now(),
+      updateAt: Timestamp.now(),
+      expireAt: Timestamp.fromDate(addYears(new Date(), 1)),
+      name: getValueAsString(data["name"]), 
+      company: getValueAsString(data["company"]),
+      email: getValueAsString(data["email"]),
+      type: getValueAsString(data["type"]) as EstimateType,
+      platform: Array.isArray(data["platform"])
+        ? data["platform"].map(p => getValueAsString(p) as unknown as EstimatePlatform)
+        : [getValueAsString(data["platform"]) as unknown as EstimatePlatform],
+      budget: getValueAsString(data["budget"]) as EstimateBudget,
+      description: getValueAsString(data["description"]),
+      status: estimateStatus.PENDING,
+      summary: "",
+      sigNote: "",
+      plans: [],
+      conditions: []
+    };
+
+    await viewModel.uploadEstimate(item);
+
+    addToast({
+      title: "문의 전송 완료",
+      description: "프로젝트 문의가 전송되었습니다!",
+      color: "success"
+    });
   };
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    viewModel.updateUiState({ formData: {...viewModel.uiState.item.formData, [name]: value} });
 
+    console.log(name, value);
+  };
 
   return (
-    <DefaultLayout isFullscreen={true}>
+    <DefaultLayout isFullscreen>
       <Wrapper>
         <Image
           id="background-pattern"
@@ -504,6 +550,8 @@ export default function RootScreen() {
                               type="text"
                               name="name"
                               placeholder="이름 입력"
+                              value={viewModel.uiState.item.formData.name}
+                              onChange={handleChange}
                             />
                             <Input
                               isClearable
@@ -512,6 +560,8 @@ export default function RootScreen() {
                               type="text"
                               name="company"
                               placeholder="소속 회사 (선택사항)"
+                              value={viewModel.uiState.item.formData.company}
+                              onChange={handleChange}
                             />
                           </div>
                           <Input
@@ -522,6 +572,8 @@ export default function RootScreen() {
                             type="email"
                             name="email"
                             placeholder="your@email.com"
+                            value={viewModel.uiState.item.formData.email}
+                            onChange={handleChange}
                           />
                           <div className="two-line">
                             <Select
@@ -530,6 +582,8 @@ export default function RootScreen() {
                               label="프로젝트 유형"
                               name="type"
                               placeholder="유형을 선택하세요"
+                              value={viewModel.uiState.item.formData.type}
+                              onChange={handleChange}
                             >
                               <>
                                 {projectTypes.map((item) => (
@@ -546,6 +600,8 @@ export default function RootScreen() {
                               selectionMode="multiple"
                               defaultSelectedKeys={["android", "ios"]}
                               name="platform"
+                              value={viewModel.uiState.item.formData.platform}
+                              onChange={handleChange}
                             >
                               <SelectItem key={"android"}>Android</SelectItem>
                               <SelectItem key={"ios"}>iOS</SelectItem>
@@ -559,6 +615,8 @@ export default function RootScreen() {
                             placeholder="예산 범위를 설정하세요"
                             defaultSelectedKeys={["300_500"]}
                             name="budget"
+                            value={viewModel.uiState.item.formData.budget}
+                            onChange={handleChange}
                           >
                             <SelectItem key={"less_100"}>100만원 미만</SelectItem>
                             <SelectItem key={"100_300"}>100-300만원</SelectItem>
@@ -575,8 +633,11 @@ export default function RootScreen() {
                             maxRows={6}
                             className="grow"
                             name="description"
+                            value={viewModel.uiState.item.formData.description}
+                            onChange={handleChange}
                           />
                           <Button
+                            isLoading={viewModel.uiState.item.isEstimateUploading}
                             endContent={<PaperPlaneTiltIcon />}
                             color="primary"
                             variant="solid"

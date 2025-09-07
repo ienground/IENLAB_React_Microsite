@@ -24,6 +24,7 @@ import IenlabSolidIcon from "../../../assets/icon/ic_ienlab_solid.svg?react";
 import {IntroDestination} from "../../screens/root/intro/IntroDestination.ts";
 import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts";
 import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
+import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
 
 export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
   const scrollThreshold = 100;
@@ -147,6 +148,11 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
         <NavbarItem>
           <Link color="foreground" href={BrandDestination.route} >
             디자인
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href={EstimateDestination.route} >
+            견적 확인
           </Link>
         </NavbarItem>
       </NavbarContent>
