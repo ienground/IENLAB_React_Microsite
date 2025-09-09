@@ -1,15 +1,16 @@
 import DefaultLayout from "../../../../utils/layout/DefaultLayout.tsx";
-import {CommonWrapper} from "../../../../utils/components/CommonWrapper.tsx";
+import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
 import {Button, Card, CardBody, CardHeader, Input} from "@heroui/react";
 import styled from "styled-components";
-import {MagnifyingGlassIcon, PasswordIcon} from "@phosphor-icons/react";
+import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon} from "@phosphor-icons/react";
 
 export default function EstimateSearchScreen() {
   return (
     <DefaultLayout>
       <CommonWrapper>
         <div className="header">
-          견적 조회
+          <ReceiptIcon size={48} weight="bold" />
+          <div>견적 조회</div>
         </div>
         <ContentWrapper>
           <Card className="input-card">
@@ -42,10 +43,18 @@ export default function EstimateSearchScreen() {
 }
 
 export const ContentWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
   margin-top: 1rem;
   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
   & > .input-card {
-    //background-color: red;
+    width: 100%;
+    max-width: 720px;
     
     & > .header {
       display: flex;
@@ -66,9 +75,9 @@ export const ContentWrapper = styled.div`
       gap: 1rem;
       
       & > ul.description {
+        margin-top: 1rem;
         list-style-position: inside;
         list-style-type: disc;
-        
       }
       
     }

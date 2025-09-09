@@ -25,8 +25,6 @@ export default function DefaultLayout({ isFullscreen = false, children } : { isF
 }
 
 const Wrapper = styled.div<{isFullscreen: boolean}>`
-  height: 100vh;
-  
   position: relative;
   display: flex;
   flex-direction: column;

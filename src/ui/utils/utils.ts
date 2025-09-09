@@ -69,3 +69,9 @@ export const getValueAsString = (value: FormDataEntryValue | FormDataEntryValue[
   }
   return String(value); // String()으로 문자열로 변환
 };
+
+// export const IconWrapper = ({children, className}) => (
+//   <div className={cn(className, "flex items-center rounded-small justify-center w-7 h-7")}>
+// {children}
+// </div>
+// );
