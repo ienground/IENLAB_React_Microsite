@@ -3,8 +3,12 @@ import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
 import {Button, Card, CardBody, CardHeader, Input} from "@heroui/react";
 import styled from "styled-components";
 import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon} from "@phosphor-icons/react";
+import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 
 export default function EstimateSearchScreen() {
+  const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
+  useVisibleAnimation(visibleAnimationRefs, "start", refCount);
+
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -13,7 +17,7 @@ export default function EstimateSearchScreen() {
           <div>견적 조회</div>
         </div>
         <ContentWrapper>
-          <Card className="input-card">
+          <Card className="input-card visible-animation" ref={addToVisibleAnimationRefs}>
             <CardHeader className="header">
               <PasswordIcon size={32} weight="fill" />
               <div>견적 번호 입력</div>

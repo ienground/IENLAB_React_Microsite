@@ -42,9 +42,9 @@ import {
   SuitcaseSimpleIcon,
   SunIcon, ToolboxIcon, UsersFourIcon
 } from "@phosphor-icons/react";
-import {type ChangeEvent, ChangeEventHandler, type FormEvent, useEffect, useState} from "react";
+import {type ChangeEvent, ChangeEventHandler, type FormEvent, useEffect, useRef, useState} from "react";
 import {useTheme} from "@heroui/use-theme";
-import {getValueAsString, useDarkmode} from "../../utils/utils.ts";
+import {getValueAsString, useVisibleAnimation, useDarkmode, useElementRefs} from "../../utils/utils.ts";
 import LiquidGlass from "@nkzw/liquid-glass";
 import {
   type Estimate, type EstimateBudget,
@@ -57,6 +57,7 @@ import {collection, addDoc, serverTimestamp, Timestamp} from "firebase/firestore
 import {FirestorePath} from "../../../constant/FirestorePath.ts";
 import {firestore} from "../../../constant/FirebaseConfig.ts";
 import {addDays, addYears} from "date-fns";
+import {FullPageWrapper} from "fullpage-nestedscroll-react";
 
 export default function RootScreen() {
   const viewModel = useRootViewModel();
@@ -81,27 +82,8 @@ export default function RootScreen() {
   //   },
   // });
 
-  // 관찰할 요소들을 모두 선택합니다.
-  const visibleAnimations = document.querySelectorAll('.visible-animation');
-
-// Intersection Observer 객체를 생성합니다.
-  const observer = new IntersectionObserver((entries, observer) => {
-    // 관찰 대상(entries)을 순회합니다.
-    entries.forEach(entry => {
-      // entry가 화면에 보일 때 (isIntersecting: true)
-      if (entry.isIntersecting) {
-        // 해당 요소에 'show' 클래스를 추가합니다.
-        entry.target.classList.add('start');
-        // 애니메이션이 한 번만 실행되도록 관찰을 중단합니다.
-        observer.unobserve(entry.target);
-      }
-    });
-  });
-//
-// 각 박스 요소를 관찰 대상에 등록합니다.
-  visibleAnimations.forEach(item => {
-    observer.observe(item);
-  });
+  const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
+  useVisibleAnimation(visibleAnimationRefs, "start", refCount);
 
   const services = [
     "멀티플랫폼 앱 개발", "안드로이드 앱 개발", "iOS 앱 개발", "UI/UX 구현", "관리자 페이지 개발",
@@ -173,7 +155,7 @@ export default function RootScreen() {
   };
 
   return (
-    <DefaultLayout isFullscreen>
+    <DefaultLayout isfullscreen>
       <Wrapper>
         <Image
           id="background-pattern"
@@ -185,32 +167,33 @@ export default function RootScreen() {
           height="100vh"
         />
         <div id="dark-filter" className={isDark ? "show" : ""} />
+
         <FullpageContainer
           activeIndex={activeIndex} setActiveIndex={setActiveIndex}
         >
           <FullpageSection>
             <SectionWrapper>
-              <div className="content-wrapper">
-                <div className="content">
-                  <div className="message">
-                    <div className="title">
-                      안녕하세요, <br />
-                      <span className="font-bold">모바일 개발자 & 디자이너</span> <br />
-                      아이엔입니다
-                    </div>
-                    <div className="description">
-                      두루뭉술한 아이디어를 현실로 만들어드립니다.<br />
-                      UI/UX부터 개발, 어플리케이션 퍼블리싱까지 맡겨주세요!
-                    </div>
-                    <div className="buttons">
-                      <Button
-                        color="primary"
-                        onPress={() => setActiveIndex(3)}
-                        variant="solid"
-                      >
-                        프로젝트 문의
-                      </Button>
-                      <Button
+                <div className="content-wrapper">
+                  <div className="content">
+                    <div className="message">
+                      <div className="title">
+                        안녕하세요, <br />
+                        <span className="font-bold">모바일 개발자 & 디자이너</span> <br />
+                        아이엔입니다
+                      </div>
+                      <div className="description">
+                        두루뭉술한 아이디어를 현실로 만들어드립니다.<br />
+                        UI/UX부터 개발, 어플리케이션 퍼블리싱까지 맡겨주세요!
+                      </div>
+                      <div className="buttons">
+                        <Button
+                          color="primary"
+                          onPress={() => setActiveIndex(3)}
+                          variant="solid"
+                        >
+                          프로젝트 문의
+                        </Button>
+                        <Button
                         as={Link}
                         color="primary"
                         href="https://github.com/heroui-inc/heroui"
@@ -253,7 +236,7 @@ export default function RootScreen() {
                     <div
                       className="description history"
                     >
-                      <div className="card-wrapper visible-animation">
+                      <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>
                         <HistoryCard
                           radius="lg"
                           style={{ aspectRatio: "1" }}
@@ -268,7 +251,7 @@ export default function RootScreen() {
                           간단한 유틸리티부터 커뮤니티, 복잡한 네이티브 기능까지
                         </div>
                       </div>
-                      <div className="card-wrapper visible-animation">
+                      <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>
                         <HistoryCard
                           radius="lg"
                           style={{ aspectRatio: "1" }}
@@ -283,7 +266,7 @@ export default function RootScreen() {
                           당신과 함께 만들어가는 어플리케이션 디자인
                         </div>
                       </div>
-                      <div className="card-wrapper visible-animation">
+                      <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>
                         <HistoryCard
                           radius="lg"
                           style={{ aspectRatio: "1" }}
@@ -312,7 +295,7 @@ export default function RootScreen() {
                     <div className="title">기술 스택 및 서비스</div>
                     <div className="description tech">
                       <div className="tech-stack">
-                        <div className="card-wrapper visible-animation">
+                        <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>
                           <div className="logo-wrapper">
                             <AndroidLogoIcon size={48} weight="fill" />
                             <AppleLogoIcon size={48} weight="fill" />
@@ -349,7 +332,7 @@ export default function RootScreen() {
                             </CardBody>
                           </TechCard>
                         </div>
-                        <div className="card-wrapper visible-animation">
+                        <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>
                           <div className="logo-wrapper">
                             <GlobeSimpleIcon size={48} weight="fill" />
                           </div>
@@ -385,7 +368,7 @@ export default function RootScreen() {
                             </CardBody>
                           </TechCard>
                         </div>
-                        <div className="card-wrapper visible-animation">
+                        <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>
                           <div className="logo-wrapper">
                             <GearFineIcon size={48} weight="fill" />
                           </div>
@@ -425,8 +408,8 @@ export default function RootScreen() {
                       <div className="service">
                         <div className="body">
                           {
-                            services.map((service) => (
-                              <Chip variant="flat">{service}</Chip>
+                            services.map((service, index) => (
+                              <Chip variant="flat" key={index}>{service}</Chip>
                             ))
                           }
                         </div>
@@ -446,7 +429,8 @@ export default function RootScreen() {
                     <div className="description contact">
                       <div className="left-side">
                         <Card
-                          className="card contact visible-animation"
+                          className="card contact visible-animation d1"
+                          ref={addToVisibleAnimationRefs}
                         >
                           <div className="header">
                             <h2>연락처 정보</h2>
@@ -511,7 +495,8 @@ export default function RootScreen() {
                           </div>
                         </Card>
                         <Card
-                          className="card project-type visible-animation"
+                          className="card project-type visible-animation d2"
+                          ref={addToVisibleAnimationRefs}
                         >
                           <div className="header">
                             <h2>프로젝트 유형</h2>
@@ -524,6 +509,7 @@ export default function RootScreen() {
                                   radius="sm"
                                   variant="faded"
                                   className="project-detail"
+                                  key={item.key}
                                 >
                                   {item.icon}
                                   <div className="label">{item.label}</div>
@@ -533,7 +519,10 @@ export default function RootScreen() {
                           </div>
                         </Card>
                       </div>
-                      <Card className="card form visible-animation">
+                      <Card
+                        className="card form visible-animation d3"
+                        ref={addToVisibleAnimationRefs}
+                      >
                         <div className="header">
                           <h2>프로젝트 문의하기</h2>
                         </div>
@@ -655,9 +644,6 @@ export default function RootScreen() {
               </div>
             </SectionWrapper>
           </FullpageSection>
-          {/*<FullpageSection isAutoHeight>*/}
-          {/*  <footer>Footer</footer>*/}
-          {/*</FullpageSection>*/}
         </FullpageContainer>
 
         <PageIndicator>
@@ -772,6 +758,7 @@ export default function RootScreen() {
 
 const Wrapper = styled.div`
   position: relative;
+  width: 100vw;
 
   #background-pattern {
     position: absolute;
@@ -808,7 +795,7 @@ const Wrapper = styled.div`
   & > .react-fullpage__wrapper {
     position: absolute;
     
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     z-index: 102;
   }
@@ -828,19 +815,27 @@ const Wrapper = styled.div`
     }
   }
   
+  & > .section-container {
+    height: 100vh;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  
 `;
 
 const PageIndicator = styled.div`
 `;
 
 const SectionWrapper = styled.div`
-  position: relative;
-  
+  scroll-snap-align: start;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   object-fit: cover;
   object-position: center center;
+
+  position: relative;
   
   & > .content-wrapper {
     width: 100%;
@@ -907,30 +902,10 @@ const SectionWrapper = styled.div`
               display: flex;
               flex-direction: column;
               gap: 2rem;
-              opacity: 0;
 
               & > .description {
                 margin: 0 1rem;
                 font-weight: bold;
-              }
-
-              &.start {
-                animation-name: fadeSlideIn;
-                animation-duration: 0.8s;
-                animation-timing-function: ease-out;
-                animation-fill-mode: forwards; /* 애니메이션 종료 후 최종 상태 유지 */
-              }
-
-              &:nth-child(1) {
-                animation-delay: 0s;
-              }
-
-              &:nth-child(2) {
-                animation-delay: 250ms;
-              }
-
-              &:nth-child(3) {
-                animation-delay: 500ms;
               }
             }
           }

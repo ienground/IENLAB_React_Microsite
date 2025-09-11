@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {type MutableRefObject, type RefObject, useEffect, useRef, useState} from "react";
 import { Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData } from "firebase/firestore";
 
 export const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
@@ -87,4 +87,66 @@ export function getCompleteWord(word: string, firstValue: string, secondValue: s
       return secondValue;
     }
   }
+}
+
+export function useElementRefs<T extends Element>(): [RefObject<T[]>, (el: T | null) => void, number] {
+  const elementsRef = useRef<T[]>([]);
+  const [trigger, setTrigger] = useState(0);
+
+  const setRef = (el: T | null) => {
+    // ⭐️ 새로운 요소가 배열에 포함되지 않은 경우에만 로직 실행
+    if (el && !elementsRef.current.includes(el)) {
+      elementsRef.current.push(el);
+      setTrigger(prev => prev + 1); // ⭐️ 올바른 위치
+      console.log(elementsRef.current);
+    }
+    // 요소가 DOM에서 제거될 때 처리 (선택사항)
+    if (!el && elementsRef.current.length > 0) {
+      elementsRef.current = elementsRef.current.filter(item => item !== el);
+      // setTrigger(prev => prev + 1); // 제거 시에도 트리거할 경우
+    }
+  };
+
+  return [elementsRef, setRef, trigger];
+}
+
+export function useVisibleAnimation(items: RefObject<Element[]>, addTokens: string, trigger: number) {
+  useEffect(() => {
+    // 1. Ref 객체에서 실제 DOM 요소 배열을 가져옵니다.
+    const visibleAnimations = items.current;
+
+    console.log(visibleAnimations);
+
+    // items.current에 요소가 없으면 실행하지 않습니다.
+    if (visibleAnimations.length === 0) {
+      return;
+    }
+
+    // 2. Intersection Observer 객체를 생성합니다.
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(addTokens);
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    // 3. 각 요소를 순회하며 초기 상태와 스크롤 시 상태를 처리합니다.
+    visibleAnimations.forEach(item => {
+      if (!item) return; // 요소가 유효한지 확인
+
+      const rect = item.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        item.classList.add(addTokens);
+      } else {
+        observer.observe(item);
+      }
+    });
+
+    // useEffect 클린업 함수: 컴포넌트 언마운트 시 옵저버 해제
+    return () => {
+      observer.disconnect();
+    };
+  }, [items, addTokens, trigger]);
 }

@@ -27,14 +27,16 @@ import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 
-export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
+export const Header = ({ isfullscreen } : { isfullscreen: boolean } ) => {
   const scrollThreshold = 100;
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const fullscreen = isfullscreen ? false : false;
 
   // const borderRadius = useTransform(scrollY, [0, scrollThreshold], [0, 1]);
   // const backdropBlur = useTransform(scrollY, [0, scrollThreshold], [8, 24]);
 
-  const maxMarginX = 2;
+  const maxMarginX = 1;
   const maxMarginY = 1;
   const maxBorderRadius = 1;
 
@@ -43,12 +45,12 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
   const [borderRadius, setBorderRadius] = useState(0);
 
 
-  window?.addEventListener("scroll", () => {
-    setIsScrolled(window.scrollY > scrollThreshold);
-    setMarginX(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginX));
-    setMarginY(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginY));
-    setBorderRadius(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxBorderRadius));
-  });
+  // window?.addEventListener("scroll", () => {
+  //   setIsScrolled(window.scrollY > scrollThreshold);
+  //   setMarginX(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginX));
+  //   setMarginY(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginY));
+  //   setBorderRadius(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxBorderRadius));
+  // });
 
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
@@ -59,11 +61,11 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
       className={isScrolled ? "scrolled" : ""}
       maxWidth="full"
       style={{
-        maxWidth: `calc(100% - 2 * ${isFullscreen ? maxMarginX : marginX}rem)`,
+        maxWidth: `calc(100% - 2 * ${fullscreen ? maxMarginX : marginX}rem)`,
         marginLeft: "auto",
         marginRight: "auto",
-        top: `${isFullscreen ? maxMarginY : marginY}rem`,
-        borderRadius: `${isFullscreen ? maxBorderRadius : borderRadius}rem`,
+        top: `${fullscreen ? maxMarginY : marginY}rem`,
+        borderRadius: `${fullscreen ? maxBorderRadius : borderRadius}rem`,
         zIndex: 999,
       }}
     >
@@ -82,7 +84,7 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
             isOpen={isOpen}
             onOpenChange={(isOpen) => setIsOpen(isOpen)}
           >
-            <DropdownTrigger asChild>
+            <DropdownTrigger aschild>
               <Button
                 isIconOnly
                 aria-label="Like"

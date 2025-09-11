@@ -2,10 +2,10 @@ import * as React from "react";
 import {Header} from "../components/Header.tsx";
 import styled from "styled-components";
 
-export default function DefaultLayout({ isFullscreen = false, children } : { isFullscreen?: boolean, children: React.ReactNode }) {
+export default function DefaultLayout({ isfullscreen = false, children } : { isfullscreen?: boolean, children: React.ReactNode }) {
   return (
-    <Wrapper isFullscreen={isFullscreen}>
-      <Header isFullscreen={isFullscreen} />
+    <Wrapper $isfullscreen={isfullscreen}>
+      <Header isfullscreen={isfullscreen} />
       <main className="content">
         {children}
       </main>
@@ -24,7 +24,7 @@ export default function DefaultLayout({ isFullscreen = false, children } : { isF
   );
 }
 
-const Wrapper = styled.div<{isFullscreen: boolean}>`
+const Wrapper = styled.div<{$isfullscreen: boolean}>`
   min-height: 100vh;
   
   position: relative;
@@ -34,7 +34,7 @@ const Wrapper = styled.div<{isFullscreen: boolean}>`
   & > main {
     flex-grow: 1;
     
-    ${props => props.isFullscreen ? '' +
+    ${props => props.$isfullscreen ? '' +
             'position: absolute; width: 100%; height: 100%;' : ''}
     
   }

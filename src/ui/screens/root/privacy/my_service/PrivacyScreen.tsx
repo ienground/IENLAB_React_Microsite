@@ -3,7 +3,7 @@ import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
 import {LockLaminatedIcon} from "@phosphor-icons/react";
 import styled from "styled-components";
 import {Card, CardBody, CardHeader, Divider, Spacer} from "@heroui/react";
-import {getCompleteWord} from "../../../../utils/utils.ts";
+import {getCompleteWord, useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useEffect, useState} from "react";
 
 export default function PrivacyScreen() {
@@ -276,10 +276,6 @@ export default function PrivacyScreen() {
   ];
 
   useEffect(() => {
-    console.log(currentAnchors);
-  }, [currentAnchors]);
-
-  useEffect(() => {
     const anchors = document.querySelectorAll('.content-chapter[id]');
 
     const observer = new IntersectionObserver(
@@ -313,6 +309,9 @@ export default function PrivacyScreen() {
     };
   }, []);
 
+  const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
+  useVisibleAnimation(visibleAnimationRefs, "start", refCount);
+
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -321,7 +320,7 @@ export default function PrivacyScreen() {
           <div>개인정보처리방침</div>
         </div>
         <ContentWrapper>
-          <Card className="left-side">
+          <Card className="left-side visible-animation d1" ref={addToVisibleAnimationRefs}>
             <CardHeader className="header">
               <h2>목차</h2>
             </CardHeader>
@@ -339,7 +338,7 @@ export default function PrivacyScreen() {
             orientation="vertical"
             style={{height: "initial"}}
           />
-          <div className="content">
+          <div className="content visible-animation d2" ref={addToVisibleAnimationRefs}>
             {
               content.map((item) => (
                 <div id={item.id} className={"content-chapter"}>
