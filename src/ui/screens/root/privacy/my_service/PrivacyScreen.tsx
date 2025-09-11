@@ -12,7 +12,18 @@ export default function PrivacyScreen() {
   const connectWord = getCompleteWord(companyKor, "은", "는");
   const connectWord2 = getCompleteWord(companyKor, "이", "가");
 
-  const [currentAnchor, setCurrentAnchor] = useState<string>("");
+  const [currentAnchors, setCurrentAnchors] = useState<Set<string>>(new Set());
+  const addAnchors = (newValue: string) => {
+    setCurrentAnchors(prevAnchors => new Set(prevAnchors).add(newValue));
+  };
+  const removeAnchors = (newValue: string) => {
+    setCurrentAnchors(prevAnchors => {
+      const newSet = new Set(prevAnchors);
+      newSet.delete(newValue);
+      return newSet;
+    });
+  };
+
   const content = [
     {
       id: "privacy-service",
@@ -265,6 +276,10 @@ export default function PrivacyScreen() {
   ];
 
   useEffect(() => {
+    console.log(currentAnchors);
+  }, [currentAnchors]);
+
+  useEffect(() => {
     const anchors = document.querySelectorAll('.content-chapter[id]');
 
     const observer = new IntersectionObserver(
@@ -272,12 +287,16 @@ export default function PrivacyScreen() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // 뷰포트에 들어온 요소의 ID를 activeId로 설정
-            setCurrentAnchor(entry.target.id);
+            addAnchors(entry.target.id);
+          } else {
+            removeAnchors(entry.target.id);
           }
         });
       },
       {
-        rootMargin: '0px 0px -50% 0px', // 뷰포트 중앙에 왔을 때 감지
+        rootMargin: "0px 0px -50% 0px",
+        // 요소가 0%, 25%, 50%, 75%, 100% 보일 때마다 감지
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
     );
 
@@ -309,7 +328,7 @@ export default function PrivacyScreen() {
             <CardBody className="body">
               {
                 content.map((item) => (
-                  <div key={item.id} className={"chapter" + (currentAnchor === item.id ? " active" : "")}>
+                  <div key={item.id} className={"chapter" + (currentAnchors.has(item.id) ? " active" : "")}>
                     <a href={`#${item.id}`}>{item.title}</a>
                   </div>
                 ))
@@ -329,7 +348,9 @@ export default function PrivacyScreen() {
                 </div>
               ))
             }
-            <Spacer />
+            <Spacer
+              style={{ height: "50vh" }}
+            />
           </div>
         </ContentWrapper>
       </CommonWrapper>
