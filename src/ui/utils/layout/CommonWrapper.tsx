@@ -2,10 +2,14 @@ import styled from "styled-components";
 
 
 export const CommonWrapper = styled.div`
+  flex-grow: 1;
+  
   width: 100%;
   max-width: 1440px;
   
-  //background-color: red;
+  display: flex;
+  flex-direction: column;
+  
   
   & > .header {
     min-height: 200px;
@@ -24,5 +28,8 @@ export const CommonWrapper = styled.div`
   
   & > .toolbar {
     
+  }
+  
+  & > .content-wrapper {
   }
 `;

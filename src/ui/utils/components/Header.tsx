@@ -9,7 +9,7 @@ import styled from "styled-components";
 import imgLogoTypo from "../../../assets/brand/img_logo_typo.png";
 import {RootDestination} from "../../screens/root/RootDestination.ts";
 import {ThemeSwitcher} from "./ThemeSwitcher.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {mapRange} from "../utils.ts";
 import {
   BellSimpleRingingIcon,
@@ -25,6 +25,7 @@ import {IntroDestination} from "../../screens/root/intro/IntroDestination.ts";
 import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts";
 import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
+import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 
 export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
   const scrollThreshold = 100;
@@ -43,11 +44,26 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
 
 
   window?.addEventListener("scroll", () => {
+    console.log("scroll", window.scrollY);
     setIsScrolled(window.scrollY > scrollThreshold);
     setMarginX(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginX));
     setMarginY(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginY));
     setBorderRadius(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxBorderRadius));
   });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log("scroll", window.scrollY);
+      // setScrollY(window.scrollY); // 스크롤Y 값을 상태에 저장
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // 빈 배열을 넣어 컴포넌트가 처음 마운트될 때만 실행되도록 함
 
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
@@ -133,7 +149,7 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
               <DropdownItem
                 key="privacy"
                 description="서비스 및 어플리케이션"
-                href="/"
+                href={PrivacyDestination.route}
                 startContent={<LockLaminatedIcon weight="bold" size="24px" /> }
                 color="warning"
               >개인정보 처리방침</DropdownItem>

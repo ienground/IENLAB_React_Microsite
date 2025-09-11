@@ -42,7 +42,7 @@ export default function EstimateSearchScreen() {
   );
 }
 
-export const ContentWrapper = styled.div`
+const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
 

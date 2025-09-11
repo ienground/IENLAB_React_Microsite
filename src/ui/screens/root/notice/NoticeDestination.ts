@@ -1,3 +1,4 @@
 export const NoticeDestination = {
-  route: "/notice"
+  route: "/notice",
+  routeDetail: "notice/:id"
 };

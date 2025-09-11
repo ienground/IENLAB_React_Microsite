@@ -25,11 +25,15 @@ export default function DefaultLayout({ isFullscreen = false, children } : { isF
 }
 
 const Wrapper = styled.div<{isFullscreen: boolean}>`
+  min-height: 100vh;
+  
   position: relative;
   display: flex;
   flex-direction: column;
-
+  
   & > main {
+    flex-grow: 1;
+    
     ${props => props.isFullscreen ? '' +
             'position: absolute; width: 100%; height: 100%;' : ''}
     
