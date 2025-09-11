@@ -44,26 +44,11 @@ export const Header = ({ isFullscreen } : { isFullscreen: boolean} ) => {
 
 
   window?.addEventListener("scroll", () => {
-    console.log("scroll", window.scrollY);
     setIsScrolled(window.scrollY > scrollThreshold);
     setMarginX(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginX));
     setMarginY(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginY));
     setBorderRadius(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxBorderRadius));
   });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      console.log("scroll", window.scrollY);
-      // setScrollY(window.scrollY); // 스크롤Y 값을 상태에 저장
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []); // 빈 배열을 넣어 컴포넌트가 처음 마운트될 때만 실행되도록 함
 
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);

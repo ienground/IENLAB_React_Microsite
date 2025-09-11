@@ -2,8 +2,9 @@ import DefaultLayout from "../../../../utils/layout/DefaultLayout.tsx";
 import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
 import {LockLaminatedIcon} from "@phosphor-icons/react";
 import styled from "styled-components";
-import {Card, CardBody, Divider, Spacer} from "@heroui/react";
+import {Card, CardBody, CardHeader, Divider, Spacer} from "@heroui/react";
 import {getCompleteWord} from "../../../../utils/utils.ts";
+import {useEffect, useState} from "react";
 
 export default function PrivacyScreen() {
   const company = "아이엔랩 ienlab";
@@ -11,6 +12,7 @@ export default function PrivacyScreen() {
   const connectWord = getCompleteWord(companyKor, "은", "는");
   const connectWord2 = getCompleteWord(companyKor, "이", "가");
 
+  const [currentAnchor, setCurrentAnchor] = useState<string>("");
   const content = [
     {
       id: "privacy-service",
@@ -262,6 +264,36 @@ export default function PrivacyScreen() {
     }
   ];
 
+  useEffect(() => {
+    const anchors = document.querySelectorAll('.content-chapter[id]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 뷰포트에 들어온 요소의 ID를 activeId로 설정
+            setCurrentAnchor(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -50% 0px', // 뷰포트 중앙에 왔을 때 감지
+      }
+    );
+
+    // 각 앵커를 관찰 대상에 추가
+    anchors.forEach((anchor) => {
+      observer.observe(anchor);
+    });
+
+    // 컴포넌트가 언마운트될 때 옵저버 연결 해제
+    return () => {
+      anchors.forEach((anchor) => {
+        observer.unobserve(anchor);
+      });
+    };
+  }, []);
+
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -271,7 +303,18 @@ export default function PrivacyScreen() {
         </div>
         <ContentWrapper>
           <Card className="left-side">
-ㅇㅇ
+            <CardHeader className="header">
+              <h2>목차</h2>
+            </CardHeader>
+            <CardBody className="body">
+              {
+                content.map((item) => (
+                  <div key={item.id} className={"chapter" + (currentAnchor === item.id ? " active" : "")}>
+                    <a href={`#${item.id}`}>{item.title}</a>
+                  </div>
+                ))
+              }
+            </CardBody>
           </Card>
           <Divider
             orientation="vertical"
@@ -280,7 +323,7 @@ export default function PrivacyScreen() {
           <div className="content">
             {
               content.map((item) => (
-                <div id={item.id} className="chapter">
+                <div id={item.id} className={"content-chapter"}>
                   <div className="header">{item.title}</div>
                   {item.content}
                 </div>
@@ -297,23 +340,70 @@ export default function PrivacyScreen() {
 const ContentWrapper = styled.div`
   flex-grow: 1;
   width: 100%;
-  //min-height: 100vh;
-  //height: 100%;
   margin-top: 1rem;
 
   display: flex;
   flex-direction: row;
   gap: 1rem;
 
+  ol {
+    list-style: decimal outside;
+    padding-left: 1em;
+  }
+
+  ul {
+    list-style: disc outside;
+    padding-left: 1em;
+  }
+
   & > .left-side {
     flex-grow: 1;
     flex-basis: 0;
 
     height: min-content;
-    padding: 1rem;
 
     position: sticky;
     top: 6rem; /* 헤더 아래에 고정될 위치 */
+    
+    counter-reset: summary-counter -1;
+    
+    & > .header {
+      padding: 1rem;
+      
+      word-break: keep-all;
+      
+      & > h2 {
+        font-size: x-large;
+        font-weight: bold;
+      }
+    }
+    
+    & > .body {
+      //padding: 0 0 0.5rem 0;
+      padding: 0 1rem 1rem 1rem;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      & > .chapter {
+        counter-increment: summary-counter;
+        padding-left: 1.8em;
+        text-indent: -1.8em;  /* 텍스트를 왼쪽으로 이동 */
+        word-break: keep-all;
+        
+        transition: color 0.3s ease-in-out;
+        
+        &::before {
+          content: counter(summary-counter, decimal-leading-zero) ". ";
+          font-variant-numeric: tabular-nums;
+        }
+
+        &.active {
+          color: ${'hsl(var(--heroui-primary))'};
+        }
+      }
+    }
     
   }
 
@@ -327,7 +417,7 @@ const ContentWrapper = styled.div`
 
     counter-reset: header-counter -1;
 
-    & > .chapter {
+    & > .content-chapter {
       & > .header {
         font-size: x-large;
         font-weight: bold;
@@ -346,14 +436,6 @@ const ContentWrapper = styled.div`
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-      }
-
-      ol {
-        list-style: decimal inside;
-      }
-      
-      ul {
-        list-style: disc inside;
       }
 
       .callout {
