@@ -3,8 +3,12 @@ import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
 import {BellRingingIcon, PushPinIcon} from "@phosphor-icons/react";
 import styled from "styled-components";
 import {Card} from "@heroui/react";
+import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 
 export default function NoticeListScreen() {
+  const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
+  useVisibleAnimation(visibleAnimationRefs, "start", refCount);
+
   const data = [
     {
       fixed: true,
@@ -38,7 +42,7 @@ export default function NoticeListScreen() {
           <BellRingingIcon size={48} weight="bold" />
           <div>공지사항</div>
         </div>
-        <ContentWrapper>
+        <ContentWrapper className="visible-animation" ref={addToVisibleAnimationRefs}>
           {
             data.sort((a, b) => Number(b.fixed) - Number(a.fixed)).map((item, index) => (
               <CardItem item={item} />
