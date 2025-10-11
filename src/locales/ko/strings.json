@@ -1,0 +1,20 @@
+{
+  "estimate": {
+    "customer_name": "고객명",
+    "date": "견적일",
+    "detailed_cost": "상세 비용",
+    "dev_schedule": "개발 일정",
+    "overview": "프로젝트 개요",
+    "range": "프로젝트 범위",
+    "summary": "요약",
+    "terms_of_the_contract": "계약 조건"
+  },
+  "period": "기간",
+  "price": "금액",
+  "project": {
+    "title": "프로젝트"
+  },
+  "quote_inquiry": "견적 조회",
+  "return_to_inquiry": "견적 조회로 돌아가기",
+  "return_to_list": "목록으로 돌아가기"
+}

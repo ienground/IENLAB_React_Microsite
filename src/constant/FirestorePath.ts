@@ -4,6 +4,7 @@ export const FirestorePath = {
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
+  DELETE: "delete",
 
   Estimate: {
     IDENTIFIER: "identifier",
@@ -15,7 +16,7 @@ export const FirestorePath = {
     PLATFORM: "platform",
     BUDGET: "budget",
     DESCRIPTION: "description",
-    STATUS: "status",
+    STATE: "state",
     SUMMARY: "summary",
     SIG_NOTE: "sigNote",
     PLANS: "plans",

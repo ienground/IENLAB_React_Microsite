@@ -5,7 +5,7 @@ export type Outsource = {
   id: string;
   createAt: Timestamp;
   updateAt: Timestamp;
+  delete: boolean;
   estimateId: string;
   estimate: Estimate | undefined;
-
 }

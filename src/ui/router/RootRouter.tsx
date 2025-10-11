@@ -12,6 +12,9 @@ import PrivacyScreen from "../screens/root/privacy/my_service/PrivacyScreen.tsx"
 import {EstimateDestination} from "../screens/root/estimate/EstimateDestination.ts";
 import EstimateSearchScreen from "../screens/root/estimate/search/EstimateSearchScreen.tsx";
 import EstimateDetailScreen from "../screens/root/estimate/detail/EstimateDetailScreen.tsx";
+import {DevDestination} from "../screens/root/dev/DevDestination.ts";
+import DevListScreen from "../screens/root/dev/list/DevListScreen.tsx";
+import DevDetailScreen from "../screens/root/dev/detail/DevDetailScreen.tsx";
 
 export default function RootRouter() {
   return (
@@ -25,6 +28,9 @@ export default function RootRouter() {
 
       <Route path={EstimateDestination.route} element={<EstimateSearchScreen />} />
       <Route path={EstimateDestination.routeDetail} element={<EstimateDetailScreen />} />
+
+      <Route path={DevDestination.route} element={<DevListScreen />} />
+      <Route path={DevDestination.routeDetail} element={<DevDetailScreen />} />
 
       <Route path={PrivacyDestination.route} element={<PrivacyScreen />} />
     </Routes>

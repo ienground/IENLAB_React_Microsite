@@ -159,7 +159,7 @@ export default function IntroScreen() {
               src={ImgIengroundProfileBg}
               isBlurred
               style={{
-                marginTop: "1rem",
+                marginTop: "2rem",
               }}
             />
           </div>
@@ -317,7 +317,7 @@ const Wrapper = styled.div`
       height: fit-content;
       
       position: sticky;
-      top: 4rem;
+      top: 6rem;
       
       display: flex;
       flex-direction: column;

@@ -42,7 +42,10 @@ export default function NoticeListScreen() {
           <BellRingingIcon size={48} weight="bold" />
           <div>공지사항</div>
         </div>
-        <ContentWrapper className="visible-animation" ref={addToVisibleAnimationRefs}>
+        <ContentWrapper
+          className="visible-animation"
+          ref={addToVisibleAnimationRefs}
+        >
           {
             data.sort((a, b) => Number(b.fixed) - Number(a.fixed)).map((item, index) => (
               <CardItem item={item} />
@@ -61,9 +64,12 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
 `;
 
 const CardItemWrapper = styled(Card)`
+  width: 100%;
+  max-width: 720px;
   padding: 1rem;
   
   display: flex;
@@ -79,7 +85,6 @@ const CardItemWrapper = styled(Card)`
     
     display: flex;
     flex-direction: column;
-    
   }
 
   &:hover {

@@ -1,0 +1,20 @@
+{
+  "estimate": {
+    "customer_name": "Name",
+    "date": "Estimate Date",
+    "detailed_cost": "Detailed Cost",
+    "dev_schedule": "Development Schedule",
+    "overview": "Project Overview",
+    "range": "Project Range",
+    "summary": "Summary",
+    "terms_of_the_contract": "Terms of the Contract"
+  },
+  "period": "Period",
+  "price": "Price",
+  "project": {
+    "title": "Project"
+  },
+  "quote_inquiry": "Quote Inquiry",
+  "return_to_inquiry": "Back to Quote Inquiry",
+  "return_to_list": "Back to List"
+}

@@ -5,6 +5,7 @@ export type WorkCost = {
   id: string;
   createAt: Timestamp;
   updateAt: Timestamp;
+  delete: boolean;
   categoryId: string;
   category: WorkCostCategory | undefined;
   title: string;

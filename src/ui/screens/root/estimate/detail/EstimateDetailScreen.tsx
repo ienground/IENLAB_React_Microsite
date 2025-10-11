@@ -9,9 +9,9 @@ import {
   CardFooter,
   CardHeader,
   Chip,
-  Divider,
+  Divider, Link,
   Listbox,
-  ListboxItem, Spacer
+  ListboxItem, Spacer, Tab, Tabs
 } from "@heroui/react";
 import {
   ArrowLeftIcon,
@@ -22,9 +22,20 @@ import {
   ReceiptIcon,
   ShareNetworkIcon, UserCircleIcon
 } from "@phosphor-icons/react";
+import {useTranslation} from "react-i18next";
+import "../../../../../locales/i18n.ts";
+import {type ComponentProps, type FC, useCallback, useEffect, useRef, useState} from "react";
+import { HashLink } from 'react-router-hash-link';
+import {useNavigate} from "react-router"; // HashLink 컴포넌트
+
+const HashLinkTab = Tab as FC<
+  ComponentProps<typeof Tab> & ComponentProps<typeof HashLink>
+>;
 
 export default function EstimateDetailScreen() {
+  const { t } = useTranslation();
   const data = {
+    "title": "제목",
     "range": [
       "이것은",
       "범위",
@@ -76,6 +87,61 @@ export default function EstimateDetailScreen() {
     ]
   };
 
+  const [selected, setSelected] = useState<string>("summary");
+  const isClickingRef = useRef(false);
+
+  // Bottom Toolbar
+
+  // Anchor 추적
+  useEffect(() => {
+    const anchors = document.querySelectorAll(".anchor");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // console.log(`isClicking ${isClickingRef.current}`);
+        if (isClickingRef.current) {
+          return;
+        }
+        if (entry.isIntersecting) {
+          console.log(entry.target.id, "is intersecting");
+          setSelected(entry.target.id);
+        } else {
+          console.log(entry.target.id, "is not intersecting");
+        }
+      })
+    },
+      {
+        rootMargin: "0px 0px -50% 0px",
+        threshold: [0.5]
+      }
+    );
+
+    anchors.forEach((anchor) => observer.observe(anchor));
+
+    return () => {
+      anchors.forEach(anchor => observer.unobserve(anchor));
+    }
+  }, []);
+
+  const customScroll = useCallback((el: HTMLElement) => {
+    el.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+      isClickingRef.current = false; // Ref 값 해제
+      console.log("앵커 이동 완료: Observer 재개");
+    }, 500);
+  }, []);
+
+  const tabItems = [
+    { key: "summary", icon: ReceiptIcon, label: t("strings:estimate.summary") },
+    { key: "overview", icon: FileTextIcon, label: t("strings:estimate.overview") },
+    { key: "range", icon: ListDashesIcon, label: t("strings:estimate.range") },
+    { key: "schedule", icon: ClockIcon, label: t("strings:estimate.dev_schedule") },
+    { key: "price", icon: CreditCardIcon, label: t("strings:price") },
+    { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
+
+  ];
+
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -84,14 +150,14 @@ export default function EstimateDetailScreen() {
             variant="flat"
             startContent={<ArrowUUpLeftIcon size={16} weight="bold" /> }
           >
-            견적 조회로 돌아가기
+            {t("strings:return_to_inquiry")}
           </Button>
         </div>
         <ContentWrapper>
-          <SummaryCard>
+          <SummaryCard className="anchor" id="summary">
             <CardHeader className="header">
               <ReceiptIcon size={24} weight="fill" />
-              <div className="title">제목</div>
+              <div className="title">{data.title}</div>
               <div className="button-container">
                 <Button
                   isIconOnly
@@ -133,40 +199,40 @@ export default function EstimateDetailScreen() {
               <div className="item customer">
                 <UserCircleIcon size={24} weight="bold" />
                 <div className="container">
-                  <div className="title">고객명</div>
+                  <div className="title">{t("strings:estimate.customer_name")}</div>
                   <div className="content">아이엔</div>
                 </div>
               </div>
               <div className="item price">
                 <CurrencyKrwIcon size={24} weight="bold" />
                 <div className="container">
-                  <div className="title">금액</div>
+                  <div className="title">{t("strings:price")}</div>
                   <div className="content">5억원</div>
                 </div>
               </div>
               <div className="item date">
                 <CalendarDotsIcon size={24} weight="bold" />
                 <div className="container">
-                  <div className="title">견적일</div>
+                  <div className="title">{t("strings:estimate.date")}</div>
                   <div className="content">2025년 5월 1일</div>
                 </div>
               </div>
               <div className="item duration">
                 <ClockIcon size={24} weight="bold" />
                 <div className="container">
-                  <div className="title">기간</div>
+                  <div className="title">{t("strings:period")}</div>
                   <div className="content">60일</div>
                 </div>
               </div>
             </CardFooter>
           </SummaryCard>
-          <div id="summary" className="data">
+          <div className="data">
             <div className="content">
               <Divider />
-              <Card className="content-card">
+              <Card className="content-card anchor" id="overview">
                 <CardHeader className="header">
                   <FileTextIcon size={24} weight="bold" />
-                  <div>프로젝트 개요</div>
+                  <div>{t("strings:estimate.overview")}</div>
                 </CardHeader>
                 <CardBody className="body">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias aliquid amet architecto asperiores dolores ducimus et eum excepturi exercitationem fuga iusto laborum, libero magnam non numquam quidem quos repellendus sunt ullam. Accusamus deleniti dignissimos dolore ducimus eveniet harum laudantium quisquam repudiandae similique veniam. Asperiores deserunt laudantium molestiae quae ratione.
@@ -183,10 +249,10 @@ export default function EstimateDetailScreen() {
                   </div>
                 </CardFooter>
               </Card>
-              <Card className="content-card">
+              <Card className="content-card anchor" id="range">
                 <CardHeader className="header">
                   <ListDashesIcon size={24} weight="bold" />
-                  <div>프로젝트 범위</div>
+                  <div>{t("strings:estimate.range")}</div>
                 </CardHeader>
                 <CardFooter className="footer">
                   {
@@ -197,15 +263,16 @@ export default function EstimateDetailScreen() {
                         icon={<CheckCircleIcon size={24} weight="bold" /> }
                         color="success"
                         title={item}
+                        key={index}
                       />
                     ))
                   }
                 </CardFooter>
               </Card>
-              <Card className="content-card">
+              <Card className="content-card anchor" id="schedule">
                 <CardHeader className="header">
                   <ClockIcon size={24} weight="bold" />
-                  <div>개발 일정</div>
+                  <div>{t("strings:estimate.dev_schedule")}</div>
                 </CardHeader>
                 <CardFooter className="footer schedule">
                   <div className="line1">
@@ -225,10 +292,10 @@ export default function EstimateDetailScreen() {
                   </div>
                 </CardFooter>
               </Card>
-              <Card className="content-card">
+              <Card className="content-card anchor" id="price">
                 <CardHeader className="header">
                   <CreditCardIcon size={24} weight="bold" />
-                  <div>상세 비용</div>
+                  <div>{t("strings:estimate.detailed_cost")}</div>
                 </CardHeader>
                 <CardFooter className="footer budget">
                   {
@@ -258,10 +325,10 @@ export default function EstimateDetailScreen() {
                   />
                 </CardFooter>
               </Card>
-              <Card className="content-card">
+              <Card className="content-card anchor" id="contract">
                 <CardHeader className="header">
                   <ArticleIcon size={24} weight="bold" />
-                  <div>계약 조건</div>
+                  <div>{t("strings:estimate.terms_of_the_contract")}</div>
                 </CardHeader>
                 <CardFooter className="footer condition">
                   {
@@ -276,10 +343,40 @@ export default function EstimateDetailScreen() {
                   }
                 </CardFooter>
               </Card>
-              <Spacer />
+              <Spacer
+                style={{ height: "50vh" }}
+              />
             </div>
           </div>
         </ContentWrapper>
+        <BottomToolbar
+          className={"visible"}
+          radius="full"
+          classNames={{
+            tabList: "bg-default-100"
+          }}
+          selectedKey={selected}
+          onSelectionChange={(key) => setSelected(key.toString())}
+          variant="bordered"
+        >
+          {
+            tabItems.map((item) => (
+              <HashLinkTab
+                key={item.key}
+                as={HashLink}
+                to={`#${item.key}`}
+                title={
+                  <div className="flex items-center space-x-2">
+                    <item.icon size={18} weight={selected === item.key ? "fill" : "light"} />
+                    <span>{item.label}</span>
+                  </div> as never
+                }
+                scroll={customScroll}
+                onClick={() => isClickingRef.current = true}
+              />
+            ))
+          }
+        </BottomToolbar>
       </CommonWrapper>
     </DefaultLayout>
   )
@@ -292,6 +389,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  
+  .anchor {
+    scroll-margin-top: 5rem;
+  }
   
   .content-card {
     display: flex;
@@ -505,4 +606,22 @@ const SummaryCard = styled(Card)`
       }
     }
   }
+`;
+
+const BottomToolbar = styled(Tabs)`
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 100%);
+  
+  //background-color: red;
+  
+  transition: bottom 0.5s ease-in-out, transform 0.5s ease-in-out;
+  
+  &.visible {
+    top: initial;
+    bottom: 1rem;
+    transform: translate(-50%, 0);
+  }
+  
 `;

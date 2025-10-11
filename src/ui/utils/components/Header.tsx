@@ -26,6 +26,7 @@ import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts"
 import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
+import {DevDestination} from "../../screens/root/dev/DevDestination.ts";
 
 export const Header = ({ isfullscreen } : { isfullscreen: boolean } ) => {
   const scrollThreshold = 100;
@@ -144,7 +145,7 @@ export const Header = ({ isfullscreen } : { isfullscreen: boolean } ) => {
           </Dropdown>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/" >
+          <Link color="foreground" href={DevDestination.route} >
             프로젝트
           </Link>
         </NavbarItem>

@@ -291,8 +291,7 @@ export default function PrivacyScreen() {
       },
       {
         rootMargin: "0px 0px -50% 0px",
-        // 요소가 0%, 25%, 50%, 75%, 100% 보일 때마다 감지
-        threshold: [0, 0.25, 0.5, 0.75, 1],
+        threshold: [0],
       }
     );
 

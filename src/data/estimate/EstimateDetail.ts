@@ -4,6 +4,7 @@ export type EstimateDetail = {
   id: string;
   createAt: Timestamp;
   updateAt: Timestamp;
+  delete: boolean;
   parentId: string;
   categoryId: string;
   title: string;

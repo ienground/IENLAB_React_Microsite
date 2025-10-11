@@ -49,7 +49,7 @@ import LiquidGlass from "@nkzw/liquid-glass";
 import {
   type Estimate, type EstimateBudget,
   type EstimatePlatform,
-  estimateStatus,
+  estimateState,
   EstimateToHashmap,
   type EstimateType
 } from "../../../data/estimate/Estimate.ts";
@@ -131,7 +131,7 @@ export default function RootScreen() {
         : [getValueAsString(data["platform"]) as unknown as EstimatePlatform],
       budget: getValueAsString(data["budget"]) as EstimateBudget,
       description: getValueAsString(data["description"]),
-      status: estimateStatus.PENDING,
+      state: estimateState.PENDING,
       summary: "",
       sigNote: "",
       plans: [],

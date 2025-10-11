@@ -4,8 +4,11 @@ import {Button, Card, CardBody, CardHeader, Input} from "@heroui/react";
 import styled from "styled-components";
 import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon} from "@phosphor-icons/react";
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
+import {useTranslation} from "react-i18next";
+import '../../../../../locales/i18n';
 
 export default function EstimateSearchScreen() {
+  const { t } = useTranslation();
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
 
@@ -14,7 +17,7 @@ export default function EstimateSearchScreen() {
       <CommonWrapper>
         <div className="header">
           <ReceiptIcon size={48} weight="bold" />
-          <div>견적 조회</div>
+          <div>{t('quote_inquiry')}</div>
         </div>
         <ContentWrapper>
           <Card className="input-card visible-animation" ref={addToVisibleAnimationRefs}>
