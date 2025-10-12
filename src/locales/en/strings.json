@@ -9,6 +9,7 @@
     "summary": "Summary",
     "terms_of_the_contract": "Terms of the Contract"
   },
+  "functions": "Functions",
   "period": "Period",
   "price": "Price",
   "project": {
@@ -16,5 +17,7 @@
   },
   "quote_inquiry": "Quote Inquiry",
   "return_to_inquiry": "Back to Quote Inquiry",
-  "return_to_list": "Back to List"
+  "return_to_list": "Back to List",
+  "screenshots": "Screenshots",
+  "tech_stacks": "Tech Stacks"
 }

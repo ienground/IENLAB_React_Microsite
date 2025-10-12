@@ -9,6 +9,7 @@
     "summary": "요약",
     "terms_of_the_contract": "계약 조건"
   },
+  "functions": "기능",
   "period": "기간",
   "price": "금액",
   "project": {
@@ -16,5 +17,7 @@
   },
   "quote_inquiry": "견적 조회",
   "return_to_inquiry": "견적 조회로 돌아가기",
-  "return_to_list": "목록으로 돌아가기"
+  "return_to_list": "목록으로 돌아가기",
+  "screenshots": "스크린샷",
+  "tech_stacks": "기술 스택"
 }

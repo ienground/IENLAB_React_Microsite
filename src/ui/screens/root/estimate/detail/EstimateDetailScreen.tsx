@@ -26,11 +26,10 @@ import {useTranslation} from "react-i18next";
 import "../../../../../locales/i18n.ts";
 import {type ComponentProps, type FC, useCallback, useEffect, useRef, useState} from "react";
 import { HashLink } from 'react-router-hash-link';
-import {useNavigate} from "react-router"; // HashLink 컴포넌트
+import {useNavigate} from "react-router";
+import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx"; // HashLink 컴포넌트
 
-const HashLinkTab = Tab as FC<
-  ComponentProps<typeof Tab> & ComponentProps<typeof HashLink>
->;
+
 
 export default function EstimateDetailScreen() {
   const { t } = useTranslation();
@@ -88,58 +87,13 @@ export default function EstimateDetailScreen() {
   };
 
   const [selected, setSelected] = useState<string>("summary");
-  const isClickingRef = useRef(false);
-
-  // Bottom Toolbar
-
-  // Anchor 추적
-  useEffect(() => {
-    const anchors = document.querySelectorAll(".anchor");
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        // console.log(`isClicking ${isClickingRef.current}`);
-        if (isClickingRef.current) {
-          return;
-        }
-        if (entry.isIntersecting) {
-          console.log(entry.target.id, "is intersecting");
-          setSelected(entry.target.id);
-        } else {
-          console.log(entry.target.id, "is not intersecting");
-        }
-      })
-    },
-      {
-        rootMargin: "0px 0px -50% 0px",
-        threshold: [0.5]
-      }
-    );
-
-    anchors.forEach((anchor) => observer.observe(anchor));
-
-    return () => {
-      anchors.forEach(anchor => observer.unobserve(anchor));
-    }
-  }, []);
-
-  const customScroll = useCallback((el: HTMLElement) => {
-    el.scrollIntoView({ behavior: 'smooth' });
-
-    setTimeout(() => {
-      isClickingRef.current = false; // Ref 값 해제
-      console.log("앵커 이동 완료: Observer 재개");
-    }, 500);
-  }, []);
-
-  const tabItems = [
+  const tabItems: BottomToolbarItem[] = [
     { key: "summary", icon: ReceiptIcon, label: t("strings:estimate.summary") },
     { key: "overview", icon: FileTextIcon, label: t("strings:estimate.overview") },
     { key: "range", icon: ListDashesIcon, label: t("strings:estimate.range") },
     { key: "schedule", icon: ClockIcon, label: t("strings:estimate.dev_schedule") },
     { key: "price", icon: CreditCardIcon, label: t("strings:price") },
     { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
-
   ];
 
   return (
@@ -350,33 +304,11 @@ export default function EstimateDetailScreen() {
           </div>
         </ContentWrapper>
         <BottomToolbar
-          className={"visible"}
-          radius="full"
-          classNames={{
-            tabList: "bg-default-100"
-          }}
+          visible={true}
           selectedKey={selected}
-          onSelectionChange={(key) => setSelected(key.toString())}
-          variant="bordered"
-        >
-          {
-            tabItems.map((item) => (
-              <HashLinkTab
-                key={item.key}
-                as={HashLink}
-                to={`#${item.key}`}
-                title={
-                  <div className="flex items-center space-x-2">
-                    <item.icon size={18} weight={selected === item.key ? "fill" : "light"} />
-                    <span>{item.label}</span>
-                  </div> as never
-                }
-                scroll={customScroll}
-                onClick={() => isClickingRef.current = true}
-              />
-            ))
-          }
-        </BottomToolbar>
+          onSelectionChange={setSelected}
+          tabItems={tabItems}
+        />
       </CommonWrapper>
     </DefaultLayout>
   )
@@ -606,22 +538,4 @@ const SummaryCard = styled(Card)`
       }
     }
   }
-`;
-
-const BottomToolbar = styled(Tabs)`
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 100%);
-  
-  //background-color: red;
-  
-  transition: bottom 0.5s ease-in-out, transform 0.5s ease-in-out;
-  
-  &.visible {
-    top: initial;
-    bottom: 1rem;
-    transform: translate(-50%, 0);
-  }
-  
 `;
