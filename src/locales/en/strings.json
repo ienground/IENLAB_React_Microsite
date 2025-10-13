@@ -1,4 +1,11 @@
 {
+  "dev_category": {
+    "creative_computing": "Creative Computing",
+    "mobile": "Mobile",
+    "web": "Web"
+  },
+  "developer": "Developer",
+  "end_date": "End Date",
   "estimate": {
     "customer_name": "Name",
     "date": "Estimate Date",
@@ -19,5 +26,7 @@
   "return_to_inquiry": "Back to Quote Inquiry",
   "return_to_list": "Back to List",
   "screenshots": "Screenshots",
+  "start_date": "Start Date",
+  "state": "Status",
   "tech_stacks": "Tech Stacks"
 }

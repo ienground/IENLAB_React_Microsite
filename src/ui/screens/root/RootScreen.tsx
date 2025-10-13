@@ -48,7 +48,6 @@ import {getValueAsString, useVisibleAnimation, useDarkmode, useElementRefs} from
 import LiquidGlass from "@nkzw/liquid-glass";
 import {
   type Estimate, type EstimateBudget,
-  type EstimatePlatform,
   estimateState,
   EstimateToHashmap,
   type EstimateType
@@ -58,6 +57,7 @@ import {FirestorePath} from "../../../constant/FirestorePath.ts";
 import {firestore} from "../../../constant/FirebaseConfig.ts";
 import {addDays, addYears} from "date-fns";
 import {FullPageWrapper} from "fullpage-nestedscroll-react";
+import type {PlatformType} from "../../../data/common/PlatformType.ts";
 
 export default function RootScreen() {
   const viewModel = useRootViewModel();
@@ -127,8 +127,8 @@ export default function RootScreen() {
       email: getValueAsString(data["email"]),
       type: getValueAsString(data["type"]) as EstimateType,
       platform: Array.isArray(data["platform"])
-        ? data["platform"].map(p => getValueAsString(p) as unknown as EstimatePlatform)
-        : [getValueAsString(data["platform"]) as unknown as EstimatePlatform],
+        ? data["platform"].map(p => getValueAsString(p) as unknown as PlatformType)
+        : [getValueAsString(data["platform"]) as unknown as PlatformType],
       budget: getValueAsString(data["budget"]) as EstimateBudget,
       description: getValueAsString(data["description"]),
       state: estimateState.PENDING,
@@ -155,7 +155,7 @@ export default function RootScreen() {
   };
 
   return (
-    <DefaultLayout isfullscreen>
+    <DefaultLayout toolbarOverlap>
       <Wrapper>
         <Image
           id="background-pattern"

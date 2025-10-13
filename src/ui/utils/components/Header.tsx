@@ -28,45 +28,24 @@ import {EstimateDestination} from "../../screens/root/estimate/EstimateDestinati
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 import {DevDestination} from "../../screens/root/dev/DevDestination.ts";
 
-export const Header = ({ isfullscreen } : { isfullscreen: boolean } ) => {
-  const scrollThreshold = 100;
-  const [isScrolled, setIsScrolled] = useState(false);
+interface HeaderProps {
+  visible?: boolean;
+  overlap?: boolean;
+}
 
-  const fullscreen = isfullscreen ? false : false;
-
-  // const borderRadius = useTransform(scrollY, [0, scrollThreshold], [0, 1]);
-  // const backdropBlur = useTransform(scrollY, [0, scrollThreshold], [8, 24]);
-
-  const maxMarginX = 1;
-  const maxMarginY = 1;
-  const maxBorderRadius = 1;
-
-  const [marginX, setMarginX] = useState(0);
-  const [marginY, setMarginY] = useState(0);
-  const [borderRadius, setBorderRadius] = useState(0);
-
-
-  // window?.addEventListener("scroll", () => {
-  //   setIsScrolled(window.scrollY > scrollThreshold);
-  //   setMarginX(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginX));
-  //   setMarginY(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxMarginY));
-  //   setBorderRadius(mapRange(Math.min(scrollY, scrollThreshold), 0, scrollThreshold, 0, maxBorderRadius));
-  // });
-
+export const Header = (props: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
   const delay = 300;
 
   return (
     <FloatingNavbar
-      className={isScrolled ? "scrolled" : ""}
+      className={((props.visible ?? true) ? "visible " : "") + (props.overlap ? "overlap " : "")}
       maxWidth="full"
       style={{
-        maxWidth: `calc(100% - 2 * ${fullscreen ? maxMarginX : marginX}rem)`,
+        maxWidth: "100%",
         marginLeft: "auto",
         marginRight: "auto",
-        top: `${fullscreen ? maxMarginY : marginY}rem`,
-        borderRadius: `${fullscreen ? maxBorderRadius : borderRadius}rem`,
         zIndex: 999,
       }}
     >
@@ -231,116 +210,15 @@ export const Header = ({ isfullscreen } : { isfullscreen: boolean } ) => {
       </NavbarContent>
     </FloatingNavbar>
   );
-    // return (
-  //   <Navbar maxWidth="xl" position="sticky">
-  //     <NavbarContent className="basis-1/5 sm:basis-full bg-amber-600" justify="start">
-  //       <NavbarBrand className="gap-3 max-w-fit">
-  //         <Link
-  //           className="flex justify-start items-center gap-1"
-  //           color="foreground"
-  //           href="/"
-  //         >
-  //           {/*<Logo />*/}
-  //           <p className="font-bold text-inherit">ACME</p>
-  //         </Link>
-  //       </NavbarBrand>
-  //       <div className="hidden lg:flex gap-4 justify-start ml-2">
-  //         {siteConfig.navItems.map((item) => (
-  //           <NavbarItem key={item.href}>
-  //             <Link
-  //               // className={clsx(
-  //               //   linkStyles({ color: "foreground" }),
-  //               //   "data-[active=true]:text-primary data-[active=true]:font-medium",
-  //               // )}
-  //               color="foreground"
-  //               href={item.href}
-  //             >
-  //               {item.label}
-  //             </Link>
-  //           </NavbarItem>
-  //         ))}
-  //       </div>
-  //     </NavbarContent>
-  //
-  //     <NavbarContent
-  //       className="hidden sm:flex basis-1/5 sm:basis-full bg-amber-950"
-  //       justify="end"
-  //     >
-  //       <NavbarItem className="hidden sm:flex gap-2">
-  //         <Link isExternal href={siteConfig.links.twitter} title="Twitter">
-  //           <TwitterIcon className="text-default-500" />
-  //         </Link>
-  //         <Link isExternal href={siteConfig.links.discord} title="Discord">
-  //           <DiscordIcon className="text-default-500" />
-  //         </Link>
-  //         <Link isExternal href={siteConfig.links.github} title="GitHub">
-  //           <GithubIcon className="text-default-500" />
-  //         </Link>
-  //         {/*<ThemeSwitch />*/}
-  //       </NavbarItem>
-  //       {/*<NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>*/}
-  //       <NavbarItem className="hidden md:flex">
-  //         <Button
-  //           isExternal
-  //           as={Link}
-  //           className="text-sm font-normal text-default-600 bg-default-100"
-  //           href={siteConfig.links.sponsor}
-  //           startContent={<HeartFilledIcon className="text-danger" />}
-  //           variant="flat"
-  //         >
-  //           Sponsor
-  //         </Button>
-  //       </NavbarItem>
-  //     </NavbarContent>
-  //
-  //     <NavbarContent className="sm:hidden basis-1 pl-4 bg-red-300" justify="end">
-  //       <Link isExternal href={siteConfig.links.github}>
-  //         <GithubIcon className="text-default-500" />
-  //       </Link>
-  //       {/*<ThemeSwitch />*/}
-  //       <NavbarMenuToggle />
-  //     </NavbarContent>
-  //
-  //     <NavbarMenu>
-  //       {/*{searchInput}*/}
-  //       <div className="mx-4 mt-2 flex flex-col gap-2">
-  //         {/*{siteConfig.navMenuItems.map((item, index) => (*/}
-  //         {/*  <NavbarMenuItem key={`${item}-${index}`}>*/}
-  //         {/*    <Link*/}
-  //         {/*      color={*/}
-  //         {/*        index === 2*/}
-  //         {/*          ? "primary"*/}
-  //         {/*          : index === siteConfig.navMenuItems.length - 1*/}
-  //         {/*            ? "danger"*/}
-  //         {/*            : "foreground"*/}
-  //         {/*      }*/}
-  //         {/*      href="#"*/}
-  //         {/*      size="lg"*/}
-  //         {/*    >*/}
-  //         {/*      {item.label}*/}
-  //         {/*    </Link>*/}
-  //         {/*  </NavbarMenuItem>*/}
-  //         {/*))}*/}
-  //       </div>
-  //     </NavbarMenu>
-  //   </Navbar>
-  // );
 };
 
 const FloatingNavbar = styled(Navbar)`
-  transition: width 0.3s ease-in-out, margin 0.3s ease-in-out, top 0.3s ease-in-out, border-radius 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  
-  &.scrolled {
-    //background-color: green;
-
-    //width: calc(100% - 4rem); /* 좌우 마진 추가 */
-    //margin: 0 2rem; /* 위아래 마진 추가 */
-  }
+  transform: translateY(-4rem);
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   
   & > header {
-    padding-inline: 1rem;
-    
     max-width: calc(1440px + 2rem);
+    padding-inline: 1rem;
     
     & > .content {
       //width: 40%;
@@ -378,6 +256,14 @@ const FloatingNavbar = styled(Navbar)`
         height: 2rem;
       }
     }
+  }
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  &.overlap {
+    margin-top: -4rem;
   }
   
 `;

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const CommonWrapper = styled.div`
   flex-grow: 1;
   

@@ -1,11 +1,12 @@
 import {
-  type Estimate, estimateBudget, estimatePlatform,
+  type Estimate, estimateBudget,
   EstimateToHashmap,
 } from "../../../data/estimate/Estimate.ts";
 import {addDoc, collection} from "firebase/firestore";
 import {firestore} from "../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../constant/FirestorePath.ts";
 import {useState} from "react";
+import {platformType} from "../../../data/common/PlatformType.ts";
 
 export default function useRootViewModel() {
   const [uiState, setUiState] = useState(new RootUiState());
@@ -24,7 +25,7 @@ export default function useRootViewModel() {
         company: "",
         email: "",
         type: "",
-        platform: [estimatePlatform.ANDROID.toString(), estimatePlatform.IOS.toString()],
+        platform: [platformType.ANDROID.toString(), platformType.IOS.toString()],
         budget: estimateBudget.BET_300_500,
         description: ""
       }
@@ -58,7 +59,7 @@ class RootDetails {
     company: "",
     email: "",
     type: "",
-    platform: [estimatePlatform.ANDROID.toString(), estimatePlatform.IOS.toString()],
+    platform: [platformType.ANDROID.toString(), platformType.IOS.toString()],
     budget: estimateBudget.BET_300_500,
     description: ""
   }

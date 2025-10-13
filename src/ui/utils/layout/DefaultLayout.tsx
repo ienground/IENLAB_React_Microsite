@@ -2,12 +2,18 @@ import * as React from "react";
 import {Header} from "../components/Header.tsx";
 import styled from "styled-components";
 
-export default function DefaultLayout({ isfullscreen = false, children } : { isfullscreen?: boolean, children: React.ReactNode }) {
+interface DefaultLayoutProps {
+  toolbarVisible?: boolean;
+  toolbarOverlap?: boolean;
+  children: React.ReactNode
+}
+
+export default function DefaultLayout(props: DefaultLayoutProps) {
   return (
-    <Wrapper $isfullscreen={isfullscreen}>
-      <Header isfullscreen={isfullscreen} />
+    <Wrapper>
+      <Header visible={props.toolbarVisible} overlap={props.toolbarOverlap}/>
       <main className="content">
-        {children}
+        {props.children}
       </main>
       {/*<footer className="w-full flex items-center justify-center py-3">*/}
       {/*  <Link*/}
@@ -24,7 +30,7 @@ export default function DefaultLayout({ isfullscreen = false, children } : { isf
   );
 }
 
-const Wrapper = styled.div<{$isfullscreen: boolean}>`
+const Wrapper = styled.div`
   min-height: 100vh;
   
   position: relative;
@@ -33,10 +39,6 @@ const Wrapper = styled.div<{$isfullscreen: boolean}>`
   
   & > main {
     flex-grow: 1;
-    
-    ${props => props.$isfullscreen ? '' +
-            'position: absolute; width: 100%; height: 100%;' : ''}
-    
   }
   
   & > .content {

@@ -1,4 +1,11 @@
 {
+  "dev_category": {
+    "creative_computing": "크리에이티브 컴퓨팅",
+    "mobile": "모바일",
+    "web": "웹"
+  },
+  "developer": "개발자",
+  "end_date": "마감일",
   "estimate": {
     "customer_name": "고객명",
     "date": "견적일",
@@ -19,5 +26,7 @@
   "return_to_inquiry": "견적 조회로 돌아가기",
   "return_to_list": "목록으로 돌아가기",
   "screenshots": "스크린샷",
+  "start_date": "시작일",
+  "state": "상태",
   "tech_stacks": "기술 스택"
 }

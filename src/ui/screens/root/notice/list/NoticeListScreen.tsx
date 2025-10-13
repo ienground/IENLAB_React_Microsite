@@ -48,7 +48,7 @@ export default function NoticeListScreen() {
         >
           {
             data.sort((a, b) => Number(b.fixed) - Number(a.fixed)).map((item, index) => (
-              <CardItem item={item} />
+              <CardCell item={item} />
             ))
           }
         </ContentWrapper>
@@ -67,7 +67,7 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-const CardItemWrapper = styled(Card)`
+const CardCellWrapper = styled(Card)`
   width: 100%;
   max-width: 720px;
   padding: 1rem;
@@ -78,7 +78,6 @@ const CardItemWrapper = styled(Card)`
   
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
-  
   
   & > .content {
     flex-grow: 1;
@@ -92,9 +91,9 @@ const CardItemWrapper = styled(Card)`
   }
 `;
 
-const CardItem = ({ item }: { item: { fixed: boolean, category: string, title: string, date: Date } }) => {
+const CardCell = ({ item }: { item: { fixed: boolean, category: string, title: string, date: Date } }) => {
   return (
-    <CardItemWrapper>
+    <CardCellWrapper>
       <div className="content">
         <div className="category">{item.category}</div>
         <h3 className="title">{item.title}</h3>
@@ -105,6 +104,6 @@ const CardItem = ({ item }: { item: { fixed: boolean, category: string, title: s
           item.fixed ? <PushPinIcon size={24} weight="bold" /> : <></>
         }
       </div>
-    </CardItemWrapper>
+    </CardCellWrapper>
   )
 }

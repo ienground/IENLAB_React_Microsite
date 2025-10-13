@@ -2,6 +2,7 @@ import {type DocumentSnapshot, type QueryDocumentSnapshot, Timestamp, serverTime
 import {snapshotToData} from "../../ui/utils/utils.ts";
 import {FirestorePath} from "../../constant/FirestorePath.ts";
 import type {WorkPlan} from "./WorkPlan.ts";
+import type {PlatformType} from "../common/PlatformType.ts";
 
 export const estimateType = {
   COMMUNITY: "community",
@@ -11,11 +12,7 @@ export const estimateType = {
   INCOMPANY: "incompany",
   BLUETOOTH: "bluetooth",
 } as const;
-export const estimatePlatform = {
-  ANDROID: 0,
-  IOS: 1,
-  WEB: 2
-} as const;
+
 export const estimateBudget = {
   LESS_100: "LESS_100",
   BET_100_300: "100_300",
@@ -35,7 +32,6 @@ export const estimateState = {
 } as const;
 
 export type EstimateType = typeof estimateType[keyof typeof estimateType];
-export type EstimatePlatform = typeof estimatePlatform[keyof typeof estimatePlatform];
 export type EstimateBudget = typeof estimateBudget[keyof typeof estimateBudget];
 export type EstimateState = typeof estimateState[keyof typeof estimateState];
 
@@ -49,7 +45,7 @@ export type Estimate = {
   company: string | null;
   email: string;
   type: EstimateType,
-  platform: EstimatePlatform[],
+  platform: PlatformType[],
   budget: EstimateBudget,
   description: string;
   state: EstimateState;
@@ -70,7 +66,7 @@ export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot
   const company: string | null = doc[FirestorePath.Estimate.COMPANY];
   const email: string = doc[FirestorePath.Estimate.EMAIL];
   const type: EstimateType = doc[FirestorePath.Estimate.TYPE];
-  const platform: EstimatePlatform[] = doc[FirestorePath.Estimate.PLATFORM];
+  const platform: PlatformType[] = doc[FirestorePath.Estimate.PLATFORM];
   const budget: EstimateBudget = doc[FirestorePath.Estimate.BUDGET];
   const description: string = doc[FirestorePath.Estimate.DESCRIPTION];
   const state: EstimateState = doc[FirestorePath.Estimate.STATE];
