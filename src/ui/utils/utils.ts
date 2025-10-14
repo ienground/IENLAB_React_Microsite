@@ -1,4 +1,4 @@
-import {type MutableRefObject, type RefObject, useEffect, useRef, useState} from "react";
+import {type RefObject, useEffect, useRef, useState} from "react";
 import { Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData } from "firebase/firestore";
 
 export const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
@@ -28,16 +28,19 @@ interface Item {
   id: string;
 }
 
-export async function fetchItems<T extends Item>(firestore: Firestore, colName: string, changeMethod: ((snapshot: QueryDocumentSnapshot | DocumentSnapshot) => T), cache: Map<string, T>, setCache: React.Dispatch<React.SetStateAction<Map<string, T>>>, ids: string[]) {
-  const cached = ids.map(id => cache.get(id)).filter(item => item !== undefined);
+export async function fetchItems<T extends Item>(firestore: Firestore, colName: string, changeMethod: ((snapshot: QueryDocumentSnapshot | DocumentSnapshot) => T), cache: Map<string, T>, ids: string[]) {
+  const cached: T[] = ids
+    .map(id => cache.get(id))
+    // 💡 변경된 부분: 명시적인 item !== undefined 대신 Boolean 필터 사용
+    .filter(Boolean) as T[];
+
   const cachedIds = new Set(cached.map(item => item.id));
   const missingIds = ids.filter(id => !cachedIds.has(id));
-  const result = new Map<string, T>();
-  cached.forEach(item => result.set(item.id, item));
 
   const chunkSize = 30;
   for (let i = 0; i < missingIds.length; i += chunkSize) {
     const chunk = missingIds.slice(i, i + chunkSize);
+    console.log("chunk", chunk);
     const q = query(
       collection(firestore, colName),
       where(documentId(), "in", chunk)
@@ -45,13 +48,36 @@ export async function fetchItems<T extends Item>(firestore: Firestore, colName: 
 
     const docs = await getDocs(q);
     docs.forEach(snapshot => {
-      const item = changeMethod(snapshot);
-      setCache((prev) => { return prev.set(item.id, item); })
-      result.set(item.id, item);
+      const item = changeMethod(snapshot as QueryDocumentSnapshot);
+
+      // 3. 💡 인자로 받은 'cache' 객체에 직접 추가합니다.
+      cache.set(item.id, item);
     })
   }
 
-  return result;
+
+  // const cached = ids.map(id => cache.get(id)).filter(item => item !== undefined);
+  // const cachedIds = new Set(cached.map(item => item.id));
+  // const missingIds = ids.filter(id => !cachedIds.has(id));
+  // const result = new Map<string, T>();
+  // cached.forEach(item => result.set(item.id, item));
+  //
+  // const chunkSize = 30;
+  // for (let i = 0; i < missingIds.length; i += chunkSize) {
+  //   const chunk = missingIds.slice(i, i + chunkSize);
+  //   const q = query(
+  //     collection(firestore, colName),
+  //     where(documentId(), "in", chunk)
+  //   );
+  //
+  //   const docs = await getDocs(q);
+  //   docs.forEach(snapshot => {
+  //     const item = changeMethod(snapshot);
+  //     result.set(item.id, item);
+  //   })
+  // }
+  //
+  // return result;
 }
 
 export function snapshotToData(snapshot: QueryDocumentSnapshot | DocumentSnapshot): DocumentData {
@@ -61,7 +87,6 @@ export function snapshotToData(snapshot: QueryDocumentSnapshot | DocumentSnapsho
     return {...snapshot.data(), id: snapshot.id};
   }
 }
-
 export const getValueAsString = (value: FormDataEntryValue | FormDataEntryValue[]): string => {
   if (Array.isArray(value)) {
     // 배열인 경우 첫 번째 값을 가져오거나, 적절하게 처리
@@ -98,7 +123,6 @@ export function useElementRefs<T extends Element>(): [RefObject<T[]>, (el: T | n
     if (el && !elementsRef.current.includes(el)) {
       elementsRef.current.push(el);
       setTrigger(prev => prev + 1); // ⭐️ 올바른 위치
-      console.log(elementsRef.current);
     }
     // 요소가 DOM에서 제거될 때 처리 (선택사항)
     if (!el && elementsRef.current.length > 0) {

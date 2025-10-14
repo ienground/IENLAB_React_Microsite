@@ -401,12 +401,18 @@ const TopToolBarWrapper = styled(Navbar)`
   transform: translateY(calc(-100% - 4rem));
 
   background-color: color-mix(in oklab, ${"hsl(var(--heroui-background)"} / 1) 70%, transparent);
-  
   transition: top 0.3s ease-in-out, transform 0.3s ease-in-out;
+  
+  --navbar-height: initial !important;
   
   & > header {
     max-width: calc(1440px + 2rem);
-    padding-inline: 1rem;
+    padding: 0.5rem 1rem;
+    
+    & > h3 {
+      font-size: x-large;
+      font-weight: bold;
+    }
   }
   
   &.visible {
@@ -427,5 +433,12 @@ const TopToolBar = (props: TopToolbarProps) => (
       style={{ width: "3rem", height: "3rem" }}
       radius="sm"
     />
+    <h3>캘람</h3>
+    <Spacer style={{ flexGrow: 1 }} />
+    <div className="buttons">
+      <Button size="sm" isIconOnly color="primary">
+        <GooglePlayLogoIcon size="18" weight="bold" />
+      </Button>
+    </div>
   </TopToolBarWrapper>
 );

@@ -54,7 +54,7 @@ import {
 } from "../../../data/estimate/Estimate.ts";
 import {collection, addDoc, serverTimestamp, Timestamp} from "firebase/firestore";
 import {FirestorePath} from "../../../constant/FirestorePath.ts";
-import {firestore} from "../../../constant/FirebaseConfig.ts";
+import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
 import {addDays, addYears} from "date-fns";
 import {FullPageWrapper} from "fullpage-nestedscroll-react";
 import type {PlatformType} from "../../../data/common/PlatformType.ts";

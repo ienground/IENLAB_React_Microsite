@@ -3,7 +3,7 @@ import {
   EstimateToHashmap,
 } from "../../../data/estimate/Estimate.ts";
 import {addDoc, collection} from "firebase/firestore";
-import {firestore} from "../../../constant/FirebaseConfig.ts";
+import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../constant/FirestorePath.ts";
 import {useState} from "react";
 import {platformType} from "../../../data/common/PlatformType.ts";
@@ -16,7 +16,7 @@ export default function useRootViewModel() {
 
   const uploadEstimate = async (item: Estimate) => {
     updateUiState({isEstimateUploading: true});
-    const ref = collection(firestore, FirestorePath.ESTIMATE);
+    const ref = collection(fbFirestore, FirestorePath.ESTIMATE);
     await addDoc(ref, EstimateToHashmap(item));
     updateUiState({
       isEstimateUploading: false,
