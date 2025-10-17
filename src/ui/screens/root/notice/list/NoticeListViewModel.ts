@@ -8,7 +8,6 @@ import {
   type Notice,
   type NoticeCategory
 } from "../../../../../data/notice/Notice.tsx";
-import {useState} from "react";
 import {fetchItems} from "../../../../utils/utils.ts";
 
 interface NoticeInfoStateListProps {
@@ -56,8 +55,6 @@ export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => 
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const itemList = snapshot.docs.map((doc) => DocToNotice(doc));
-      console.log("Real-time data update received:", itemList.length);
-
       await fetchItems(fbFirestore, FirestorePath.NOTICE_CATEGORY, DocToNoticeCategory, categoryCache, [...new Set(itemList.map(item => item.categoryId))]);
 
       get().setData(new NoticeInfoStateList({
@@ -72,7 +69,6 @@ export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => 
     if (get().unsubscribe) {
       get().unsubscribe!();
       set({ unsubscribe: null });
-      console.log("Firestore 리스너가 Zustand를 통해 해제되었습니다.");
     }
   }
 }));

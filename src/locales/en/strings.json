@@ -1,4 +1,9 @@
 {
+  "datetime": {
+    "date_format": "MMM DD, YYYY",
+    "date_time_format": "MMM DD, YYYY h:mm:ss a",
+    "time_format": "h:mm:ss a"
+  },
   "dev_category": {
     "creative_computing": "Creative Computing",
     "mobile": "Mobile",
@@ -16,6 +21,7 @@
     "summary": "Summary",
     "terms_of_the_contract": "Terms of the Contract"
   },
+  "fixed": "Fixed",
   "functions": "Functions",
   "period": "Period",
   "price": "Price",
