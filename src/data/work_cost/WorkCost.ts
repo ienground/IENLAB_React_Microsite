@@ -1,4 +1,4 @@
-import type {Timestamp} from "firebase/firestore";
+import type {DocumentReference, Timestamp} from "firebase/firestore";
 import type {WorkCostCategory} from "./WorkCostCategory.ts";
 
 export type WorkCost = {
@@ -6,7 +6,7 @@ export type WorkCost = {
   createAt: Timestamp;
   updateAt: Timestamp;
   delete: boolean;
-  categoryId: string;
+  categoryRef: DocumentReference;
   category: WorkCostCategory | undefined;
   title: string;
   content: string;

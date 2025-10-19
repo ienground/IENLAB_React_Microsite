@@ -1,6 +1,6 @@
 import DefaultLayout from "../../../../utils/layout/DefaultLayout.tsx";
 import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
-import {BellRingingIcon, PushPinIcon} from "@phosphor-icons/react";
+import {BellRingingIcon, CalendarDotsIcon, PushPinIcon} from "@phosphor-icons/react";
 import styled from "styled-components";
 import {Button, Card, Chip, Image, Skeleton} from "@heroui/react";
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
@@ -9,13 +9,15 @@ import type {Notice} from "../../../../../data/notice/Notice.tsx";
 import {useNoticeListViewModel} from "./NoticeListViewModel.ts";
 import {useDateTimeFormat} from "../../../../utils/utils/DateTimeFormat.ts";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 import {NoticeDestination} from "../NoticeDestination.ts";
 import {CSSTransition} from "react-transition-group";
+import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
 
 export default function NoticeListScreen() {
   const { infoStateList, startListening, stopListening } = useNoticeListViewModel();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     startListening();
@@ -31,20 +33,23 @@ export default function NoticeListScreen() {
 
   return (
     <DefaultLayout>
-      <CommonWrapper>
+      <CommonWrapper
+      >
         <div className="header">
           <BellRingingIcon size={48} weight="bold" />
-          <div>공지사항</div>
+          <div>{t("strings:noticeboard")}</div>
         </div>
         <ContentWrapper
-          // className="visible-animation"
-          // ref={addToVisibleAnimationRefs}
+          className="visible-animation"
+          ref={addToVisibleAnimationRefs}
         >
           <CSSTransition
             in={!infoStateList.isInitialized}
             timeout={300}
             classNames="fade"
             nodeRef={placeholderRef}
+            unmountOnExit
+            appear
           >
             <div ref={placeholderRef} className="flexbox">
               {
@@ -59,11 +64,13 @@ export default function NoticeListScreen() {
             timeout={300}
             classNames="fade"
             nodeRef={listRef}
+            mountOnEnter
+            appear
           >
             <div ref={listRef} className="flexbox">
               {
                 infoStateList.itemList.map((item) => (
-                  <NoticeCell key={item.id} item={item} onClick={() => navigate(`${NoticeDestination.route}?${item?.id}`)} />
+                  <NoticeCell key={item.id} item={item} onClick={() => navigate(`${NoticeDestination.route}/${item?.id}`)} />
                 ))
               }
             </div>
@@ -151,7 +158,14 @@ const NoticeCellWrapper = styled(Card)`
     
     & > .date {
       margin-top: 0.5rem;
+      
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      
       text-align: start;
+      color: ${'hsl(var(--heroui-default-500))'};
       font-size: small;
     }
   }
@@ -197,7 +211,10 @@ const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) =>
           <Chip radius="sm">{item.category?.label}</Chip>
         </div>
         <h3 className="title">{item.title}</h3>
-        <div className="date">{useDateTimeFormat(item.createAt?.toDate())}</div>
+        <div className="date">
+          <CalendarDotsIcon size="18" weight="bold" />
+          {useDateTimeFormat(item.createAt?.toDate())}
+        </div>
       </div>
       <div className="end-content">
         {
@@ -235,10 +252,15 @@ const NoticeCellShimmer = ({ index }: { index: number }) => {
               </Skeleton>
               : <></>
           }
-          <Skeleton className="rounded-lg"><Chip radius="sm">카테고리</Chip></Skeleton>
+          <Skeleton className="rounded-lg"><Chip radius="sm">{PlaceholderValue.chipCategory}</Chip></Skeleton>
         </div>
-        <Skeleton className="title rounded-lg"><h3 className="title">제목</h3></Skeleton>
-        <Skeleton className="date rounded-lg"><div className="date">시간</div></Skeleton>
+        <Skeleton className="title rounded-lg"><h3 className="title">{PlaceholderValue.h3Title}</h3></Skeleton>
+        <div className="date">
+          <CalendarDotsIcon size="18" weight="bold" />
+          <Skeleton className="date rounded-lg">
+            {PlaceholderValue.divDate}
+          </Skeleton>
+        </div>
       </div>
       {
         index % 2 === 0 ?

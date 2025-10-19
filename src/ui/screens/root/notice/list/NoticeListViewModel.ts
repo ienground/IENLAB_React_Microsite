@@ -38,10 +38,9 @@ interface NoticeListViewModel {
 }
 
 const categoryCache = new Map<string, NoticeCategory>();
-// const categoryCache = new Map<string, NoticeCategory>();
 
 export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => ({
-  infoStateList: new NoticeInfoStateList({ isInitialized: false}),
+  infoStateList: new NoticeInfoStateList({ isInitialized: false }),
   unsubscribe: null,
 
   setData: (data) => set({ infoStateList: data }),

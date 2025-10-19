@@ -15,6 +15,7 @@ import EstimateDetailScreen from "../screens/root/estimate/detail/EstimateDetail
 import {DevDestination} from "../screens/root/dev/DevDestination.ts";
 import DevListScreen from "../screens/root/dev/list/DevListScreen.tsx";
 import DevDetailScreen from "../screens/root/dev/detail/DevDetailScreen.tsx";
+import NoticeDetailScreen from "../screens/root/notice/detail/NoticeDetailScreen.tsx";
 
 export default function RootRouter() {
   return (
@@ -22,7 +23,10 @@ export default function RootRouter() {
       <Route path={RootDestination.route} element={<RootScreen />} />
 
       <Route path={IntroDestination.route} element={<IntroScreen />} />
+
       <Route path={NoticeDestination.route} element={<NoticeListScreen />} />
+      <Route path={NoticeDestination.routeDetail} element={<NoticeDetailScreen />} />
+
       <Route path={BrandDestination.route} element={<BrandScreen />} />
       <Route path={PrivacyDestination.route} element={<PrivacyScreen />} />
 

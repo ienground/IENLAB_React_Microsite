@@ -1,7 +1,8 @@
 import {type RefObject, useEffect, useRef, useState} from "react";
-import { Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData } from "firebase/firestore";
-import firebase from "firebase/compat/app";
-import DocumentReference = firebase.firestore.DocumentReference;
+import {
+  Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData,
+  type DocumentReference
+} from "firebase/firestore";
 
 export const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;

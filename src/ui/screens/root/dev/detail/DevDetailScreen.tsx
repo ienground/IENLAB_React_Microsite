@@ -27,11 +27,7 @@ import {useEffect, useState} from "react";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import useEmblaCarousel from "embla-carousel-react";
 import {useScrollMonitor} from "../../../../utils/utils/ScrollData.ts";
-
-interface TopToolbarProps {
-  visible: boolean;
-  headerVisible: boolean;
-}
+import type {TopToolbarProps} from "../../../../utils/types";
 
 export default function DevDetailScreen() {
   const { t } = useTranslation();
@@ -328,7 +324,6 @@ const ContentWrapper = styled.div`
 `;
 
 const SummaryCard = styled.div`
-  
   & > .container {
     margin-top: -5rem;
     z-index: 500;

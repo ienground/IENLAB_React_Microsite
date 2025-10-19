@@ -1,4 +1,4 @@
-import type {Timestamp} from "firebase/firestore";
+import type {DocumentReference, Timestamp} from "firebase/firestore";
 import type {Estimate} from "../estimate/Estimate.ts";
 
 export type Outsource = {
@@ -6,6 +6,6 @@ export type Outsource = {
   createAt: Timestamp;
   updateAt: Timestamp;
   delete: boolean;
-  estimateId: string;
+  estimateRef: DocumentReference
   estimate: Estimate | undefined;
 }
