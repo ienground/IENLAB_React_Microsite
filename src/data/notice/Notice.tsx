@@ -1,4 +1,4 @@
-import {type DocumentSnapshot, type QueryDocumentSnapshot, serverTimestamp, type Timestamp} from "firebase/firestore";
+import {type DocumentSnapshot, type QueryDocumentSnapshot, serverTimestamp, type Timestamp, DocumentReference} from "firebase/firestore";
 import {snapshotToData} from "../../ui/utils/utils.ts";
 import {FirestorePath} from "../../constant/FirestorePath.ts";
 
@@ -7,7 +7,7 @@ export type Notice = {
   createAt: Timestamp;
   updateAt: Timestamp;
   delete: boolean;
-  categoryId: string;
+  categoryRef: DocumentReference;
   category: NoticeCategory | undefined;
   title: string;
   content: string;
@@ -30,7 +30,7 @@ export function DocToNotice(snapshot: QueryDocumentSnapshot | DocumentSnapshot):
     createAt: doc[FirestorePath.CREATE_AT],
     updateAt: doc[FirestorePath.UPDATE_AT],
     delete: doc[FirestorePath.DELETE],
-    categoryId: doc[FirestorePath.Notice.CATEGORY],
+    categoryRef: doc[FirestorePath.Notice.CATEGORY],
     category: undefined,
     title: doc[FirestorePath.Notice.TITLE],
     content: doc[FirestorePath.Notice.CONTENT],
@@ -50,11 +50,11 @@ export function DocToNoticeCategory(snapshot: QueryDocumentSnapshot | DocumentSn
   };
 }
 
-export function NoticeToHashmap(item: Notice, isUpdate: boolean = false) {
+export function NoticeToHashMap(item: Notice, isUpdate: boolean = false) {
   const map = {
     [FirestorePath.UPDATE_AT]: serverTimestamp(),
     [FirestorePath.DELETE]: item.delete,
-    [FirestorePath.Notice.CATEGORY]: item.categoryId,
+    [FirestorePath.Notice.CATEGORY]: item.categoryRef,
     [FirestorePath.Notice.TITLE]: item.title,
     [FirestorePath.Notice.CONTENT]: item.content,
     [FirestorePath.Notice.IMAGE_URLS]: item.imageUrls,

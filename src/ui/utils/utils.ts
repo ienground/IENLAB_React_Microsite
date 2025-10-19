@@ -1,5 +1,7 @@
 import {type RefObject, useEffect, useRef, useState} from "react";
 import { Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData } from "firebase/firestore";
+import firebase from "firebase/compat/app";
+import DocumentReference = firebase.firestore.DocumentReference;
 
 export const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
@@ -28,56 +30,39 @@ interface Item {
   id: string;
 }
 
-export async function fetchItems<T extends Item>(firestore: Firestore, colName: string, changeMethod: ((snapshot: QueryDocumentSnapshot | DocumentSnapshot) => T), cache: Map<string, T>, ids: string[]) {
-  const cached: T[] = ids
-    .map(id => cache.get(id))
-    // 💡 변경된 부분: 명시적인 item !== undefined 대신 Boolean 필터 사용
+export async function fetchItems<T extends Item>(
+  firestore: Firestore,
+  colName: string,
+  changeMethod: ((snapshot: QueryDocumentSnapshot | DocumentSnapshot) => T),
+  cache: Map<string, T>,
+  referenceArray: DocumentReference[] // 💡 DocumentReference 배열
+) {
+
+  // 캐시 키로 reference의 path를 사용합니다. (reference.path는 유니크한 문자열 경로입니다.)
+  const cached: T[] = referenceArray
+    .map(ref => cache.get(ref.path))
     .filter(Boolean) as T[];
 
-  const cachedIds = new Set(cached.map(item => item.id));
-  const missingIds = ids.filter(id => !cachedIds.has(id));
+  const cachedPaths = new Set(cached.map(item => item.id));
+  const missingRefs = referenceArray.filter(ref => !cachedPaths.has(ref.path));
 
   const chunkSize = 30;
-  for (let i = 0; i < missingIds.length; i += chunkSize) {
-    const chunk = missingIds.slice(i, i + chunkSize);
-    console.log("chunk", chunk);
+  for (let i = 0; i < missingRefs.length; i += chunkSize) {
+    const chunk = missingRefs.slice(i, i + chunkSize);
+
+    // 💡 DocumentReference 청크를 'in' 쿼리에 직접 사용
     const q = query(
       collection(firestore, colName),
-      where(documentId(), "in", chunk)
+      where(documentId(), 'in', chunk) // 쿼리할 문서의 필드 이름으로 변경
     );
 
     const docs = await getDocs(q);
+
     docs.forEach(snapshot => {
       const item = changeMethod(snapshot as QueryDocumentSnapshot);
-
-      // 3. 💡 인자로 받은 'cache' 객체에 직접 추가합니다.
       cache.set(item.id, item);
-    })
+    });
   }
-
-
-  // const cached = ids.map(id => cache.get(id)).filter(item => item !== undefined);
-  // const cachedIds = new Set(cached.map(item => item.id));
-  // const missingIds = ids.filter(id => !cachedIds.has(id));
-  // const result = new Map<string, T>();
-  // cached.forEach(item => result.set(item.id, item));
-  //
-  // const chunkSize = 30;
-  // for (let i = 0; i < missingIds.length; i += chunkSize) {
-  //   const chunk = missingIds.slice(i, i + chunkSize);
-  //   const q = query(
-  //     collection(firestore, colName),
-  //     where(documentId(), "in", chunk)
-  //   );
-  //
-  //   const docs = await getDocs(q);
-  //   docs.forEach(snapshot => {
-  //     const item = changeMethod(snapshot);
-  //     result.set(item.id, item);
-  //   })
-  // }
-  //
-  // return result;
 }
 
 export function snapshotToData(snapshot: QueryDocumentSnapshot | DocumentSnapshot): DocumentData {

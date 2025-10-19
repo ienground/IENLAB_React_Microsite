@@ -38,6 +38,7 @@ interface NoticeListViewModel {
 }
 
 const categoryCache = new Map<string, NoticeCategory>();
+// const categoryCache = new Map<string, NoticeCategory>();
 
 export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => ({
   infoStateList: new NoticeInfoStateList({ isInitialized: false}),
@@ -55,10 +56,10 @@ export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => 
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const itemList = snapshot.docs.map((doc) => DocToNotice(doc));
-      await fetchItems(fbFirestore, FirestorePath.NOTICE_CATEGORY, DocToNoticeCategory, categoryCache, [...new Set(itemList.map(item => item.categoryId))]);
+      await fetchItems(fbFirestore, FirestorePath.NOTICE_CATEGORY, DocToNoticeCategory, categoryCache, [...new Set(itemList.map(item => item.categoryRef))]);
 
       get().setData(new NoticeInfoStateList({
-        itemList: itemList.map(item => ({...item, category: categoryCache.get(item.categoryId)})),
+        itemList: itemList.map(item => ({...item, category: categoryCache.get(item.categoryRef.id)})),
         isInitialized: true
       }));
     });

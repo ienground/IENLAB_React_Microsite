@@ -48,7 +48,7 @@ export default function NoticeListScreen() {
           >
             <div ref={placeholderRef} className="flexbox">
               {
-                Array(2).fill(null).map((_, index) => (
+                Array(3).fill(null).map((_, index) => (
                   <NoticeCellShimmer index={index} />
                 ))
               }
