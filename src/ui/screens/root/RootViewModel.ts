@@ -1,10 +1,4 @@
-import {
-  type Estimate,
-  estimateDefault,
-  EstimateDefault,
-  estimateState,
-  EstimateToHashMap
-} from "../../../data/estimate/Estimate.ts";
+import {type Estimate, estimateDefault, EstimateToHashMap} from "../../../data/estimate/Estimate.ts";
 import {create} from "zustand/react";
 import {collection, addDoc, type DocumentReference} from "firebase/firestore";
 import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
@@ -37,7 +31,7 @@ interface RootViewModel {
 }
 
 export const useRootViewModel = create<RootViewModel>((set, get) => ({
-  uiState: new RootUiState({item: { formData: estimateDefault }}),
+  uiState: new RootUiState({ item: { formData: estimateDefault }}),
   onItemValueChanged: (item: RootDetails) => set({ uiState: new RootUiState({ item: item }) }),
 
   uploadEstimate: (onSuccess, onFailure) => {

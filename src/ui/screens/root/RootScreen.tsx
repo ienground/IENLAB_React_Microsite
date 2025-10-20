@@ -60,7 +60,7 @@ export default function RootScreen() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     uploadEstimate(
-      (res) => {
+      () => {
         addToast({
           title: t("strings:root.inquiry_submitted"),
           description: t("strings:root.inquiry_submitted_desc"),

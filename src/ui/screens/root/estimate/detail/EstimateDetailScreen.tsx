@@ -29,8 +29,6 @@ import { HashLink } from 'react-router-hash-link';
 import {useNavigate} from "react-router";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx"; // HashLink 컴포넌트
 
-
-
 export default function EstimateDetailScreen() {
   const { t } = useTranslation();
   const data = {

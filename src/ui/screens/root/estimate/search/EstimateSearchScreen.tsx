@@ -6,9 +6,15 @@ import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon} from "@phosphor-icons/re
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useTranslation} from "react-i18next";
 import '../../../../../locales/i18n';
+import {useEstimateSearchViewModel} from "./EstimateSearchViewModel.tsx";
+import {useNavigate} from "react-router";
+import {EstimateDestination} from "../EstimateDestination.ts";
 
 export default function EstimateSearchScreen() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { uiState, onItemValueChanged, searchQuote } = useEstimateSearchViewModel();
+
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
 
@@ -30,8 +36,20 @@ export default function EstimateSearchScreen() {
                 radius="sm"
                 label={t("strings:inquiry.number")}
                 placeholder={`${t("strings:example_colon")}IL2024-001`}
+                value={uiState.item.query}
+                onChange={(e) => onItemValueChanged({ query: e.target.value })}
                 endContent={
-                  <Button isIconOnly variant="light">
+                  <Button
+                    isIconOnly
+                    isLoading={uiState.item.isSearching}
+                    variant="light"
+                    onPress={() => {
+                      searchQuote(
+                        (id) => { navigate(`${EstimateDestination.route}/${id}`) },
+                        (err) => { console.error(err); }
+                      )
+                    }}
+                  >
                     <MagnifyingGlassIcon size="24" weight="bold" />
                   </Button>
                 }

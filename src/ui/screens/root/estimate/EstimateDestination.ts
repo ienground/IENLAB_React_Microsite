@@ -1,4 +1,4 @@
 export const EstimateDestination = {
-  route: "estimate",
-  routeDetail: "estimate/:id"
+  route: "/estimate",
+  routeDetail: "/estimate/:id"
 };
