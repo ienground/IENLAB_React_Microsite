@@ -160,3 +160,9 @@ export function useVisibleAnimation(items: RefObject<Element[]>, addTokens: stri
     };
   }, [items, addTokens, trigger]);
 }
+
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export function arrayToSelectValue(array: number[]) {
+  return Array.isArray(array) ? array.map((item) => item.toString()) : []
+}

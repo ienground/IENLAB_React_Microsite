@@ -14,8 +14,6 @@ export function useScrollMonitor() {
       const currentScrollY = window.scrollY;
       const lastY = lastScrollY.current;
 
-      console.log(currentScrollY);
-
       setScrollY(currentScrollY);
 
       if (currentScrollY <= 0) {

@@ -109,6 +109,8 @@
     "check_portfolio": "Check Portfolio",
     "inquiry_submitted": "Inquiry Submitted",
     "inquiry_submitted_desc": "Your project inquiry has been submitted!",
+    "inquiry_submitted_fail": "Inquiry Submission Failed",
+    "inquiry_submitted_fail_desc": "Failed to submit the project inquiry. Please try again.",
     "intro_desc1": "Turn your vague ideas into reality.",
     "intro_desc2": "Leave everything from UI/UX to development and application publishing to us!",
     "page1_desc1": "9-Year Experienced Android Developer\nFrom simple utility apps to community platforms and complex native features.",

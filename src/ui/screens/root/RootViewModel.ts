@@ -1,66 +1,51 @@
 import {
-  type Estimate, estimateBudget,
-  EstimateToHashmap,
+  type Estimate,
+  estimateDefault,
+  EstimateDefault,
+  estimateState,
+  EstimateToHashMap
 } from "../../../data/estimate/Estimate.ts";
-import {addDoc, collection} from "firebase/firestore";
+import {create} from "zustand/react";
+import {collection, addDoc, type DocumentReference} from "firebase/firestore";
 import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../constant/FirestorePath.ts";
-import {useState} from "react";
-import {platformType} from "../../../data/common/PlatformType.ts";
 
-export default function useRootViewModel() {
-  const [uiState, setUiState] = useState(new RootUiState());
-  const updateUiState = (item: Partial<RootDetails>) => {
-    setUiState(prevState => new RootUiState({...prevState.item, ...item}));
-  };
-
-  const uploadEstimate = async (item: Estimate) => {
-    updateUiState({isEstimateUploading: true});
-    const ref = collection(fbFirestore, FirestorePath.ESTIMATE);
-    await addDoc(ref, EstimateToHashmap(item));
-    updateUiState({
-      isEstimateUploading: false,
-      formData: {
-        name: "",
-        company: "",
-        email: "",
-        type: "",
-        platform: [platformType.ANDROID.toString(), platformType.IOS.toString()],
-        budget: estimateBudget.BET_300_500,
-        description: ""
-      }
-    });
-  };
-
-  return { uiState, updateUiState, uploadEstimate };
+export type RootDetails = {
+  formData: Estimate,
+  isEstimateUploading?: boolean;
 }
 
-class RootUiState {
-  item;
+interface RootUiStateProps {
+  item?: RootDetails | undefined;
+}
 
-  constructor(item: RootDetails = new RootDetails()) {
+export class RootUiState {
+  item: RootDetails;
+
+  constructor(props: RootUiStateProps) {
+    const { item = { formData: estimateDefault } } = props;
+
     this.item = item;
   }
 }
 
-class RootDetails {
-  isEstimateUploading: boolean = false;
+interface RootViewModel {
+  uiState: RootUiState;
+  onItemValueChanged: (item: RootDetails) => void;
 
-  formData: {
-    name: string,
-    company: string,
-    email: string,
-    type: string,
-    platform: string[],
-    budget: string,
-    description: string,
-  } = {
-    name: "",
-    company: "",
-    email: "",
-    type: "",
-    platform: [platformType.ANDROID.toString(), platformType.IOS.toString()],
-    budget: estimateBudget.BET_300_500,
-    description: ""
-  }
+  uploadEstimate: (onSuccess: (res: DocumentReference) => void, onFailure: (err: string) => void) => void;
 }
+
+export const useRootViewModel = create<RootViewModel>((set, get) => ({
+  uiState: new RootUiState({item: { formData: estimateDefault }}),
+  onItemValueChanged: (item: RootDetails) => set({ uiState: new RootUiState({ item: item }) }),
+
+  uploadEstimate: (onSuccess, onFailure) => {
+    get().onItemValueChanged({...get().uiState.item, isEstimateUploading: true});
+    const ref = collection(fbFirestore, FirestorePath.ESTIMATE);
+    addDoc(ref, EstimateToHashMap(get().uiState.item.formData))
+      .then(onSuccess)
+      .catch((err) => { onFailure(err) })
+    ;
+  }
+}));

@@ -157,7 +157,7 @@ export default function DevDetailScreen() {
                   className="rounded-lg"
                   isLoaded={infoState.isInitialized}
                 >
-                  <h1>{infoState.item?.title}</h1>
+                  <h1>{infoState.isInitialized ? infoState.item?.title : PlaceholderValue.h1Title}</h1>
                 </Skeleton>
                 <Spacer style={{ flexGrow: 1 }} />
                 <Skeleton
@@ -282,9 +282,7 @@ export default function DevDetailScreen() {
               unmountOnExit
               appear
             >
-              <div ref={placeholderRef}>
-
-              </div>
+              <div ref={placeholderRef} />
             </CSSTransition>
             <CSSTransition
               in={infoState.isInitialized}
@@ -371,7 +369,7 @@ export default function DevDetailScreen() {
           headerVisible={headerVisible}
         />
         <BottomToolbar
-          visible={true}
+          visible={infoState.isInitialized}
           selectedKey={selected}
           onSelectionChange={setSelected}
           tabItems={tabItems}
@@ -541,8 +539,9 @@ const SummaryCard = styled.div`
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         gap: 1rem;
-
+        
         & > .container {
           display: flex;
           flex-direction: column;

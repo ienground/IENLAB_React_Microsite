@@ -70,7 +70,7 @@ export function NoticeToHashMap(item: Notice, isUpdate: boolean = false) {
   return map;
 }
 
-export function NoticeCategoryToHashmap(item: NoticeCategory, isUpdate: boolean = false) {
+export function NoticeCategoryToHashMap(item: NoticeCategory, isUpdate: boolean = false) {
   const map = {
     [FirestorePath.UPDATE_AT]: serverTimestamp(),
     [FirestorePath.DELETE]: item.delete,

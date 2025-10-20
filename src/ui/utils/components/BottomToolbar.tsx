@@ -31,6 +31,9 @@ export default function BottomToolbar(props: BottomToolbarProps) {
   // Anchor 추적
   useEffect(() => {
     const anchors = document.querySelectorAll(".anchor");
+    anchors.forEach((value, key) => {
+      console.log(`value: ${value.id}`)
+    })
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (isClickingRef.current) {
@@ -52,7 +55,7 @@ export default function BottomToolbar(props: BottomToolbarProps) {
     return () => {
       anchors.forEach(anchor => observer.unobserve(anchor));
     }
-  }, []);
+  }, [props.visible]);
 
   return (
     <BottomToolbarWrapper

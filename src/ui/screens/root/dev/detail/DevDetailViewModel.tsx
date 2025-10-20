@@ -3,6 +3,7 @@ import {create} from "zustand/react";
 import {doc, onSnapshot} from "firebase/firestore";
 import {fbFirestore} from "../../../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../../../constant/FirestorePath.ts";
+import {delay} from "../../../../utils/utils.ts";
 
 interface DevDetailInfoStateProps {
   item?: DevProject | undefined;
@@ -50,6 +51,7 @@ export const useDevDetailViewModel = create<DevDetailViewModel>((set, get) => ({
       if (snapshot.exists()) {
         const item = DocToDevProject(snapshot);
 
+        await delay(1000);
         get().setData(new DevDetailInfoState({
           item: item,
           isInitialized: true
@@ -59,5 +61,10 @@ export const useDevDetailViewModel = create<DevDetailViewModel>((set, get) => ({
 
     set({ unsubscribe: unsubscribe });
   },
-  stopListening: () => {}
+  stopListening: () => {
+    if (get().unsubscribe) {
+      get().unsubscribe!();
+      set({ unsubscribe: null, infoState: new DevDetailInfoState({ item: undefined, isInitialized: false }) });
+    }
+  }
 }));

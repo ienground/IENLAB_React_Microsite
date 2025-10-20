@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import useRootViewModel from "./RootViewModel.ts";
 import DefaultLayout from "../../utils/layout/DefaultLayout.tsx";
 import { FullpageContainer, FullpageSection } from '@shinyongjun/react-fullpage';
 import '@shinyongjun/react-fullpage/css';
@@ -8,62 +7,38 @@ import ImgIenlabPattern from "../../../assets/image/img_ienlab_pattern_resize.pn
 import ImgHistoryAndroid from "../../../assets/image/img_history_android.png";
 import ImgHistoryDesign from "../../../assets/image/img_history_design.png";
 import ImgHistoryNew from "../../../assets/image/img_history_new.png";
-
-
-import {Swiper, SwiperSlide, useSwiper} from "swiper/react";
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-fade';
-import 'swiper/css/pagination';
-
-import 'swiper/css/navigation';
-// import required modules
-import { Mousewheel, Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
-
 import {
   addToast,
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  type CardProps, Checkbox, CheckboxGroup, Chip,
-  Divider, Form,
+  Chip, Form,
   Image, Input,
   Link,
   Progress, Select, SelectItem, Textarea
 } from "@heroui/react";
 import {
   AndroidLogoIcon, AppleLogoIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon, BluetoothIcon, BuildingOfficeIcon,
-  CompassIcon, EnvelopeIcon, GearFineIcon, GithubLogoIcon, GlobeSimpleIcon, InstagramLogoIcon, MapPinIcon,
-  PaperPlaneTiltIcon, PhoneIcon, RobotIcon,
-  SuitcaseSimpleIcon,
-  SunIcon, ToolboxIcon, UsersFourIcon
+  BluetoothIcon, BuildingOfficeIcon,
+  CompassIcon, EnvelopeIcon, GearFineIcon, GithubLogoIcon, GlobeSimpleIcon, InstagramLogoIcon, PaperPlaneTiltIcon, PhoneIcon, RobotIcon,
+  ToolboxIcon, UsersFourIcon
 } from "@phosphor-icons/react";
-import {type ChangeEvent, ChangeEventHandler, type FormEvent, useEffect, useRef, useState} from "react";
-import {useTheme} from "@heroui/use-theme";
-import {getValueAsString, useVisibleAnimation, useDarkmode, useElementRefs} from "../../utils/utils.ts";
-import LiquidGlass from "@nkzw/liquid-glass";
+import {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
 import {
-  type Estimate, estimateBudget, type EstimateBudget, EstimateBudgetToString,
-  estimateState,
-  EstimateToHashmap,
-  type EstimateType
-} from "../../../data/estimate/Estimate.ts";
-import {collection, addDoc, serverTimestamp, Timestamp} from "firebase/firestore";
-import {FirestorePath} from "../../../constant/FirestorePath.ts";
-import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
-import {addDays, addYears} from "date-fns";
-import {FullPageWrapper} from "fullpage-nestedscroll-react";
-import {platformType, type PlatformType, PlatformTypeToString} from "../../../data/common/PlatformType.ts";
+  useVisibleAnimation,
+  useDarkmode,
+  useElementRefs,
+  arrayToSelectValue
+} from "../../utils/utils.ts";
+import {estimateBudget, EstimateBudgetToString, estimateDefault,} from "../../../data/estimate/Estimate.ts";
+import {platformType, PlatformTypeToString} from "../../../data/common/PlatformType.ts";
 import {useTranslation} from "react-i18next";
+import {useRootViewModel} from "./RootViewModel.ts";
 
 export default function RootScreen() {
   const { t } = useTranslation();
-  const viewModel = useRootViewModel();
-  const pageCount = 3;
+  const { uiState, onItemValueChanged, uploadEstimate } = useRootViewModel();
   const [activeIndex, setActiveIndex] = useState(0);
   const isDark = useDarkmode();
 
@@ -84,61 +59,33 @@ export default function RootScreen() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    uploadEstimate(
+      (res) => {
+        addToast({
+          title: t("strings:root.inquiry_submitted"),
+          description: t("strings:root.inquiry_submitted_desc"),
+          color: "success"
+        });
 
-    const formData = new FormData(e.currentTarget);
-    const data: { [key: string]: FormDataEntryValue | FormDataEntryValue[] } = {};
-
-    for (const [key, value] of formData.entries()) {
-      if (data[key]) {
-        // 이미 같은 key가 존재하면 배열로 만들거나 기존 배열에 추가합니다.
-        if (Array.isArray(data[key])) {
-          (data[key] as FormDataEntryValue[]).push(value);
-        } else {
-          data[key] = [data[key] as FormDataEntryValue, value];
-        }
-      } else {
-        // key가 처음 나타나면 값을 할당합니다.
-        data[key] = value;
+        onItemValueChanged({...uiState.item, formData: estimateDefault})
+      },
+      () => {
+        addToast({
+          title: t("strings:root.inquiry_submitted_fail"),
+          description: t("strings:root.inquiry_submitted_fail_desc"),
+          color: "danger"
+        });
       }
-    }
-
-    const item: Estimate = {
-      id: "",
-      createAt: Timestamp.now(),
-      updateAt: Timestamp.now(),
-      delete: false,
-      identifier: "Hello",
-      expireAt: Timestamp.fromDate(addYears(new Date(), 1)),
-      name: getValueAsString(data["name"]), 
-      company: getValueAsString(data["company"]),
-      email: getValueAsString(data["email"]),
-      type: getValueAsString(data["type"]) as EstimateType,
-      platform: Array.isArray(data["platform"])
-        ? data["platform"].map(p => getValueAsString(p) as unknown as PlatformType)
-        : [getValueAsString(data["platform"]) as unknown as PlatformType],
-      budget: getValueAsString(data["budget"]) as EstimateBudget,
-      description: getValueAsString(data["description"]),
-      state: estimateState.PENDING,
-      summary: "",
-      sigNote: "",
-      plans: [],
-      conditions: []
-    };
-
-    await viewModel.uploadEstimate(item);
-
-    addToast({
-      title: t("strings:root.inquiry_submitted"),
-      description: t("strings:root.inquiry_submitted_desc"),
-      color: "success"
-    });
+    );
   };
+
+  useEffect(() => {
+    console.log(JSON.stringify(uiState.item?.formData));
+  }, [uiState.item, uiState]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    viewModel.updateUiState({ formData: {...viewModel.uiState.item.formData, [name]: value} });
-
-    console.log(name, value);
+    onItemValueChanged({ formData: {...uiState.item?.formData, [name]: value} });
   };
 
   return (
@@ -523,7 +470,7 @@ export default function RootScreen() {
                               type="text"
                               name="name"
                               placeholder={t("strings:input_name")}
-                              value={viewModel.uiState.item.formData.name}
+                              value={uiState.item.formData.name}
                               onChange={handleChange}
                             />
                             <Input
@@ -533,7 +480,7 @@ export default function RootScreen() {
                               type="text"
                               name="company"
                               placeholder={t("strings:company_optional_input")}
-                              value={viewModel.uiState.item.formData.company}
+                              value={uiState.item.formData.company}
                               onChange={handleChange}
                             />
                           </div>
@@ -545,7 +492,7 @@ export default function RootScreen() {
                             type="email"
                             name="email"
                             placeholder="your@email.com"
-                            value={viewModel.uiState.item.formData.email}
+                            value={uiState.item.formData.email}
                             onChange={handleChange}
                           />
                           <div className="two-line">
@@ -555,7 +502,7 @@ export default function RootScreen() {
                               label={t("strings:root.project_type")}
                               name="type"
                               placeholder={t("strings:select_type")}
-                              value={viewModel.uiState.item.formData.type}
+                              value={uiState.item.formData.type}
                               onChange={handleChange}
                             >
                               <>
@@ -571,9 +518,9 @@ export default function RootScreen() {
                               label={t("strings:platforms")}
                               placeholder={t("strings:select_platforms")}
                               selectionMode="multiple"
-                              defaultSelectedKeys={["android", "ios"]}
+                              defaultSelectedKeys={[platformType.ANDROID.toString(), platformType.IOS.toString()]}
                               name="platform"
-                              value={viewModel.uiState.item.formData.platform}
+                              value={arrayToSelectValue(uiState.item.formData.platform)}
                               onChange={handleChange}
                             >
                               {
@@ -588,9 +535,9 @@ export default function RootScreen() {
                             radius="sm"
                             label={t("strings:budget_range")}
                             placeholder={t("strings:set_budget_range")}
-                            defaultSelectedKeys={["300_500"]}
+                            defaultSelectedKeys={[estimateBudget.BET_300_500]}
                             name="budget"
-                            value={viewModel.uiState.item.formData.budget}
+                            value={uiState.item.formData.budget}
                             onChange={handleChange}
                           >
                             {
@@ -608,11 +555,11 @@ export default function RootScreen() {
                             maxRows={6}
                             className="grow"
                             name="description"
-                            value={viewModel.uiState.item.formData.description}
+                            value={uiState.item.formData.description}
                             onChange={handleChange}
                           />
                           <Button
-                            isLoading={viewModel.uiState.item.isEstimateUploading}
+                            isLoading={uiState.item?.isEstimateUploading}
                             endContent={<PaperPlaneTiltIcon />}
                             color="primary"
                             variant="solid"
@@ -702,9 +649,6 @@ const Wrapper = styled.div`
     scroll-behavior: smooth;
   }
   
-`;
-
-const PageIndicator = styled.div`
 `;
 
 const SectionWrapper = styled.div`

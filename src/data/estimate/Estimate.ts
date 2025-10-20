@@ -2,7 +2,7 @@ import {type DocumentSnapshot, type QueryDocumentSnapshot, Timestamp, serverTime
 import {snapshotToData} from "../../ui/utils/utils.ts";
 import {FirestorePath} from "../../constant/FirestorePath.ts";
 import type {WorkPlan} from "./WorkPlan.ts";
-import type {PlatformType} from "../common/PlatformType.ts";
+import {platformType, type PlatformType} from "../common/PlatformType.ts";
 import type {TFunction} from "i18next";
 
 export const estimateType = {
@@ -44,7 +44,7 @@ export type Estimate = {
   identifier: string;
   expireAt: Timestamp;
   name: string;
-  company: string | null;
+  company: string;
   email: string;
   type: EstimateType,
   platform: PlatformType[],
@@ -56,6 +56,27 @@ export type Estimate = {
   plans: WorkPlan[];
   conditions: string[];
 };
+
+export const estimateDefault: Estimate = {
+  id: "",
+  createAt: Timestamp.now(),
+  updateAt: Timestamp.now(),
+  delete: false,
+  identifier: "",
+  expireAt: Timestamp.now(),
+  name: "",
+  company: "",
+  email: "",
+  type: estimateType.COMMUNITY,
+  platform: [platformType.ANDROID, platformType.IOS],
+  budget: estimateBudget.BET_300_500,
+  description: "",
+  state: estimateState.PENDING,
+  summary: "",
+  sigNote: "",
+  plans: [],
+  conditions: []
+}
 
 export function EstimateTypeToString(t: TFunction, value: EstimateType | undefined): string {
   switch (value) {
@@ -105,7 +126,7 @@ export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot
   };
 }
 
-export function EstimateToHashmap(item: Estimate, isUpdate: boolean = false) {
+export function EstimateToHashMap(item: Estimate, isUpdate: boolean = false) {
   const map = {
     [FirestorePath.UPDATE_AT]: serverTimestamp(),
     [FirestorePath.DELETE]: item.delete,
