@@ -26,6 +26,7 @@
   "noticeboard": "공지사항",
   "period": "기간",
   "price": "금액",
+  "primary_project": "주요 프로젝트",
   "project": {
     "title": "프로젝트"
   },
@@ -35,5 +36,7 @@
   "screenshots": "스크린샷",
   "start_date": "시작일",
   "state": "상태",
+  "state_done": "완료",
+  "state_working": "개발 중",
   "tech_stacks": "기술 스택"
 }

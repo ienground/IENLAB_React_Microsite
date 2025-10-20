@@ -20,7 +20,8 @@ export type NoticeCategory = {
   createAt: Timestamp;
   updateAt: Timestamp;
   delete: boolean;
-  label: string;
+  labelKor: string;
+  labelEng: string;
 }
 
 export function DocToNotice(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Notice {
@@ -46,7 +47,8 @@ export function DocToNoticeCategory(snapshot: QueryDocumentSnapshot | DocumentSn
     createAt: doc[FirestorePath.CREATE_AT],
     updateAt: doc[FirestorePath.UPDATE_AT],
     delete: doc[FirestorePath.DELETE],
-    label: doc[FirestorePath.Notice.Category.LABEL]
+    labelKor: doc[FirestorePath.Notice.Category.LABEL_KOR],
+    labelEng: doc[FirestorePath.Notice.Category.LABEL_ENG]
   };
 }
 
@@ -72,7 +74,8 @@ export function NoticeCategoryToHashmap(item: NoticeCategory, isUpdate: boolean 
   const map = {
     [FirestorePath.UPDATE_AT]: serverTimestamp(),
     [FirestorePath.DELETE]: item.delete,
-    [FirestorePath.Notice.Category.LABEL]: item.label
+    [FirestorePath.Notice.Category.LABEL_KOR]: item.labelKor,
+    [FirestorePath.Notice.Category.LABEL_ENG]: item.labelEng
   };
 
   if (!isUpdate) {

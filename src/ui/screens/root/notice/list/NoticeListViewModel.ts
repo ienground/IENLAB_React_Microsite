@@ -49,8 +49,9 @@ export const useNoticeListViewModel = create<NoticeListViewModel>((set, get) => 
 
     const q = query(
       collection(fbFirestore, FirestorePath.NOTICE),
-      where(FirestorePath.DELETE, "==", false),
-      orderBy(FirestorePath.Notice.FIXED, "desc")
+      where(FirestorePath.DELETE, "!=", true),
+      orderBy(FirestorePath.Notice.FIXED, "desc"),
+      orderBy(FirestorePath.CREATE_AT, "desc")
     );
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {

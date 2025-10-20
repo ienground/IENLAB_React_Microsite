@@ -56,8 +56,6 @@ export const useNoticeDetailViewModel = create<NoticeDetailViewModel>((set, get)
         const item = DocToNotice(snapshot);
         const category = await getDoc(item.categoryRef).then((res) => DocToNoticeCategory(res));
 
-        console.log(`category: ${JSON.stringify(category)}`);
-
         get().setData(new NoticeDetailInfoState({
           item: {...item, category: category},
           isInitialized: true

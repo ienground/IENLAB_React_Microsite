@@ -15,19 +15,20 @@ import {
   UserCircleIcon
 } from "@phosphor-icons/react";
 import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
-import {useDateTimeFormat} from "../../../../utils/utils/DateTimeFormat.ts";
 import useEmblaCarousel from "embla-carousel-react";
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from 'react-markdown';
+import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
 
 export default function NoticeDetailScreen() {
   const { infoState, startListening, stopListening, setItemId } = useNoticeDetailViewModel();
   const { id } = useParams<{ id: string }>();
 
   const { t } = useTranslation();
+  const { dateTimeFormat } = useDateTimeFormatters();
   const { scrollY, scrollDirection } = useScrollMonitor();
   const toolbarThreshold = 100;
-  const [headerVisible, setHeaderVisible] = useState<boolean>(false);
+  const [headerVisible, setHeaderVisible] = useState<boolean>(true);
   const [summaryVisible, setSummaryVisible] = useState<boolean>(false);
   const [emblaRef] = useEmblaCarousel({ dragFree: true });
 
@@ -43,17 +44,14 @@ export default function NoticeDetailScreen() {
   }, [startListening, stopListening]);
 
   useEffect(() => {
-    console.log(JSON.stringify(infoState));
-  }, [infoState]);
-
-  useEffect(() => {
     setHeaderVisible(scrollDirection === "up" || scrollY < toolbarThreshold);
   }, [scrollY, scrollDirection]);
 
   return (
     <DefaultLayout toolbarOverlap toolbarVisible={headerVisible}>
       <Image
-        src={(infoState.item?.imageUrls && infoState.item?.imageUrls?.length !== 0) ? infoState.item?.imageUrls[0] : "https://picsum.photos/150/150"}
+        src={infoState.item?.imageUrls && infoState.item?.imageUrls?.length > 0 ? infoState.item?.imageUrls[0] : ""}
+        fallbackSrc="https://picsum.photos/150/150"
         className="img-background"
         classNames={{
           img: "object-cover",
@@ -71,7 +69,7 @@ export default function NoticeDetailScreen() {
             <div className="container">
               <div className="category">
                 <Skeleton className="rounded-lg" isLoaded={infoState.isInitialized}>
-                  <Chip radius="sm">{infoState.item?.category?.label ?? PlaceholderValue.chipCategory}</Chip>
+                  <Chip radius="sm">{infoState.item?.category?.labelKor ?? PlaceholderValue.chipCategory}</Chip>
                 </Skeleton>
               </div>
               <div className="title">
@@ -96,7 +94,7 @@ export default function NoticeDetailScreen() {
               </div>
               <div className="date">
                 <CalendarDotsIcon size="18" weight="bold" />
-                <Skeleton className="rounded-lg" isLoaded={infoState.isInitialized}>{useDateTimeFormat(infoState.item?.createAt?.toDate() ?? new Date())}</Skeleton>
+                <Skeleton className="rounded-lg" isLoaded={infoState.isInitialized}>{dateTimeFormat(infoState.item?.createAt?.toDate() ?? new Date())}</Skeleton>
               </div>
             </div>
           </SummaryCard>

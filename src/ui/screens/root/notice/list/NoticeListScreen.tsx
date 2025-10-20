@@ -7,12 +7,12 @@ import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useEffect, useRef} from "react";
 import type {Notice} from "../../../../../data/notice/Notice.tsx";
 import {useNoticeListViewModel} from "./NoticeListViewModel.ts";
-import {useDateTimeFormat} from "../../../../utils/utils/DateTimeFormat.ts";
 import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router";
 import {NoticeDestination} from "../NoticeDestination.ts";
 import {CSSTransition} from "react-transition-group";
 import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
+import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
 
 export default function NoticeListScreen() {
   const { infoStateList, startListening, stopListening } = useNoticeListViewModel();
@@ -21,9 +21,13 @@ export default function NoticeListScreen() {
 
   useEffect(() => {
     startListening();
-
     return () => stopListening();
   }, [startListening, stopListening]);
+
+  useEffect(() => {
+    document.body.style.overflow = infoStateList.isInitialized ? "unset" : "hidden";
+    return () => { document.body.style.overflow = "unset" };
+  }, [infoStateList, infoStateList.isInitialized]); // isShimmering 상태가 바뀔 때마다 실행
 
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
@@ -33,8 +37,7 @@ export default function NoticeListScreen() {
 
   return (
     <DefaultLayout>
-      <CommonWrapper
-      >
+      <CommonWrapper>
         <div className="header">
           <BellRingingIcon size={48} weight="bold" />
           <div>{t("strings:noticeboard")}</div>
@@ -183,6 +186,10 @@ const NoticeCellWrapper = styled(Card)`
 
   &:hover {
     transform: translateY(-4px);
+
+    &.shimmer {
+      transform: initial;
+    }
   }
 
   //&[data-pressed="true"] {
@@ -192,6 +199,7 @@ const NoticeCellWrapper = styled(Card)`
 
 const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) => {
   const { t } = useTranslation();
+  const { dateTimeFormat } = useDateTimeFormatters();
   return (
     <NoticeCellWrapper
       isPressable
@@ -208,12 +216,12 @@ const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) =>
               </Chip>
               : <></>
           }
-          <Chip radius="sm">{item.category?.label}</Chip>
+          <Chip radius="sm">{item.category?.labelKor}</Chip>
         </div>
         <h3 className="title">{item.title}</h3>
         <div className="date">
           <CalendarDotsIcon size="18" weight="bold" />
-          {useDateTimeFormat(item.createAt?.toDate())}
+          {dateTimeFormat(item.createAt?.toDate())}
         </div>
       </div>
       <div className="end-content">
@@ -235,19 +243,17 @@ const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) =>
 }
 
 const NoticeCellShimmer = ({ index }: { index: number }) => {
-  const { t } = useTranslation();
   return (
-    <NoticeCellWrapper>
+    <NoticeCellWrapper className="shimmer" disableRipple>
       <div className="content">
         <div className="category">
           {
             index % 2 === 0 ?
               <Skeleton
-                // isLoaded
                 className="rounded-lg"
               >
                 <Chip radius="sm" color="danger" startContent={<PushPinIcon size={18} weight="fill" />} variant="flat">
-                  {t("strings:fixed")}
+                  {PlaceholderValue.chipCategory}
                 </Chip>
               </Skeleton>
               : <></>
@@ -258,7 +264,7 @@ const NoticeCellShimmer = ({ index }: { index: number }) => {
         <div className="date">
           <CalendarDotsIcon size="18" weight="bold" />
           <Skeleton className="date rounded-lg">
-            {PlaceholderValue.divDate}
+            {PlaceholderValue.divDateTime}
           </Skeleton>
         </div>
       </div>

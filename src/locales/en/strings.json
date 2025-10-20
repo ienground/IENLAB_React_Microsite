@@ -26,6 +26,7 @@
   "noticeboard": "Noticeboard",
   "period": "Period",
   "price": "Price",
+  "primary_project": "Primary",
   "project": {
     "title": "Project"
   },
@@ -35,5 +36,7 @@
   "screenshots": "Screenshots",
   "start_date": "Start Date",
   "state": "Status",
+  "state_done": "Finished",
+  "state_working": "Working",
   "tech_stacks": "Tech Stacks"
 }

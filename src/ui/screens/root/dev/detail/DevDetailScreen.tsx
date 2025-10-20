@@ -11,29 +11,49 @@ import {
   CardHeader,
   Chip,
   Divider,
-  Image,
-  Navbar,
+  Image, Link,
+  Navbar, Skeleton,
   Spacer
 } from "@heroui/react";
 import {
+  AppStoreLogoIcon,
   ArrowUUpLeftIcon, CalendarCheckIcon, CalendarDotsIcon, CheckCircleIcon,
-  FileTextIcon,
+  FileTextIcon, GithubLogoIcon,
   GooglePlayLogoIcon,
-  HourglassLowIcon,
+  HourglassLowIcon, LinkSimpleIcon,
   ReceiptIcon,
   UserCircleIcon
 } from "@phosphor-icons/react";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import useEmblaCarousel from "embla-carousel-react";
 import {useScrollMonitor} from "../../../../utils/utils/ScrollData.ts";
-import type {TopToolbarProps} from "../../../../utils/types";
+import {DevDetailInfoState, useDevDetailViewModel} from "./DevDetailViewModel.tsx";
+import {useParams} from "react-router";
+import {
+  DevProjectCategoryToString,
+  DevProjectStateToColor,
+  DevProjectStateToString
+} from "../../../../../data/project/DevProject.ts";
+import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
+import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
+import {CSSTransition} from "react-transition-group";
+import {getAppStoreLink, getGooglePlayLink} from "../../../../utils/utils/LinkHelper.ts";
+
+export interface TopToolbarProps {
+  infoState: DevDetailInfoState,
+  visible: boolean;
+  headerVisible: boolean;
+}
 
 export default function DevDetailScreen() {
+  const { infoState, startListening, stopListening, setItemId } = useDevDetailViewModel();
+  const { id } = useParams<{ id: string }>();
+
   const { t } = useTranslation();
   const { scrollY, scrollDirection } = useScrollMonitor();
   const toolbarThreshold = 100;
-  const [headerVisible, setHeaderVisible] = useState<boolean>(false);
+  const [headerVisible, setHeaderVisible] = useState<boolean>(true);
   const [summaryVisible, setSummaryVisible] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>("summary");
   const tabItems: BottomToolbarItem[] = [
@@ -45,6 +65,25 @@ export default function DevDetailScreen() {
   ];
 
   const [emblaRef] = useEmblaCarousel({ dragFree: true });
+  const { dateFormat } = useDateTimeFormatters();
+  const placeholderRef = useRef(null);
+  const dataRef = useRef(null);
+
+  useEffect(() => {
+    if (id) setItemId(id);
+    return () => setItemId(null);
+  }, [id, setItemId]);
+
+  useEffect(() => {
+    startListening();
+
+    return () => stopListening();
+  }, [startListening, stopListening]);
+
+  useEffect(() => {
+    document.body.style.overflow = infoState.isInitialized ? "unset" : "hidden";
+    return () => { document.body.style.overflow = "unset" };
+  }, [infoState, infoState.isInitialized]);
 
   // Summary 추적
   useEffect(() => {
@@ -52,7 +91,7 @@ export default function DevDetailScreen() {
     if (!anchor) return;
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          setSummaryVisible(entry.isIntersecting);
+          setSummaryVisible(!entry.isIntersecting);
         })
       },
       {
@@ -75,7 +114,8 @@ export default function DevDetailScreen() {
   return (
     <DefaultLayout toolbarOverlap toolbarVisible={headerVisible}>
       <Image
-        src="https://picsum.photos/1920/1080"
+        src={infoState.item?.thumbnail}
+        fallbackSrc="https://picsum.photos/150/150"
         className="img-background"
         classNames={{
           img: "object-cover",
@@ -92,7 +132,8 @@ export default function DevDetailScreen() {
           <SummaryCard className="anchor" id="summary">
             <div className="container">
               <Image
-                src="https://picsum.photos/1000/1000"
+                src={infoState.item?.logo}
+                fallbackSrc="https://picsum.photos/150/150"
                 className="app-icon"
                 style={{
                   width: "8rem",
@@ -100,120 +141,233 @@ export default function DevDetailScreen() {
                 }}
               />
               <div className="category">
-                <Chip radius="sm">웹 개발</Chip>
+                {
+                  infoState.isInitialized ? <>
+                    {
+                      infoState.item?.categories?.map((item) => (
+                        <Chip radius="sm">{DevProjectCategoryToString(t, item)} </Chip>
+                      )) ?? <></>
+                    }
+                  </> : <Skeleton className="rounded-lg">{PlaceholderValue.chipCategory}</Skeleton>
+                }
               </div>
               <div className="title">
-                <h1>캘람</h1>
+                <Skeleton
+                  as="h1"
+                  className="rounded-lg"
+                  isLoaded={infoState.isInitialized}
+                >
+                  <h1>{infoState.item?.title}</h1>
+                </Skeleton>
                 <Spacer style={{ flexGrow: 1 }} />
-                <div className="buttons">
-                  <Button size="lg" isIconOnly color="primary">
-                    <GooglePlayLogoIcon size="24" weight="bold" />
-                  </Button>
-                  <Button size="lg" isIconOnly color="primary">
-                    <GooglePlayLogoIcon size="24" weight="bold" />
-                  </Button>
-                  <Button size="lg" isIconOnly color="primary">
-                    <GooglePlayLogoIcon size="24" weight="bold" />
-                  </Button>
-                  <Button size="lg" isIconOnly color="primary">
-                    <GooglePlayLogoIcon size="24" weight="bold" />
-                  </Button>
-                </div>
+                <Skeleton
+                  className="rounded-lg"
+                  isLoaded={infoState.isInitialized}
+                >
+                  {
+                    infoState.isInitialized ?
+                      <div className="buttons">
+                        {
+                          infoState.item?.googlePlay && infoState.item?.googlePlay !== "" ?
+                            <Button
+                              size="lg"
+                              isIconOnly
+                              color="primary"
+                              as={Link}
+                              href={getGooglePlayLink(infoState.item?.googlePlay)}
+                            >
+                              <GooglePlayLogoIcon size="24" weight="bold" />
+                            </Button> : <></>
+                        }
+                        {
+                          infoState.item?.appStore && infoState.item?.appStore !== "" ?
+                            <Button
+                              size="lg"
+                              isIconOnly
+                              color="primary"
+                              as={Link}
+                              href={getAppStoreLink(infoState.item?.appStore)}
+                            >
+                              <AppStoreLogoIcon size="24" weight="bold" />
+                            </Button> : <></>
+                        }
+                        {
+                          infoState.item?.github && infoState.item?.github !== "" ?
+                            <Button
+                              size="lg"
+                              isIconOnly
+                              color="primary"
+                              as={Link}
+                              href={infoState.item?.github}
+                            >
+                              <GithubLogoIcon size="24" weight="bold" />
+                            </Button> : <></>
+                        }
+                        {
+                          infoState.item?.link && infoState.item?.link !== "" ?
+                            <Button
+                              size="lg"
+                              isIconOnly
+                              color="primary"
+                              as={Link}
+                              href={infoState.item?.link}
+                            >
+                              <LinkSimpleIcon size="24" weight="bold" />
+                            </Button> : <></>
+                        }
+                      </div>
+                      : <div className="buttons">
+                        <Button size="lg" isIconOnly color="primary" />
+                        <Button size="lg" isIconOnly color="primary" />
+                        <Button size="lg" isIconOnly color="primary" />
+                        <Button size="lg" isIconOnly color="primary" />
+                      </div>
+                  }
+
+                </Skeleton>
               </div>
-              <div className="property">
-                <div className="item state">
-                  <CheckCircleIcon size={24} weight="bold" />
-                  <div className="container">
-                    <div className="title">{t("strings:state")}</div>
-                    <div className="content">완료</div>
-                  </div>
-                </div>
-                <div className="item start-date">
-                  <CalendarDotsIcon size={24} weight="bold" />
-                  <div className="container">
-                    <div className="title">{t("strings:start_date")}</div>
-                    <div className="content">완료</div>
-                  </div>
-                </div>
-                <div className="item end-date">
-                  <CalendarCheckIcon size={24} weight="bold" />
-                  <div className="container">
-                    <div className="title">{t("strings:end_date")}</div>
-                    <div className="content">완료</div>
-                  </div>
-                </div>
-                <div className="item developer-info">
-                  <UserCircleIcon size={24} weight="bold" />
-                  <div className="container">
-                    <div className="title">{t("strings:developer")}</div>
-                    <div className="content">완료</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </SummaryCard>
-          <div className="data">
-            <Divider />
-            <div className="content">
-              <Card className="content-card anchor" id="overview">
-                <CardHeader className="header">
-                  <FileTextIcon size={24} weight="bold" />
-                  <div>{t("strings:estimate.overview")}</div>
-                </CardHeader>
-                <CardFooter className="footer">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis incidunt itaque non. Aliquid aperiam consectetur corporis doloremque ducimus eius enim eum excepturi, id incidunt itaque iure odio placeat provident quia soluta sunt tempora unde voluptate voluptates! Aliquam deleniti, dolore est illum ipsam, minus, necessitatibus non optio placeat possimus velit veritatis. Ab accusantium animi aut commodi consequuntur cumque deserunt dolor dolorem doloremque dolores eaque error exercitationem id laborum libero maxime, minus, modi nam nobis porro provident quasi quisquam quos voluptas voluptates. Assumenda at atque blanditiis commodi, corporis excepturi harum iusto laudantium obcaecati officia, pariatur praesentium provident qui quis quo ratione sint?
-                </CardFooter>
-              </Card>
-              <Card className="content-card anchor" id="screenshots">
-                <CardHeader className="header">
-                  <FileTextIcon size={24} weight="bold" />
-                  <div>{t("strings:screenshots")}</div>
-                </CardHeader>
-                <CardFooter className="footer slide">
-                  <div className="slide" ref={emblaRef}>
+              <Skeleton
+                className="rounded-lg"
+                isLoaded={infoState.isInitialized}
+              >
+                <div className="property">
+                  <div className="item state">
+                    <CheckCircleIcon
+                      size={24} weight="bold"
+                      style={{
+                        transition: "color 0.3s ease-in-out"
+                      }}
+                      color={DevProjectStateToColor(infoState.item?.state)}
+                    />
                     <div className="container">
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
-                      <Image radius="sm" className="slide-item" src="https://picsum.photos/1080/1920" />
+                      <div className="title">{t("strings:state")}</div>
+                      <div className="content">{DevProjectStateToString(t, infoState.item?.state)}</div>
                     </div>
                   </div>
-                </CardFooter>
-              </Card>
-              <Card className="content-card anchor" id="functions">
-                <CardHeader className="header">
-                  <FileTextIcon size={24} weight="bold" />
-                  <div>{t("strings:functions")}</div>
-                </CardHeader>
-                <CardFooter className="footer">
-                  <Alert
-                    hideIconWrapper
-                    radius="sm"
-                    icon={<CheckCircleIcon size={24} weight="bold" /> }
-                    color="success"
-                    title={"Title"}
-                    key={"0"}
-                  />
-                </CardFooter>
-              </Card>
-              <Card className="content-card anchor" id="techs">
-                <CardHeader className="header">
-                  <FileTextIcon size={24} weight="bold" />
-                  <div>{t("strings:tech_stacks")}</div>
-                </CardHeader>
-                <CardFooter className="footer techs">
-                  <Chip radius="sm">React</Chip>
-                </CardFooter>
-              </Card>
-              <Spacer style={{ height: "50vh" }} />
+                  <div className="item start-date">
+                    <CalendarDotsIcon size={24} weight="bold" />
+                    <div className="container">
+                      <div className="title">{t("strings:start_date")}</div>
+                      <div className="content">{dateFormat(infoState.item?.startAt?.toDate() ?? new Date())}</div>
+                    </div>
+                  </div>
+                  {
+                    infoState.item?.endAt ?
+                      <div className="item end-date">
+                        <CalendarCheckIcon size={24} weight="bold" />
+                        <div className="container">
+                          <div className="title">{t("strings:end_date")}</div>
+                          <div className="content">{dateFormat(infoState.item?.endAt?.toDate() ?? new Date())}</div>
+                        </div>
+                      </div> : <></>
+                  }
+                  <div className="item developer-info">
+                    <UserCircleIcon size={24} weight="bold" />
+                    <div className="container">
+                      <div className="title">{t("strings:developer")}</div>
+                      <div className="content">{infoState.item?.developer}</div>
+                    </div>
+                  </div>
+                </div>
+              </Skeleton>
             </div>
+          </SummaryCard>
+
+          <div className="box">
+            <CSSTransition
+              in={!infoState.isInitialized}
+              timeout={300}
+              classNames="fade"
+              nodeRef={placeholderRef}
+              unmountOnExit
+              appear
+            >
+              <div ref={placeholderRef}>
+
+              </div>
+            </CSSTransition>
+            <CSSTransition
+              in={infoState.isInitialized}
+              timeout={300}
+              classNames="fade"
+              nodeRef={dataRef}
+              mountOnEnter
+              appear
+            >
+              <div
+                className="data"
+                ref={dataRef}
+              >
+                <Divider />
+                <div className="content">
+                  <Card className="content-card anchor" id="overview">
+                    <CardHeader className="header">
+                      <FileTextIcon size={24} weight="bold" />
+                      <div>{t("strings:estimate.overview")}</div>
+                    </CardHeader>
+                    <CardFooter className="footer">
+                      {infoState.item?.summary}
+                    </CardFooter>
+                  </Card>
+                  <Card className="content-card anchor" id="screenshots">
+                    <CardHeader className="header">
+                      <FileTextIcon size={24} weight="bold" />
+                      <div>{t("strings:screenshots")}</div>
+                    </CardHeader>
+                    <CardFooter className="footer slide">
+                      <div className="slide" ref={emblaRef}>
+                        <div className="container">
+                          {
+                            infoState.item?.imageUrls?.map((url) => (
+                              <Image radius="sm" className="slide-item" src={url} />
+                            ))
+                          }
+                        </div>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                  <Card className="content-card anchor" id="functions">
+                    <CardHeader className="header">
+                      <FileTextIcon size={24} weight="bold" />
+                      <div>{t("strings:functions")}</div>
+                    </CardHeader>
+                    <CardFooter className="footer">
+                      {
+                        infoState.item?.functions?.map((item, index) => (
+                          <Alert
+                            hideIconWrapper
+                            radius="sm"
+                            icon={<CheckCircleIcon size={24} weight="bold" /> }
+                            color="success"
+                            title={item}
+                            key={index}
+                          />
+                        ))
+                      }
+                    </CardFooter>
+                  </Card>
+                  <Card className="content-card anchor" id="techs">
+                    <CardHeader className="header">
+                      <FileTextIcon size={24} weight="bold" />
+                      <div>{t("strings:tech_stacks")}</div>
+                    </CardHeader>
+                    <CardFooter className="footer techs">
+                      {
+                        infoState.item?.techs?.map((item, index) => (
+                          <Chip radius="sm" key={index}>{item}</Chip>
+                        ))
+                      }
+                    </CardFooter>
+                  </Card>
+                  <Spacer style={{ height: "50vh" }} />
+                </div>
+              </div>
+            </CSSTransition>
           </div>
         </ContentWrapper>
         <TopToolBar
-          visible={!summaryVisible}
+          infoState={infoState}
+          visible={summaryVisible}
           headerVisible={headerVisible}
         />
         <BottomToolbar
@@ -305,7 +459,7 @@ const ContentWrapper = styled.div`
     }
   }
 
-  & > .data {
+  .data {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -320,6 +474,24 @@ const ContentWrapper = styled.div`
       flex-direction: column;
       gap: 1rem;
     }
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+  /* 요소가 나타나는 동안의 상태 (애니메이션 적용) */
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  /* 요소가 사라질 때의 최종 상태 */
+  .fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .fade-exit-done {
+    opacity: 0;
   }
 `;
 
@@ -337,6 +509,10 @@ const SummaryCard = styled.div`
     & > .category {
       margin-top: 0.5rem;
       
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      
     }
     
     & > .title {
@@ -349,7 +525,7 @@ const SummaryCard = styled.div`
         font-weight: bold;
       }
       
-      & > .buttons {
+      .buttons {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -357,7 +533,7 @@ const SummaryCard = styled.div`
       }
     }
     
-    & > .property {
+    .property {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
 
@@ -408,6 +584,12 @@ const TopToolBarWrapper = styled(Navbar)`
       font-size: x-large;
       font-weight: bold;
     }
+    
+    & > .buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
   }
   
   &.visible {
@@ -424,16 +606,62 @@ const TopToolBar = (props: TopToolbarProps) => (
     className={(props.visible ? "visible " : "") + (props.headerVisible ? "header-visible " : "")}
   >
     <Image
-      src="https://picsum.photos/200/200"
+      src={props.infoState.item?.logo}
+      fallbackSrc={"https://picsum.photos/400/400"}
       style={{ width: "3rem", height: "3rem" }}
       radius="sm"
     />
-    <h3>캘람</h3>
+    <h3>{props.infoState.item?.title}</h3>
     <Spacer style={{ flexGrow: 1 }} />
     <div className="buttons">
-      <Button size="sm" isIconOnly color="primary">
-        <GooglePlayLogoIcon size="18" weight="bold" />
-      </Button>
+      {
+        props.infoState.item?.googlePlay && props.infoState.item?.googlePlay !== "" ?
+          <Button
+            size="sm"
+            isIconOnly
+            color="primary"
+            as={Link}
+            href={getGooglePlayLink(props.infoState.item?.googlePlay)}
+          >
+            <GooglePlayLogoIcon size="18" weight="bold" />
+          </Button> : <></>
+      }
+      {
+        props.infoState.item?.appStore && props.infoState.item?.appStore !== "" ?
+          <Button
+            size="sm"
+            isIconOnly
+            color="primary"
+            as={Link}
+            href={getAppStoreLink(props.infoState.item?.appStore)}
+          >
+            <AppStoreLogoIcon size="18" weight="bold" />
+          </Button> : <></>
+      }
+      {
+        props.infoState.item?.github && props.infoState.item?.github !== "" ?
+          <Button
+            size="sm"
+            isIconOnly
+            color="primary"
+            as={Link}
+            href={props.infoState.item?.github}
+          >
+            <GithubLogoIcon size="18" weight="bold" />
+          </Button> : <></>
+      }
+      {
+        props.infoState.item?.link && props.infoState.item?.link !== "" ?
+          <Button
+            size="sm"
+            isIconOnly
+            color="primary"
+            as={Link}
+            href={props.infoState.item?.link}
+          >
+            <LinkSimpleIcon size="18" weight="bold" />
+          </Button> : <></>
+      }
     </div>
   </TopToolBarWrapper>
 );

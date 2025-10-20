@@ -3,6 +3,7 @@ export const FirestorePath = {
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
+  DEV_PROJECT: "devProject",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
@@ -36,8 +37,30 @@ export const FirestorePath = {
     IMAGE_URLS: "imageUrls", // string[\,
     FIXED: "fixed", // boolean
 
-   Category: {
-      LABEL: "label", // string
-   }
+    Category: {
+      LABEL_KOR: "labelKor", // string
+      LABEL_ENG: "labelEng", // String
+    }
+  },
+
+  DevProject: {
+    CATEGORIES: "categories",
+    IS_PRIMARY: "isPrimary",
+    THUMBNAIL: "thumbnail",
+    LOGO: "logo",
+    TITLE: "title",
+    SUMMARY: "summary",
+    STATE: "state",
+    START_AT: "startAt",
+    END_AT: "endAt",
+    DEVELOPER: "developer",
+    GITHUB: "github",
+    LINK: "link",
+    GOOGLE_PLAY: "googlePlay",
+    APP_STORE: "appStore",
+    IMAGE_URLS: "imageUrls",
+    FUNCTIONS: "functions",
+    TECHS: "techs",
+    PLATFORM: "platform",
   }
 };
