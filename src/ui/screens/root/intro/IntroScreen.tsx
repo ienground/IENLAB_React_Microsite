@@ -1,7 +1,6 @@
 import DefaultLayout from "../../../utils/layout/DefaultLayout.tsx";
 import styled from "styled-components";
 import {useElementRefs, useVisibleAnimation} from "../../../utils/utils.ts";
-import {CommonWrapper} from "../../../utils/layout/CommonWrapper.tsx";
 import {
   Card,
   CardBody,
@@ -17,115 +16,167 @@ import {
 import ImgIengroundProfileBg from "../../../../assets/image/img_ienground_sihyunhada.jpg";
 import IcSogangUniv from "../../../../assets/icon/ic_sogang_univ.svg";
 import LogoColorTransparent from "../../../../assets/image/logo_color_transparent.png";
-import {BooksIcon, GraduationCapIcon, ReceiptIcon, ScrollIcon} from "@phosphor-icons/react";
-import {useEffect, useRef} from "react";
+import {BooksIcon, GraduationCapIcon, ScrollIcon} from "@phosphor-icons/react";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {useTranslation} from "react-i18next";
+import {useIntroViewModel} from "./IntroViewModel.ts";
+import {useEffect, useRef} from "react";
+import {DevProjectCell, DevProjectCellShimmer} from "../dev/list/DevListScreen.tsx";
+import {CommonWrapper} from "../../../utils/layout/CommonWrapper.tsx";
+import {useNavigate} from "react-router";
+import {DevDestination} from "../dev/DevDestination.ts";
+import {CSSTransition} from "react-transition-group";
 
 export default function IntroScreen() {
   gsap.registerPlugin(ScrollTrigger)
 
+  const { infoStateList, startListening, stopListening } = useIntroViewModel();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
+
+  useEffect(() => {
+    startListening();
+    return () => stopListening();
+  }, [startListening, stopListening]);
+
+  useEffect(() => {
+    document.body.style.overflow = infoStateList.isInitialized ? "unset" : "hidden";
+    return () => { document.body.style.overflow = "unset" };
+  }, [infoStateList, infoStateList.isInitialized]);
 
   const historyData = [
     {
       type: "team",
       date: "2016 - 2017",
-      title: "개발팀 Qwerty",
-      content: "UX, UI 디자이너"
+      titleKor: "개발팀 Qwerty",
+      titleEng: "Team Qwerty",
+      contentKor: "UI/UX 디자이너",
+      contentEng: "UI/UX Designer"
     },
     {
       type: "my_app",
       date: "2019",
-      title: "감성에디터",
-      content: "10K+ 다운로드 돌파"
+      titleKor: "감성에디터",
+      titleEng: "Emoditor",
+      contentKor: "10K+ 다운로드 돌파",
+      contentEng: "Exceeded 10K+ Downloads"
     },
     {
       type: "my_app",
       date: "2019",
-      title: "블로그 플래너",
-      content: "5K+ 다운로드 돌파"
+      titleKor: "블로그 플래너",
+      titleEng: "Blog Planner",
+      contentKor: "5K+ 다운로드 돌파",
+      contentEng: "Exceeded 5K+ Downloads"
     },
     {
       type: "team",
       date: "2020",
-      title: "아트&테크놀로지 컨퍼런스 2020",
-      content: "브랜딩팀 팀원"
+      titleKor: "아트&테크놀로지 컨퍼런스 2020",
+      titleEng: "Art&Technology Conference 2020",
+      contentKor: "브랜딩팀 팀원",
+      contentEng: "Branding Team Member"
     },
     {
       type: "my_app",
       date: "2021",
-      title: "알바트로스 리마인더",
-      content: "교내 언론 인터뷰"
+      titleKor: "알바트로스 리마인더",
+      titleEng: "Albatross Reminder",
+      contentKor: "교내 언론 인터뷰",
+      contentEng: "Interviewed by Campus Press"
     },
     {
-      type: "my_app",
+      type: "team",
       date: "2024",
-      title: "아트&테크놀로지 컨퍼런스 2024",
-      content: "디자인팀 팀장"
+      titleKor: "아트&테크놀로지 컨퍼런스 2024",
+      titleEng: "Art&Technology Conference 2024",
+      contentKor: "디자인팀 팀장",
+      contentEng: "Design Team Leader"
     },
     {
       type: "team",
       date: "2024 - 2025",
-      title: "@OMO_unofficial",
-      content: "학과 미디어오피스 시스템 개발"
+      titleKor: "@OMO_unofficial",
+      titleEng: "@OMO_unofficial",
+      contentKor: "학과 미디어오피스 시스템 개발",
+      contentEng: "School Media Office System Development"
     },
   ];
   const univData = [
     {
       type: "comm",
       date: "2020",
-      title: "제1대 지식융합미디어학부 학생회 「Zoom-人」",
-      content: "디자인팀 팀원"
+      titleKor: "제1대 지식융합미디어학부 학생회 「Zoom-人」",
+      titleEng: "The 1st Student Council of the School of Media, Arts and Science  「Zoom-人」",
+      contentKor: "디자인팀 팀원",
+      contentEng: "Design Team Member"
     },
     {
       type: "comm",
       date: "2020-2021",
-      title: "2021학년도 지식융합미디어학부 새내기맞이사업단",
-      content: "C섹션 단원"
+      titleKor: "2021학년도 지식융합미디어학부 새내기맞이사업단",
+      titleEng: "2021 School of Media, Arts and Science Freshman Orientation Committee ",
+      contentKor: "C섹션 단원",
+      contentEng: "C Section Member"
     },
     {
       type: "comm",
       date: "2021",
-      title: "제2대 아트&테크놀로지 전공학생회 「마젠타」",
-      content: "학생회장"
+      titleKor: "제2대 아트&테크놀로지 전공학생회 「마젠타」",
+      titleEng: "The 2nd Student Council of the Art&Technology 「MAGENTA」",
+      contentKor: "학생회장",
+      contentEng: "Student Council President"
     },
     {
       type: "class",
       date: "2021",
-      title: "Intro to Creative Computing",
-      content: "Final Best Work 선정"
+      titleKor: "Intro to Creative Computing",
+      titleEng: "Intro to Creative Computing",
+      contentKor: "Final Best Work 선정",
+      contentEng: "Selected as Final Best Work"
     },
     {
       type: "class",
       date: "2021",
-      title: "Creative Algorithm",
-      content: "Final Best Work 선정",
+      titleKor: "Creative Algorithm",
+      titleEng: "Creative Algorithm",
+      contentKor: "Final Best Work 선정",
+      contentEng: "Selected as Final Best Work"
     },
     {
       type: "compet",
       date: "2024",
-      title: "Small Creators Group 「@OMO_unofficial」",
-      content: "우수 팀 선정",
+      titleKor: "Small Creators Group 「@OMO_unofficial」",
+      titleEng: "Small Creators Group 「@OMO_unofficial」",
+      contentKor: "우수 팀 선정",
+      contentEng: "Selected as Outstanding Team"
     },
     {
       type: "class",
       date: "2024",
-      title: "Creative Capstone Project II",
-      content: "Best Work 선정",
+      titleKor: "Creative Capstone Project II",
+      titleEng: "Creative Capstone Project II",
+      contentKor: "Best Work 선정",
+      contentEng: "Selected as Best Work"
     },
     {
       type: "compet",
       date: "2024",
-      title: "2024-2학기 서강 융합기술 경진대회 「@OMO_unofficial」",
-      content: "최우수상"
+      titleKor: "2024-2학기 서강 융합기술 경진대회 「@OMO_unofficial」",
+      titleEng: "2024-2 Sogang Convergence Technology Competition 「@OMO_unofficial」",
+      contentKor: "최우수상",
+      contentEng: "Grand Prize"
     },
     {
       type: "grad",
       date: "2025",
-      title: "예술공학사",
-      content: "우등 (Cum Laude) 졸업"
+      titleKor: "예술공학사",
+      titleEng: "Bachelor of Arts and Science",
+      contentKor: "우등 (Cum Laude) 졸업",
+      contentEng: "Graduated with Cum Laude"
     }
   ];
 
@@ -134,8 +185,8 @@ export default function IntroScreen() {
     my_app: "secondary",
   };
   const historyTypeLabelMap: Record<string, string> = {
-    team: "팀 활동",
-    my_app: "개인 앱"
+    team: t("strings:history_type_team"),
+    my_app: t("strings:history_type_solo")
   };
   const schoolTypeColorMap: Record<string, "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined> = {
     comm: "primary",
@@ -144,157 +195,167 @@ export default function IntroScreen() {
     grad: "success",
   };
   const schoolTypeLabelMap: Record<string, string> = {
-    comm: "학생사회",
-    class: "학과수업",
-    compet: "대회",
-    grad: "학위"
+    comm: t("strings:school_type_comm"),
+    class: t("strings:school_type_class"),
+    compet: t("strings:school_type_compet"),
+    grad: t("strings:school_type_grad")
   };
 
   return (
     <DefaultLayout>
-      <Wrapper className="content-wrapper">
-        <div className="introduce visible-animation" ref={addToVisibleAnimationRefs}>
-          <div className="left-side">
-            <Image
-              src={ImgIengroundProfileBg}
-              isBlurred
-              style={{
-                marginTop: "2rem",
-              }}
-            />
-          </div>
-          <div className="right-side">
-            <div className="name">
-              <div id="name">이현우</div>
-              <div id="nickname">아이엔 IENGROUND</div>
-            </div>
-            <Spacer
-              style={{
-                height: "4rem"
-              }}
-            />
-            <div className="summary">
-              개발과<br/>디자인을 하는<br/>모바일 크리에이터.
-            </div>
-            <Spacer
-              style={{
-                height: "2rem"
-              }}
-            />
-            <Image
-              src={LogoColorTransparent}
-              className="logo"
-              style={{
-                width: "2rem",
-                height: "2rem"
-              }}
-            />
-          </div>
-        </div>
-        <div className="history detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
-          <div className="header">
-            <ScrollIcon size={48} weight="fill" />
-            주요 경력
-          </div>
-          <Table>
-            <TableHeader>
-              <TableColumn>분류</TableColumn>
-              <TableColumn>기간</TableColumn>
-              <TableColumn>항목</TableColumn>
-              <TableColumn>설명</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {
-                historyData.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Chip
-                        radius="sm"
-                        size="sm"
-                        color={historyTypeColorMap[item.type]}
-                        variant="flat"
-                      >{historyTypeLabelMap[item.type]}</Chip>
-                    </TableCell>
-                    <TableCell>{item.date}</TableCell>
-                    <TableCell>{item.title}</TableCell>
-                    <TableCell>{item.content}</TableCell>
-                  </TableRow>
-                ))
-              }
-            </TableBody>
-          </Table>
-        </div>
-        <div className="project detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
-          <div className="header">
-            <BooksIcon size={48} weight="fill" />
-            주요 프로젝트
-          </div>
-        </div>
-        <div className="school detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
-          <div className="header">
-            <GraduationCapIcon size={48} weight="fill" />
-            학력
-          </div>
-          <div className="content">
-            <div className="title">
+      <CommonWrapper>
+        <Wrapper className="content-wrapper">
+          <div className="introduce visible-animation" ref={addToVisibleAnimationRefs}>
+            <div className="left-side">
               <Image
-                src={IcSogangUniv}
+                src={ImgIengroundProfileBg}
+                isBlurred
                 style={{
-                  width: "3rem",
-                  height: "3rem"
+                  marginTop: "2rem",
                 }}
               />
-              <div>
-                서강대학교
-                <div className="chips">
-                  <Chip
-                    radius="sm"
-                    size="sm"
-                    color="primary"
-                    variant="flat"
-                  >
-                    아트&테크놀로지학과
-                  </Chip>
-                  <Chip
-                    radius="sm"
-                    size="sm"
-                    variant="flat"
-                  >
-                    2020.3 - 2025.2 (7학기)
-                  </Chip>
-                </div>
+            </div>
+            <div className="right-side">
+              <div className="name">
+                <div id="name">{t("strings:my_name")}</div>
+                <div id="nickname">아이엔 IENGROUND</div>
               </div>
+              <Spacer
+                style={{
+                  height: "4rem"
+                }}
+              />
+              <div className="summary">
+                개발과<br/>디자인을 하는<br/>모바일 크리에이터.
+              </div>
+              <Spacer
+                style={{
+                  height: "2rem"
+                }}
+              />
+              <Image
+                src={LogoColorTransparent}
+                className="logo"
+                style={{
+                  width: "2rem",
+                  height: "2rem"
+                }}
+              />
+            </div>
+          </div>
+          <div className="history detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
+            <div className="header">
+              <ScrollIcon size={48} weight="fill" />
+              {t("strings:key_experience")}
             </div>
             <Table>
               <TableHeader>
-                <TableColumn>분류</TableColumn>
-                <TableColumn>기간</TableColumn>
-                <TableColumn>항목</TableColumn>
-                <TableColumn>설명</TableColumn>
+                <TableColumn>{t("strings:category")}</TableColumn>
+                <TableColumn>{t("strings:period")}</TableColumn>
+                <TableColumn>{t("strings:content")}</TableColumn>
+                <TableColumn>{t("strings:description")}</TableColumn>
               </TableHeader>
               <TableBody>
                 {
-                  univData.map((item, index) => (
+                  historyData.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell>
                         <Chip
                           radius="sm"
                           size="sm"
-                          color={schoolTypeColorMap[item.type]}
+                          color={historyTypeColorMap[item.type]}
                           variant="flat"
-                        >{schoolTypeLabelMap[item.type]}</Chip>
+                        >{historyTypeLabelMap[item.type]}</Chip>
                       </TableCell>
                       <TableCell>{item.date}</TableCell>
-                      <TableCell>{item.title}</TableCell>
-                      <TableCell>{item.content}</TableCell>
+                      <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
+                      <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
                     </TableRow>
                   ))
                 }
               </TableBody>
             </Table>
           </div>
-        </div>
-      </Wrapper>
+          <div className="project detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
+            <div className="header">
+              <BooksIcon size={48} weight="fill" />
+              {t("strings:featured_projects")}
+            </div>
+            <div className="content">
+              {
+                infoStateList.itemList.map((item) => (
+                  <DevProjectCell item={item} onClick={() => navigate(`${DevDestination.route}/${item.id}`)} key={item.id} />
+                ))
+              }
+            </div>
+          </div>
+          <div className="school detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
+            <div className="header">
+              <GraduationCapIcon size={48} weight="fill" />
+              {t("strings:education")}
+            </div>
+            <div className="content">
+              <div className="title">
+                <Image
+                  src={IcSogangUniv}
+                  style={{
+                    width: "3rem",
+                    height: "3rem"
+                  }}
+                />
+                <div>
+                  {i18n.language === "ko" ? "서강대학교" : "Sogang University"}
+                  <div className="chips">
+                    <Chip
+                      radius="sm"
+                      size="sm"
+                      color="primary"
+                      variant="flat"
+                    >
+                      {i18n.language === "ko" ? "아트&테크놀로지학과" : "Art&Technology"}
+                    </Chip>
+                    <Chip
+                      radius="sm"
+                      size="sm"
+                      variant="flat"
+                    >
+                      {i18n.language === "ko" ? "2020.3 - 2025.2 (7학기)" : "Mar 2020 – Feb 2025 (7 Semesters)"}
+
+                    </Chip>
+                  </div>
+                </div>
+              </div>
+              <Table>
+                <TableHeader>
+                  <TableColumn>{t("strings:category")}</TableColumn>
+                  <TableColumn>{t("strings:period")}</TableColumn>
+                  <TableColumn>{t("strings:content")}</TableColumn>
+                  <TableColumn>{t("strings:description")}</TableColumn>
+                </TableHeader>
+                <TableBody>
+                  {
+                    univData.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Chip
+                            radius="sm"
+                            size="sm"
+                            color={schoolTypeColorMap[item.type]}
+                            variant="flat"
+                          >{schoolTypeLabelMap[item.type]}</Chip>
+                        </TableCell>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
+                        <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </Wrapper>
+      </CommonWrapper>
     </DefaultLayout>
   );
 }
@@ -390,6 +451,12 @@ const Wrapper = styled.div`
   }
   
   & > .project {
-    
+    & > .content {
+      width: 100%;
+      
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
   }
 `;

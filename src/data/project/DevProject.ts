@@ -1,6 +1,5 @@
 import {type DocumentSnapshot, type QueryDocumentSnapshot, serverTimestamp, type Timestamp} from "firebase/firestore";
 import type {PlatformType} from "../common/PlatformType.ts";
-import {useTranslation} from "react-i18next";
 import {snapshotToData} from "../../ui/utils/utils.ts";
 import {FirestorePath} from "../../constant/FirestorePath.ts";
 import type {TFunction} from "i18next";
@@ -43,16 +42,16 @@ export type DevProject = {
   platform: PlatformType[];
 }
 
-export function DevProjectCategoryToString(t: TFunction<"translation", undefined>, value: DevProjectCategory | undefined): string {
+export function DevProjectCategoryToString(t: TFunction, value: DevProjectCategory | undefined): string {
   switch (value) {
-    case devProjectCategory.MOBILE: return t("strings:dev_category.mobile");
-    case devProjectCategory.WEB: return t("strings:dev_category.web");
-    case devProjectCategory.CREATIVE_COMPUTING: return t("strings:dev_category.creative_computing");
+    case devProjectCategory.MOBILE: return t("strings:mobile");
+    case devProjectCategory.WEB: return t("strings:web");
+    case devProjectCategory.CREATIVE_COMPUTING: return t("strings:creative_computing");
     default: return "";
   }
 }
 
-export function DevProjectStateToString(t: TFunction<"translation", undefined>, value: DevProjectState | undefined): string {
+export function DevProjectStateToString(t: TFunction, value: DevProjectState | undefined): string {
   switch (value) {
     case devProjectState.WORKING: return t("strings:state_working");
     case devProjectState.DONE: return t("strings:state_done");

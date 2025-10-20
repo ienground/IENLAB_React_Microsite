@@ -17,19 +17,19 @@ export default function EstimateSearchScreen() {
       <CommonWrapper>
         <div className="header">
           <ReceiptIcon size={48} weight="bold" />
-          <div>{t('quote_inquiry')}</div>
+          <div>{t('strings:quote_inquiry')}</div>
         </div>
         <ContentWrapper>
           <Card className="input-card visible-animation" ref={addToVisibleAnimationRefs}>
             <CardHeader className="header">
               <PasswordIcon size={32} weight="fill" />
-              <div>견적 번호 입력</div>
+              <div>{t("strings:inquiry.input")}</div>
             </CardHeader>
             <CardBody className="body">
               <Input
                 radius="sm"
-                label="견적 번호"
-                placeholder="예: IL2024-001"
+                label={t("strings:inquiry.number")}
+                placeholder={`${t("strings:example_colon")}IL2024-001`}
                 endContent={
                   <Button isIconOnly variant="light">
                     <MagnifyingGlassIcon size="24" weight="bold" />
@@ -37,9 +37,9 @@ export default function EstimateSearchScreen() {
                 }
               />
               <ul className="description">
-                <li>견적 번호는 이메일로 전달받으신 문서에서 확인하실 수 있습니다.</li>
-                <li>견적 번호는 대소문자를 구분하지 않습니다.</li>
-                <li>문의사항이 있으시면 연락처로 문의해주세요.</li>
+                <li>{t("strings:inquiry.desc1")}</li>
+                <li>{t("strings:inquiry.desc2")}</li>
+                <li>{t("strings:inquiry.desc3")}</li>
               </ul>
             </CardBody>
           </Card>

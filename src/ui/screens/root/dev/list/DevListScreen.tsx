@@ -219,7 +219,7 @@ const DevProjectCellWrapper = styled(Card)`
   }
 `;
 
-const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: () => void }) => {
+export const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: () => void }) => {
   const { t } = useTranslation();
   const { dateFormat } = useDateTimeFormatters();
   return (
@@ -344,7 +344,7 @@ const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: () => vo
   )
 }
 
-const DevProjectCellShimmer = ({ index }: { index: number }) => {
+export const DevProjectCellShimmer = ({ index }: { index: number }) => {
   return (
     <DevProjectCellWrapper className="shimmer" disableRipple>
       <div className="header">

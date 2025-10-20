@@ -27,6 +27,7 @@ import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 import {DevDestination} from "../../screens/root/dev/DevDestination.ts";
+import {useTranslation} from "react-i18next";
 
 interface HeaderProps {
   visible?: boolean;
@@ -34,6 +35,7 @@ interface HeaderProps {
 }
 
 export const Header = (props: HeaderProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
   const delay = 300;
@@ -50,13 +52,6 @@ export const Header = (props: HeaderProps) => {
       }}
     >
       <NavbarContent justify="start" className="content start-items">
-        {/* 왼쪽에 들어갈 메뉴 아이템 */}
-        {/*<NavbarItem>*/}
-          {/*<Button isIconOnly aria-label="Like" variant="light" radius="full">*/}
-          {/*  <CaretDownIcon size={24} weight="bold" />*/}
-          {/*</Button>*/}
-        {/*</NavbarItem>*/}
-
         <NavbarItem>
           <Dropdown
             placement="bottom"
@@ -103,39 +98,39 @@ export const Header = (props: HeaderProps) => {
             >
               <DropdownItem
                 key="intro"
-                description="저는 무엇을 하는 사람일까요?"
+                description={t("strings:header.what_do_i_do")}
                 href={IntroDestination.route}
                 startContent={<UserSquareIcon weight="bold" size="24px" /> }
-              >@IENGROUND</DropdownItem>
+              >{t("strings:at_ienground")}</DropdownItem>
               <DropdownItem
                 key="notice"
-                description="새로운 소식을 살펴보세요."
+                description={t("strings:header.check_news")}
                 href={NoticeDestination.route}
                 startContent={<BellSimpleRingingIcon weight="bold" size="24px" /> }
-              >공지사항</DropdownItem>
+              >{t("strings:noticeboard")}</DropdownItem>
               <DropdownItem
                 key="privacy"
-                description="서비스 및 어플리케이션"
+                description={t("strings:header.service_app")}
                 href={PrivacyDestination.route}
                 startContent={<LockLaminatedIcon weight="bold" size="24px" /> }
                 color="warning"
-              >개인정보 처리방침</DropdownItem>
+              >{t("strings:privacy_policy")}</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href={DevDestination.route} >
-            프로젝트
+            {t("strings:project.title")}
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href={BrandDestination.route} >
-            디자인
+            {t("strings:design.title")}
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link color="foreground" href={EstimateDestination.route} >
-            견적 조회
+            {t("strings:quote_inquiry")}
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -204,7 +199,7 @@ export const Header = (props: HeaderProps) => {
             variant="solid"
             radius="sm"
           >
-            외주 문의
+            {t("strings:ask_outsource")}
           </Button>
         </NavbarItem>
       </NavbarContent>

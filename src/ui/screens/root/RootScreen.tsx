@@ -47,7 +47,7 @@ import {useTheme} from "@heroui/use-theme";
 import {getValueAsString, useVisibleAnimation, useDarkmode, useElementRefs} from "../../utils/utils.ts";
 import LiquidGlass from "@nkzw/liquid-glass";
 import {
-  type Estimate, type EstimateBudget,
+  type Estimate, estimateBudget, type EstimateBudget, EstimateBudgetToString,
   estimateState,
   EstimateToHashmap,
   type EstimateType
@@ -57,44 +57,29 @@ import {FirestorePath} from "../../../constant/FirestorePath.ts";
 import {fbFirestore} from "../../../constant/FirebaseConfig.ts";
 import {addDays, addYears} from "date-fns";
 import {FullPageWrapper} from "fullpage-nestedscroll-react";
-import type {PlatformType} from "../../../data/common/PlatformType.ts";
+import {platformType, type PlatformType, PlatformTypeToString} from "../../../data/common/PlatformType.ts";
+import {useTranslation} from "react-i18next";
 
 export default function RootScreen() {
+  const { t } = useTranslation();
   const viewModel = useRootViewModel();
   const pageCount = 3;
   const [activeIndex, setActiveIndex] = useState(0);
   const isDark = useDarkmode();
 
-  // const swiper = useSwiper();
-
-  // const swiper = new Swiper('.swiper-container', {
-  //   direction: 'vertical', // 스와이퍼 슬라이드 방향을 수직으로 설정합니다.
-  //   loop: true,
-  //   pagination: {
-  //     el: '.swiper-pagination',
-  //     clickable: true,
-  //     type: 'custom',
-  //
-  //   // 필요한 경우 네비게이션 버튼을 추가하세요.
-  //   navigation: {
-  //     nextEl: '.swiper-button-next',
-  //     prevEl: '.swiper-button-prev',
-  //   },
-  // });
-
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
 
   const services = [
-    "멀티플랫폼 앱 개발", "안드로이드 앱 개발", "iOS 앱 개발", "UI/UX 구현", "관리자 페이지 개발",
+    t("strings:project.type_multiplatform"), t("strings:project.type_android"), t("strings:project.type_ios"), t("strings:project.type_uiux"), t("strings:project.type_admin")
   ];
   const projectTypes = [
-    { key: "community", icon: <UsersFourIcon size={32} weight="bold" />, label: "커뮤니티 앱 개발" },
-    { key: "utility", icon: <ToolboxIcon size={32} weight="bold" />, label: "유틸리티 개발" },
-    { key: "ai", icon: <RobotIcon size={32} weight="bold" />, label: "AI 앱 개발" },
-    { key: "service", icon: <CompassIcon size={32} weight="bold" />, label: "서비스 앱 개발" },
-    { key: "incompany", icon: <BuildingOfficeIcon size={32} weight="bold" />, label: "사내 서비스 앱 개발" },
-    { key: "bluetooth", icon: <BluetoothIcon size={32} weight="bold" />, label: "블루투스 통신 앱 개발" },
+    { key: "community", icon: <UsersFourIcon size={32} weight="bold" />, label: t("strings:project.type_community") },
+    { key: "utility", icon: <ToolboxIcon size={32} weight="bold" />, label: t("strings:project.type_utility") },
+    { key: "ai", icon: <RobotIcon size={32} weight="bold" />, label: t("strings:project.type_ai") },
+    { key: "service", icon: <CompassIcon size={32} weight="bold" />, label: t("strings:project.type_service") },
+    { key: "incompany", icon: <BuildingOfficeIcon size={32} weight="bold" />, label: t("strings:project.type_inhouse") },
+    { key: "bluetooth", icon: <BluetoothIcon size={32} weight="bold" />, label: t("strings:project.type_bt") }
   ];
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -121,6 +106,8 @@ export default function RootScreen() {
       id: "",
       createAt: Timestamp.now(),
       updateAt: Timestamp.now(),
+      delete: false,
+      identifier: "Hello",
       expireAt: Timestamp.fromDate(addYears(new Date(), 1)),
       name: getValueAsString(data["name"]), 
       company: getValueAsString(data["company"]),
@@ -141,8 +128,8 @@ export default function RootScreen() {
     await viewModel.uploadEstimate(item);
 
     addToast({
-      title: "문의 전송 완료",
-      description: "프로젝트 문의가 전송되었습니다!",
+      title: t("strings:root.inquiry_submitted"),
+      description: t("strings:root.inquiry_submitted_desc"),
       color: "success"
     });
   };
@@ -182,8 +169,8 @@ export default function RootScreen() {
                         아이엔입니다
                       </div>
                       <div className="description">
-                        두루뭉술한 아이디어를 현실로 만들어드립니다.<br />
-                        UI/UX부터 개발, 어플리케이션 퍼블리싱까지 맡겨주세요!
+                        {t("strings:root.intro_desc1")}<br />
+                        {t("strings:root.intro_desc2")}
                       </div>
                       <div className="buttons">
                         <Button
@@ -191,7 +178,7 @@ export default function RootScreen() {
                           onPress={() => setActiveIndex(3)}
                           variant="solid"
                         >
-                          프로젝트 문의
+                          {t("strings:root.ask_project")}
                         </Button>
                         <Button
                         as={Link}
@@ -199,7 +186,7 @@ export default function RootScreen() {
                         href="https://github.com/heroui-inc/heroui"
                         variant="faded"
                       >
-                        포트폴리오 보기
+                          {t("strings:root.check_portfolio")}
                       </Button>
                     </div>
                   </div>
@@ -232,7 +219,7 @@ export default function RootScreen() {
               <div className="content-wrapper">
                 <div className="content">
                   <div className="message width-max">
-                    <div className="title">당신의 성공에 제 기술력을 더합니다.</div>
+                    <div className="title">{t("strings:root.page1_title")}</div>
                     <div
                       className="description history"
                     >
@@ -247,8 +234,7 @@ export default function RootScreen() {
                           />
                         </HistoryCard>
                         <div className="description">
-                          9년 차 안드로이드 개발자<br />
-                          간단한 유틸리티부터 커뮤니티, 복잡한 네이티브 기능까지
+                          {t("strings:root.page1_desc1")}
                         </div>
                       </div>
                       <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>
@@ -262,8 +248,7 @@ export default function RootScreen() {
                           />
                         </HistoryCard>
                         <div className="description">
-                          UI·UX 디자인이 없어도 가능한 서비스 의뢰<br />
-                          당신과 함께 만들어가는 어플리케이션 디자인
+                          {t("strings:root.page1_desc2")}
                         </div>
                       </div>
                       <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>
@@ -277,8 +262,7 @@ export default function RootScreen() {
                           />
                         </HistoryCard>
                         <div className="description">
-                          끊임 없는 새로운 기술 도입으로<br />
-                          뒤쳐지지 않는 당신의 서비스
+                          {t("strings:root.page1_desc3")}
                         </div>
                       </div>
                     </div>
@@ -292,7 +276,7 @@ export default function RootScreen() {
               <div className="content-wrapper">
                 <div className="content">
                   <div className="message width-max">
-                    <div className="title">기술 스택 및 서비스</div>
+                    <div className="title">{t("strings:root.page2_title")}</div>
                     <div className="description tech">
                       <div className="tech-stack">
                         <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>
@@ -302,29 +286,29 @@ export default function RootScreen() {
                           </div>
                           <TechCard>
                             <CardHeader className="header">
-                              <h1>모바일</h1>
+                              <h1>{t("strings:mobile")}</h1>
                             </CardHeader>
                             <CardBody className="body">
                               <Progress
-                                label="Kotlin"
+                                label={t("strings:kotlin")}
                                 value={90}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="Jetpack Compose"
+                                label={t("strings:jetpack_compose")}
                                 value={95}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="Compose Multiplatform"
+                                label={t("strings:cmp")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="Swift"
+                                label={t("strings:swift")}
                                 value={50}
                                 maxValue={100}
                                 showValueLabel={true}
@@ -338,29 +322,29 @@ export default function RootScreen() {
                           </div>
                           <TechCard>
                             <CardHeader className="header">
-                              <h1>웹</h1>
+                              <h1>{t("strings:web")}</h1>
                             </CardHeader>
                             <CardBody className="body">
                               <Progress
-                                label="Typescript"
+                                label={t("strings:typescript")}
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="React"
+                                label={t("strings:typescript")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="HTML"
+                                label={t("strings:html")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="CSS"
+                                label={t("strings:css")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
@@ -374,29 +358,29 @@ export default function RootScreen() {
                           </div>
                           <TechCard>
                             <CardHeader className="header">
-                              <h1>백엔드 및 기타</h1>
+                              <h1>{t("strings:backend_etc")}</h1>
                             </CardHeader>
                             <CardBody className="body">
                               <Progress
-                                label="Firebase"
+                                label={t("strings:firebase")}
                                 value={95}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="Google Cloud"
+                                label={t("strings:google_cloud")}
                                 value={90}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="Processing"
+                                label={t("strings:processing")}
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
                               />
                               <Progress
-                                label="p5.js"
+                                label={t("strings:p5_js")}
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
@@ -425,7 +409,7 @@ export default function RootScreen() {
               <div className="content-wrapper">
                 <div className="content">
                   <div className="message width-max">
-                    <div className="title">프로젝트 문의</div>
+                    <div className="title">{t("strings:root.ask_project")}</div>
                     <div className="description contact">
                       <div className="left-side">
                         <Card
@@ -433,7 +417,7 @@ export default function RootScreen() {
                           ref={addToVisibleAnimationRefs}
                         >
                           <div className="header">
-                            <h2>연락처 정보</h2>
+                            <h2>{t("strings:contact_info")}</h2>
                           </div>
                           <div className="body info">
                             <Button
@@ -446,7 +430,7 @@ export default function RootScreen() {
                               href="mailto:my@ien.zone"
                             >
                               <div className="info">
-                                <div className="title">이메일</div>
+                                <div className="title">{t("strings:email")}</div>
                                 <div className="description">my@ien.zone</div>
                               </div>
                             </Button>
@@ -460,7 +444,7 @@ export default function RootScreen() {
                               href="tel:+8210-4815-7296"
                             >
                               <div className="info">
-                                <div className="title">전화번호</div>
+                                <div className="title">{t("strings:phone_number")}</div>
                                 <div className="description">+82 10-4815-7296</div>
                               </div>
                             </Button>
@@ -474,7 +458,7 @@ export default function RootScreen() {
                               href="https://github.com/ienground"
                             >
                               <div className="info">
-                                <div className="title">GitHub</div>
+                                <div className="title">{t("strings:github")}</div>
                                 <div className="description">@ienground</div>
                               </div>
                             </Button>
@@ -488,7 +472,7 @@ export default function RootScreen() {
                               href="https://instagram.com/ienlab"
                             >
                               <div className="info">
-                                <div className="title">Instragram</div>
+                                <div className="title">{t("strings:instagram")}</div>
                                 <div className="description">@ienlab</div>
                               </div>
                             </Button>
@@ -499,7 +483,7 @@ export default function RootScreen() {
                           ref={addToVisibleAnimationRefs}
                         >
                           <div className="header">
-                            <h2>프로젝트 유형</h2>
+                            <h2>{t("strings:root.project_type")}</h2>
                           </div>
                           <div className="body project">
                             {
@@ -524,7 +508,7 @@ export default function RootScreen() {
                         ref={addToVisibleAnimationRefs}
                       >
                         <div className="header">
-                          <h2>프로젝트 문의하기</h2>
+                          <h2>{t("strings:contact_project_inq")}</h2>
                         </div>
                         <Form
                           className="body contact"
@@ -535,20 +519,20 @@ export default function RootScreen() {
                               isRequired
                               isClearable
                               radius="sm"
-                              label="이름"
+                              label={t("strings:name")}
                               type="text"
                               name="name"
-                              placeholder="이름 입력"
+                              placeholder={t("strings:input_name")}
                               value={viewModel.uiState.item.formData.name}
                               onChange={handleChange}
                             />
                             <Input
                               isClearable
                               radius="sm"
-                              label="회사명"
+                              label={t("strings:company_name")}
                               type="text"
                               name="company"
-                              placeholder="소속 회사 (선택사항)"
+                              placeholder={t("strings:company_optional_input")}
                               value={viewModel.uiState.item.formData.company}
                               onChange={handleChange}
                             />
@@ -557,7 +541,7 @@ export default function RootScreen() {
                             isRequired
                             isClearable
                             radius="sm"
-                            label="이메일"
+                            label={t("strings:email")}
                             type="email"
                             name="email"
                             placeholder="your@email.com"
@@ -568,9 +552,9 @@ export default function RootScreen() {
                             <Select
                               isRequired
                               radius="sm"
-                              label="프로젝트 유형"
+                              label={t("strings:root.project_type")}
                               name="type"
-                              placeholder="유형을 선택하세요"
+                              placeholder={t("strings:select_type")}
                               value={viewModel.uiState.item.formData.type}
                               onChange={handleChange}
                             >
@@ -579,46 +563,48 @@ export default function RootScreen() {
                                   <SelectItem key={item.key}>{item.label}</SelectItem>
                                 ))}
                               </>
-                              <SelectItem key={"etc"}>기타</SelectItem>
+                              <SelectItem key={"etc"}>{t("strings:etc")}</SelectItem>
                             </Select>
                             <Select
                               isRequired
                               radius="sm"
-                              label="플랫폼"
-                              placeholder="플랫폼을 선택하세요"
+                              label={t("strings:platforms")}
+                              placeholder={t("strings:select_platforms")}
                               selectionMode="multiple"
                               defaultSelectedKeys={["android", "ios"]}
                               name="platform"
                               value={viewModel.uiState.item.formData.platform}
                               onChange={handleChange}
                             >
-                              <SelectItem key={"android"}>Android</SelectItem>
-                              <SelectItem key={"ios"}>iOS</SelectItem>
-                              <SelectItem key={"web"}>웹</SelectItem>
+                              {
+                                Object.values(platformType).map((item) => (
+                                  <SelectItem key={item}>{PlatformTypeToString(t, item)}</SelectItem>
+                                ))
+                              }
                             </Select>
                           </div>
                           <Select
                             isRequired
                             radius="sm"
-                            label="예산 범위"
-                            placeholder="예산 범위를 설정하세요"
+                            label={t("strings:budget_range")}
+                            placeholder={t("strings:set_budget_range")}
                             defaultSelectedKeys={["300_500"]}
                             name="budget"
                             value={viewModel.uiState.item.formData.budget}
                             onChange={handleChange}
                           >
-                            <SelectItem key={"less_100"}>100만원 미만</SelectItem>
-                            <SelectItem key={"100_300"}>100-300만원</SelectItem>
-                            <SelectItem key={"300_500"}>300-500만원</SelectItem>
-                            <SelectItem key={"more_500"}>500만원 이상</SelectItem>
-                            <SelectItem key={"etc"}>논의 후 결정</SelectItem>
+                            {
+                              Object.values(estimateBudget).map((item) => (
+                                <SelectItem key={item}>{EstimateBudgetToString(t, item)}</SelectItem>
+                              ))
+                            }
                           </Select>
                           <Textarea
                             isRequired
                             radius="sm"
-                            label="프로젝트 설명"
+                            label={t("strings:project_description")}
                             isClearable
-                            placeholder="프로젝트에 대해 자세히 설명해 주세요."
+                            placeholder={t("strings:project_description_desc")}
                             maxRows={6}
                             className="grow"
                             name="description"
@@ -634,7 +620,7 @@ export default function RootScreen() {
                             type="submit"
                             radius="sm"
                           >
-                            문의 보내기
+                            {t("strings:submit_inquiry")}
                           </Button>
                         </Form>
                       </Card>
@@ -645,112 +631,6 @@ export default function RootScreen() {
             </SectionWrapper>
           </FullpageSection>
         </FullpageContainer>
-
-        <PageIndicator>
-
-        </PageIndicator>
-
-        {/*<Swiper*/}
-        {/*  modules={[Mousewheel, EffectFade, Pagination]}*/}
-        {/*  effect="fade"*/}
-        {/*  mousewheel={true}*/}
-        {/*  direction="vertical"*/}
-        {/*  pagination={{*/}
-        {/*    // type: "custom",*/}
-        {/*    type: "bullets",*/}
-        {/*    clickable: true,*/}
-        {/*    /**/}
-        {/*    renderCustom: function (_swiper, current, total) {*/}
-        {/*      let paginationHtml = ""*/}
-
-        {/*      // return (*/}
-        {/*      //   `<div class="hi">dd</div>`*/}
-        {/*      // );*/}
-
-        {/*      // 현재 페이지 번호를 중심으로 앞뒤 2개씩 표시*/}
-        {/*      const start = Math.max(1, current - 2);*/}
-        {/*      const end = Math.min(total, current + 2);*/}
-
-        {/*      // 현재 페이지 이전 번호들 추가*/}
-        {/*      for (let i = start; i < current; i++) {*/}
-        {/*        paginationHtml += `<span class="swiper-pagination-bullet">${i < 10 ? '0' + i : i}</span>`;*/}
-        {/*      }*/}
-
-        {/*      // 현재 페이지 앞에 라인 추가 (첫 페이지가 아닐 경우)*/}
-        {/*      if (current > 1) {*/}
-        {/*        paginationHtml += `<span class="pagination-line"></span>`;*/}
-        {/*      }*/}
-
-        {/*      // 현재 페이지 번호 추가 (활성화 상태)*/}
-        {/*      paginationHtml += `<span class="swiper-pagination-bullet swiper-pagination-bullet-active">${current < 10 ? '0' + current : current}</span>`;*/}
-
-        {/*      // 현재 페이지 뒤에 라인 추가 (마지막 페이지가 아닐 경우)*/}
-        {/*      if (current < total) {*/}
-        {/*        paginationHtml += `<span class="pagination-line"></span>`;*/}
-        {/*      }*/}
-
-        {/*      // 현재 페이지 이후 번호들 추가*/}
-        {/*      for (let i = current + 1; i <= end; i++) {*/}
-        {/*        paginationHtml += `<span class="swiper-pagination-bullet">${i < 10 ? '0' + i : i}</span>`;*/}
-        {/*      }*/}
-
-        {/*      return paginationHtml;*/}
-        {/*    },*/}
-
-        {/*  }}*/}
-        {/*  // navigation={{*/}
-        {/*  //   enabled: true,*/}
-        {/*  //   nextEl: '.my-swiper-button-next',*/}
-        {/*  //   prevEl: '.my-swiper-button-prev',*/}
-        {/*  // }}*/}
-        {/*  className="slideshow"*/}
-        {/*>*/}
-        {/*  <SwiperSlide>*/}
-        {/*    <Image*/}
-        {/*      alt="ienlab_pattern"*/}
-        {/*      src={IenlabPattern}*/}
-        {/*      radius="none"*/}
-        {/*    />*/}
-        {/*  </SwiperSlide>*/}
-        {/*  <SwiperSlide>*/}
-        {/*    <div style={{backgroundColor: "#FF4081", width: "100%", aspectRatio: "16 / 9"}} />*/}
-        {/*  </SwiperSlide>*/}
-        {/*  <SwiperSlide>*/}
-        {/*    <div style={{backgroundColor: "#7C4DFF", width: "100%", aspectRatio: "16 / 9"}} />*/}
-        {/*  </SwiperSlide>*/}
-        {/*  /!*<SwiperButtonContainer>*!/*/}
-        {/*  /!*  <SwiperButton*!/*/}
-        {/*  /!*    className="my-swiper-button-prev"*!/*/}
-        {/*  /!*    isIconOnly*!/*/}
-        {/*  /!*    variant="flat"*!/*/}
-        {/*  /!*    radius="none"*!/*/}
-        {/*  /!*  >*!/*/}
-        {/*  /!*    <ArrowLeftIcon size={24} weight="bold" />*!/*/}
-        {/*  /!*  </SwiperButton>*!/*/}
-        {/*  /!*  <SwiperButton*!/*/}
-        {/*  /!*    className="my-swiper-button-next"*!/*/}
-        {/*  /!*    isIconOnly*!/*/}
-        {/*  /!*    variant="flat"*!/*/}
-        {/*  /!*    radius="none"*!/*/}
-        {/*  /!*  >*!/*/}
-        {/*  /!*    <ArrowRightIcon size={24} weight="bold" />*!/*/}
-        {/*  /!*  </SwiperButton>*!/*/}
-        {/*  /!*</SwiperButtonContainer>*!/*/}
-        {/*</Swiper>*/}
-        {/*<div className="info">*/}
-        {/*  <div className="intro">*/}
-        {/*    내가 누구게*/}
-        {/*  </div>*/}
-        {/*  <div className="brand">*/}
-        {/*    hi*/}
-        {/*  </div>*/}
-        {/*  <div className="banner1">*/}
-        {/*    mediaoffice*/}
-        {/*  </div>*/}
-        {/*  <div className="banner2">*/}
-        {/*    mediaoffice*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </Wrapper>
     </DefaultLayout>
   );
@@ -892,6 +772,7 @@ const SectionWrapper = styled.div`
         
         & > .description {
           font-size: initial;
+          white-space: pre-line;
           
           &.history {
             display: grid;

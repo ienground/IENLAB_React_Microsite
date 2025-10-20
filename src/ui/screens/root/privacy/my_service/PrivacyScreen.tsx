@@ -5,8 +5,10 @@ import styled from "styled-components";
 import {Card, CardBody, CardHeader, Divider, Spacer} from "@heroui/react";
 import {getCompleteWord, useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 export default function PrivacyScreen() {
+  const { t } = useTranslation();
   const company = "아이엔랩 ienlab";
   const companyKor = "아이엔랩";
   const connectWord = getCompleteWord(companyKor, "은", "는");
@@ -316,12 +318,12 @@ export default function PrivacyScreen() {
       <CommonWrapper>
         <div className="header">
           <LockLaminatedIcon size={48} weight="bold" />
-          <div>개인정보처리방침</div>
+          <div>{t("strings:privacy_policy")}</div>
         </div>
         <ContentWrapper>
           <Card className="left-side visible-animation d1" ref={addToVisibleAnimationRefs}>
             <CardHeader className="header">
-              <h2>목차</h2>
+              <h2>{t("strings:table_of_contents")}</h2>
             </CardHeader>
             <CardBody className="body">
               {

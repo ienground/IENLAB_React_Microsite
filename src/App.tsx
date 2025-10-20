@@ -22,8 +22,9 @@ function App() {
   const navigate = useNavigate();
 
   dayjs.extend(isLeapYear, relativeTime); // 플러그인 등록
-  dayjs.locale('ko'); // 언어 등록
-  // dayjs.locale('en'); // 언어 등록
+  // dayjs.locale('ko'); // 언어 등록
+  dayjs.locale('en'); // 언어 등록
+
 
   return (
     <HeroUIProvider navigate={navigate} useHref={useHref}>
@@ -37,20 +38,6 @@ function App() {
       </ThemeProvider>
     </HeroUIProvider>
   );
-
-  // return (
-  //   <BrowserRouter>
-  //     {/*<AppWrapper>*/}
-  //     {/*  <Header openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} isLogin={isLogin}/>*/}
-  //     {/*  <Sidebar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} isLogin={isLogin} />*/}
-  //     {/*  <ContentWrapper id="content">*/}
-  //         <RootRouter />
-  //     {/*    <Footer />*/}
-  //     {/*    /!*<ButtonToTop />*!/*/}
-  //     {/*  </ContentWrapper>*/}
-  //     {/*</AppWrapper>*/}
-  //   </BrowserRouter>
-  // )
 }
 
 export default App

@@ -3,6 +3,7 @@ import {snapshotToData} from "../../ui/utils/utils.ts";
 import {FirestorePath} from "../../constant/FirestorePath.ts";
 import type {WorkPlan} from "./WorkPlan.ts";
 import type {PlatformType} from "../common/PlatformType.ts";
+import type {TFunction} from "i18next";
 
 export const estimateType = {
   COMMUNITY: "community",
@@ -55,6 +56,29 @@ export type Estimate = {
   plans: WorkPlan[];
   conditions: string[];
 };
+
+export function EstimateTypeToString(t: TFunction, value: EstimateType | undefined): string {
+  switch (value) {
+    case estimateType.COMMUNITY: return t("strings:project.type_community");
+    case estimateType.UTILITY: return t("strings:project.type_utility");
+    case estimateType.AI: return t("strings:project.type_ai");
+    case estimateType.SERVICE: return t("strings:project.type_service");
+    case estimateType.INCOMPANY: return t("strings:project.type_inhouse");
+    case estimateType.BLUETOOTH: return t("strings:project.type_bt");
+    default: return "";
+  }
+}
+
+export function EstimateBudgetToString(t: TFunction, value: EstimateBudget | undefined): string {
+  switch (value) {
+    case estimateBudget.LESS_100: return t("strings:budget.less_100");
+    case estimateBudget.BET_100_300: return t("strings:budget.100_300");
+    case estimateBudget.BET_300_500: return t("strings:budget.300_500");
+    case estimateBudget.MORE_500: return t("strings:budget.more_500");
+    case estimateBudget.ETC: return t("strings:budget.etc");
+    default: return "";
+  }
+}
 
 export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Estimate {
   const doc = snapshotToData(snapshot);
