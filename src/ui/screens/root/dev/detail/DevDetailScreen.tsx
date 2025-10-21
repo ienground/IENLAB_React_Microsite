@@ -473,24 +473,6 @@ const ContentWrapper = styled.div`
       gap: 1rem;
     }
   }
-
-  .fade-enter {
-    opacity: 0;
-  }
-  /* 요소가 나타나는 동안의 상태 (애니메이션 적용) */
-  .fade-enter-active {
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-  }
-  /* 요소가 사라질 때의 최종 상태 */
-  .fade-exit-active {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  .fade-exit-done {
-    opacity: 0;
-  }
 `;
 
 const SummaryCard = styled.div`

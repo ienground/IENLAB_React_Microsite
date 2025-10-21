@@ -51,7 +51,6 @@ export const useDevDetailViewModel = create<DevDetailViewModel>((set, get) => ({
       if (snapshot.exists()) {
         const item = DocToDevProject(snapshot);
 
-        await delay(1000);
         get().setData(new DevDetailInfoState({
           item: item,
           isInitialized: true

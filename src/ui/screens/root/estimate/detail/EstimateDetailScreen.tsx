@@ -43,7 +43,7 @@ export default function EstimateDetailScreen() {
     { key: "overview", icon: FileTextIcon, label: t("strings:estimate.overview") },
     { key: "range", icon: ListDashesIcon, label: t("strings:estimate.range") },
     { key: "schedule", icon: ClockIcon, label: t("strings:estimate.dev_schedule") },
-    { key: "price", icon: CreditCardIcon, label: t("strings:price") },
+    { key: "price", icon: CreditCardIcon, label: t("strings:estimate.detailed_cost") },
     { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
   ];
   const { dateFormat } = useDateTimeFormatters();

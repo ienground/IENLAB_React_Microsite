@@ -384,7 +384,7 @@ const ContentWrapper = styled.div`
     height: min-content;
 
     position: sticky;
-    top: 6rem; /* 헤더 아래에 고정될 위치 */
+    top: 5rem; /* 헤더 아래에 고정될 위치 */
     
     counter-reset: summary-counter -1;
     

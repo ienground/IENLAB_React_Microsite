@@ -7,16 +7,16 @@ import {
 } from "@heroui/react";
 import styled from "styled-components";
 import imgLogoTypo from "../../../assets/brand/img_logo_typo.png";
+import imgLogoTypoWhite from "../../../assets/brand/img_logo_typo_white.png";
 import {RootDestination} from "../../screens/root/RootDestination.ts";
-import {ThemeSwitcher} from "./ThemeSwitcher.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {mapRange} from "../utils.ts";
 import {
   BellSimpleRingingIcon,
   CaretDownIcon,
   GithubLogoIcon,
-  InstagramLogoIcon, LockLaminatedIcon,
-  PaperPlaneTiltIcon,
+  InstagramLogoIcon, LockLaminatedIcon, MoonIcon,
+  PaperPlaneTiltIcon, SunIcon,
   UserSquareIcon
 } from "@phosphor-icons/react";
 import TistoryIcon from "../../../assets/icon/ic_tistory.svg?react";
@@ -28,6 +28,8 @@ import {EstimateDestination} from "../../screens/root/estimate/EstimateDestinati
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 import {DevDestination} from "../../screens/root/dev/DevDestination.ts";
 import {useTranslation} from "react-i18next";
+import {useTheme} from "@heroui/use-theme";
+import {CSSTransition} from "react-transition-group";
 
 interface HeaderProps {
   visible?: boolean;
@@ -39,9 +41,12 @@ export const Header = (props: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>(undefined);
   const delay = 300;
+  const { theme, setTheme } = useTheme();
+  const logoLight = useRef(null);
+  const logoDark = useRef(null);
 
   return (
-    <FloatingNavbar
+    <HeaderWrapper
       className={((props.visible ?? true) ? "visible " : "") + (props.overlap ? "overlap " : "")}
       maxWidth="full"
       style={{
@@ -123,11 +128,11 @@ export const Header = (props: HeaderProps) => {
             {t("strings:project.title")}
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href={BrandDestination.route} >
-            {t("strings:design.title")}
-          </Link>
-        </NavbarItem>
+        {/*<NavbarItem>*/}
+        {/*  <Link color="foreground" href={BrandDestination.route} >*/}
+        {/*    {t("strings:design.title")}*/}
+        {/*  </Link>*/}
+        {/*</NavbarItem>*/}
         <NavbarItem>
           <Link color="foreground" href={EstimateDestination.route} >
             {t("strings:quote_inquiry")}
@@ -136,10 +141,30 @@ export const Header = (props: HeaderProps) => {
       </NavbarContent>
 
       <NavbarBrand className="brand">
-        {/* 가운데 로고 */}
         <Link href={RootDestination.route}>
-          <img src={imgLogoTypo} alt="Logo" />
+          <CSSTransition
+            in={theme === "dark"}
+            timeout={300}
+            classNames="fade"
+            nodeRef={logoDark}
+            unmountOnExit
+            appear
+          >
+            <img src={imgLogoTypoWhite} alt="Logo" ref={logoDark}/>
+          </CSSTransition>
+          <CSSTransition
+            in={theme === "light"}
+            timeout={300}
+            classNames="fade"
+            nodeRef={logoLight}
+            mountOnEnter
+            appear
+          >
+            <img src={imgLogoTypo} alt="Logo" ref={logoLight}/>
+          </CSSTransition>
+
         </Link>
+
       </NavbarBrand>
 
       <NavbarContent justify="end" className="content end-items">
@@ -187,7 +212,19 @@ export const Header = (props: HeaderProps) => {
           </Button>
         </NavbarItem>
         <NavbarItem>
-          <ThemeSwitcher />
+          <Button
+            isIconOnly
+            aria-label="dark-mode"
+            variant="light"
+            onPress={() => setTheme(theme === "light" ? "dark" : "light")}
+            radius="full"
+          >
+            {
+              theme === "light" ?
+                <SunIcon size={24} weight="fill" />
+                : <MoonIcon size={24} weight="fill" />
+            }
+          </Button>
         </NavbarItem>
         <NavbarItem>
           <Button
@@ -195,7 +232,7 @@ export const Header = (props: HeaderProps) => {
             anchorIcon={<PaperPlaneTiltIcon />}
             as={Link}
             color="primary"
-            href="https://github.com/heroui-inc/heroui"
+            href="/#inquiry"
             variant="solid"
             radius="sm"
           >
@@ -203,11 +240,11 @@ export const Header = (props: HeaderProps) => {
           </Button>
         </NavbarItem>
       </NavbarContent>
-    </FloatingNavbar>
+    </HeaderWrapper>
   );
 };
 
-const FloatingNavbar = styled(Navbar)`
+const HeaderWrapper = styled(Navbar)`
   transform: translateY(-4rem);
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   
@@ -246,9 +283,17 @@ const FloatingNavbar = styled(Navbar)`
       flex-direction: row;
       justify-content: center;
       
-      & > a > img {
-        max-width: fit-content;
-        height: 2rem;
+      & > a {
+        position: relative;
+        background-color: red;
+        
+        & > img {
+          max-width: fit-content;
+          height: 2rem;
+          
+          position: absolute;
+          transform: translateX(-50%);
+        }
       }
     }
   }

@@ -35,10 +35,13 @@ import {estimateBudget, EstimateBudgetToString, estimateDefault,} from "../../..
 import {platformType, PlatformTypeToString} from "../../../data/common/PlatformType.ts";
 import {useTranslation} from "react-i18next";
 import {useRootViewModel} from "./RootViewModel.ts";
+import {DevDestination} from "./dev/DevDestination.ts";
+import IntroAnimation from "../../utils/components/IntroAnimation.tsx";
 
 export default function RootScreen() {
-  const { t } = useTranslation();
   const { uiState, onItemValueChanged, uploadEstimate } = useRootViewModel();
+  const { t, i18n } = useTranslation();
+  const hash = location.hash;
   const [activeIndex, setActiveIndex] = useState(0);
   const isDark = useDarkmode();
 
@@ -84,6 +87,12 @@ export default function RootScreen() {
     onItemValueChanged({ formData: {...uiState.item?.formData, [name]: value} });
   };
 
+  useEffect(() => {
+    if (hash.substring(1) === "inquiry") {
+      setActiveIndex(3);
+    }
+  }, [hash]);
+
   return (
     <DefaultLayout toolbarOverlap>
       <Wrapper>
@@ -106,10 +115,19 @@ export default function RootScreen() {
                 <div className="content-wrapper">
                   <div className="content">
                     <div className="message">
+                      {/*<IntroAnimation />*/}
                       <div className="title">
-                        안녕하세요, <br />
-                        <span className="font-bold">모바일 개발자 & 디자이너</span> <br />
-                        아이엔입니다
+                        {t("strings:root_hello")} <br />
+                        {
+                          i18n.language !== "ko" ? t("strings:root_im_ienground") : ""
+                        }
+                        <div className="job-part">
+                          <span className="font-bold" id="appear-part">{t("strings:root_mobile_creator")}</span> <br />
+                          <span className="font-bold" id="remove-part">{t("strings:root_mobile_dev_design")}</span> <br />
+                        </div>
+                        {
+                          i18n.language === "ko" ? t("strings:root_im_ienground") : ""
+                        }
                       </div>
                       <div className="description">
                         {t("strings:root.intro_desc1")}<br />
@@ -126,7 +144,7 @@ export default function RootScreen() {
                         <Button
                         as={Link}
                         color="primary"
-                        href="https://github.com/heroui-inc/heroui"
+                        href={DevDestination.route}
                         variant="faded"
                       >
                           {t("strings:root.check_portfolio")}
@@ -348,7 +366,7 @@ export default function RootScreen() {
             </SectionWrapper>
           </FullpageSection>
           <FullpageSection>
-            <SectionWrapper>
+            <SectionWrapper id="inquiry">
               <div className="content-wrapper">
                 <div className="content">
                   <div className="message width-max">
@@ -703,15 +721,80 @@ const SectionWrapper = styled.div`
         & > .title {
           font-size: xxx-large;
           font-weight: bold;
-          
-          & > span {
-            background-color: ${`hsl(var(--heroui-foreground))`}; /* 원하는 배경색으로 변경 가능 */
-            color: ${`hsl(var(--heroui-background))`}; /* 글자색 흰색 */
-            padding: 5px 10px; /* 글자와 배경 사이의 여백 */
-            border-radius: 5px; /* 모서리를 둥글게 */
 
-            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+          @keyframes strike{
+            0%   { width : 0; }
+            100% { width: 105%; }
           }
+          
+          @keyframes fadeout {
+            0% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-1rem); }
+          }
+          
+          @keyframes fadein {
+            0% { opacity: 0; }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          
+          #remove-part {
+            position: relative;
+            
+            animation-name: fadeout;
+            animation-duration: 0.4s;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            animation-delay: 0.8s;
+          }
+
+          #remove-part::after {
+            content: ' ';
+            position: absolute;
+            top: 50%;
+            left: -2.5%;
+            width: 0;
+            height: 0.5rem;
+            background: ${'hsl(var(--heroui-danger))'};
+            transform: translateY(-50%);
+            
+            animation-name: strike;
+            animation-duration: 0.3s;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            animation-delay: 0.5s;
+          }
+          
+          #appear-part {
+            opacity: 0;
+            transform: translateY(1rem);
+            
+            animation-name: fadein;
+            animation-duration: 0.4s;
+            animation-timing-function: linear;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            animation-delay: 0.8s;
+          }
+          
+          & > .job-part {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            
+            & > span {
+              position: absolute;
+              background-color: ${`hsl(var(--heroui-foreground))`}; /* 원하는 배경색으로 변경 가능 */
+              color: ${`hsl(var(--heroui-background))`}; /* 글자색 흰색 */
+              padding: 5px 10px; /* 글자와 배경 사이의 여백 */
+              border-radius: 5px; /* 모서리를 둥글게 */
+
+              transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            }
+          }
+          
+          
         }
         
         & > .description {
