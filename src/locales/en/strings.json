@@ -34,14 +34,22 @@
   "email": "Email",
   "end_date": "End Date",
   "estimate": {
+    "admit": "Admit",
+    "cancel": "Canceled",
     "customer_name": "Name",
     "date": "Estimate Date",
     "detailed_cost": "Detailed Cost",
     "dev_schedule": "Development Schedule",
+    "done": "Finished",
+    "draft": "Draft",
     "overview": "Project Overview",
+    "pending": "Pending",
     "range": "Project Range",
+    "reject": "Rejected",
+    "sent": "Sent",
     "summary": "Summary",
-    "terms_of_the_contract": "Terms of the Contract"
+    "terms_of_the_contract": "Terms of the Contract",
+    "working": "Working"
   },
   "etc": "Etc..",
   "example_colon": "Ex: ",
@@ -102,6 +110,7 @@
   "project_description_desc": "Please describe your project in detail.",
   "quote_inquiry": "Quote Inquiry",
   "react": "React",
+  "remarks": "Remarks",
   "return_to_inquiry": "Back to Quote Inquiry",
   "return_to_list": "Back to List",
   "root": {
@@ -137,5 +146,6 @@
   "table_of_contents": "Table of Contents",
   "tech_stacks": "Tech Stacks",
   "typescript": "Typescript",
+  "unnamed_inquiry": "Unnamed Inquiry",
   "web": "Web"
 }

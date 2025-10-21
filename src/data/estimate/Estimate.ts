@@ -41,8 +41,10 @@ export type Estimate = {
   createAt: Timestamp;
   updateAt: Timestamp;
   delete: boolean;
+  title: string;
   identifier: string;
   expireAt: Timestamp;
+  estimateAt: Timestamp | null;
   name: string;
   company: string;
   email: string;
@@ -62,8 +64,10 @@ export const estimateDefault: Estimate = {
   createAt: Timestamp.now(),
   updateAt: Timestamp.now(),
   delete: false,
+  title: "",
   identifier: "",
   expireAt: Timestamp.now(),
+  estimateAt: Timestamp.now(),
   name: "",
   company: "",
   email: "",
@@ -101,6 +105,35 @@ export function EstimateBudgetToString(t: TFunction, value: EstimateBudget | und
   }
 }
 
+export function EstimateStateToString(t: TFunction, value: EstimateState | undefined): string {
+  switch (value) {
+    case estimateState.PENDING: return t("strings:estimate.pending");
+    case estimateState.DRAFT: return t("strings:estimate.draft");
+    case estimateState.SENT: return t("strings:estimate.sent");
+    case estimateState.ADMIT: return t("strings:estimate.admit");
+    case estimateState.WORKING: return t("strings:estimate.working");
+    case estimateState.DONE: return t("strings:estimate.done");
+    case estimateState.CANCEL: return t("strings:estimate.cancel");
+    case estimateState.REJECT: return t("strings:estimate.reject");
+    default: return "";
+  }
+}
+
+export function EstimateStateToHeroColor(value: EstimateState | undefined):
+  "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined {
+  switch (value) {
+    case estimateState.PENDING: return "warning"; // 노란색
+    case estimateState.DRAFT: return "default"; // 회색
+    case estimateState.SENT: return "secondary"; // 중간 단계 색상
+    case estimateState.ADMIT: return "primary"; // 시작 (파란색)
+    case estimateState.WORKING: return "success"; // 진행 중 (녹색)
+    case estimateState.DONE: return "success"; // 완료 (녹색)
+    case estimateState.CANCEL: return "danger"; // 취소 (빨간색)
+    case estimateState.REJECT: return "danger"; // 거절 (빨간색)
+    default: return "default"; // 알 수 없음
+  }
+}
+
 export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Estimate {
   const doc = snapshotToData(snapshot);
 
@@ -109,8 +142,10 @@ export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot
     createAt: doc[FirestorePath.CREATE_AT],
     updateAt: doc[FirestorePath.UPDATE_AT],
     delete: doc[FirestorePath.DELETE],
+    title: doc[FirestorePath.Estimate.TITLE],
     identifier: doc[FirestorePath.Estimate.IDENTIFIER],
     expireAt: doc[FirestorePath.Estimate.EXPIRE_AT],
+    estimateAt: doc[FirestorePath.Estimate.ESTIMATE_AT],
     name: doc[FirestorePath.Estimate.NAME],
     company: doc[FirestorePath.Estimate.COMPANY],
     email: doc[FirestorePath.Estimate.EMAIL],
@@ -130,8 +165,10 @@ export function EstimateToHashMap(item: Estimate, isUpdate: boolean = false) {
   const map = {
     [FirestorePath.UPDATE_AT]: serverTimestamp(),
     [FirestorePath.DELETE]: item.delete,
+    [FirestorePath.Estimate.TITLE]: item.title,
     [FirestorePath.Estimate.IDENTIFIER]: item.identifier,
     [FirestorePath.Estimate.EXPIRE_AT]: item.expireAt,
+    [FirestorePath.Estimate.ESTIMATE_AT]: item.estimateAt,
     [FirestorePath.Estimate.NAME]: item.name,
     [FirestorePath.Estimate.COMPANY]: item.company,
     [FirestorePath.Estimate.EMAIL]: item.email,

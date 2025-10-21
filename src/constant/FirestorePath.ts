@@ -12,6 +12,8 @@ export const FirestorePath = {
   Estimate: {
     IDENTIFIER: "identifier", // string
     EXPIRE_AT: "expireAt", // Timestamp
+    ESTIMATE_AT: "estimateAt", // Timestamp
+    TITLE: "title", // string
     NAME: "name", // string
     COMPANY: "company", // string
     EMAIL: "email", // string

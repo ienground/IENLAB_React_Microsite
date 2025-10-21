@@ -34,14 +34,22 @@
   "email": "이메일",
   "end_date": "마감일",
   "estimate": {
+    "admit": "승인됨",
+    "cancel": "취소됨",
     "customer_name": "고객명",
     "date": "견적일",
     "detailed_cost": "상세 비용",
     "dev_schedule": "개발 일정",
+    "done": "완료됨",
+    "draft": "초안",
     "overview": "프로젝트 개요",
+    "pending": "대기 중",
     "range": "프로젝트 범위",
+    "reject": "거절됨",
+    "sent": "전송됨",
     "summary": "요약",
-    "terms_of_the_contract": "계약 조건"
+    "terms_of_the_contract": "계약 조건",
+    "working": "작업 중"
   },
   "etc": "기타",
   "example_colon": "예: ",
@@ -102,6 +110,7 @@
   "project_description_desc": "프로젝트에 대해 자세히 설명해 주세요.",
   "quote_inquiry": "견적 조회",
   "react": "React",
+  "remarks": "특이사항",
   "return_to_inquiry": "견적 조회로 돌아가기",
   "return_to_list": "목록으로 돌아가기",
   "root": {
@@ -137,5 +146,6 @@
   "table_of_contents": "목차",
   "tech_stacks": "기술 스택",
   "typescript": "Typescript",
+  "unnamed_inquiry": "이름 없는 견적",
   "web": "웹"
 }

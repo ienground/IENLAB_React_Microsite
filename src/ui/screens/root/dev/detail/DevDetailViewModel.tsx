@@ -39,7 +39,7 @@ export const useDevDetailViewModel = create<DevDetailViewModel>((set, get) => ({
   unsubscribe: null,
 
   itemId: null,
-  setItemId: (id: string | null) => set({ itemId: id }),
+  setItemId: (id) => set({ itemId: id }),
   setData: (data) => set({ infoState: data }),
   startListening: () => {
     const itemId = get().itemId;

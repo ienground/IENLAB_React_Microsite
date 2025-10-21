@@ -26,11 +26,40 @@ import {useTranslation} from "react-i18next";
 import "../../../../../locales/i18n.ts";
 import {type ComponentProps, type FC, useCallback, useEffect, useRef, useState} from "react";
 import { HashLink } from 'react-router-hash-link';
-import {useNavigate} from "react-router";
-import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx"; // HashLink 컴포넌트
+import {useNavigate, useParams} from "react-router";
+import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
+import {useEstimateDetailViewModel} from "./EstimateDetailViewModel.tsx";
+import {EstimateStateToHeroColor, EstimateStateToString} from "../../../../../data/estimate/Estimate.ts";
+import dayjs from "dayjs";
+import {getDday} from "../../../../utils/utils.ts";
+import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts"; // HashLink 컴포넌트
 
 export default function EstimateDetailScreen() {
+  const { infoState, startListening, stopListening, setItemId } = useEstimateDetailViewModel();
+  const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const [selected, setSelected] = useState<string>("summary");
+  const tabItems: BottomToolbarItem[] = [
+    { key: "summary", icon: ReceiptIcon, label: t("strings:estimate.summary") },
+    { key: "overview", icon: FileTextIcon, label: t("strings:estimate.overview") },
+    { key: "range", icon: ListDashesIcon, label: t("strings:estimate.range") },
+    { key: "schedule", icon: ClockIcon, label: t("strings:estimate.dev_schedule") },
+    { key: "price", icon: CreditCardIcon, label: t("strings:price") },
+    { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
+  ];
+  const { dateFormat } = useDateTimeFormatters();
+
+  useEffect(() => {
+    if (id) setItemId(id);
+    return () => setItemId(null);
+  }, [id, setItemId]);
+
+  useEffect(() => {
+    startListening();
+
+    return () => stopListening();
+  }, [startListening, stopListening]);
+
   const data = {
     "title": "제목",
     "range": [
@@ -84,16 +113,6 @@ export default function EstimateDetailScreen() {
     ]
   };
 
-  const [selected, setSelected] = useState<string>("summary");
-  const tabItems: BottomToolbarItem[] = [
-    { key: "summary", icon: ReceiptIcon, label: t("strings:estimate.summary") },
-    { key: "overview", icon: FileTextIcon, label: t("strings:estimate.overview") },
-    { key: "range", icon: ListDashesIcon, label: t("strings:estimate.range") },
-    { key: "schedule", icon: ClockIcon, label: t("strings:estimate.dev_schedule") },
-    { key: "price", icon: CreditCardIcon, label: t("strings:price") },
-    { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
-  ];
-
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -109,7 +128,9 @@ export default function EstimateDetailScreen() {
           <SummaryCard className="anchor" id="summary">
             <CardHeader className="header">
               <ReceiptIcon size={24} weight="fill" />
-              <div className="title">{data.title}</div>
+              <div className={"title" + (!infoState.item?.title || infoState.item?.title === "" ? " empty" : "")}>
+                {!infoState.item?.title || infoState.item?.title === "" ? t("strings:unnamed_inquiry") : infoState.item?.title}
+              </div>
               <div className="button-container">
                 <Button
                   isIconOnly
@@ -133,18 +154,19 @@ export default function EstimateDetailScreen() {
                 radius="sm"
                 startContent={<HashIcon size={18} weight="bold" /> }
               >
-                IL2024-001
+                {infoState.item?.identifier}
               </Chip>
               <Chip
                 radius="sm"
+                color={EstimateStateToHeroColor(infoState.item?.state)}
               >
-                발송됨
+                {EstimateStateToString(t, infoState.item?.state)}
               </Chip>
               <Chip
                 radius="sm"
                 color="danger"
               >
-                D-10
+                {getDday(new Date(), infoState.item?.expireAt?.toDate())}
               </Chip>
             </CardBody>
             <CardFooter className="footer">
@@ -152,7 +174,7 @@ export default function EstimateDetailScreen() {
                 <UserCircleIcon size={24} weight="bold" />
                 <div className="container">
                   <div className="title">{t("strings:estimate.customer_name")}</div>
-                  <div className="content">아이엔</div>
+                  <div className="content">{infoState.item?.name}</div>
                 </div>
               </div>
               <div className="item price">
@@ -166,7 +188,7 @@ export default function EstimateDetailScreen() {
                 <CalendarDotsIcon size={24} weight="bold" />
                 <div className="container">
                   <div className="title">{t("strings:estimate.date")}</div>
-                  <div className="content">2025년 5월 1일</div>
+                  <div className="content">{dateFormat(infoState.item?.estimateAt?.toDate())}</div>
                 </div>
               </div>
               <div className="item duration">
@@ -187,17 +209,17 @@ export default function EstimateDetailScreen() {
                   <div>{t("strings:estimate.overview")}</div>
                 </CardHeader>
                 <CardBody className="body">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias aliquid amet architecto asperiores dolores ducimus et eum excepturi exercitationem fuga iusto laborum, libero magnam non numquam quidem quos repellendus sunt ullam. Accusamus deleniti dignissimos dolore ducimus eveniet harum laudantium quisquam repudiandae similique veniam. Asperiores deserunt laudantium molestiae quae ratione.
+                  {infoState.item?.summary}
                 </CardBody>
                 <CardFooter className="footer">
-                  <div className="title">기술 스택</div>
+                  <div className="title">{t("strings:tech_stacks")}</div>
                   <div className="content">
                     <Chip>Compose Multiplatform</Chip>
                     <Chip>Firebase</Chip>
                   </div>
-                  <div className="title">특이사항</div>
+                  <div className="title">{t("strings:remarks")}</div>
                   <div className="content">
-                    특이사항 같은 건 없는 거야.
+                    {infoState.item?.sigNote}
                   </div>
                 </CardFooter>
               </Card>
@@ -491,6 +513,10 @@ const SummaryCard = styled(Card)`
       flex-grow: 1;
       font-size: xx-large;
       font-weight: bold;
+
+      &.empty {
+        font-style: italic;
+      }
     }
     
     & > .button-container {

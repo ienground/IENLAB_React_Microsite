@@ -3,6 +3,7 @@ import {
   Firestore, QueryDocumentSnapshot, DocumentSnapshot, query, collection, where, documentId, getDocs, type DocumentData,
   type DocumentReference
 } from "firebase/firestore";
+import dayjs from "dayjs";
 
 export const mapRange = (value: number, inMin: number, inMax: number, outMin: number, outMax: number) => {
   return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
@@ -165,4 +166,18 @@ export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, 
 
 export function arrayToSelectValue(array: number[]) {
   return Array.isArray(array) ? array.map((item) => item.toString()) : []
+}
+
+export function getDday(date1: Date | undefined, date2: Date | undefined): string {
+  const dayjs1 = dayjs(date1);
+  const dayjs2 = dayjs(date2);
+  const diff = dayjs2.diff(dayjs1, 'day');
+
+  if (diff > 0) {
+    return `D-${diff}`;
+  } else if (diff < 0) {
+    return `D+${-diff}`;
+  } else {
+    return 'D-DAY';
+  }
 }
