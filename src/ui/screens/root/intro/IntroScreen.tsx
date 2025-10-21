@@ -226,7 +226,7 @@ export default function IntroScreen() {
                 }}
               />
               <div className="summary">
-                개발과<br/>디자인을 하는<br/>모바일 크리에이터.
+                {t("strings:intro_mobile_creator")}
               </div>
               <Spacer
                 style={{
@@ -398,6 +398,7 @@ const Wrapper = styled.div`
       & > .summary {
         font-size: xx-large;
         font-weight: bold;
+        white-space: pre-line;
       }
     }
   }

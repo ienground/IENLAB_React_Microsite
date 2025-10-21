@@ -13,7 +13,7 @@ i18n
     en: { strings: en },
     ko: { strings: ko }
   },
-  lng: 'en',
+  lng: 'ko',
   fallbackLng: 'en',
   interpolation: { escapeValue: false }
 });

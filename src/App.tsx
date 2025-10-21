@@ -23,8 +23,8 @@ function App() {
   const navigate = useNavigate();
 
   dayjs.extend(isLeapYear, relativeTime); // 플러그인 등록
-  // dayjs.locale('ko'); // 언어 등록
-  dayjs.locale('en'); // 언어 등록
+  dayjs.locale('ko'); // 언어 등록
+  // dayjs.locale('en'); // 언어 등록
 
   useScrollToTop();
 
