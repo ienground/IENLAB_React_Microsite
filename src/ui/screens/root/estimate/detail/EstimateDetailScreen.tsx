@@ -59,59 +59,6 @@ export default function EstimateDetailScreen() {
     return () => stopListening();
   }, [startListening, stopListening]);
 
-  const data = {
-    "title": "제목",
-    "range": [
-      "이것은",
-      "범위",
-      "입니다"
-    ],
-    "time": [
-      { "label": "기획 설계", "time" : 1 },
-      { "label": "개발", "time": 35 },
-      { "label": "테스트", "time": 7 },
-      { "label": "배포", "time": 3 },
-      { "label": "배포", "time": 3 },
-      { "label": "배포", "time": 3 },
-    ],
-    "schedule": [
-      {
-        "category": "전자기기",
-        "title": "노트북",
-        "price": 1500000,
-        "amount": 10
-      },
-      {
-        "category": "가구",
-        "title": "책상",
-        "price": 250000,
-        "amount": 2
-      },
-      {
-        "category": "의류",
-        "title": "티셔츠",
-        "price": 30000,
-        "amount": 50
-      },
-      {
-        "category": "식료품",
-        "title": "바나나",
-        "price": 5000,
-        "amount": 100
-      },
-      {
-        "category": "도서",
-        "title": "해리포터",
-        "price": 18000,
-        "amount": 7
-      }
-
-    ],
-    "condition": [
-      "hi", "hello"
-    ]
-  };
-
   return (
     <DefaultLayout>
       <CommonWrapper>

@@ -26,7 +26,7 @@ export class EstimateSearchUiState {
 
 interface EstimateSearchViewModel {
   uiState: EstimateSearchUiState;
-  onItemValueChanged: (item: EstimateSearchDetails) => void;
+  onItemValueChanged: (item: Partial<EstimateSearchDetails>) => void;
 
   searchQuote: (onSuccess: (id: string) => void, onFailure: (err: string) => void) => void;
   onDispose: () => void;
@@ -34,9 +34,9 @@ interface EstimateSearchViewModel {
 
 export const useEstimateSearchViewModel = create<EstimateSearchViewModel>((set, get) => ({
   uiState: new EstimateSearchUiState({ item: { query: "", name: "", errorCode: null } }),
-  onItemValueChanged: (item: EstimateSearchDetails) => set({ uiState: new EstimateSearchUiState({ item: item }) }),
+  onItemValueChanged: (item: Partial<EstimateSearchDetails>) => set({ uiState: new EstimateSearchUiState({ item: {...get().uiState.item, ...item} }) }),
   searchQuote: (onSuccess, onFailure) => {
-    get().onItemValueChanged({...get().uiState.item, isSearching: true, errorCode: null});
+    get().onItemValueChanged({isSearching: true, errorCode: null});
 
     const q = query(
       collection(fbFirestore, FirestorePath.ESTIMATE),
@@ -55,7 +55,7 @@ export const useEstimateSearchViewModel = create<EstimateSearchViewModel>((set, 
         } else {
           onSuccess(res.docs[0].id);
         }
-        get().onItemValueChanged({...get().uiState.item, isSearching: false});
+        get().onItemValueChanged({isSearching: false});
       })
       .catch((err) => {
         console.error(err);
@@ -64,6 +64,6 @@ export const useEstimateSearchViewModel = create<EstimateSearchViewModel>((set, 
     ;
   },
   onDispose: () => {
-    get().onItemValueChanged({...get().uiState.item, query: "", name: "", errorCode: null});
+    get().onItemValueChanged({query: "", name: "", errorCode: null});
   }
 }));

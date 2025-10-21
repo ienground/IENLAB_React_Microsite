@@ -24,7 +24,7 @@ export default function EstimateSearchScreen() {
     e.preventDefault();
     searchQuote(
       (id) => { navigate(`${EstimateDestination.route}/${id}`) },
-      (err) => { onItemValueChanged({...uiState.item, errorCode: err}) }
+      (err) => { onItemValueChanged({ errorCode: err }) }
     )
   };
 
@@ -55,23 +55,8 @@ export default function EstimateSearchScreen() {
                   label={t("strings:inquiry.number")}
                   placeholder={`${t("strings:example_colon")}IL2024-001`}
                   value={uiState.item.query}
-                  onClear={() => onItemValueChanged({...uiState.item, query: ""})}
-                  onChange={(e) => onItemValueChanged({...uiState.item, query: e.target.value})}
-                  // endContent={
-                  //   <Button
-                  //     isIconOnly
-                  //     isLoading={uiState.item.isSearching}
-                  //     variant="light"
-                  //     onPress={() => {
-                  //       searchQuote(
-                  //         (id) => { navigate(`${EstimateDestination.route}/${id}`) },
-                  //         (err) => { console.error(err); }
-                  //       )
-                  //     }}
-                  //   >
-                  //     <MagnifyingGlassIcon size="24" weight="bold" />
-                  //   </Button>
-                  // }
+                  onClear={() => onItemValueChanged({ query: "" })}
+                  onChange={(e) => onItemValueChanged({ query: e.target.value })}
                 />
                 <Input
                   isRequired
@@ -80,23 +65,8 @@ export default function EstimateSearchScreen() {
                   label={t("strings:name")}
                   placeholder={`${t("strings:input_name")}`}
                   value={uiState.item.name}
-                  onClear={() => onItemValueChanged({...uiState.item, query: ""})}
-                  onChange={(e) => onItemValueChanged({...uiState.item, name: e.target.value})}
-                  // endContent={
-                  //   <Button
-                  //     isIconOnly
-                  //     isLoading={uiState.item.isSearching}
-                  //     variant="light"
-                  //     onPress={() => {
-                  //       searchQuote(
-                  //         (id) => { navigate(`${EstimateDestination.route}/${id}`) },
-                  //         (err) => { console.error(err); }
-                  //       )
-                  //     }}
-                  //   >
-                  //     <MagnifyingGlassIcon size="24" weight="bold" />
-                  //   </Button>
-                  // }
+                  onClear={() => onItemValueChanged({ name: "" })}
+                  onChange={(e) => onItemValueChanged({ name: e.target.value })}
                 />
                 <AnimatePresence>
                   {uiState.item.errorCode && (
