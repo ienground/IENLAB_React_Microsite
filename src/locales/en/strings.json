@@ -1,4 +1,5 @@
 {
+  "amount": "Amount",
   "android": "Android",
   "ask_outsource": "Ask for Outsourcing",
   "at_ienground": "@IENGROUND",
@@ -11,6 +12,7 @@
     "more_500": "More than 5M KRW"
   },
   "budget_range": "Budget range",
+  "cannot_find_inquiry": "Please verify the estimate number or name.",
   "category": "Category",
   "cmp": "Compose Multiplatform",
   "company_name": "Company name",
@@ -20,6 +22,7 @@
   "content": "Content",
   "creative_computing": "Creative Computing",
   "css": "CSS",
+  "currency": "{{value, currency}}",
   "datetime": {
     "date_format": "MMM DD, YYYY",
     "date_time_format": "MMM DD, YYYY h:mm:ss a",
@@ -51,11 +54,14 @@
     "terms_of_the_contract": "Terms of the Contract",
     "working": "Working"
   },
+  "estimate_cost_format": "{{amount}} {{unit}} * {{price, currency}} = {{sum, currency}}",
   "etc": "Etc..",
   "example_colon": "Ex: ",
   "featured_projects": "Featured Projects",
   "firebase": "Firebase",
   "fixed": "Fixed",
+  "format_a_day": "A day",
+  "format_days": "{{day}} days",
   "functions": "Functions",
   "github": "GitHub",
   "google_cloud": "Google Cloud",
@@ -83,6 +89,7 @@
   "mobile": "Mobile",
   "my_name": "Hyunwoo Rhee",
   "name": "Name",
+  "no_data_to_display": "No data to display.",
   "noticeboard": "Noticeboard",
   "p5_js": "p5.js",
   "period": "Period",
@@ -134,6 +141,7 @@
   "school_type_compet": "Competition",
   "school_type_grad": "Degree",
   "screenshots": "Screenshots",
+  "search_inquiry": "Inquiry",
   "select_platforms": "Select platforms..",
   "select_type": "Select type...",
   "set_budget_range": "Set budget range",
@@ -145,7 +153,12 @@
   "swift": "Swift",
   "table_of_contents": "Table of Contents",
   "tech_stacks": "Tech Stacks",
+  "total_estimated_duration": "Total Estimated Duration",
+  "total_format": "Total {{day}}",
+  "total_price": "Total Price",
   "typescript": "Typescript",
+  "unit": "Unit",
+  "unit_price": "Unit Price",
   "unnamed_inquiry": "Unnamed Inquiry",
   "web": "Web"
 }

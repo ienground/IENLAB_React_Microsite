@@ -11,7 +11,7 @@ import {
   Chip,
   Divider, Link,
   Listbox,
-  ListboxItem, Spacer, Tab, Tabs
+  ListboxItem, Spacer, Tab, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tabs
 } from "@heroui/react";
 import {
   ArrowLeftIcon,
@@ -30,7 +30,6 @@ import {useNavigate, useParams} from "react-router";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import {useEstimateDetailViewModel} from "./EstimateDetailViewModel.tsx";
 import {EstimateStateToHeroColor, EstimateStateToString} from "../../../../../data/estimate/Estimate.ts";
-import dayjs from "dayjs";
 import {getDday} from "../../../../utils/utils.ts";
 import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts"; // HashLink 컴포넌트
 
@@ -181,16 +180,26 @@ export default function EstimateDetailScreen() {
                 <CurrencyKrwIcon size={24} weight="bold" />
                 <div className="container">
                   <div className="title">{t("strings:price")}</div>
-                  <div className="content">5억원</div>
+                  <div className="content">{t("strings:currency",
+                    {
+                      value: infoState.item?.costs?.reduce((acc, item) => acc + item.amount * item.price, 0),
+                      formatParams: {
+                        value: { style: 'currency', currency: 'KRW' }
+                      }
+                    }
+                  )}</div>
                 </div>
               </div>
-              <div className="item date">
-                <CalendarDotsIcon size={24} weight="bold" />
-                <div className="container">
-                  <div className="title">{t("strings:estimate.date")}</div>
-                  <div className="content">{dateFormat(infoState.item?.estimateAt?.toDate())}</div>
-                </div>
-              </div>
+              {
+                infoState.item?.estimateAt ?
+                  <div className="item date">
+                    <CalendarDotsIcon size={24} weight="bold" />
+                    <div className="container">
+                      <div className="title">{t("strings:estimate.date")}</div>
+                      <div className="content">{dateFormat(infoState.item?.estimateAt?.toDate())}</div>
+                    </div>
+                  </div> : <></>
+              }
               <div className="item duration">
                 <ClockIcon size={24} weight="bold" />
                 <div className="container">
@@ -214,8 +223,11 @@ export default function EstimateDetailScreen() {
                 <CardFooter className="footer">
                   <div className="title">{t("strings:tech_stacks")}</div>
                   <div className="content">
-                    <Chip>Compose Multiplatform</Chip>
-                    <Chip>Firebase</Chip>
+                    {
+                      infoState.item?.techStacks?.map((item, index) => (
+                        <Chip radius="sm" key={index}>{item}</Chip>
+                      ))
+                    }
                   </div>
                   <div className="title">{t("strings:remarks")}</div>
                   <div className="content">
@@ -230,7 +242,7 @@ export default function EstimateDetailScreen() {
                 </CardHeader>
                 <CardFooter className="footer">
                   {
-                    data.range.map((item, index) => (
+                    infoState.item?.range?.map((item, index) => (
                       <Alert
                         hideIconWrapper
                         radius="sm"
@@ -251,54 +263,101 @@ export default function EstimateDetailScreen() {
                 <CardFooter className="footer schedule">
                   <div className="line1">
                     {
-                      data.time.map((item) => (
-                        <div className="schedule-item">
-                          <div className="time">{item.time}일</div>
-                          <div className="label">{item.label}</div>
+                      infoState.item?.plans?.map((item, index) => (
+                        <div className="schedule-item" key={index}>
+                          <div className="time">{item.date === 1 ? t("strings:format_a_day") : t("strings:format_days", { day: item.date })}</div>
+                          <div className="label">{item.title}</div>
                         </div>
                       ))
                     }
                   </div>
                   <div className="line2 schedule-item">
-                    <div className="time">총 {data.time.reduce((acc, item) => acc + item.time, 0)
-                    }일</div>
-                    <div className="label">전체 예상 기간</div>
+                    <div className="time">
+                      {t(
+                        "strings:total_format",
+                        {
+                          day: t("strings:format_days", { day: infoState.item?.plans?.reduce((acc, item) => acc + item.date, 0)})
+                        }
+                      )}
+                    </div>
+                    <div className="label">{t("strings:total_estimated_duration")}</div>
                   </div>
                 </CardFooter>
               </Card>
-              <Card className="content-card anchor" id="price">
-                <CardHeader className="header">
-                  <CreditCardIcon size={24} weight="bold" />
-                  <div>{t("strings:estimate.detailed_cost")}</div>
-                </CardHeader>
-                <CardFooter className="footer budget">
-                  {
-                    data.schedule.map((item) => (
-                      <Alert
-                        className="item"
-                        hideIconWrapper
-                        radius="sm"
-                        hideIcon
-                        title={item.title}
-                        description={item.category}
-                        endContent={<div>{item.price}</div>}
-                      />
-                    ))
+              <div
+                className="anchor"
+                id="price"
+              >
+                <Table
+                  className="content-card"
+                  topContent={
+                    <div className="header" style={{ padding: 0 }}>
+                      <CreditCardIcon size={24} weight="bold" />
+                      <div>{t("strings:estimate.detailed_cost")}</div>
+                    </div>
                   }
-                  <Divider />
-                  <Alert
-                    hideIcon
-                    radius="sm"
-                    title="총 금액"
-                    endContent={
-                      <div>
-                        {data.schedule.reduce((acc, item) => acc + item.amount * item.price, 0)
+                  bottomContent={
+                    <>
+                      <Divider />
+                      <Alert
+                        hideIcon
+                        radius="sm"
+                        title={t("strings:total_price")}
+                        endContent={
+                          <div>
+                            {t("strings:currency",
+                              {
+                                value: infoState.item?.costs?.reduce((acc, item) => acc + item.amount * item.price, 0),
+                                formatParams: {
+                                  value: { style: 'currency', currency: 'KRW' }
+                                }
+                              }
+                            )}
+                          </div>
                         }
-                      </div>
+                      />
+                    </>
+                  }
+                >
+                  <TableHeader>
+                    <TableColumn>{t("strings:category")}</TableColumn>
+                    <TableColumn>{t("strings:content")}</TableColumn>
+                    <TableColumn>{t("strings:unit")}</TableColumn>
+                    <TableColumn>{t("strings:amount")}</TableColumn>
+                    <TableColumn align="end">{t("strings:unit_price")}</TableColumn>
+                    <TableColumn align="end">{t("strings:price")}</TableColumn>
+                  </TableHeader>
+                  <TableBody
+                    emptyContent={t("strings:no_data_to_display")}
+                  >
+                    {
+                      infoState.item?.costs && infoState.item?.costs?.length > 0 ?
+                        infoState.item?.costs?.map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{item.category}</TableCell>
+                            <TableCell>{item.title}</TableCell>
+                            <TableCell>{item.unit}</TableCell>
+                            <TableCell>{item.amount}</TableCell>
+                            <TableCell style={{ fontFamily: "monospace" }}>{
+                              t("strings:currency",
+                                {
+                                  value: item.price,
+                                  formatParams: { value: { style: 'currency', currency: 'KRW' } }
+                                })
+                            }</TableCell>
+                            <TableCell style={{ fontFamily: "monospace" }}>{
+                              t("strings:currency",
+                                {
+                                  value: item.price * item.amount,
+                                  formatParams: { value: { style: 'currency', currency: 'KRW' } }
+                                })
+                            }</TableCell>
+                          </TableRow>
+                        )) : []
                     }
-                  />
-                </CardFooter>
-              </Card>
+                  </TableBody>
+                </Table>
+              </div>
               <Card className="content-card anchor" id="contract">
                 <CardHeader className="header">
                   <ArticleIcon size={24} weight="bold" />
@@ -306,8 +365,9 @@ export default function EstimateDetailScreen() {
                 </CardHeader>
                 <CardFooter className="footer condition">
                   {
-                    data.condition.map((item, index) => (
+                    infoState.item?.conditions?.map((item, index) => (
                       <Alert
+                        key={index}
                         className="item"
                         radius="sm"
                         icon={<div style={{textAlign: "center"}}>{index + 1}</div>}
@@ -351,22 +411,23 @@ const ContentWrapper = styled.div`
     flex-direction: column;
     gap: 1rem;
     
-    & > .header {
+    .header {
       padding: 1rem 1rem 0 1rem;
       
       display: flex;
       flex-direction: row;
+      align-items: center;
       gap: 1rem;
       
       font-size: x-large;
       font-weight: bold;
     }
     
-    & > .body {
+    .body {
       padding: 0 1rem;
     }
     
-    & > .footer {
+    .footer {
       padding: 0 1rem 1rem 1rem;
       
       display: flex;
@@ -483,7 +544,7 @@ const ContentWrapper = styled.div`
     flex-direction: column;
     gap: 1rem;
     
-    & > .header {
+    & > .header {      
       font-size: xx-large;
       font-weight: bold;
     }
@@ -538,7 +599,7 @@ const SummaryCard = styled(Card)`
     padding: 0 1rem 1rem 1rem;
     
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     column-gap: 1rem;
     
     & > .item {

@@ -1,11 +1,13 @@
 import {create} from "zustand/react";
-import {collection, getDocs, query, where} from "firebase/firestore";
+import {collection, getDocs, query, where, and} from "firebase/firestore";
 import {fbFirestore} from "../../../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../../../constant/FirestorePath.ts";
 
 export type EstimateSearchDetails = {
-  query: string;
+  query?: string;
+  name?: string;
   isSearching?: boolean;
+  errorCode?: string | null;
 }
 
 interface EstimateSearchUiStateProps {
@@ -16,7 +18,7 @@ export class EstimateSearchUiState {
   item: EstimateSearchDetails;
 
   constructor(props: EstimateSearchUiStateProps) {
-    const { item = { query: "" } } = props;
+    const { item = { query: "", name: "" } } = props;
 
     this.item = item;
   }
@@ -27,24 +29,29 @@ interface EstimateSearchViewModel {
   onItemValueChanged: (item: EstimateSearchDetails) => void;
 
   searchQuote: (onSuccess: (id: string) => void, onFailure: (err: string) => void) => void;
+  onDispose: () => void;
 }
 
 export const useEstimateSearchViewModel = create<EstimateSearchViewModel>((set, get) => ({
-  uiState: new EstimateSearchUiState({ item: { query: "" } }),
+  uiState: new EstimateSearchUiState({ item: { query: "", name: "", errorCode: null } }),
   onItemValueChanged: (item: EstimateSearchDetails) => set({ uiState: new EstimateSearchUiState({ item: item }) }),
   searchQuote: (onSuccess, onFailure) => {
-    get().onItemValueChanged({...get().uiState.item, isSearching: true});
+    get().onItemValueChanged({...get().uiState.item, isSearching: true, errorCode: null});
 
     const q = query(
       collection(fbFirestore, FirestorePath.ESTIMATE),
-      where(FirestorePath.DELETE, "!=", true),
-      where(FirestorePath.Estimate.IDENTIFIER, "==", get().uiState.item.query)
+      and(
+        where(FirestorePath.DELETE, "!=", true),
+        where(FirestorePath.Estimate.IDENTIFIER, "==", get().uiState.item.query),
+        where(FirestorePath.Estimate.NAME, "==", get().uiState.item.name)
+      )
     );
 
     getDocs(q)
       .then((res) => {
+        console.log(res);
         if (res.empty) {
-          onFailure("wrong");
+          onFailure("EMPTY");
         } else {
           onSuccess(res.docs[0].id);
         }
@@ -55,5 +62,8 @@ export const useEstimateSearchViewModel = create<EstimateSearchViewModel>((set, 
         onFailure(err);
       })
     ;
+  },
+  onDispose: () => {
+    get().onItemValueChanged({...get().uiState.item, query: "", name: "", errorCode: null});
   }
 }));

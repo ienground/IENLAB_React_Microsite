@@ -1,14 +1,16 @@
 import DefaultLayout from "../../../../utils/layout/DefaultLayout.tsx";
 import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
-import {Button, Card, CardBody, CardHeader, Input} from "@heroui/react";
+import {Alert, Button, Card, CardBody, CardHeader, Form, Input} from "@heroui/react";
 import styled from "styled-components";
-import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon} from "@phosphor-icons/react";
+import {MagnifyingGlassIcon, PasswordIcon, ReceiptIcon, WarningIcon} from "@phosphor-icons/react";
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useTranslation} from "react-i18next";
 import '../../../../../locales/i18n';
 import {useEstimateSearchViewModel} from "./EstimateSearchViewModel.tsx";
 import {useNavigate} from "react-router";
 import {EstimateDestination} from "../EstimateDestination.ts";
+import type {FormEvent} from "react";
+import {motion, AnimatePresence} from "framer-motion";
 
 export default function EstimateSearchScreen() {
   const { t } = useTranslation();
@@ -18,6 +20,14 @@ export default function EstimateSearchScreen() {
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
 
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    searchQuote(
+      (id) => { navigate(`${EstimateDestination.route}/${id}`) },
+      (err) => { onItemValueChanged({...uiState.item, errorCode: err}) }
+    )
+  };
+
   return (
     <DefaultLayout>
       <CommonWrapper>
@@ -26,34 +36,101 @@ export default function EstimateSearchScreen() {
           <div>{t('strings:quote_inquiry')}</div>
         </div>
         <ContentWrapper>
-          <Card className="input-card visible-animation" ref={addToVisibleAnimationRefs}>
+          <Card
+            className="input-card visible-animation"
+            ref={addToVisibleAnimationRefs}
+          >
             <CardHeader className="header">
               <PasswordIcon size={32} weight="fill" />
               <div>{t("strings:inquiry.input")}</div>
             </CardHeader>
             <CardBody className="body">
-              <Input
-                radius="sm"
-                label={t("strings:inquiry.number")}
-                placeholder={`${t("strings:example_colon")}IL2024-001`}
-                value={uiState.item.query}
-                onChange={(e) => onItemValueChanged({ query: e.target.value })}
-                endContent={
-                  <Button
-                    isIconOnly
-                    isLoading={uiState.item.isSearching}
-                    variant="light"
-                    onPress={() => {
-                      searchQuote(
-                        (id) => { navigate(`${EstimateDestination.route}/${id}`) },
-                        (err) => { console.error(err); }
-                      )
-                    }}
-                  >
-                    <MagnifyingGlassIcon size="24" weight="bold" />
-                  </Button>
-                }
-              />
+              <Form
+                onSubmit={onSubmit}
+              >
+                <Input
+                  isRequired
+                  isClearable
+                  radius="sm"
+                  label={t("strings:inquiry.number")}
+                  placeholder={`${t("strings:example_colon")}IL2024-001`}
+                  value={uiState.item.query}
+                  onClear={() => onItemValueChanged({...uiState.item, query: ""})}
+                  onChange={(e) => onItemValueChanged({...uiState.item, query: e.target.value})}
+                  // endContent={
+                  //   <Button
+                  //     isIconOnly
+                  //     isLoading={uiState.item.isSearching}
+                  //     variant="light"
+                  //     onPress={() => {
+                  //       searchQuote(
+                  //         (id) => { navigate(`${EstimateDestination.route}/${id}`) },
+                  //         (err) => { console.error(err); }
+                  //       )
+                  //     }}
+                  //   >
+                  //     <MagnifyingGlassIcon size="24" weight="bold" />
+                  //   </Button>
+                  // }
+                />
+                <Input
+                  isRequired
+                  isClearable
+                  radius="sm"
+                  label={t("strings:name")}
+                  placeholder={`${t("strings:input_name")}`}
+                  value={uiState.item.name}
+                  onClear={() => onItemValueChanged({...uiState.item, query: ""})}
+                  onChange={(e) => onItemValueChanged({...uiState.item, name: e.target.value})}
+                  // endContent={
+                  //   <Button
+                  //     isIconOnly
+                  //     isLoading={uiState.item.isSearching}
+                  //     variant="light"
+                  //     onPress={() => {
+                  //       searchQuote(
+                  //         (id) => { navigate(`${EstimateDestination.route}/${id}`) },
+                  //         (err) => { console.error(err); }
+                  //       )
+                  //     }}
+                  //   >
+                  //     <MagnifyingGlassIcon size="24" weight="bold" />
+                  //   </Button>
+                  // }
+                />
+                <AnimatePresence>
+                  {uiState.item.errorCode && (
+                    <motion.div
+                      key="error-alert"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
+                      className="w-full"
+                    >
+                      <Alert
+                        color="danger"
+                        className="alert"
+                        hideIconWrapper
+                        icon={<WarningIcon weight="fill" />}
+                      >
+                        {t("strings:cannot_find_inquiry")}
+                      </Alert>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <Button
+                  isLoading={uiState.item?.isSearching}
+                  endContent={<MagnifyingGlassIcon weight="bold" />}
+                  color="primary"
+                  variant="solid"
+                  fullWidth
+                  type="submit"
+                  radius="sm"
+                >
+                  {t("strings:search_inquiry")}
+                </Button>
+              </Form>
+
               <ul className="description">
                 <li>{t("strings:inquiry.desc1")}</li>
                 <li>{t("strings:inquiry.desc2")}</li>
@@ -105,6 +182,10 @@ const ContentWrapper = styled.div`
         list-style-type: disc;
       }
       
+      .alert {
+        width: 100%;
+        margin-top: 1rem;
+      }
     }
       
   }

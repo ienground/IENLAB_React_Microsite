@@ -1,4 +1,5 @@
 {
+  "amount": "개수",
   "android": "안드로이드",
   "ask_outsource": "외주 문의",
   "at_ienground": "@IENGROUND",
@@ -11,6 +12,7 @@
     "more_500": "500만원 이상"
   },
   "budget_range": "예산 범위",
+  "cannot_find_inquiry": "견적 번호나 이름을 다시 확인해주세요.",
   "category": "분류",
   "cmp": "Compose Multiplatform",
   "company_name": "회사명",
@@ -20,6 +22,7 @@
   "content": "항목",
   "creative_computing": "크리에이티브 컴퓨팅",
   "css": "CSS",
+  "currency": "{{value, currency}}",
   "datetime": {
     "date_format": "YYYY년 M월 D일",
     "date_time_format": "YYYY년 M월 D일 a h:mm:ss",
@@ -51,11 +54,14 @@
     "terms_of_the_contract": "계약 조건",
     "working": "작업 중"
   },
+  "estimate_cost_format": "{{amount}}{{unit}} * {{price, currency}} = {{sum, currency}}",
   "etc": "기타",
   "example_colon": "예: ",
   "featured_projects": "주요 프로젝트",
   "firebase": "Firebase",
   "fixed": "고정됨",
+  "format_a_day": "1일",
+  "format_days": "{{day}}일",
   "functions": "기능",
   "github": "GitHub",
   "google_cloud": "Google Cloud",
@@ -83,6 +89,7 @@
   "mobile": "모바일",
   "my_name": "이현우",
   "name": "이름",
+  "no_data_to_display": "표시할 데이터가 없습니다",
   "noticeboard": "공지사항",
   "p5_js": "p5.js",
   "period": "기간",
@@ -134,6 +141,7 @@
   "school_type_compet": "대회",
   "school_type_grad": "학위",
   "screenshots": "스크린샷",
+  "search_inquiry": "조회하기",
   "select_platforms": "플랫폼을 선택하세요",
   "select_type": "유형을 선택하세요",
   "set_budget_range": "예산 범위를 설정하세요",
@@ -145,7 +153,12 @@
   "swift": "Swift",
   "table_of_contents": "목차",
   "tech_stacks": "기술 스택",
+  "total_estimated_duration": "전체 예상 기간",
+  "total_format": "총 {{day}}",
+  "total_price": "총 금액",
   "typescript": "Typescript",
+  "unit": "단위",
+  "unit_price": "단가",
   "unnamed_inquiry": "이름 없는 견적",
   "web": "웹"
 }

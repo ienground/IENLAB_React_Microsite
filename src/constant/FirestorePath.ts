@@ -26,6 +26,9 @@ export const FirestorePath = {
     SIG_NOTE: "sigNote", // string
     PLANS: "plans", // { string, number }[]
     CONDITIONS: "conditions", // string[]
+    TECH_STACKS: "techStacks", // string[]
+    RANGE: "range", // string[],
+    COSTS: "costs", // { string, string, number }[]
   },
 
   Outsource: {

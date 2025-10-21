@@ -472,6 +472,7 @@ export default function RootScreen() {
                               placeholder={t("strings:input_name")}
                               value={uiState.item.formData.name}
                               onChange={handleChange}
+                              onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, name: ""} })}
                             />
                             <Input
                               isClearable
@@ -482,6 +483,7 @@ export default function RootScreen() {
                               placeholder={t("strings:company_optional_input")}
                               value={uiState.item.formData.company}
                               onChange={handleChange}
+                              onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, company: ""} })}
                             />
                           </div>
                           <Input
@@ -494,6 +496,7 @@ export default function RootScreen() {
                             placeholder="your@email.com"
                             value={uiState.item.formData.email}
                             onChange={handleChange}
+                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, email: ""} })}
                           />
                           <div className="two-line">
                             <Select
@@ -539,6 +542,7 @@ export default function RootScreen() {
                             name="budget"
                             value={uiState.item.formData.budget}
                             onChange={handleChange}
+                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, description: ""} })}
                           >
                             {
                               Object.values(estimateBudget).map((item) => (

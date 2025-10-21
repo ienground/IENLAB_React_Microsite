@@ -4,6 +4,7 @@ import {FirestorePath} from "../../constant/FirestorePath.ts";
 import type {WorkPlan} from "./WorkPlan.ts";
 import {platformType, type PlatformType} from "../common/PlatformType.ts";
 import type {TFunction} from "i18next";
+import type {CopiedWorkCost} from "./CopiedWorkCost.ts";
 
 export const estimateType = {
   COMMUNITY: "community",
@@ -57,6 +58,9 @@ export type Estimate = {
   sigNote: string;
   plans: WorkPlan[];
   conditions: string[];
+  techStacks: string[];
+  range: string[];
+  costs: CopiedWorkCost[];
 };
 
 export const estimateDefault: Estimate = {
@@ -79,7 +83,10 @@ export const estimateDefault: Estimate = {
   summary: "",
   sigNote: "",
   plans: [],
-  conditions: []
+  conditions: [],
+  techStacks: [],
+  range: [],
+  costs: []
 }
 
 export function EstimateTypeToString(t: TFunction, value: EstimateType | undefined): string {
@@ -157,7 +164,10 @@ export function DocToEstimate(snapshot: QueryDocumentSnapshot | DocumentSnapshot
     summary: doc[FirestorePath.Estimate.SUMMARY],
     sigNote: doc[FirestorePath.Estimate.SIG_NOTE],
     plans: doc[FirestorePath.Estimate.PLANS],
-    conditions: doc[FirestorePath.Estimate.CONDITIONS]
+    conditions: doc[FirestorePath.Estimate.CONDITIONS],
+    techStacks: doc[FirestorePath.Estimate.TECH_STACKS],
+    range: doc[FirestorePath.Estimate.RANGE],
+    costs: doc[FirestorePath.Estimate.COSTS],
   };
 }
 
@@ -181,6 +191,9 @@ export function EstimateToHashMap(item: Estimate, isUpdate: boolean = false) {
     [FirestorePath.Estimate.SIG_NOTE]: item.sigNote,
     [FirestorePath.Estimate.PLANS]: item.plans,
     [FirestorePath.Estimate.CONDITIONS]: item.conditions,
+    [FirestorePath.Estimate.TECH_STACKS]: item.techStacks,
+    [FirestorePath.Estimate.RANGE]: item.range,
+    [FirestorePath.Estimate.COSTS]: item.costs
   };
 
   if (!isUpdate) {
