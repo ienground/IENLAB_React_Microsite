@@ -25,17 +25,17 @@ export class RootUiState {
 
 interface RootViewModel {
   uiState: RootUiState;
-  onItemValueChanged: (item: RootDetails) => void;
+  onItemValueChanged: (item: Partial<RootDetails>) => void;
 
   uploadEstimate: (onSuccess: (res: DocumentReference) => void, onFailure: (err: string) => void) => void;
 }
 
 export const useRootViewModel = create<RootViewModel>((set, get) => ({
   uiState: new RootUiState({ item: { formData: estimateDefault }}),
-  onItemValueChanged: (item: RootDetails) => set({ uiState: new RootUiState({ item: item }) }),
+  onItemValueChanged: (item: Partial<RootDetails>) => set({ uiState: new RootUiState({ item: {...get().uiState.item, ...item} }) }),
 
   uploadEstimate: (onSuccess, onFailure) => {
-    get().onItemValueChanged({...get().uiState.item, isEstimateUploading: true});
+    get().onItemValueChanged({ isEstimateUploading: true });
     const ref = collection(fbFirestore, FirestorePath.ESTIMATE);
     addDoc(ref, EstimateToHashMap(get().uiState.item.formData))
       .then(onSuccess)

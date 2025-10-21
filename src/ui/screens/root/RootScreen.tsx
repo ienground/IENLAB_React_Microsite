@@ -67,7 +67,7 @@ export default function RootScreen() {
           color: "success"
         });
 
-        onItemValueChanged({...uiState.item, formData: estimateDefault})
+        onItemValueChanged({ formData: estimateDefault })
       },
       () => {
         addToast({
@@ -78,10 +78,6 @@ export default function RootScreen() {
       }
     );
   };
-
-  useEffect(() => {
-    console.log(JSON.stringify(uiState.item?.formData));
-  }, [uiState.item, uiState]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
