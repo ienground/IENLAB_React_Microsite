@@ -22,6 +22,7 @@
   "content": "Content",
   "copied_desc": "Paste it in the desired location.",
   "copied_title": "Link Copied!",
+  "copyright": "Copyright © 2014-{{year}} ienlab. All rights reserved.",
   "creative_computing": "Creative Computing",
   "css": "CSS",
   "currency": "{{value, currency}}",
@@ -38,6 +39,7 @@
   "education": "Education",
   "email": "Email",
   "end_date": "End Date",
+  "english_no_trans": "English",
   "estimate": {
     "admit": "Admit",
     "cancel": "Canceled",
@@ -88,6 +90,7 @@
   "ios": "iOS",
   "jetpack_compose": "Jetpack Compose",
   "key_experience": "Key Experience",
+  "korean_no_trans": "한국어",
   "kotlin": "Kotlin",
   "mobile": "Mobile",
   "my_name": "Hyunwoo Rhee",

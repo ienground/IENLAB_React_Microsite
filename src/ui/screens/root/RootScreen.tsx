@@ -93,7 +93,7 @@ export default function RootScreen() {
   }, [hash]);
 
   return (
-    <DefaultLayout toolbarOverlap>
+    <DefaultLayout toolbarOverlap footerVisible={false}>
       <Wrapper>
         <Image
           id="background-pattern"

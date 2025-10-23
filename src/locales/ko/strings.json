@@ -22,6 +22,7 @@
   "content": "항목",
   "copied_desc": "원하는 곳에 붙여넣으세요.",
   "copied_title": "복사되었습니다!",
+  "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유.",
   "creative_computing": "크리에이티브 컴퓨팅",
   "css": "CSS",
   "currency": "{{value, currency}}",
@@ -38,6 +39,7 @@
   "education": "학력",
   "email": "이메일",
   "end_date": "마감일",
+  "english_no_trans": "English",
   "estimate": {
     "admit": "승인됨",
     "cancel": "취소됨",
@@ -88,6 +90,7 @@
   "ios": "iOS",
   "jetpack_compose": "Jetpack Compose",
   "key_experience": "주요 경력",
+  "korean_no_trans": "한국어",
   "kotlin": "Kotlin",
   "mobile": "모바일",
   "my_name": "이현우",

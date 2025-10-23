@@ -160,7 +160,6 @@ export const Header = (props: HeaderProps) => {
           >
             <img src={imgLogoTypo} alt="Logo" ref={logoLight}/>
           </CSSTransition>
-
         </Link>
 
       </NavbarBrand>

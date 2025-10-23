@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import isLeapYear from 'dayjs/plugin/isLeapYear'; //윤년을 판단하는 플러그인
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {useScrollToTop} from "./ui/utils/utils/ScrollToTop.ts";
+import {useTranslation} from "react-i18next";
+import {useEffect} from "react";
 
 declare module "@react-types/shared" {
   interface RouterConfig {
@@ -21,12 +23,15 @@ declare module "@react-types/shared" {
 
 function App() {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   dayjs.extend(isLeapYear, relativeTime); // 플러그인 등록
-  dayjs.locale('ko'); // 언어 등록
-  // dayjs.locale('en'); // 언어 등록
 
   useScrollToTop();
+
+  useEffect(() => {
+    dayjs.locale(i18n.language);
+  }, [i18n, i18n.language]);
 
   return (
     <Wrapper>
