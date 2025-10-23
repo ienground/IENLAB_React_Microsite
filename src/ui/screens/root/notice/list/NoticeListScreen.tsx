@@ -1,8 +1,8 @@
 import DefaultLayout from "../../../../utils/layout/DefaultLayout.tsx";
 import {CommonWrapper} from "../../../../utils/layout/CommonWrapper.tsx";
-import {BellRingingIcon, CalendarDotsIcon, PushPinIcon} from "@phosphor-icons/react";
+import {ArrowLeftIcon, ArrowRightIcon, BellRingingIcon, CalendarDotsIcon, PushPinIcon} from "@phosphor-icons/react";
 import styled from "styled-components";
-import {Card, Chip, Image, Skeleton} from "@heroui/react";
+import {Button, Card, Chip, Image, Skeleton} from "@heroui/react";
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {useEffect, useRef} from "react";
 import type {Notice} from "../../../../../data/notice/Notice.tsx";
@@ -15,7 +15,7 @@ import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
 import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
 
 export default function NoticeListScreen() {
-  const { infoStateList, startListening, stopListening } = useNoticeListViewModel();
+  const { infoStateList, startListening, stopListening, setPage, currentPage, hasMore } = useNoticeListViewModel();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -42,53 +42,96 @@ export default function NoticeListScreen() {
           <BellRingingIcon size={48} weight="bold" />
           <div>{t("strings:noticeboard")}</div>
         </div>
-        <ContentWrapper
+        <div
           className="visible-animation"
           ref={addToVisibleAnimationRefs}
         >
-          <CSSTransition
-            in={!infoStateList.isInitialized}
-            timeout={300}
-            classNames="fade"
-            nodeRef={placeholderRef}
-            unmountOnExit
-            appear
-          >
-            <div ref={placeholderRef} className="flexbox">
-              {
-                Array(3).fill(null).map((_, index) => (
-                  <NoticeCellShimmer index={index} />
-                ))
-              }
+          <ButtonWrapper>
+            <div className="container">
+              <div style={{ flexGrow: 1 }} />
+              <Button
+                color="primary"
+                isDisabled={currentPage === 1}
+                onPress={() => setPage(currentPage - 1)}
+                startContent={<ArrowLeftIcon size="24" weight="bold" />}
+              >
+                {t("strings:prev")}
+              </Button>
+              <Button
+                color="primary"
+                isDisabled={!hasMore}
+                onPress={() => setPage(currentPage + 1)}
+                endContent={<ArrowRightIcon size="24" weight="bold" />}
+              >
+                {t("strings:next")}
+              </Button>
             </div>
-          </CSSTransition>
-          <CSSTransition
-            in={infoStateList.isInitialized}
-            timeout={300}
-            classNames="fade"
-            nodeRef={listRef}
-            mountOnEnter
-            appear
-          >
-            <div ref={listRef} className="flexbox">
-              {
-                infoStateList.itemList.map((item) => (
-                  <NoticeCell key={item.id} item={item} onClick={() => navigate(`${NoticeDestination.route}/${item?.id}`)} />
-                ))
-              }
-            </div>
-          </CSSTransition>
-        </ContentWrapper>
+          </ButtonWrapper>
+          <ContentWrapper>
+            <CSSTransition
+              in={!infoStateList.isInitialized}
+              timeout={300}
+              classNames="fade"
+              nodeRef={placeholderRef}
+              unmountOnExit
+              appear
+            >
+              <div ref={placeholderRef} className="flexbox">
+                {
+                  Array(4).fill(null).map((_, index) => (
+                    <NoticeCellShimmer index={index} />
+                  ))
+                }
+              </div>
+            </CSSTransition>
+            <CSSTransition
+              in={infoStateList.isInitialized}
+              timeout={300}
+              classNames="fade"
+              nodeRef={listRef}
+              mountOnEnter
+              appear
+            >
+              <div ref={listRef} className="flexbox">
+                {
+                  infoStateList.itemList.map((item) => (
+                    <NoticeCell key={item.id} item={item} onClick={() => navigate(`${NoticeDestination.route}/${item?.id}`)} />
+                  ))
+                }
+              </div>
+            </CSSTransition>
+          </ContentWrapper>
+        </div>
       </CommonWrapper>
     </DefaultLayout>
   );
 }
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  height: 4rem;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
+  & > .container {
+    width: 100%;
+    max-width: 720px;
+    
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+`;
+
 const ContentWrapper = styled.div`
   width: 100%;
-  padding: 1rem;
+  height: 840px;
   
   position: relative;
+  
   
   .flexbox {
     position: absolute;
