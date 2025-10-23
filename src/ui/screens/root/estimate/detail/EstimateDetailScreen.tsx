@@ -9,24 +9,20 @@ import {
   CardFooter,
   CardHeader,
   Chip,
-  Divider, Link,
-  Listbox,
-  ListboxItem, Spacer, Tab, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tabs
+  Divider, Spacer, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from "@heroui/react";
 import {
-  ArrowLeftIcon,
   ArrowUUpLeftIcon, ArticleIcon, CalendarDotsIcon, CheckCircleIcon, ClockIcon, CreditCardIcon, CurrencyKrwIcon,
   DownloadSimpleIcon,
-  FileTextIcon, GithubLogoIcon, HashIcon, ListDashesIcon,
+  FileTextIcon, HashIcon, ListDashesIcon,
   PrinterIcon,
   ReceiptIcon,
   ShareNetworkIcon, UserCircleIcon
 } from "@phosphor-icons/react";
 import {useTranslation} from "react-i18next";
 import "../../../../../locales/i18n.ts";
-import {type ComponentProps, type FC, useCallback, useEffect, useRef, useState} from "react";
-import { HashLink } from 'react-router-hash-link';
-import {useNavigate, useParams} from "react-router";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import {useEstimateDetailViewModel} from "./EstimateDetailViewModel.tsx";
 import {EstimateStateToHeroColor, EstimateStateToString} from "../../../../../data/estimate/Estimate.ts";
@@ -195,6 +191,10 @@ export default function EstimateDetailScreen() {
                         radius="sm"
                         icon={<CheckCircleIcon size={24} weight="bold" /> }
                         color="success"
+                        classNames={{
+                          alertIcon: "text-success-500",
+                          title: "text-success-500"
+                        }}
                         title={item}
                         key={index}
                       />

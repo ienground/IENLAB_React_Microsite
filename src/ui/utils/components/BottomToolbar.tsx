@@ -62,7 +62,7 @@ export default function BottomToolbar(props: BottomToolbarProps) {
       className={props.visible ? "visible" : ""}
       radius="full"
       classNames={{
-        tabList: "bg-default-100"
+        tabList: "!bg-default-100"
       }}
       selectedKey={props.selectedKey}
       onSelectionChange={(key) => props.onSelectionChange(key.toString())}

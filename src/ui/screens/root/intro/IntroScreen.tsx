@@ -2,12 +2,9 @@ import DefaultLayout from "../../../utils/layout/DefaultLayout.tsx";
 import styled from "styled-components";
 import {useElementRefs, useVisibleAnimation} from "../../../utils/utils.ts";
 import {
-  Card,
-  CardBody,
-  CardHeader, Chip,
+  Chip,
   Image,
-  Spacer, Tab,
-  Table,
+  Spacer, Table,
   TableBody, TableCell,
   TableColumn,
   TableHeader,
@@ -21,12 +18,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {useTranslation} from "react-i18next";
 import {useIntroViewModel} from "./IntroViewModel.ts";
-import {useEffect, useRef} from "react";
-import {DevProjectCell, DevProjectCellShimmer} from "../dev/list/DevListScreen.tsx";
+import {useEffect} from "react";
+import {DevProjectCell} from "../dev/list/DevListScreen.tsx";
 import {CommonWrapper} from "../../../utils/layout/CommonWrapper.tsx";
 import {useNavigate} from "react-router";
 import {DevDestination} from "../dev/DevDestination.ts";
-import {CSSTransition} from "react-transition-group";
 
 export default function IntroScreen() {
   gsap.registerPlugin(ScrollTrigger)
@@ -180,19 +176,19 @@ export default function IntroScreen() {
     }
   ];
 
-  const historyTypeColorMap: Record<string, "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined> = {
-    team: "primary",
-    my_app: "secondary",
+  const historyTypeColorMap: Record<string, string> = {
+    team: "chip-ienlab-pink",
+    my_app: "chip-ienlab-skyblue",
   };
   const historyTypeLabelMap: Record<string, string> = {
     team: t("strings:history_type_team"),
     my_app: t("strings:history_type_solo")
   };
-  const schoolTypeColorMap: Record<string, "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined> = {
-    comm: "primary",
-    class: "warning",
-    compet: "secondary",
-    grad: "success",
+  const schoolTypeColorMap: Record<string, string> = {
+    comm: "chip-ienlab-pink",
+    class: "chip-ienlab-purple",
+    compet: "chip-ienlab-skyblue",
+    grad: "chip-ienlab-blue"
   };
   const schoolTypeLabelMap: Record<string, string> = {
     comm: t("strings:school_type_comm"),
@@ -263,7 +259,9 @@ export default function IntroScreen() {
                         <Chip
                           radius="sm"
                           size="sm"
-                          color={historyTypeColorMap[item.type]}
+                          classNames={{
+                            base: historyTypeColorMap[item.type]
+                          }}
                           variant="flat"
                         >{historyTypeLabelMap[item.type]}</Chip>
                       </TableCell>
@@ -309,7 +307,7 @@ export default function IntroScreen() {
                     <Chip
                       radius="sm"
                       size="sm"
-                      color="primary"
+                      classNames={{ base: "chip-ienlab-pink" }}
                       variant="flat"
                     >
                       {i18n.language === "ko" ? "아트&테크놀로지학과" : "Art&Technology"}
@@ -340,7 +338,7 @@ export default function IntroScreen() {
                           <Chip
                             radius="sm"
                             size="sm"
-                            color={schoolTypeColorMap[item.type]}
+                            classNames={{ base: schoolTypeColorMap[item.type] }}
                             variant="flat"
                           >{schoolTypeLabelMap[item.type]}</Chip>
                         </TableCell>

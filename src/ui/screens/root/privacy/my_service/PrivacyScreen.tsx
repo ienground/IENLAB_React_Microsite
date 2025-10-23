@@ -421,7 +421,7 @@ const ContentWrapper = styled.div`
         }
 
         &.active {
-          color: ${'hsl(var(--heroui-primary))'};
+          color: ${'hsl(var(--heroui-primary-500))'};
         }
       }
     }

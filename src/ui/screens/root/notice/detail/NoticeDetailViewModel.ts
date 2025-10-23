@@ -2,7 +2,6 @@ import {
   DocToNotice,
   DocToNoticeCategory,
   type Notice,
-  type NoticeCategory
 } from "../../../../../data/notice/Notice.tsx";
 import {create} from "zustand/react";
 import {doc, onSnapshot, getDoc} from "firebase/firestore";

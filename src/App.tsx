@@ -2,7 +2,7 @@ import './App.css'
 import {type NavigateOptions, useHref, useNavigate} from "react-router";
 import RootRouter from "./ui/router/RootRouter.tsx";
 import {HeroUIProvider} from "@heroui/system";
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import {theme} from "./theme";
 import { ToastProvider } from "@heroui/react";
 
@@ -29,7 +29,7 @@ function App() {
   useScrollToTop();
 
   return (
-    <>
+    <Wrapper>
       <HeroUIProvider navigate={navigate} useHref={useHref}>
         <ThemeProvider theme={theme}>
           <RootRouter />
@@ -40,8 +40,47 @@ function App() {
           />
         </ThemeProvider>
       </HeroUIProvider>
-    </>
+    </Wrapper>
   );
 }
 
-export default App
+const Wrapper = styled.div`
+  // .after\\:text-danger {
+  //   &::after {
+  //     color: ${'hsl(var(--heroui-danger-500))'};
+  //   }
+  // }
+  //
+  // .\\text-danger {
+  //   color: ${'hsl(var(--heroui-danger-500) / 1)'};
+  // }
+  
+  .google-play-button {
+    background: conic-gradient(
+            from 270deg at center,
+            #4285F4 0deg,
+            #4285F4 30deg,
+            #34A853 60deg,
+            #34A853 120deg,
+            #FBBC04 150deg,
+            #FBBC04 210deg,
+            #EA4335 240deg,
+            #EA4335 300deg,
+            #4285F4 330deg
+    );
+    color: white;
+  }
+  
+  .app-store-button {
+    background: linear-gradient(#38b2ff, #0d62d4);
+    color: white;
+  }
+  
+  .github-button {
+    background-color: ${`hsl(var(--heroui-foreground))`};
+    color: ${`hsl(var(--heroui-background))`};
+  }
+  
+`;
+
+export default App;

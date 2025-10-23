@@ -20,6 +20,8 @@
   "contact_info": "Contact Info",
   "contact_project_inq": "Contact us for project inquiries",
   "content": "Content",
+  "copied_desc": "Paste it in the desired location.",
+  "copied_title": "Link Copied!",
   "creative_computing": "Creative Computing",
   "css": "CSS",
   "currency": "{{value, currency}}",

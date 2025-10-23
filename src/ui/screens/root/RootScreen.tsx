@@ -36,7 +36,6 @@ import {platformType, PlatformTypeToString} from "../../../data/common/PlatformT
 import {useTranslation} from "react-i18next";
 import {useRootViewModel} from "./RootViewModel.ts";
 import {DevDestination} from "./dev/DevDestination.ts";
-import IntroAnimation from "../../utils/components/IntroAnimation.tsx";
 
 export default function RootScreen() {
   const { uiState, onItemValueChanged, uploadEstimate } = useRootViewModel();
@@ -112,42 +111,42 @@ export default function RootScreen() {
         >
           <FullpageSection>
             <SectionWrapper>
-                <div className="content-wrapper">
-                  <div className="content">
-                    <div className="message">
-                      {/*<IntroAnimation />*/}
-                      <div className="title">
-                        {t("strings:root_hello")} <br />
-                        {
-                          i18n.language !== "ko" ? t("strings:root_im_ienground") : ""
-                        }
-                        <div className="job-part">
-                          <span className="font-bold" id="appear-part">{t("strings:root_mobile_creator")}</span> <br />
-                          <span className="font-bold" id="remove-part">{t("strings:root_mobile_dev_design")}</span> <br />
-                        </div>
-                        {
-                          i18n.language === "ko" ? t("strings:root_im_ienground") : ""
-                        }
+              <div className="content-wrapper">
+                <div className="content">
+                  <div className="message">
+                    {/*<IntroAnimation />*/}
+                    <div className="title">
+                      {t("strings:root_hello")} <br />
+                      {
+                        i18n.language !== "ko" ? t("strings:root_im_ienground") : ""
+                      }
+                      <div className="job-part">
+                        <span className="font-bold" id="appear-part">{t("strings:root_mobile_creator")}</span> <br />
+                        <span className="font-bold" id="remove-part">{t("strings:root_mobile_dev_design")}</span> <br />
                       </div>
-                      <div className="description">
-                        {t("strings:root.intro_desc1")}<br />
-                        {t("strings:root.intro_desc2")}
-                      </div>
-                      <div className="buttons">
-                        <Button
-                          color="primary"
-                          onPress={() => setActiveIndex(3)}
-                          variant="solid"
-                        >
-                          {t("strings:root.ask_project")}
-                        </Button>
-                        <Button
-                        as={Link}
+                      {
+                        i18n.language === "ko" ? t("strings:root_im_ienground") : ""
+                      }
+                    </div>
+                    <div className="description">
+                      {t("strings:root.intro_desc1")}<br />
+                      {t("strings:root.intro_desc2")}
+                    </div>
+                    <div className="buttons">
+                      <Button
                         color="primary"
-                        href={DevDestination.route}
-                        variant="faded"
+                        onPress={() => setActiveIndex(3)}
+                        variant="solid"
                       >
-                          {t("strings:root.check_portfolio")}
+                        {t("strings:root.ask_project")}
+                      </Button>
+                      <Button
+                        as={Link}
+                        color="secondary"
+                        href={DevDestination.route}
+                        variant="solid"
+                      >
+                        {t("strings:root.check_portfolio")}
                       </Button>
                     </div>
                   </div>
@@ -171,8 +170,8 @@ export default function RootScreen() {
                       src={ImgIengroundProfile}
                     />
                   </Card>
-                </div>
               </div>
+            </div>
             </SectionWrapper>
           </FullpageSection>
           <FullpageSection>
@@ -255,24 +254,28 @@ export default function RootScreen() {
                                 value={90}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-pink" }}
                               />
                               <Progress
                                 label={t("strings:jetpack_compose")}
                                 value={95}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-purple" }}
                               />
                               <Progress
                                 label={t("strings:cmp")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-skyblue" }}
                               />
                               <Progress
                                 label={t("strings:swift")}
                                 value={50}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-blue" }}
                               />
                             </CardBody>
                           </TechCard>
@@ -291,24 +294,28 @@ export default function RootScreen() {
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-pink" }}
                               />
                               <Progress
                                 label={t("strings:typescript")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-purple" }}
                               />
                               <Progress
                                 label={t("strings:html")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-skyblue" }}
                               />
                               <Progress
                                 label={t("strings:css")}
                                 value={85}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-blue" }}
                               />
                             </CardBody>
                           </TechCard>
@@ -327,24 +334,28 @@ export default function RootScreen() {
                                 value={95}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-pink" }}
                               />
                               <Progress
                                 label={t("strings:google_cloud")}
                                 value={90}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-purple" }}
                               />
                               <Progress
                                 label={t("strings:processing")}
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-skyblue" }}
                               />
                               <Progress
                                 label={t("strings:p5_js")}
                                 value={80}
                                 maxValue={100}
                                 showValueLabel={true}
+                                classNames={{ indicator: "bg-ienlab-blue" }}
                               />
                             </CardBody>
                           </TechCard>
@@ -556,7 +567,6 @@ export default function RootScreen() {
                             name="budget"
                             value={uiState.item.formData.budget}
                             onChange={handleChange}
-                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, description: ""} })}
                           >
                             {
                               Object.values(estimateBudget).map((item) => (
@@ -575,6 +585,7 @@ export default function RootScreen() {
                             name="description"
                             value={uiState.item.formData.description}
                             onChange={handleChange}
+                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, description: ""} })}
                           />
                           <Button
                             isLoading={uiState.item?.isEstimateUploading}
@@ -621,20 +632,6 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    
-    //.swiper-pagination {
-    //  //position: relative;
-    //  //bottom: 6rem;
-    //
-    //  position: absolute;
-    //  top: 50%; /* 수직 중앙 정렬 */
-    //  left: 20px; /* 왼쪽에서 20px 위치 */
-    //  transform: translateY(-50%) rotate(90deg); /* 90도 회전 및 수직 중앙 정렬 */
-    //  display: flex; /* 자식 요소들을 가로로 정렬 */
-    //  align-items: center; /* 수직 중앙 정렬 */
-    //  z-index: 10;
-    //  width: auto;
-    //}
   }
   
   & > .react-fullpage__wrapper {
@@ -736,17 +733,6 @@ const SectionWrapper = styled.div`
             0% { opacity: 0; }
             100% { opacity: 1; transform: translateY(0); }
           }
-          
-          #remove-part {
-            position: relative;
-            
-            animation-name: fadeout;
-            animation-duration: 0.4s;
-            animation-timing-function: linear;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-            animation-delay: 0.8s;
-          }
 
           #remove-part::after {
             content: ' ';
@@ -755,15 +741,26 @@ const SectionWrapper = styled.div`
             left: -2.5%;
             width: 0;
             height: 0.5rem;
-            background: ${'hsl(var(--heroui-danger))'};
+            background: ${'hsl(var(--heroui-danger-500))'};
             transform: translateY(-50%);
             
             animation-name: strike;
             animation-duration: 0.3s;
-            animation-timing-function: linear;
+            animation-timing-function: ease-in-out;
             animation-iteration-count: 1;
             animation-fill-mode: forwards;
             animation-delay: 0.5s;
+          }
+
+          #remove-part {
+            position: relative;
+
+            animation-name: fadeout;
+            animation-duration: 0.6s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            animation-delay: 0.8s;
           }
           
           #appear-part {
@@ -771,8 +768,8 @@ const SectionWrapper = styled.div`
             transform: translateY(1rem);
             
             animation-name: fadein;
-            animation-duration: 0.4s;
-            animation-timing-function: linear;
+            animation-duration: 0.6s;
+            animation-timing-function: ease-in-out;
             animation-iteration-count: 1;
             animation-fill-mode: forwards;
             animation-delay: 0.8s;
@@ -1050,7 +1047,6 @@ const HistoryCard = styled(Card)`
   }
   
   & > .body {
-    background-color: green;
     position: absolute;
   }
   

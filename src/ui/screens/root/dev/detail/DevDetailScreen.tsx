@@ -6,7 +6,6 @@ import {
   Alert,
   Button,
   Card,
-  CardBody,
   CardFooter,
   CardHeader,
   Chip,
@@ -17,17 +16,16 @@ import {
 } from "@heroui/react";
 import {
   AppStoreLogoIcon,
-  ArrowUUpLeftIcon, CalendarCheckIcon, CalendarDotsIcon, CheckCircleIcon,
+  CalendarCheckIcon, CalendarDotsIcon, CheckCircleIcon,
   FileTextIcon, GithubLogoIcon,
   GooglePlayLogoIcon,
-  HourglassLowIcon, LinkSimpleIcon,
+  LinkSimpleIcon,
   ReceiptIcon,
   UserCircleIcon
 } from "@phosphor-icons/react";
 import {useEffect, useRef, useState} from "react";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import useEmblaCarousel from "embla-carousel-react";
-import {useScrollMonitor} from "../../../../utils/utils/ScrollData.ts";
 import {DevDetailInfoState, useDevDetailViewModel} from "./DevDetailViewModel.tsx";
 import {useParams} from "react-router";
 import {
@@ -39,8 +37,10 @@ import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
 import {PlaceholderValue} from "../../../../../constant/PlaceholderValue.ts";
 import {CSSTransition} from "react-transition-group";
 import {getAppStoreLink, getGooglePlayLink} from "../../../../utils/utils/LinkHelper.ts";
+import {useSummaryObserver} from "../../../../utils/utils/SummaryObserver.ts";
+import {useScrollObserver} from "../../../../utils/utils/ScrollObserver.ts";
 
-export interface TopToolbarProps {
+interface TopToolbarProps {
   infoState: DevDetailInfoState,
   visible: boolean;
   headerVisible: boolean;
@@ -51,8 +51,6 @@ export default function DevDetailScreen() {
   const { id } = useParams<{ id: string }>();
 
   const { t } = useTranslation();
-  const { scrollY, scrollDirection } = useScrollMonitor();
-  const toolbarThreshold = 100;
   const [headerVisible, setHeaderVisible] = useState<boolean>(true);
   const [summaryVisible, setSummaryVisible] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>("summary");
@@ -85,31 +83,8 @@ export default function DevDetailScreen() {
     return () => { document.body.style.overflow = "unset" };
   }, [infoState, infoState.isInitialized]);
 
-  // Summary 추적
-  useEffect(() => {
-    const anchor = document.querySelector("#summary");
-    if (!anchor) return;
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          setSummaryVisible(!entry.isIntersecting);
-        })
-      },
-      {
-        rootMargin: "0px",
-        threshold: [0]
-      }
-    );
-
-    observer.observe(anchor);
-
-    return () => {
-      observer.unobserve(anchor);
-    }
-  }, []);
-
-  useEffect(() => {
-    setHeaderVisible(scrollDirection === "up" || scrollY < toolbarThreshold);
-  }, [scrollY, scrollDirection]);
+  useSummaryObserver(setSummaryVisible);
+  useScrollObserver(setHeaderVisible);
 
   return (
     <DefaultLayout toolbarOverlap toolbarVisible={headerVisible}>
@@ -172,7 +147,7 @@ export default function DevDetailScreen() {
                             <Button
                               size="lg"
                               isIconOnly
-                              color="primary"
+                              className="google-play-button"
                               as={Link}
                               href={getGooglePlayLink(infoState.item?.googlePlay)}
                             >
@@ -184,7 +159,7 @@ export default function DevDetailScreen() {
                             <Button
                               size="lg"
                               isIconOnly
-                              color="primary"
+                              className="app-store-button"
                               as={Link}
                               href={getAppStoreLink(infoState.item?.appStore)}
                             >
@@ -196,7 +171,7 @@ export default function DevDetailScreen() {
                             <Button
                               size="lg"
                               isIconOnly
-                              color="primary"
+                              className="github-button"
                               as={Link}
                               href={infoState.item?.github}
                             >
@@ -337,6 +312,10 @@ export default function DevDetailScreen() {
                             radius="sm"
                             icon={<CheckCircleIcon size={24} weight="bold" /> }
                             color="success"
+                            classNames={{
+                              alertIcon: "text-success-500",
+                              title: "text-success-500"
+                            }}
                             title={item}
                             key={index}
                           />
@@ -453,6 +432,7 @@ const ContentWrapper = styled.div`
       &.techs {
         display: flex;
         flex-direction: row;
+        gap: 0.5rem;
       }
     }
   }
@@ -600,7 +580,7 @@ const TopToolBar = (props: TopToolbarProps) => (
           <Button
             size="sm"
             isIconOnly
-            color="primary"
+            className="google-play-button"
             as={Link}
             href={getGooglePlayLink(props.infoState.item?.googlePlay)}
           >
@@ -612,7 +592,7 @@ const TopToolBar = (props: TopToolbarProps) => (
           <Button
             size="sm"
             isIconOnly
-            color="primary"
+            className="app-store-button"
             as={Link}
             href={getAppStoreLink(props.infoState.item?.appStore)}
           >
@@ -624,7 +604,7 @@ const TopToolBar = (props: TopToolbarProps) => (
           <Button
             size="sm"
             isIconOnly
-            color="primary"
+            className="github-button"
             as={Link}
             href={props.infoState.item?.github}
           >

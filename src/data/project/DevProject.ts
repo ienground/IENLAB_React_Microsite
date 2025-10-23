@@ -70,8 +70,8 @@ export function DevProjectStateToHeroColor(value: DevProjectState | undefined):
 
 export function DevProjectStateToColor(value: DevProjectState | undefined): string{
   switch (value) {
-    case devProjectState.WORKING: return "hsl(var(--heroui-primary) / 1)";
-    case devProjectState.DONE: return "hsl(var(--heroui-success) / 1)";
+    case devProjectState.WORKING: return "hsl(var(--heroui-primary-500) / 1)";
+    case devProjectState.DONE: return "hsl(var(--heroui-success-500) / 1)";
     default: return "danger";
   }
 }

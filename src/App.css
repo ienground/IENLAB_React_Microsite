@@ -41,4 +41,44 @@ html {
   .fade-exit-done {
     opacity: 0;
   }
+
+  .bg-ienlab-pink {
+    background-color: #FF4081;
+  }
+
+  .bg-ienlab-purple {
+    background-color: #7C4DFF;
+  }
+
+  .bg-ienlab-skyblue {
+    background-color: #03A9F4;
+  }
+
+  .bg-ienlab-blue {
+    background-color: #3f51b5;
+  }
+
+  .chip-ienlab-pink {
+    background-color: #FF408133;
+    color: #FF4081;
+  }
+
+  .chip-ienlab-purple {
+    background-color: #7C4DFF33;
+    color: #7C4DFF;
+  }
+
+  .chip-ienlab-skyblue {
+    background-color: #03A9F433;
+    color: #03A9F4;
+  }
+
+  .chip-ienlab-blue {
+    background-color: #3f51b533;
+    color: #3f51b5;
+  }
+
+  .button-ienlab-pink {
+
+  }
 }

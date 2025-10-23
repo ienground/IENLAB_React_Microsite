@@ -9,15 +9,13 @@ import {
 } from "@phosphor-icons/react";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
-import {Button, Card, CardBody, CardFooter, CardHeader, Chip, Image, Link, Skeleton, Spacer} from "@heroui/react";
+import {Button, Card, CardBody, Chip, Image, Link, Skeleton, Spacer} from "@heroui/react";
 import {useElementRefs, useVisibleAnimation} from "../../../../utils/utils.ts";
 import {
   type DevProject,
-  devProjectCategory,
   DevProjectCategoryToString,
-  devProjectState, DevProjectStateToHeroColor, DevProjectStateToString
+  DevProjectStateToHeroColor, DevProjectStateToString
 } from "../../../../../data/project/DevProject.ts";
-import {Timestamp} from "firebase/firestore";
 import {useDevListViewModel} from "./DevListViewModel.tsx";
 import {useEffect, useRef} from "react";
 import {CSSTransition} from "react-transition-group";
@@ -252,7 +250,7 @@ export const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: (
                 <Button
                   size="sm"
                   isIconOnly
-                  color="primary"
+                  className="google-play-button"
                   as={Link}
                   href={getGooglePlayLink(item.googlePlay)}
                 >
@@ -264,7 +262,7 @@ export const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: (
                 <Button
                   size="sm"
                   isIconOnly
-                  color="primary"
+                  className="app-store-button"
                   as={Link}
                   href={getAppStoreLink(item.appStore)}
                 >
@@ -276,7 +274,7 @@ export const DevProjectCell = ({ item, onClick }: { item: DevProject, onClick: (
                 <Button
                   size="sm"
                   isIconOnly
-                  color="primary"
+                  className="github-button"
                   as={Link}
                   href={item.github}
                 >

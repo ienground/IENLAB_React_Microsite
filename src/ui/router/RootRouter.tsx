@@ -16,6 +16,7 @@ import {DevDestination} from "../screens/root/dev/DevDestination.ts";
 import DevListScreen from "../screens/root/dev/list/DevListScreen.tsx";
 import DevDetailScreen from "../screens/root/dev/detail/DevDetailScreen.tsx";
 import NoticeDetailScreen from "../screens/root/notice/detail/NoticeDetailScreen.tsx";
+import TestScreen from "../screens/root/test/TestScreen.tsx";
 
 export default function RootRouter() {
   return (
@@ -37,6 +38,8 @@ export default function RootRouter() {
       <Route path={DevDestination.routeDetail} element={<DevDetailScreen />} />
 
       <Route path={PrivacyDestination.route} element={<PrivacyScreen />} />
+
+      <Route path={"/test"} element={<TestScreen />} />
     </Routes>
   );
 }

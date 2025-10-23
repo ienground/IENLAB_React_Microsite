@@ -9,8 +9,7 @@ import styled from "styled-components";
 import imgLogoTypo from "../../../assets/brand/img_logo_typo.png";
 import imgLogoTypoWhite from "../../../assets/brand/img_logo_typo_white.png";
 import {RootDestination} from "../../screens/root/RootDestination.ts";
-import {useEffect, useRef, useState} from "react";
-import {mapRange} from "../utils.ts";
+import {useRef, useState} from "react";
 import {
   BellSimpleRingingIcon,
   CaretDownIcon,
@@ -23,7 +22,6 @@ import TistoryIcon from "../../../assets/icon/ic_tistory.svg?react";
 import IenlabSolidIcon from "../../../assets/icon/ic_ienlab_solid.svg?react";
 import {IntroDestination} from "../../screens/root/intro/IntroDestination.ts";
 import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts";
-import {BrandDestination} from "../../screens/root/brand/BrandDestination.ts";
 import {EstimateDestination} from "../../screens/root/estimate/EstimateDestination.ts";
 import {PrivacyDestination} from "../../screens/root/privacy/PrivacyDestination.ts";
 import {DevDestination} from "../../screens/root/dev/DevDestination.ts";
@@ -271,7 +269,9 @@ const HeaderWrapper = styled(Navbar)`
     }
 
     & > .start-items {
-
+      & > li > a {
+        transition: color 0.3s ease-in-out;
+      }
     }
 
     & > .end-items {
@@ -285,7 +285,6 @@ const HeaderWrapper = styled(Navbar)`
       
       & > a {
         position: relative;
-        background-color: red;
         
         & > img {
           max-width: fit-content;

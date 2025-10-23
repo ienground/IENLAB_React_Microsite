@@ -9,13 +9,13 @@ import '../../../../../locales/i18n';
 import {useEstimateSearchViewModel} from "./EstimateSearchViewModel.tsx";
 import {useNavigate} from "react-router";
 import {EstimateDestination} from "../EstimateDestination.ts";
-import type {FormEvent} from "react";
+import {type FormEvent, useEffect} from "react";
 import {motion, AnimatePresence} from "framer-motion";
 
 export default function EstimateSearchScreen() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { uiState, onItemValueChanged, searchQuote } = useEstimateSearchViewModel();
+  const { uiState, onItemValueChanged, searchQuote, onDispose } = useEstimateSearchViewModel();
 
   const [visibleAnimationRefs, addToVisibleAnimationRefs, refCount] = useElementRefs<HTMLDivElement>();
   useVisibleAnimation(visibleAnimationRefs, "start", refCount);
@@ -27,6 +27,10 @@ export default function EstimateSearchScreen() {
       (err) => { onItemValueChanged({ errorCode: err }) }
     )
   };
+
+  useEffect(() => {
+    return () => onDispose();
+  }, []);
 
   return (
     <DefaultLayout>

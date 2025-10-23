@@ -3,7 +3,6 @@ import {create} from "zustand/react";
 import {doc, onSnapshot} from "firebase/firestore";
 import {fbFirestore} from "../../../../../constant/FirebaseConfig.ts";
 import {FirestorePath} from "../../../../../constant/FirestorePath.ts";
-import {delay} from "../../../../utils/utils.ts";
 
 interface DevDetailInfoStateProps {
   item?: DevProject | undefined;
