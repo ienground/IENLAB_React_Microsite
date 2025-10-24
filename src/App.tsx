@@ -3,7 +3,7 @@ import {type NavigateOptions, useHref, useNavigate} from "react-router";
 import RootRouter from "./ui/router/RootRouter.tsx";
 import {HeroUIProvider} from "@heroui/system";
 import styled, { ThemeProvider } from 'styled-components';
-import {theme} from "./theme";
+import {screen} from "./theme";
 import { ToastProvider } from "@heroui/react";
 
 import 'dayjs/locale/ko'; // 한국어 가져오기
@@ -36,7 +36,7 @@ function App() {
   return (
     <Wrapper>
       <HeroUIProvider navigate={navigate} useHref={useHref}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={screen}>
           <RootRouter />
           <ToastProvider
             regionProps={{
