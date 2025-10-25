@@ -97,7 +97,7 @@ export default function DevListScreen() {
 
 const ContentWrapper = styled.div`
   width: 100%;
-  height: 840px;
+  height: 1040px;
   
   position: relative;
 

@@ -357,8 +357,6 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 2rem;
   
-  overflow: hidden;
-  
   & > .introduce {
     display: grid;
     grid-template-columns: 60% 1fr;
@@ -401,7 +399,9 @@ const Wrapper = styled.div`
     }
     
     ${({ theme }) => theme.breakpoints.down("tablet")} {
+      width: calc(100% - 2rem);
       grid-template-columns: 1fr;
+      gap: 1rem;
       
       & > .right-side {
         grid-template-columns: repeat(2, 1fr);
@@ -427,8 +427,6 @@ const Wrapper = styled.div`
     grid-template-columns: 20% 1fr;
     gap: 1rem;
     
-    overflow: hidden;
-
     & > .header {
       font-size: xx-large;
       font-weight: bold;
@@ -491,6 +489,10 @@ const Wrapper = styled.div`
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
+      
+      ${({ theme }) => theme.breakpoints.down("tablet")} {
+        grid-template-columns: 1fr;
+      }
     }
   }
 `;
