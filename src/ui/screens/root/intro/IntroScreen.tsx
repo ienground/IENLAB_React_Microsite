@@ -216,19 +216,9 @@ export default function IntroScreen() {
                 <div id="name">{t("strings:my_name")}</div>
                 <div id="nickname">아이엔 IENGROUND</div>
               </div>
-              <Spacer
-                style={{
-                  height: "4rem"
-                }}
-              />
               <div className="summary">
                 {t("strings:intro_mobile_creator")}
               </div>
-              <Spacer
-                style={{
-                  height: "2rem"
-                }}
-              />
               <Image
                 src={LogoColorTransparent}
                 className="logo"
@@ -244,35 +234,37 @@ export default function IntroScreen() {
               <ScrollIcon size={48} weight="fill" />
               {t("strings:key_experience")}
             </div>
-            <Table>
-              <TableHeader>
-                <TableColumn>{t("strings:category")}</TableColumn>
-                <TableColumn>{t("strings:period")}</TableColumn>
-                <TableColumn>{t("strings:content")}</TableColumn>
-                <TableColumn>{t("strings:description")}</TableColumn>
-              </TableHeader>
-              <TableBody>
-                {
-                  historyData.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Chip
-                          radius="sm"
-                          size="sm"
-                          classNames={{
-                            base: historyTypeColorMap[item.type]
-                          }}
-                          variant="flat"
-                        >{historyTypeLabelMap[item.type]}</Chip>
-                      </TableCell>
-                      <TableCell>{item.date}</TableCell>
-                      <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
-                      <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
-                    </TableRow>
-                  ))
-                }
-              </TableBody>
-            </Table>
+            <div className="table">
+              <Table>
+                <TableHeader>
+                  <TableColumn>{t("strings:category")}</TableColumn>
+                  <TableColumn>{t("strings:period")}</TableColumn>
+                  <TableColumn>{t("strings:content")}</TableColumn>
+                  <TableColumn>{t("strings:description")}</TableColumn>
+                </TableHeader>
+                <TableBody>
+                  {
+                    historyData.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Chip
+                            radius="sm"
+                            size="sm"
+                            classNames={{
+                              base: historyTypeColorMap[item.type]
+                            }}
+                            variant="flat"
+                          >{historyTypeLabelMap[item.type]}</Chip>
+                        </TableCell>
+                        <TableCell>{item.date}</TableCell>
+                        <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
+                        <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
+                      </TableRow>
+                    ))
+                  }
+                </TableBody>
+              </Table>
+            </div>
           </div>
           <div className="project detail-wrapper visible-animation" ref={addToVisibleAnimationRefs}>
             <div className="header">
@@ -323,33 +315,35 @@ export default function IntroScreen() {
                   </div>
                 </div>
               </div>
-              <Table>
-                <TableHeader>
-                  <TableColumn>{t("strings:category")}</TableColumn>
-                  <TableColumn>{t("strings:period")}</TableColumn>
-                  <TableColumn>{t("strings:content")}</TableColumn>
-                  <TableColumn>{t("strings:description")}</TableColumn>
-                </TableHeader>
-                <TableBody>
-                  {
-                    univData.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Chip
-                            radius="sm"
-                            size="sm"
-                            classNames={{ base: schoolTypeColorMap[item.type] }}
-                            variant="flat"
-                          >{schoolTypeLabelMap[item.type]}</Chip>
-                        </TableCell>
-                        <TableCell>{item.date}</TableCell>
-                        <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
-                        <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
-                      </TableRow>
-                    ))
-                  }
-                </TableBody>
-              </Table>
+              <div className="table">
+                <Table>
+                  <TableHeader>
+                    <TableColumn>{t("strings:category")}</TableColumn>
+                    <TableColumn>{t("strings:period")}</TableColumn>
+                    <TableColumn>{t("strings:content")}</TableColumn>
+                    <TableColumn>{t("strings:description")}</TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {
+                      univData.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Chip
+                              radius="sm"
+                              size="sm"
+                              classNames={{ base: schoolTypeColorMap[item.type] }}
+                              variant="flat"
+                            >{schoolTypeLabelMap[item.type]}</Chip>
+                          </TableCell>
+                          <TableCell>{item.date}</TableCell>
+                          <TableCell>{i18n.language === "ko" ? item.titleKor : item.titleEng}</TableCell>
+                          <TableCell>{i18n.language === "ko" ? item.contentKor : item.contentEng}</TableCell>
+                        </TableRow>
+                      ))
+                    }
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
         </Wrapper>
@@ -363,11 +357,13 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 2rem;
   
+  overflow: hidden;
+  
   & > .introduce {
     display: grid;
     grid-template-columns: 60% 1fr;
     gap: 2rem;
-    
+
     & > .left-side {
       
     }
@@ -378,10 +374,12 @@ const Wrapper = styled.div`
       position: sticky;
       top: 6rem;
       
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr;
       
       & > .name {
+        margin-bottom: 4rem;
+        
         & > #name {
           font-size: xxx-large;
           font-weight: bold;
@@ -394,9 +392,32 @@ const Wrapper = styled.div`
       }
 
       & > .summary {
+        margin-bottom: 2rem;
+        
         font-size: xx-large;
         font-weight: bold;
         white-space: pre-line;
+      }
+    }
+    
+    ${({ theme }) => theme.breakpoints.down("tablet")} {
+      grid-template-columns: 1fr;
+      
+      & > .right-side {
+        grid-template-columns: repeat(2, 1fr);
+        
+        & > .name, & > .summary {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    ${({ theme }) => theme.breakpoints.down("mobile")} {
+      & > .right-side {
+        & > .summary {
+          font-size: x-large;
+          margin-bottom: 2rem;
+        }
       }
     }
   }
@@ -405,6 +426,8 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 20% 1fr;
     gap: 1rem;
+    
+    overflow: hidden;
 
     & > .header {
       font-size: xx-large;
@@ -414,6 +437,18 @@ const Wrapper = styled.div`
       
       position: sticky;
       top: 4rem;
+    }
+    
+    & > .table {
+      overflow-x: auto;
+    }
+    
+    ${({ theme }) => theme.breakpoints.down("laptop")} {
+      grid-template-columns: 1fr;
+      
+      & > .header {
+        top: initial;
+      }
     }
   }
   

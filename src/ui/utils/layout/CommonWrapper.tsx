@@ -4,7 +4,8 @@ export const CommonWrapper = styled.div`
   flex-grow: 1;
   
   width: 100%;
-  max-width: 1440px;
+  max-width: calc(1440px + 2rem);
+  padding: 0 1rem;
   
   display: flex;
   flex-direction: column;

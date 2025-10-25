@@ -36,6 +36,7 @@ import {platformType, PlatformTypeToString} from "../../../data/common/PlatformT
 import {useTranslation} from "react-i18next";
 import {useRootViewModel} from "./RootViewModel.ts";
 import {DevDestination} from "./dev/DevDestination.ts";
+import useEmblaCarousel from "embla-carousel-react";
 
 export default function RootScreen() {
   const { uiState, onItemValueChanged, uploadEstimate } = useRootViewModel();
@@ -92,6 +93,8 @@ export default function RootScreen() {
     }
   }, [hash]);
 
+  const [page2EmblaRef] = useEmblaCarousel({ dragFree: true });
+
   return (
     <DefaultLayout toolbarOverlap footerVisible={false}>
       <Wrapper>
@@ -130,13 +133,13 @@ export default function RootScreen() {
                       {t("strings:root.intro_desc2")}
                     </div>
                     <div className="buttons">
-                      <Button
-                        color="primary"
-                        onPress={() => setActiveIndex(3)}
-                        variant="solid"
-                      >
-                        {t("strings:root.ask_project")}
-                      </Button>
+                      {/*<Button*/}
+                      {/*  color="primary"*/}
+                      {/*  onPress={() => setActiveIndex(3)}*/}
+                      {/*  variant="solid"*/}
+                      {/*>*/}
+                      {/*  {t("strings:root.ask_project")}*/}
+                      {/*</Button>*/}
                       <Button
                         as={Link}
                         color="secondary"
@@ -171,438 +174,440 @@ export default function RootScreen() {
             </div>
             </SectionWrapper>
           </FullpageSection>
-          <FullpageSection>
-            <SectionWrapper>
-              <div className="content-wrapper">
-                <div className="content">
-                  <div className="message width-max">
-                    <div className="title">{t("strings:root.page1_title")}</div>
-                    <div
-                      className="description history"
-                    >
-                      <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>
-                        <HistoryCard
-                          radius="lg"
-                          style={{ aspectRatio: "1" }}
-                        >
-                          <Image
-                            className="background"
-                            src={ImgHistoryAndroid}
-                          />
-                        </HistoryCard>
-                        <div className="description">
-                          {t("strings:root.page1_desc1")}
-                        </div>
-                      </div>
-                      <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>
-                        <HistoryCard
-                          radius="lg"
-                          style={{ aspectRatio: "1" }}
-                        >
-                          <Image
-                            className="background"
-                            src={ImgHistoryDesign}
-                          />
-                        </HistoryCard>
-                        <div className="description">
-                          {t("strings:root.page1_desc2")}
-                        </div>
-                      </div>
-                      <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>
-                        <HistoryCard
-                          radius="lg"
-                          style={{ aspectRatio: "1" }}
-                        >
-                          <Image
-                            className="background"
-                            src={ImgHistoryNew}
-                          />
-                        </HistoryCard>
-                        <div className="description">
-                          {t("strings:root.page1_desc3")}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </SectionWrapper>
-          </FullpageSection>
-          <FullpageSection>
-            <SectionWrapper>
-              <div className="content-wrapper">
-                <div className="content">
-                  <div className="message width-max">
-                    <div className="title">{t("strings:root.page2_title")}</div>
-                    <div className="description tech">
-                      <div className="tech-stack">
-                        <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>
-                          <div className="logo-wrapper">
-                            <AndroidLogoIcon size={48} weight="fill" />
-                            <AppleLogoIcon size={48} weight="fill" />
-                          </div>
-                          <TechCard>
-                            <CardHeader className="header">
-                              <h1>{t("strings:mobile")}</h1>
-                            </CardHeader>
-                            <CardBody className="body">
-                              <Progress
-                                label={t("strings:kotlin")}
-                                value={90}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-pink" }}
-                              />
-                              <Progress
-                                label={t("strings:jetpack_compose")}
-                                value={95}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-purple" }}
-                              />
-                              <Progress
-                                label={t("strings:cmp")}
-                                value={85}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-skyblue" }}
-                              />
-                              <Progress
-                                label={t("strings:swift")}
-                                value={50}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-blue" }}
-                              />
-                            </CardBody>
-                          </TechCard>
-                        </div>
-                        <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>
-                          <div className="logo-wrapper">
-                            <GlobeSimpleIcon size={48} weight="fill" />
-                          </div>
-                          <TechCard>
-                            <CardHeader className="header">
-                              <h1>{t("strings:web")}</h1>
-                            </CardHeader>
-                            <CardBody className="body">
-                              <Progress
-                                label={t("strings:typescript")}
-                                value={80}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-pink" }}
-                              />
-                              <Progress
-                                label={t("strings:typescript")}
-                                value={85}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-purple" }}
-                              />
-                              <Progress
-                                label={t("strings:html")}
-                                value={85}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-skyblue" }}
-                              />
-                              <Progress
-                                label={t("strings:css")}
-                                value={85}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-blue" }}
-                              />
-                            </CardBody>
-                          </TechCard>
-                        </div>
-                        <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>
-                          <div className="logo-wrapper">
-                            <GearFineIcon size={48} weight="fill" />
-                          </div>
-                          <TechCard>
-                            <CardHeader className="header">
-                              <h1>{t("strings:backend_etc")}</h1>
-                            </CardHeader>
-                            <CardBody className="body">
-                              <Progress
-                                label={t("strings:firebase")}
-                                value={95}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-pink" }}
-                              />
-                              <Progress
-                                label={t("strings:google_cloud")}
-                                value={90}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-purple" }}
-                              />
-                              <Progress
-                                label={t("strings:processing")}
-                                value={80}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-skyblue" }}
-                              />
-                              <Progress
-                                label={t("strings:p5_js")}
-                                value={80}
-                                maxValue={100}
-                                showValueLabel={true}
-                                classNames={{ indicator: "bg-ienlab-blue" }}
-                              />
-                            </CardBody>
-                          </TechCard>
-                        </div>
-                      </div>
-                      <div className="service">
-                        <div className="body">
-                          {
-                            services.map((service, index) => (
-                              <Chip variant="flat" key={index}>{service}</Chip>
-                            ))
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </SectionWrapper>
-          </FullpageSection>
-          <FullpageSection>
-            <SectionWrapper id="inquiry">
-              <div className="content-wrapper">
-                <div className="content">
-                  <div className="message width-max">
-                    <div className="title">{t("strings:root.ask_project")}</div>
-                    <div className="description contact">
-                      <div className="left-side">
-                        <Card
-                          className="card contact visible-animation d1"
-                          ref={addToVisibleAnimationRefs}
-                        >
-                          <div className="header">
-                            <h2>{t("strings:contact_info")}</h2>
-                          </div>
-                          <div className="body info">
-                            <Button
-                              as={Link}
-                              size="lg"
-                              radius="sm"
-                              variant="faded"
-                              className="contact-detail"
-                              startContent={<EnvelopeIcon size={24} weight="fill" />}
-                              href="mailto:my@ien.zone"
-                            >
-                              <div className="info">
-                                <div className="title">{t("strings:email")}</div>
-                                <div className="description">my@ien.zone</div>
-                              </div>
-                            </Button>
-                            <Button
-                              as={Link}
-                              size="lg"
-                              radius="sm"
-                              variant="faded"
-                              className="contact-detail"
-                              startContent={<PhoneIcon size={24} weight="fill" />}
-                              href="tel:+8210-4815-7296"
-                            >
-                              <div className="info">
-                                <div className="title">{t("strings:phone_number")}</div>
-                                <div className="description">+82 10-4815-7296</div>
-                              </div>
-                            </Button>
-                            <Button
-                              as={Link}
-                              size="lg"
-                              radius="sm"
-                              variant="faded"
-                              className="contact-detail"
-                              startContent={<GithubLogoIcon size={24} weight="fill" />}
-                              href="https://github.com/ienground"
-                            >
-                              <div className="info">
-                                <div className="title">{t("strings:github")}</div>
-                                <div className="description">@ienground</div>
-                              </div>
-                            </Button>
-                            <Button
-                              as={Link}
-                              size="lg"
-                              radius="sm"
-                              variant="faded"
-                              className="contact-detail"
-                              startContent={<InstagramLogoIcon size={24} weight="fill" />}
-                              href="https://instagram.com/ienlab"
-                            >
-                              <div className="info">
-                                <div className="title">{t("strings:instagram")}</div>
-                                <div className="description">@ienlab</div>
-                              </div>
-                            </Button>
-                          </div>
-                        </Card>
-                        <Card
-                          className="card project-type visible-animation d2"
-                          ref={addToVisibleAnimationRefs}
-                        >
-                          <div className="header">
-                            <h2>{t("strings:root.project_type")}</h2>
-                          </div>
-                          <div className="body project">
-                            {
-                              projectTypes.map((item) => (
-                                <Button
-                                  size="lg"
-                                  radius="sm"
-                                  variant="faded"
-                                  className="project-detail"
-                                  key={item.key}
-                                >
-                                  {item.icon}
-                                  <div className="label">{item.label}</div>
-                                </Button>
-                              ))
-                            }
-                          </div>
-                        </Card>
-                      </div>
-                      <Card
-                        className="card form visible-animation d3"
-                        ref={addToVisibleAnimationRefs}
-                      >
-                        <div className="header">
-                          <h2>{t("strings:contact_project_inq")}</h2>
-                        </div>
-                        <Form
-                          className="body contact"
-                          onSubmit={onSubmit}
-                        >
-                          <div className="two-line">
-                            <Input
-                              isRequired
-                              isClearable
-                              radius="sm"
-                              label={t("strings:name")}
-                              type="text"
-                              name="name"
-                              placeholder={t("strings:input_name")}
-                              value={uiState.item.formData.name}
-                              onChange={handleChange}
-                              onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, name: ""} })}
-                            />
-                            <Input
-                              isClearable
-                              radius="sm"
-                              label={t("strings:company_name")}
-                              type="text"
-                              name="company"
-                              placeholder={t("strings:company_optional_input")}
-                              value={uiState.item.formData.company}
-                              onChange={handleChange}
-                              onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, company: ""} })}
-                            />
-                          </div>
-                          <Input
-                            isRequired
-                            isClearable
-                            radius="sm"
-                            label={t("strings:email")}
-                            type="email"
-                            name="email"
-                            placeholder="your@email.com"
-                            value={uiState.item.formData.email}
-                            onChange={handleChange}
-                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, email: ""} })}
-                          />
-                          <div className="two-line">
-                            <Select
-                              isRequired
-                              radius="sm"
-                              label={t("strings:root.project_type")}
-                              name="type"
-                              placeholder={t("strings:select_type")}
-                              value={uiState.item.formData.type}
-                              onChange={handleChange}
-                            >
-                              <>
-                                {projectTypes.map((item) => (
-                                  <SelectItem key={item.key}>{item.label}</SelectItem>
-                                ))}
-                              </>
-                              <SelectItem key={"etc"}>{t("strings:etc")}</SelectItem>
-                            </Select>
-                            <Select
-                              isRequired
-                              radius="sm"
-                              label={t("strings:platforms")}
-                              placeholder={t("strings:select_platforms")}
-                              selectionMode="multiple"
-                              defaultSelectedKeys={[platformType.ANDROID.toString(), platformType.IOS.toString()]}
-                              name="platform"
-                              value={arrayToSelectValue(uiState.item.formData.platform)}
-                              onChange={handleChange}
-                            >
-                              {
-                                Object.values(platformType).map((item) => (
-                                  <SelectItem key={item}>{PlatformTypeToString(t, item)}</SelectItem>
-                                ))
-                              }
-                            </Select>
-                          </div>
-                          <Select
-                            isRequired
-                            radius="sm"
-                            label={t("strings:budget_range")}
-                            placeholder={t("strings:set_budget_range")}
-                            defaultSelectedKeys={[estimateBudget.BET_300_500]}
-                            name="budget"
-                            value={uiState.item.formData.budget}
-                            onChange={handleChange}
-                          >
-                            {
-                              Object.values(estimateBudget).map((item) => (
-                                <SelectItem key={item}>{EstimateBudgetToString(t, item)}</SelectItem>
-                              ))
-                            }
-                          </Select>
-                          <Textarea
-                            isRequired
-                            radius="sm"
-                            label={t("strings:project_description")}
-                            isClearable
-                            placeholder={t("strings:project_description_desc")}
-                            maxRows={6}
-                            className="grow"
-                            name="description"
-                            value={uiState.item.formData.description}
-                            onChange={handleChange}
-                            onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, description: ""} })}
-                          />
-                          <Button
-                            isLoading={uiState.item?.isEstimateUploading}
-                            endContent={<PaperPlaneTiltIcon />}
-                            color="primary"
-                            variant="solid"
-                            fullWidth
-                            type="submit"
-                            radius="sm"
-                          >
-                            {t("strings:submit_inquiry")}
-                          </Button>
-                        </Form>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </SectionWrapper>
-          </FullpageSection>
+
+          {/*<FullpageSection>*/}
+          {/*  <SectionWrapper>*/}
+          {/*    <div className="content-wrapper">*/}
+          {/*      <div className="content">*/}
+          {/*        <div className="message width-max">*/}
+          {/*          <div className="title">{t("strings:root.page1_title")}</div>*/}
+          {/*          <div*/}
+          {/*            className="description history"*/}
+          {/*            ref={page2EmblaRef}*/}
+          {/*          >*/}
+          {/*            <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>*/}
+          {/*              <HistoryCard*/}
+          {/*                radius="lg"*/}
+          {/*                style={{ aspectRatio: "1" }}*/}
+          {/*              >*/}
+          {/*                <Image*/}
+          {/*                  className="background"*/}
+          {/*                  src={ImgHistoryAndroid}*/}
+          {/*                />*/}
+          {/*              </HistoryCard>*/}
+          {/*              <div className="description">*/}
+          {/*                {t("strings:root.page1_desc1")}*/}
+          {/*              </div>*/}
+          {/*            </div>*/}
+          {/*            <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>*/}
+          {/*              <HistoryCard*/}
+          {/*                radius="lg"*/}
+          {/*                style={{ aspectRatio: "1" }}*/}
+          {/*              >*/}
+          {/*                <Image*/}
+          {/*                  className="background"*/}
+          {/*                  src={ImgHistoryDesign}*/}
+          {/*                />*/}
+          {/*              </HistoryCard>*/}
+          {/*              <div className="description">*/}
+          {/*                {t("strings:root.page1_desc2")}*/}
+          {/*              </div>*/}
+          {/*            </div>*/}
+          {/*            <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>*/}
+          {/*              <HistoryCard*/}
+          {/*                radius="lg"*/}
+          {/*                style={{ aspectRatio: "1" }}*/}
+          {/*              >*/}
+          {/*                <Image*/}
+          {/*                  className="background"*/}
+          {/*                  src={ImgHistoryNew}*/}
+          {/*                />*/}
+          {/*              </HistoryCard>*/}
+          {/*              <div className="description">*/}
+          {/*                {t("strings:root.page1_desc3")}*/}
+          {/*              </div>*/}
+          {/*            </div>*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </SectionWrapper>*/}
+          {/*</FullpageSection>*/}
+          {/*<FullpageSection>*/}
+          {/*  <SectionWrapper>*/}
+          {/*    <div className="content-wrapper">*/}
+          {/*      <div className="content">*/}
+          {/*        <div className="message width-max">*/}
+          {/*          <div className="title">{t("strings:root.page2_title")}</div>*/}
+          {/*          <div className="description tech">*/}
+          {/*            <div className="tech-stack">*/}
+          {/*              <div className="card-wrapper visible-animation d1" ref={addToVisibleAnimationRefs}>*/}
+          {/*                <div className="logo-wrapper">*/}
+          {/*                  <AndroidLogoIcon size={48} weight="fill" />*/}
+          {/*                  <AppleLogoIcon size={48} weight="fill" />*/}
+          {/*                </div>*/}
+          {/*                <TechCard>*/}
+          {/*                  <CardHeader className="header">*/}
+          {/*                    <h1>{t("strings:mobile")}</h1>*/}
+          {/*                  </CardHeader>*/}
+          {/*                  <CardBody className="body">*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:kotlin")}*/}
+          {/*                      value={90}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-pink" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:jetpack_compose")}*/}
+          {/*                      value={95}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-purple" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:cmp")}*/}
+          {/*                      value={85}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-skyblue" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:swift")}*/}
+          {/*                      value={50}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-blue" }}*/}
+          {/*                    />*/}
+          {/*                  </CardBody>*/}
+          {/*                </TechCard>*/}
+          {/*              </div>*/}
+          {/*              <div className="card-wrapper visible-animation d2" ref={addToVisibleAnimationRefs}>*/}
+          {/*                <div className="logo-wrapper">*/}
+          {/*                  <GlobeSimpleIcon size={48} weight="fill" />*/}
+          {/*                </div>*/}
+          {/*                <TechCard>*/}
+          {/*                  <CardHeader className="header">*/}
+          {/*                    <h1>{t("strings:web")}</h1>*/}
+          {/*                  </CardHeader>*/}
+          {/*                  <CardBody className="body">*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:typescript")}*/}
+          {/*                      value={80}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-pink" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:typescript")}*/}
+          {/*                      value={85}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-purple" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:html")}*/}
+          {/*                      value={85}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-skyblue" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:css")}*/}
+          {/*                      value={85}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-blue" }}*/}
+          {/*                    />*/}
+          {/*                  </CardBody>*/}
+          {/*                </TechCard>*/}
+          {/*              </div>*/}
+          {/*              <div className="card-wrapper visible-animation d3" ref={addToVisibleAnimationRefs}>*/}
+          {/*                <div className="logo-wrapper">*/}
+          {/*                  <GearFineIcon size={48} weight="fill" />*/}
+          {/*                </div>*/}
+          {/*                <TechCard>*/}
+          {/*                  <CardHeader className="header">*/}
+          {/*                    <h1>{t("strings:backend_etc")}</h1>*/}
+          {/*                  </CardHeader>*/}
+          {/*                  <CardBody className="body">*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:firebase")}*/}
+          {/*                      value={95}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-pink" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:google_cloud")}*/}
+          {/*                      value={90}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-purple" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:processing")}*/}
+          {/*                      value={80}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-skyblue" }}*/}
+          {/*                    />*/}
+          {/*                    <Progress*/}
+          {/*                      label={t("strings:p5_js")}*/}
+          {/*                      value={80}*/}
+          {/*                      maxValue={100}*/}
+          {/*                      showValueLabel={true}*/}
+          {/*                      classNames={{ indicator: "bg-ienlab-blue" }}*/}
+          {/*                    />*/}
+          {/*                  </CardBody>*/}
+          {/*                </TechCard>*/}
+          {/*              </div>*/}
+          {/*            </div>*/}
+          {/*            <div className="service">*/}
+          {/*              <div className="body">*/}
+          {/*                {*/}
+          {/*                  services.map((service, index) => (*/}
+          {/*                    <Chip variant="flat" key={index}>{service}</Chip>*/}
+          {/*                  ))*/}
+          {/*                }*/}
+          {/*              </div>*/}
+          {/*            </div>*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </SectionWrapper>*/}
+          {/*</FullpageSection>*/}
+          {/*<FullpageSection>*/}
+          {/*  <SectionWrapper id="inquiry">*/}
+          {/*    <div className="content-wrapper">*/}
+          {/*      <div className="content">*/}
+          {/*        <div className="message width-max">*/}
+          {/*          <div className="title">{t("strings:root.ask_project")}</div>*/}
+          {/*          <div className="description contact">*/}
+          {/*            <div className="left-side">*/}
+          {/*              <Card*/}
+          {/*                className="card contact visible-animation d1"*/}
+          {/*                ref={addToVisibleAnimationRefs}*/}
+          {/*              >*/}
+          {/*                <div className="header">*/}
+          {/*                  <h2>{t("strings:contact_info")}</h2>*/}
+          {/*                </div>*/}
+          {/*                <div className="body info">*/}
+          {/*                  <Button*/}
+          {/*                    as={Link}*/}
+          {/*                    size="lg"*/}
+          {/*                    radius="sm"*/}
+          {/*                    variant="faded"*/}
+          {/*                    className="contact-detail"*/}
+          {/*                    startContent={<EnvelopeIcon size={24} weight="fill" />}*/}
+          {/*                    href="mailto:my@ien.zone"*/}
+          {/*                  >*/}
+          {/*                    <div className="info">*/}
+          {/*                      <div className="title">{t("strings:email")}</div>*/}
+          {/*                      <div className="description">my@ien.zone</div>*/}
+          {/*                    </div>*/}
+          {/*                  </Button>*/}
+          {/*                  <Button*/}
+          {/*                    as={Link}*/}
+          {/*                    size="lg"*/}
+          {/*                    radius="sm"*/}
+          {/*                    variant="faded"*/}
+          {/*                    className="contact-detail"*/}
+          {/*                    startContent={<PhoneIcon size={24} weight="fill" />}*/}
+          {/*                    href="tel:+8210-4815-7296"*/}
+          {/*                  >*/}
+          {/*                    <div className="info">*/}
+          {/*                      <div className="title">{t("strings:phone_number")}</div>*/}
+          {/*                      <div className="description">+82 10-4815-7296</div>*/}
+          {/*                    </div>*/}
+          {/*                  </Button>*/}
+          {/*                  <Button*/}
+          {/*                    as={Link}*/}
+          {/*                    size="lg"*/}
+          {/*                    radius="sm"*/}
+          {/*                    variant="faded"*/}
+          {/*                    className="contact-detail"*/}
+          {/*                    startContent={<GithubLogoIcon size={24} weight="fill" />}*/}
+          {/*                    href="https://github.com/ienground"*/}
+          {/*                  >*/}
+          {/*                    <div className="info">*/}
+          {/*                      <div className="title">{t("strings:github")}</div>*/}
+          {/*                      <div className="description">@ienground</div>*/}
+          {/*                    </div>*/}
+          {/*                  </Button>*/}
+          {/*                  <Button*/}
+          {/*                    as={Link}*/}
+          {/*                    size="lg"*/}
+          {/*                    radius="sm"*/}
+          {/*                    variant="faded"*/}
+          {/*                    className="contact-detail"*/}
+          {/*                    startContent={<InstagramLogoIcon size={24} weight="fill" />}*/}
+          {/*                    href="https://instagram.com/ienlab"*/}
+          {/*                  >*/}
+          {/*                    <div className="info">*/}
+          {/*                      <div className="title">{t("strings:instagram")}</div>*/}
+          {/*                      <div className="description">@ienlab</div>*/}
+          {/*                    </div>*/}
+          {/*                  </Button>*/}
+          {/*                </div>*/}
+          {/*              </Card>*/}
+          {/*              <Card*/}
+          {/*                className="card project-type visible-animation d2"*/}
+          {/*                ref={addToVisibleAnimationRefs}*/}
+          {/*              >*/}
+          {/*                <div className="header">*/}
+          {/*                  <h2>{t("strings:root.project_type")}</h2>*/}
+          {/*                </div>*/}
+          {/*                <div className="body project">*/}
+          {/*                  {*/}
+          {/*                    projectTypes.map((item) => (*/}
+          {/*                      <Button*/}
+          {/*                        size="lg"*/}
+          {/*                        radius="sm"*/}
+          {/*                        variant="faded"*/}
+          {/*                        className="project-detail"*/}
+          {/*                        key={item.key}*/}
+          {/*                      >*/}
+          {/*                        {item.icon}*/}
+          {/*                        <div className="label">{item.label}</div>*/}
+          {/*                      </Button>*/}
+          {/*                    ))*/}
+          {/*                  }*/}
+          {/*                </div>*/}
+          {/*              </Card>*/}
+          {/*            </div>*/}
+          {/*            <Card*/}
+          {/*              className="card form visible-animation d3"*/}
+          {/*              ref={addToVisibleAnimationRefs}*/}
+          {/*            >*/}
+          {/*              <div className="header">*/}
+          {/*                <h2>{t("strings:contact_project_inq")}</h2>*/}
+          {/*              </div>*/}
+          {/*              <Form*/}
+          {/*                className="body contact"*/}
+          {/*                onSubmit={onSubmit}*/}
+          {/*              >*/}
+          {/*                <div className="two-line">*/}
+          {/*                  <Input*/}
+          {/*                    isRequired*/}
+          {/*                    isClearable*/}
+          {/*                    radius="sm"*/}
+          {/*                    label={t("strings:name")}*/}
+          {/*                    type="text"*/}
+          {/*                    name="name"*/}
+          {/*                    placeholder={t("strings:input_name")}*/}
+          {/*                    value={uiState.item.formData.name}*/}
+          {/*                    onChange={handleChange}*/}
+          {/*                    onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, name: ""} })}*/}
+          {/*                  />*/}
+          {/*                  <Input*/}
+          {/*                    isClearable*/}
+          {/*                    radius="sm"*/}
+          {/*                    label={t("strings:company_name")}*/}
+          {/*                    type="text"*/}
+          {/*                    name="company"*/}
+          {/*                    placeholder={t("strings:company_optional_input")}*/}
+          {/*                    value={uiState.item.formData.company}*/}
+          {/*                    onChange={handleChange}*/}
+          {/*                    onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, company: ""} })}*/}
+          {/*                  />*/}
+          {/*                </div>*/}
+          {/*                <Input*/}
+          {/*                  isRequired*/}
+          {/*                  isClearable*/}
+          {/*                  radius="sm"*/}
+          {/*                  label={t("strings:email")}*/}
+          {/*                  type="email"*/}
+          {/*                  name="email"*/}
+          {/*                  placeholder="your@email.com"*/}
+          {/*                  value={uiState.item.formData.email}*/}
+          {/*                  onChange={handleChange}*/}
+          {/*                  onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, email: ""} })}*/}
+          {/*                />*/}
+          {/*                <div className="two-line">*/}
+          {/*                  <Select*/}
+          {/*                    isRequired*/}
+          {/*                    radius="sm"*/}
+          {/*                    label={t("strings:root.project_type")}*/}
+          {/*                    name="type"*/}
+          {/*                    placeholder={t("strings:select_type")}*/}
+          {/*                    value={uiState.item.formData.type}*/}
+          {/*                    onChange={handleChange}*/}
+          {/*                  >*/}
+          {/*                    <>*/}
+          {/*                      {projectTypes.map((item) => (*/}
+          {/*                        <SelectItem key={item.key}>{item.label}</SelectItem>*/}
+          {/*                      ))}*/}
+          {/*                    </>*/}
+          {/*                    <SelectItem key={"etc"}>{t("strings:etc")}</SelectItem>*/}
+          {/*                  </Select>*/}
+          {/*                  <Select*/}
+          {/*                    isRequired*/}
+          {/*                    radius="sm"*/}
+          {/*                    label={t("strings:platforms")}*/}
+          {/*                    placeholder={t("strings:select_platforms")}*/}
+          {/*                    selectionMode="multiple"*/}
+          {/*                    defaultSelectedKeys={[platformType.ANDROID.toString(), platformType.IOS.toString()]}*/}
+          {/*                    name="platform"*/}
+          {/*                    value={arrayToSelectValue(uiState.item.formData.platform)}*/}
+          {/*                    onChange={handleChange}*/}
+          {/*                  >*/}
+          {/*                    {*/}
+          {/*                      Object.values(platformType).map((item) => (*/}
+          {/*                        <SelectItem key={item}>{PlatformTypeToString(t, item)}</SelectItem>*/}
+          {/*                      ))*/}
+          {/*                    }*/}
+          {/*                  </Select>*/}
+          {/*                </div>*/}
+          {/*                <Select*/}
+          {/*                  isRequired*/}
+          {/*                  radius="sm"*/}
+          {/*                  label={t("strings:budget_range")}*/}
+          {/*                  placeholder={t("strings:set_budget_range")}*/}
+          {/*                  defaultSelectedKeys={[estimateBudget.BET_300_500]}*/}
+          {/*                  name="budget"*/}
+          {/*                  value={uiState.item.formData.budget}*/}
+          {/*                  onChange={handleChange}*/}
+          {/*                >*/}
+          {/*                  {*/}
+          {/*                    Object.values(estimateBudget).map((item) => (*/}
+          {/*                      <SelectItem key={item}>{EstimateBudgetToString(t, item)}</SelectItem>*/}
+          {/*                    ))*/}
+          {/*                  }*/}
+          {/*                </Select>*/}
+          {/*                <Textarea*/}
+          {/*                  isRequired*/}
+          {/*                  radius="sm"*/}
+          {/*                  label={t("strings:project_description")}*/}
+          {/*                  isClearable*/}
+          {/*                  placeholder={t("strings:project_description_desc")}*/}
+          {/*                  maxRows={6}*/}
+          {/*                  className="grow"*/}
+          {/*                  name="description"*/}
+          {/*                  value={uiState.item.formData.description}*/}
+          {/*                  onChange={handleChange}*/}
+          {/*                  onClear={() => onItemValueChanged({ formData: {...uiState.item?.formData, description: ""} })}*/}
+          {/*                />*/}
+          {/*                <Button*/}
+          {/*                  isLoading={uiState.item?.isEstimateUploading}*/}
+          {/*                  endContent={<PaperPlaneTiltIcon />}*/}
+          {/*                  color="primary"*/}
+          {/*                  variant="solid"*/}
+          {/*                  fullWidth*/}
+          {/*                  type="submit"*/}
+          {/*                  radius="sm"*/}
+          {/*                >*/}
+          {/*                  {t("strings:submit_inquiry")}*/}
+          {/*                </Button>*/}
+          {/*              </Form>*/}
+          {/*            </Card>*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </SectionWrapper>*/}
+          {/*</FullpageSection>*/}
         </FullpageContainer>
       </Wrapper>
     </DefaultLayout>
