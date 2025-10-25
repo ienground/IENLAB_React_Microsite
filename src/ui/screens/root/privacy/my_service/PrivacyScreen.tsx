@@ -336,6 +336,7 @@ export default function PrivacyScreen() {
             </CardBody>
           </Card>
           <Divider
+            className="divider"
             orientation="vertical"
             style={{height: "initial"}}
           />
@@ -425,7 +426,12 @@ const ContentWrapper = styled.div`
         }
       }
     }
-    
+  }
+
+  ${({ theme }) => theme.breakpoints.down("netbook")} {
+    & > .left-side, & > .divider {
+      display: none;
+    }
   }
 
   & > .content {

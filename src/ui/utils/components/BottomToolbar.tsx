@@ -75,10 +75,10 @@ export default function BottomToolbar(props: BottomToolbarProps) {
             as={HashLink}
             to={`#${item.key}`}
             title={
-              <div className="flex items-center space-x-2">
+              <HashLinkTabTitle>
                 <item.icon size={18} weight={props.selectedKey === item.key ? "fill" : "light"} />
                 <span>{item.label}</span>
-              </div> as never
+              </HashLinkTabTitle> as never
             }
             scroll={customScroll}
             onClick={() => isClickingRef.current = true}
@@ -93,7 +93,7 @@ const BottomToolbarWrapper = styled(Tabs)`
   position: fixed;
   left: 50%;
   bottom: 0;
-  z-index: 990;
+  z-index: 995;
   transform: translate(-50%, 100%);
   
   transition: bottom 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -103,6 +103,16 @@ const BottomToolbarWrapper = styled(Tabs)`
     bottom: 1rem;
     transform: translate(-50%, 0);
   }
-  
+
+  ${({ theme }) => theme.breakpoints.down("tablet")} {
+    display: none;
+  }
+`;
+
+const HashLinkTabTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 `;
 

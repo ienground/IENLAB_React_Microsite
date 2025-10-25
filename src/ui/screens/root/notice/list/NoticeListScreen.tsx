@@ -175,13 +175,11 @@ const NoticeCellWrapper = styled(Card)`
     & > .title {
       margin-top: 0.5rem;
       
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.5rem;
+      width: calc(100% - 2rem);
       
       font-size: x-large;
       font-weight: bold;
+      text-align: start;
     }
     
     & > .date {
@@ -249,9 +247,9 @@ const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) =>
           {dateTimeFormat(item.createAt?.toDate())}
         </div>
       </div>
-      <div className="end-content">
-        {
-          item.imageUrls?.length > 0 ?
+      {
+        item.imageUrls?.length > 0 ?
+          <div className="end-content">
             <Image
               src={item.imageUrls[0]}
               radius="sm"
@@ -260,9 +258,9 @@ const NoticeCell = ({ item, onClick }: { item: Notice, onClick: () => void }) =>
                 aspectRatio: 1
               }}
               classNames={{ img: "object-cover w-full h-full" }}
-            /> : <></>
-        }
-      </div>
+            />
+          </div> : <></>
+      }
     </NoticeCellWrapper>
   )
 }

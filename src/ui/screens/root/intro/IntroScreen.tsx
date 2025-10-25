@@ -4,7 +4,7 @@ import {useElementRefs, useVisibleAnimation} from "../../../utils/utils.ts";
 import {
   Chip,
   Image,
-  Spacer, Table,
+  Table,
   TableBody, TableCell,
   TableColumn,
   TableHeader,

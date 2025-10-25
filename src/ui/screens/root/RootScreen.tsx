@@ -1008,7 +1008,7 @@ const SectionWrapper = styled.div`
         }
       }
       
-      ${({ theme }) => theme.breakpoints.down("small")} {
+      ${({ theme }) => theme.breakpoints.down("small_mobile")} {
         & > .content > .message > .title {
           font-size: xx-large;
         }

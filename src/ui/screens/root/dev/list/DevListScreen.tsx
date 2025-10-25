@@ -97,7 +97,7 @@ export default function DevListScreen() {
 
 const ContentWrapper = styled.div`
   width: 100%;
-  padding: 1rem;
+  height: 840px;
   
   position: relative;
 
@@ -108,6 +108,16 @@ const ContentWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+    
+    ${({ theme }) => theme.breakpoints.down("netbook")} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    ${({ theme }) => theme.breakpoints.down("tablet")} {
+      grid-template-columns: 1fr;
+    }
+    
+    
   }
 `;
 

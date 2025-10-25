@@ -457,6 +457,8 @@ const ContentWrapper = styled.div`
 
 const SummaryCard = styled.div`
   & > .container {
+    width: 100%;
+    max-width: initial;
     margin-top: -5rem;
     z-index: 500;
 
@@ -517,6 +519,10 @@ const SummaryCard = styled.div`
             color: ${'hsl(var(--heroui-foreground-500))'};
           }
         }
+      }
+      
+      ${({ theme }) => theme.breakpoints.down("tablet")} {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }

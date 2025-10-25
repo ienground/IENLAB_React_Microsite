@@ -23,6 +23,10 @@ export const CommonWrapper = styled.div`
       font-size: xxx-large;
       font-weight: bold;
       text-align: center;
+
+      ${({ theme }) => theme.breakpoints.down("tablet")} {
+        font-size: xx-large;
+      }
     }
   }
   

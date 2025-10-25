@@ -22,12 +22,13 @@ import {
 import {useTranslation} from "react-i18next";
 import "../../../../../locales/i18n.ts";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import BottomToolbar, {type BottomToolbarItem} from "../../../../utils/components/BottomToolbar.tsx";
 import {useEstimateDetailViewModel} from "./EstimateDetailViewModel.tsx";
 import {EstimateStateToHeroColor, EstimateStateToString} from "../../../../../data/estimate/Estimate.ts";
 import {getDday} from "../../../../utils/utils.ts";
-import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts"; // HashLink 컴포넌트
+import {useDateTimeFormatters} from "../../../../utils/utils/DateTimeFormat.ts";
+import {EstimateDestination} from "../EstimateDestination.ts"; // HashLink 컴포넌트
 
 export default function EstimateDetailScreen() {
   const { infoState, startListening, stopListening, setItemId } = useEstimateDetailViewModel();
@@ -43,6 +44,7 @@ export default function EstimateDetailScreen() {
     { key: "contract", icon: ArticleIcon, label: t("strings:estimate.terms_of_the_contract") },
   ];
   const { dateFormat } = useDateTimeFormatters();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) setItemId(id);
@@ -62,6 +64,7 @@ export default function EstimateDetailScreen() {
           <Button
             variant="flat"
             startContent={<ArrowUUpLeftIcon size={16} weight="bold" /> }
+            onPress={() => navigate(EstimateDestination.route)}
           >
             {t("strings:return_to_inquiry")}
           </Button>
@@ -165,7 +168,7 @@ export default function EstimateDetailScreen() {
                 </CardBody>
                 <CardFooter className="footer">
                   <div className="title">{t("strings:tech_stacks")}</div>
-                  <div className="content">
+                  <div className="content flex-wrap">
                     {
                       infoState.item?.techStacks?.map((item, index) => (
                         <Chip radius="sm" key={index}>{item}</Chip>
@@ -568,6 +571,10 @@ const SummaryCard = styled(Card)`
           color: ${'hsl(var(--heroui-foreground-500))'};
         }
       }
+    }
+
+    ${({ theme }) => theme.breakpoints.down("tablet")} {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 `;

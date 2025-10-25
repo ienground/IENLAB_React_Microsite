@@ -6,8 +6,12 @@ import {NoticeDestination} from "../../screens/root/notice/NoticeDestination.ts"
 import {CSSTransition} from "react-transition-group";
 import imgLogoTypoWhite from "../../../assets/brand/img_logo_full_white.png";
 import imgLogoTypo from "../../../assets/brand/img_logo_full.png";
+import imgLogoShort from "../../../assets/brand/img_logo_short.png";
+import imgLogoShortWhite from "../../../assets/brand/img_logo_short_white.png";
 import {useRef} from "react";
 import {useDarkmode} from "../utils.ts";
+import {useScreenMeasure} from "../utils/ScreenMeasure.ts";
+import {breakpoints} from "../../../theme";
 
 interface FooterProps {
   visible?: boolean;
@@ -20,6 +24,8 @@ export const Footer = (props: FooterProps) => {
   const logoLight = useRef(null);
   const logoDark = useRef(null);
   const date = new Date();
+  const isDownTablet = useScreenMeasure("<=", breakpoints.tablet);
+
   return (
     (props.visible ?? true) ?
       <FooterWrapper>
@@ -64,7 +70,7 @@ export const Footer = (props: FooterProps) => {
               unmountOnExit
               appear
             >
-              <img src={imgLogoTypoWhite} alt="Logo" ref={logoDark}/>
+              <img src={isDownTablet ? imgLogoShortWhite : imgLogoTypoWhite} alt="Logo" ref={logoDark}/>
             </CSSTransition>
             <CSSTransition
               in={!isDark}
@@ -74,7 +80,7 @@ export const Footer = (props: FooterProps) => {
               mountOnEnter
               appear
             >
-              <img src={imgLogoTypo} alt="Logo" ref={logoLight}/>
+              <img src={isDownTablet ? imgLogoShort : imgLogoTypo} alt="Logo" ref={logoLight}/>
             </CSSTransition>
           </div>
         </div>
@@ -90,6 +96,7 @@ const FooterWrapper = styled.footer`
   align-items: center;
   justify-content: center;
   background-color: ${`hsl(var(--heroui-content3))`};
+  z-index: 990;
   
   & > .container {
     margin: 1rem;
@@ -110,6 +117,20 @@ const FooterWrapper = styled.footer`
         flex-direction: row;
         gap: 0.5rem;
         align-items: baseline;
+        
+        &, & > a {
+          font-size: small;
+        }
+      }
+      
+      ${({ theme }) => theme.breakpoints.down("mobile")} {
+        & > .copyright {
+          font-size: x-small;
+        }
+        
+        & > .link, & > .link > a {
+          font-size: x-small;
+        }
       }
     }
 

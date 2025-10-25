@@ -468,27 +468,27 @@ export const Header = (props: HeaderProps) => {
               </div>
             </NavbarMenuItemWrapper>
           </AccordionItem>
-          <AccordionItem
-            key="item-inquiry-submit"
-            title={t("strings:ask_outsource")}
-            subtitle={t("strings:ask_outsource_desc")}
-            as={Link}
-            href="/#inquiry"
-            onPress={() => setIsMenuOpen(false)}
-            startContent={<PaperPlaneTiltIcon size="18" weight="bold" /> }
-            indicator={<></>}
-            disableIndicatorAnimation
-            classNames={{
-              title: "w-full"
-            }}
-            style={{
-              width: "100%",
-              backgroundColor: "#FF000033",
-              borderRadius: "1rem",
-              margin: "1rem 0",
-              padding: "0 1rem"
-            }}
-          />
+          {/*<AccordionItem*/}
+          {/*  key="item-inquiry-submit"*/}
+          {/*  title={t("strings:ask_outsource")}*/}
+          {/*  subtitle={t("strings:ask_outsource_desc")}*/}
+          {/*  as={Link}*/}
+          {/*  href="/#inquiry"*/}
+          {/*  onPress={() => setIsMenuOpen(false)}*/}
+          {/*  startContent={<PaperPlaneTiltIcon size="18" weight="bold" /> }*/}
+          {/*  indicator={<></>}*/}
+          {/*  disableIndicatorAnimation*/}
+          {/*  classNames={{*/}
+          {/*    title: "w-full"*/}
+          {/*  }}*/}
+          {/*  style={{*/}
+          {/*    width: "100%",*/}
+          {/*    backgroundColor: "#FF000033",*/}
+          {/*    borderRadius: "1rem",*/}
+          {/*    margin: "1rem 0",*/}
+          {/*    padding: "0 1rem"*/}
+          {/*  }}*/}
+          {/*/>*/}
         </Accordion>
         {/*<NavbarMenuItem*/}
         {/*  key="menu-privacy"*/}
