@@ -21,15 +21,12 @@
 
 @keyframes float-shadow {
   0% {
-    transform: translateY(0);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* 초기 그림자: 기본 위치, 적당한 크기 */
   }
   50% {
-    transform: translateY(-20px); /* 위로 더 많이 이동 */
     box-shadow: 0 25px 35px rgba(0, 0, 0, 0.3); /* 떠오를 때 그림자: 더 커지고 흐려짐 */
   }
   100% {
-    transform: translateY(0);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* 다시 돌아올 때 그림자: 초기 상태로 */
   }
 }

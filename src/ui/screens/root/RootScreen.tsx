@@ -103,6 +103,7 @@ export default function RootScreen() {
           radius="none"
           width="100%"
           height="100vh"
+          classNames={{ img: "object-cover" }}
         />
         <div id="dark-filter" className={isDark ? "show" : ""} />
 
@@ -111,19 +112,15 @@ export default function RootScreen() {
         >
           <FullpageSection>
             <SectionWrapper>
-              <div className="content-wrapper">
+              <div className="content-wrapper intro">
                 <div className="content">
                   <div className="message">
-                    {/*<IntroAnimation />*/}
                     <div className="title">
                       {t("strings:root_hello")} <br />
                       {
                         i18n.language !== "ko" ? t("strings:root_im_ienground") : ""
                       }
-                      <div className="job-part">
-                        <span className="font-bold" id="appear-part">{t("strings:root_mobile_creator")}</span> <br />
-                        <span className="font-bold" id="remove-part">{t("strings:root_mobile_dev_design")}</span> <br />
-                      </div>
+                      <span className="font-bold">{t("strings:root_mobile_creator")}<br /></span>
                       {
                         i18n.language === "ko" ? t("strings:root_im_ienground") : ""
                       }
@@ -670,7 +667,7 @@ const SectionWrapper = styled.div`
   scroll-snap-align: start;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  //overflow: hidden;
   object-fit: cover;
   object-position: center center;
 
@@ -678,6 +675,7 @@ const SectionWrapper = styled.div`
   
   & > .content-wrapper {
     width: 100%;
+    height: calc(100% - 4rem);
     z-index: 101;
     
     display: flex;
@@ -686,8 +684,7 @@ const SectionWrapper = styled.div`
     justify-content: center;
 
     position: absolute;
-    top: calc(50% + 3rem);
-    transform: translate(0, -50%);
+    bottom: 0;
     
     & > .content {
       width: calc(100% - 4rem);
@@ -718,85 +715,22 @@ const SectionWrapper = styled.div`
         & > .title {
           font-size: xxx-large;
           font-weight: bold;
+          word-break: keep-all;
 
-          @keyframes strike{
-            0%   { width : 0; }
-            100% { width: 105%; }
-          }
-          
-          @keyframes fadeout {
-            0% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(-1rem); }
-          }
-          
-          @keyframes fadein {
-            0% { opacity: 0; }
-            100% { opacity: 1; transform: translateY(0); }
-          }
+          & > span {
+            background-color: ${`hsl(var(--heroui-foreground))`}; /* 원하는 배경색으로 변경 가능 */
+            color: ${`hsl(var(--heroui-background))`}; /* 글자색 흰색 */
+            padding: 5px 10px; /* 글자와 배경 사이의 여백 */
+            border-radius: 5px; /* 모서리를 둥글게 */
 
-          #remove-part::after {
-            content: ' ';
-            position: absolute;
-            top: 50%;
-            left: -2.5%;
-            width: 0;
-            height: 0.5rem;
-            background: ${'hsl(var(--heroui-danger-500))'};
-            transform: translateY(-50%);
-            
-            animation-name: strike;
-            animation-duration: 0.3s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-            animation-delay: 0.5s;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
           }
-
-          #remove-part {
-            position: relative;
-
-            animation-name: fadeout;
-            animation-duration: 0.6s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-            animation-delay: 0.8s;
-          }
-          
-          #appear-part {
-            opacity: 0;
-            transform: translateY(1rem);
-            
-            animation-name: fadein;
-            animation-duration: 0.6s;
-            animation-timing-function: ease-in-out;
-            animation-iteration-count: 1;
-            animation-fill-mode: forwards;
-            animation-delay: 0.8s;
-          }
-          
-          & > .job-part {
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            
-            & > span {
-              position: absolute;
-              background-color: ${`hsl(var(--heroui-foreground))`}; /* 원하는 배경색으로 변경 가능 */
-              color: ${`hsl(var(--heroui-background))`}; /* 글자색 흰색 */
-              padding: 5px 10px; /* 글자와 배경 사이의 여백 */
-              border-radius: 5px; /* 모서리를 둥글게 */
-
-              transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-            }
-          }
-          
-          
         }
         
         & > .description {
           font-size: initial;
           white-space: pre-line;
+          word-break: keep-all;
           
           &.history {
             display: grid;
@@ -1006,6 +940,7 @@ const SectionWrapper = styled.div`
       
       & > #profile {
         width: 30%;
+        max-height: calc(100vh - 6rem);
         
         position: relative;
 
@@ -1017,7 +952,89 @@ const SectionWrapper = styled.div`
         animation-timing-function: ease-in-out; /* 부드러운 시작과 끝 */
         animation-iteration-count: infinite; /* 무한 반복 */
       }
+  }
+    
+    ${({ theme }) => theme.breakpoints.down("laptop")} {
+       &.intro {
+         & > .content {
+           & > .message {
+             gap: 2rem;
+           }
+         }
+       }
     }
+    
+    @media (orientation: portrait) {
+      ${({ theme }) => theme.breakpoints.down("laptop")} {
+        &.intro {
+          & > .content {
+            width: 100%;
+            flex-direction: column;
+            gap: 1rem;
+            transform: translateY(10%);
+            
+            & > .message {
+              max-width: initial;
+              width: calc(100% - 2rem);
+              height: fit-content;
+              
+              & > .title {
+                text-align: center;
+                
+                & > .job-part {
+                  justify-content: center;
+                }
+              }
+              
+              & > .description {
+                text-align: center;
+              }
+              
+              & > .buttons {
+                justify-content: center;
+              }
+            }
+            
+            & > #profile {
+              width: 16rem;
+              position: relative;
+            }
+          }
+        }
+      }
+      
+      ${({ theme }) => theme.breakpoints.down("small")} {
+        & > .content > .message > .title {
+          font-size: xx-large;
+        }
+      }
+      
+
+    @media (orientation: landscape) {
+      ${({ theme }) => theme.breakpoints.down("laptop")} {
+        &.intro {
+          & > .content {
+            & > .message > .title {
+              //font-size: xx-large;
+            }
+            
+            & > #profile {
+              width: 45%;
+            }
+          }
+        }
+      }
+      
+      ${({ theme }) => theme.breakpoints.down("tablet")} {
+        &.intro {
+          & > .content > .message > .title {
+            //font-size: x-large;
+          }
+        }
+      }
+    }
+
+    
   }
 `;
 
@@ -1072,6 +1089,7 @@ const HistoryCard = styled(Card)`
     }
   }
 `;
+
 const TechCard = styled(Card)`
   img.background {
     width: 100%;

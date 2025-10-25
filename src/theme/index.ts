@@ -1,7 +1,8 @@
 import { createStyledBreakpointsTheme } from 'styled-breakpoints';
 
 export const breakpoints = {
-  mobile: 500,
+  small: 425,
+  mobile: 540,
   tablet: 768,
   netbook: 1024,
   laptop: 1280,
@@ -10,6 +11,8 @@ export const breakpoints = {
 
 export const screen = createStyledBreakpointsTheme({
   breakpoints: {
+    min: `100px`,
+    small: `${breakpoints.small}px`,
     mobile: `${breakpoints.mobile}px`,
     tablet: `${breakpoints.tablet}px`,
     netbook: `${breakpoints.netbook}px`,
