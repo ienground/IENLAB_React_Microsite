@@ -1,76 +1,84 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+html {
+  scroll-behavior: smooth;
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-button {
-  border: none;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes Mount-animation {
-  from {
+  .visible-animation {
     opacity: 0;
-    transform: translateY(-1rem);
+
+    &.start {
+      animation-name: fadeSlideIn;
+      animation-duration: 0.8s;
+      animation-timing-function: ease-out;
+      animation-fill-mode: forwards; /* 애니메이션 종료 후 최종 상태 유지 */
+    }
+
+    &.d1 {
+      animation-delay: 0s;
+    }
+
+    &.d2 {
+      animation-delay: 250ms;
+    }
+
+    &.d3 {
+      animation-delay: 500ms;
+    }
   }
-  to {
+
+  .fade-enter {
+    opacity: 0;
+  }
+  /* 요소가 나타나는 동안의 상태 (애니메이션 적용) */
+  .fade-enter-active {
     opacity: 1;
-    transform: translateY(0);
+    transition: opacity 0.3s ease-in-out;
   }
-}
+  /* 요소가 사라질 때의 최종 상태 */
+  .fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
 
-@keyframes Mount-animation-header {
-  0% {
+  .fade-exit-done {
     opacity: 0;
   }
-  80% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 
-@keyframes Blur-animation {
-  from {
-    backdrop-filter: blur(0px);
+  .bg-ienlab-pink {
+    background-color: #FF4081;
   }
-  to {
-    backdrop-filter: blur(30px);
+
+  .bg-ienlab-purple {
+    background-color: #7C4DFF;
+  }
+
+  .bg-ienlab-skyblue {
+    background-color: #03A9F4;
+  }
+
+  .bg-ienlab-blue {
+    background-color: #3f51b5;
+  }
+
+  .chip-ienlab-pink {
+    background-color: #FF408133;
+    color: #FF4081;
+  }
+
+  .chip-ienlab-purple {
+    background-color: #7C4DFF33;
+    color: #7C4DFF;
+  }
+
+  .chip-ienlab-skyblue {
+    background-color: #03A9F433;
+    color: #03A9F4;
+  }
+
+  .chip-ienlab-blue {
+    background-color: #3f51b533;
+    color: #3f51b5;
+  }
+
+  .button-ienlab-pink {
+
   }
 }

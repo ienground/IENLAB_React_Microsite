@@ -1,43 +1,43 @@
-html, body {
-    width: 100%;
-    height: 100vh;
+@import "tailwindcss";
+@plugin "./hero.ts";
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 
-    * {
-        cursor: none;
-    }
-
+:root {
+  transition: background-color 0.3s ease-in-out;
 }
 
-body {
-    margin: 0;
-    font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: #f0f0f0;
-    transition: background-color 0.5s ease;
-    user-select: none;
-
-    &.dark {
-        background-color: #202020;
-    }
-
-    img {
-        -webkit-user-drag: none;
-        -khtml-user-drag: none;
-        -moz-user-drag: none;
-        -o-user-drag: none;
-        user-drag: none;
-    }
-
-    * {
-        font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    }
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px); /* 원하는 만큼 위로 이동 */
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
-#wrap {
-    min-height: calc(100vh - 11.5rem);
+@keyframes float-shadow {
+  0% {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* 초기 그림자: 기본 위치, 적당한 크기 */
+  }
+  50% {
+    box-shadow: 0 25px 35px rgba(0, 0, 0, 0.3); /* 떠오를 때 그림자: 더 커지고 흐려짐 */
+  }
+  100% {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* 다시 돌아올 때 그림자: 초기 상태로 */
+  }
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0; /* 처음에는 투명하게 */
+    transform: translateY(-20px); /* 원래 위치보다 20px 위에 위치 */
+  }
+  to {
+    opacity: 1; /* 최종적으로 불투명하게 */
+    transform: translateY(0); /* 원래 위치로 이동 */
+  }
 }
