@@ -11,7 +11,10 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <AppHeader />
         <main className="flex-1 p-4">
-          {children}
+          <div className="flex flex-col">
+            <div className="w-full h-16" />
+            {children}
+          </div>
         </main>
         <AppFooter />
       </SidebarInset>
