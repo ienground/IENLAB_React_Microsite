@@ -1,17 +1,13 @@
 import {SidebarTrigger, useSidebar} from "@/components/ui/sidebar";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import {AnimatePresence, motion, useMotionValueEvent, useScroll} from "motion/react";
 import {useIsMobile} from "@/hooks/use-mobile.ts";
 import imgLogoTypo from "@/assets/brand/img_logo_typo.png";
-import {
-  NavigationMenu, NavigationMenuContent,
-  NavigationMenuItem, NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger
-} from "@/components/ui/navigation-menu.tsx";
 import {useState} from "react";
 import {MotionButton} from "@/ui/components/MotionComponent.tsx";
 import {RiArrowDownLine, RiArrowDownSLine} from "@remixicon/react";
 import {useTranslation} from "react-i18next";
+import {Header} from "@/ui/components/Header.tsx";
+import {NavItem} from "@/ui/components/NavItem.tsx";
 
 
 export function AppHeader() {
@@ -31,6 +27,14 @@ export function AppHeader() {
     tap: { scale: 0.95 },
   };
 
+  const [showMenu, setShowMenu] = useState(false);
+  const handleHover = () => {
+    setShowMenu(true);
+  }
+  const handleLeave = () => {
+    setShowMenu(false);
+  }
+
   return (
     <motion.header
       className="w-full flex items-center bg-blue-500 fixed h-16"
@@ -49,7 +53,14 @@ export function AppHeader() {
             variants={buttonProps}
             whileHover="hover"
             whileTap="tap"
+            onMouseEnter={handleHover}
           ><RiArrowDownSLine /></MotionButton>
+          <NavItem
+            label={"Hello World!"}
+            items={[
+              { label: "Hello", onClick: () => console.log("Hello") }
+            ]}
+          />
           <MotionButton
             size="lg"
             variant="ghost"
@@ -80,7 +91,7 @@ export function AppHeader() {
             variants={buttonProps}
             whileHover="hover"
             whileTap="tap"
-          >{t("strings:header.work")}</MotionButton>
+          >{t("strings:header.about")}</MotionButton>
           <MotionButton
             size="lg"
             variant="ghost"
