@@ -9,7 +9,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect} from "react";
 import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {RouterProvider} from "react-router";
-import {router} from "@/ui/router/RootRouter.tsx";
+import {router} from "./ui/router/Router.tsx";
 
 export default function App() {
   const { i18n } = useTranslation();
