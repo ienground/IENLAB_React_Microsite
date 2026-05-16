@@ -1,8 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import "./locales/i18n";
+import 'remixicon/fonts/remixicon.css'
+import App from './App.tsx'
 import {browserLocalPersistence, setPersistence} from "firebase/auth";
 import {fbAuth} from "@/constant/FirebaseConfig.ts";
 

@@ -1,10 +1,26 @@
 import {Carousel, Ticker, useTickerItem} from "motion-plus/react";
 import Sample from "@/assets/brand/Page04_01_white.png"
 // import Sample from "@/assets/brand/img_logo_typo.png"
-import {motion, useTransform } from "motion/react";
+import {motion, MotionConfig, useTransform } from "motion/react";
 import {CrossfadeImage} from "@ienlab/react-library";
+import {useTranslation} from "react-i18next";
+import {useState} from "react";
+import {RiArrowDropDownLine} from "@remixicon/react";
+import * as React from "react";
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
+
+  const [activeService, setActiveService] = useState<number | null>(null);
+  const services: Service[] = [
+    { name: "Branding" },
+    { name: "Web Design" },
+    { name: "Marketing" },
+    { name: "UI/UX Design" },
+    { name: "Development" },
+    { name: "Motion Design" },
+  ]
+
   const items = [
     {
       id: 1,
@@ -22,6 +38,11 @@ export default function HomeScreen() {
       image: Sample,
     },
   ]
+  const items2 = [
+    <span>One</span>,
+    <span>Two</span>,
+    <span>Three</span>
+  ]
 
   return (
     <div className="w-full flex flex-col items-center overflow-hidden"
@@ -29,19 +50,18 @@ export default function HomeScreen() {
       <Carousel
         align="center"
         gap={16}
-        className="w-350"
-        safeMargin={200}
+        className="w-350 bg-amber-200"
         overflow
-
-        items={items.map((item) => (
+        itemSize="fill"
+        items={items.map(item => (
           <div
             key={item.id}
-            className="w-350"
+            className="w-350 rounded-4xl overflow-hidden"
           >
             <CrossfadeImage
+              draggable={false}
               src={item.image}
               alt={item.title}
-              className="rounded-4xl"
             />
           </div>
         ))}
@@ -50,9 +70,7 @@ export default function HomeScreen() {
         <div className="w-full bg-blue-500">
           <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
             <aside className="col-span-12 xl:col-span-2">
-              <p className="text-[18px] font-medium tracking-[-0.03em] md:text-[22px]">
-                (01) LAB
-              </p>
+              <SectionHeader index={1} label={t("strings:home.header.about")} />
             </aside>
 
             <div className="col-span-12 xl:col-span-10">
@@ -112,9 +130,7 @@ export default function HomeScreen() {
         </div>
       </section>
       <section className="bg-yellow-200 w-full p-8">
-        <p className="text-[18px] font-medium tracking-[-0.03em] md:text-[22px]">
-          (02) PROJECT
-        </p>
+        <SectionHeader index={2} label={t("strings:home.header.project")} />
         <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3">
           <article className="rounded-2xl bg-neutral-100 p-6">
             <h3 className="text-xl font-semibold">제목 1</h3>
@@ -139,22 +155,64 @@ export default function HomeScreen() {
         </div>
       </section>
       <section className="bg-green-500 w-full p-8">
-        <p className="text-[18px] font-medium tracking-[-0.03em] md:text-[22px]">
-          (03) SKILLS
-        </p>
+        <SectionHeader index={3} label={t("strings:home.header.skills")} />
+        <div className="accordion">
+          <SkillItem header="What is Motion+?">
+            <p>
+              Motion+ is a one-time fee, lifetime access membership that
+              unlocks the source code for all Motion examples, early
+              access features, premium components, and an exclusive
+              Discord community.
+            </p>
+          </SkillItem>
+          <SkillItem header={`What does "lifetime access" mean?`}>
+            <p>
+              Just that! No one needs another subscription in their life.
+            </p>
+            <p>
+              {`Lifetime access means you'll receive all updates to Motion+ as they're released.`}
+            </p>
+          </SkillItem>
+          <SkillItem header="How does the team package work?">
+            <p>
+              After purchase, you can nominate up to 10 team members to
+              join Motion+.
+            </p>
+          </SkillItem>
+        </div>
+      </section>
+      <section className="bg-cyan-200 w-full p-8">
+        <SectionHeader index={4} label={t("strings:home.header.services")} />
+        <div className="flex">
+          <ul className="m-0 flex flex-col gap-5 p-0 list-none">
+            {services.map((service, index) => (
+              <ScrollHighlightItem
+                key={service.name}
+                service={service}
+                index={index}
+                isHighlighted={activeService === index}
+                onHighlight={() => setActiveService(index)}
+              />
+            ))}
+          </ul>
+        </div>
+      </section>
+      <section className="bg-pink-200 w-full p-8">
+        <SectionHeader index={5} label={t("strings:home.header.feedback")} />
         <div>
           <Ticker
             hoverFactor={0}
             overflow
+            gap={16}
             items={items.map((item) => (
               <div
                 key={item.id}
-                className="w-350"
+                className="w-350 rounded-4xl overflow-hidden"
               >
                 <CrossfadeImage
                   src={item.image}
                   alt={item.title}
-                  className="rounded-4xl"
+                  draggable={false}
                 />
               </div>
             ))}
@@ -163,4 +221,112 @@ export default function HomeScreen() {
       </section>
     </div>
   );
+}
+
+function SectionHeader({ index, label }: { index: number, label: string }) {
+  const indexFormatted = String(index).padStart(2, '0');
+  const labelFormatted = label.toUpperCase();
+  return (
+    <p className="text-xl font-medium tracking-tight md:text-2xl">({indexFormatted}) {labelFormatted}</p>
+  )
+}
+
+interface Service {
+  name: string
+}
+
+function ScrollHighlightItem({service, index, isHighlighted, onHighlight}: { service: Service, index: number, isHighlighted: boolean, onHighlight: (index: number) => void }) {
+  return (
+    <motion.li
+      className="whitespace-nowrap text-[clamp(2rem,8vw,6rem)] leading-[0.9] font-bold uppercase will-change-[opacity]"
+      initial={false}
+      animate={{
+        opacity: isHighlighted ? 1 : 0.3,
+        scale: isHighlighted ? 1.02 : 1,
+      }}
+      transition={{
+        duration: 0.1,
+        ease: "linear",
+      }}
+      onViewportEnter={() => onHighlight(index)}
+      viewport={{
+        margin: "-28% 0px -68% 0px",
+        amount: "some",
+      }}
+    >
+      {service.name}
+    </motion.li>
+  )
+}
+
+function SkillItem({ header, children }: { header: string, children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+
+  return (
+    <MotionConfig transition={{ duration: 0.3 }}>
+      <motion.section
+        initial={false}
+        animate={isOpen ? "open" : "closed"}
+      >
+        <h3>
+          <motion.button
+            // id={id + "-button"}
+            aria-expanded={isOpen}
+            // aria-controls={id}
+            onClick={() => setIsOpen(!isOpen)}
+            onFocus={onlyKeyboardFocus(() => setHasFocus(true))}
+            onBlur={() => setHasFocus(false)}
+          >
+            <span>{header}</span> <RiArrowDropDownLine />
+            {hasFocus && (
+              <motion.div
+                layoutId="focus-ring"
+                className="focus-ring"
+              />
+            )}
+          </motion.button>
+        </h3>
+        <motion.div
+          variants={{
+            open: {
+              height: "auto",
+              maskImage:
+                "linear-gradient(to bottom, black 100%, transparent 100%)",
+            },
+            closed: {
+              height: 0,
+              maskImage:
+                "linear-gradient(to bottom, black 50%, transparent 100%)",
+            },
+          }}
+          className="accordion-content"
+        >
+          <motion.div
+            variants={{
+              open: {
+                filter: "blur(0px)",
+                opacity: 1,
+              },
+              closed: {
+                filter: "blur(2px)",
+                opacity: 0,
+              },
+            }}
+          >
+            {children}
+          </motion.div>
+        </motion.div>
+        <hr />
+      </motion.section>
+    </MotionConfig>
+  )
+}
+
+function onlyKeyboardFocus(callback: () => void) {
+  return (e: React.FocusEvent<HTMLButtonElement>) => {
+    if (e.type === "focus" && e.target.matches(":focus-visible")) {
+      callback()
+    }
+  }
 }
