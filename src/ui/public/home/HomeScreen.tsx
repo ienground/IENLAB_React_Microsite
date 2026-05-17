@@ -10,7 +10,8 @@ import * as React from "react"
 import {splitText} from "motion-plus"
 import {animate, stagger} from "motion"
 import {cn} from "@/lib/utils.ts";
-import {HomeViewModel} from "@/ui/public/home/HomeViewModel.ts";
+import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts";
+import {Portfolio} from "@/domain/model/Portfolio.ts";
 
 export default function HomeScreen() {
   const { t } = useTranslation()
@@ -172,7 +173,7 @@ export default function HomeScreen() {
       </section>
       <section className="bg-yellow-200 w-full p-8 app-store">
         <SectionHeader index={2} label={t("strings:home.header.project")} />
-        <ProjectFront />
+        <ProjectFront infoStateList={portfolioInfoStateList} />
       </section>
       <section className="bg-green-500 w-full p-8">
         <SectionHeader index={3} label={t("strings:home.header.skills")} />
@@ -368,25 +369,19 @@ function AutoplayProgress({ duration }: { duration: number }) {
   )
 }
 
-function ProjectFront() {
+function ProjectFront({infoStateList}: {infoStateList: PortfolioInfoStateList}) {
   const [openId, open] = useState<string | null>(null)
   const close = () => open(null)
 
   return (
     <>
-      <ProjectList open={open} />
-      {openId && <Item close={close} id={openId} />}
+      <ul className="flex flex-wrap content-start gap-5 p-0 m-0 list-none max-[990px]:gap-2.5">
+        {infoStateList.itemList.map((card) => (
+          <Card key={card.id} category={"hi"} open={() => open(card.id)} id={card.id} title={card.title.ko} />
+        ))}
+      </ul>
+      {openId && <Item items={infoStateList.itemList} close={close} id={openId} />}
     </>
-  )
-}
-
-function ProjectList({ open }: { open: (id: string) => void }) {
-  return (
-    <ul className="flex flex-wrap content-start gap-5 p-0 m-0 list-none max-[990px]:gap-2.5">
-      {items.map((card) => (
-        <Card key={card.id} {...card} open={() => open(card.id)} />
-      ))}
-    </ul>
   )
 }
 
@@ -395,10 +390,10 @@ function CardContent({
                        title,
                        category,
                        open,
-                       top,
-                       bottom,
+                       // top,
+                       // bottom,
                        width = "100%",
-                       left,
+                       // left,
                        theme,
   isOpen = false,
   children = <></>
@@ -432,7 +427,8 @@ function CardContent({
           )}
           src={`/photos/app-store/${id}.jpg`}
           alt=""
-          style={{ top, bottom, width, left }}
+          style={{ width }}
+          // style={{ top, bottom, width, left }}
           layoutId={`card-image-${id}`}
         />
       </motion.div>
@@ -461,10 +457,10 @@ function Card({
                 title,
                 category,
                 open,
-                top,
-                bottom,
+                // top,
+                // bottom,
                 width = "100%",
-                left,
+                // left,
                 theme,
               }: CardProps) {
   return (
@@ -482,24 +478,28 @@ function Card({
         "cursor-pointer"
       )}
     >
-      <CardContent id={id} title={title} category={category} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} />
+      <CardContent id={id} title={title} category={category} open={open} width={width} theme={theme} />
+      {/*<CardContent id={id} title={title} category={category} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} />*/}
     </li>
   )
 }
 
-function Item({ id, close }: { id: string; close: VoidFunction }) {
+function Item({ id, items, close }: { id: string, items: Portfolio[], close: VoidFunction }) {
   const {
-    category,
+    // category,
     title,
-    content,
-    top,
-    bottom,
-    theme,
-    width = "100%",
-    left,
+    // content,
+    // top,
+    // bottom,
+    // theme,
+    // width = "100%",
+    // left,
   } = items.find((item) => item.id === id)!
-  const titleTone =
-    theme === "dark" ? "text-[#0f1115]" : "text-white"
+  const titleTone = "text-[#0f1115]"
+  const theme = "dark"
+  const width = "100%"
+  // const titleTone =
+  //   theme === "dark" ? "text-[#0f1115]" : "text-white"
 
   return (
     <>
@@ -519,10 +519,12 @@ function Item({ id, close }: { id: string; close: VoidFunction }) {
           "max-[990px]:py-0"
         )}
       >
-        <CardContent id={id} title={title} category={category} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} isOpen
+        {/*<CardContent id={id} title={title.ko} category={""} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} isOpen*/}
+        <CardContent id={id} title={title.ko} category={""} open={open} width={width} theme={theme} isOpen
         children={
           <motion.div className="w-[90vw] max-w-[700px] p-[35px]">
-            {content}
+            {"hi"}
+            {/*{content}*/}
           </motion.div>
         }
         />
