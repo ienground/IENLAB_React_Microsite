@@ -3,7 +3,7 @@ export const FirestorePath = {
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
-  DEV_PROJECT: "devProject",
+  PORTFOLIO: "portfolio",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
@@ -48,24 +48,38 @@ export const FirestorePath = {
     }
   },
 
-  DevProject: {
-    CATEGORIES: "categories",
+  Portfolio: {
+    /** boolean */
     IS_PRIMARY: "isPrimary",
-    THUMBNAIL: "thumbnail",
-    LOGO: "logo",
+    /** Record<Locale, string> */
     TITLE: "title",
+    /** Record<Locale, string> */
     SUMMARY: "summary",
+    /** string */
+    LOGO: "logo",
+    /** Record<Locale, string> */
+    THUMBNAIL: "thumbnail",
+    /** number[] */
+    CATEGORIES: "categories",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** number */
     STATE: "state",
+    /** Timestamp */
     START_AT: "startAt",
+    /** Timestamp */
     END_AT: "endAt",
+    /** Record<Locale, string> */
     DEVELOPER: "developer",
-    GITHUB: "github",
-    LINK: "link",
-    GOOGLE_PLAY: "googlePlay",
-    APP_STORE: "appStore",
+    /** string */
+    GITHUB_LINK: "githubLink",
+    /** string */
+    WEB_LINK: "webLink",
+    /** string */
+    GOOGLE_PLAY_LINK: "googlePlayLink",
+    /** string */
+    APP_STORE_LINK: "appStoreLink",
+    /** Record<Locale, string[]> */
     IMAGE_URLS: "imageUrls",
-    FUNCTIONS: "functions",
-    TECHS: "techs",
-    PLATFORM: "platform",
   }
 }
