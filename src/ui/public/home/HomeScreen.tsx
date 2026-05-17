@@ -10,9 +10,16 @@ import * as React from "react"
 import {splitText} from "motion-plus"
 import {animate, stagger} from "motion"
 import {cn} from "@/lib/utils.ts";
+import {HomeViewModel} from "@/ui/public/home/HomeViewModel.ts";
 
 export default function HomeScreen() {
   const { t } = useTranslation()
+  const init = HomeViewModel.use.init()
+  const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
+
+  useEffect(() => {
+    init()
+  }, [])
 
   const [activeService, setActiveService] = useState<number | null>(null)
   const services: Service[] = [

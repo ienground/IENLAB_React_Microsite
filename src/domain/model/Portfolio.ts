@@ -1,7 +1,6 @@
-import {type FirestoreItem, snapshotToData} from "@ienlab/react-library";
-import {FirestorePath} from "@/constant/FirestorePath.ts";
+import { FirestorePath } from "@/constant/FirestorePath";
+import {type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
 import {DocumentReference, DocumentSnapshot, FieldValue, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore";
-import type {Localized} from "@/types/types.ts";
 
 export class Portfolio implements FirestoreItem {
   id: string = ""
@@ -98,7 +97,7 @@ export namespace Portfolio {
   }
 
   export enum Category {
-    UTILITY, CREATIVE_COMPUTING, GAME, PHYSICAL_COMPUTING
+    UTILITY, CREATIVE_COMPUTING, GAME, PHYSICAL_COMPUTING, SOCIAL
   }
 
   export namespace Category {
