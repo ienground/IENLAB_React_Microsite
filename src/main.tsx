@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import "./locales/i18n";
+import "./locales/i18n"
 import App from './App.tsx'
-import {browserLocalPersistence, setPersistence} from "firebase/auth";
-import {fbAuth} from "@/constant/FirebaseConfig.ts";
+import {browserLocalPersistence, setPersistence} from "firebase/auth"
+import {fbAuth} from "@/constant/FirebaseConfig.ts"
 
 setPersistence(fbAuth, browserLocalPersistence).then(() => {
   createRoot(document.getElementById('root')!).render(
@@ -12,4 +12,4 @@ setPersistence(fbAuth, browserLocalPersistence).then(() => {
       <App />
     </StrictMode>,
   )
-});
+})

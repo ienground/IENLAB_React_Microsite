@@ -3,5 +3,5 @@ export default function PublicFooter() {
     <div className="bg-red-500">
       Footer
     </div>
-  );
+  )
 }

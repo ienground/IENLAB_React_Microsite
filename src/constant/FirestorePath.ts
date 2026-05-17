@@ -68,4 +68,4 @@ export const FirestorePath = {
     TECHS: "techs",
     PLATFORM: "platform",
   }
-};
+}

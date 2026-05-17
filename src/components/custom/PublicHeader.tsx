@@ -1,18 +1,18 @@
-import {motion, useMotionValueEvent, useScroll } from "motion/react";
-import {useState} from "react";
+import {motion, useMotionValueEvent, useScroll } from "motion/react"
+import {useState} from "react"
 
 export default function PublicHeader() {
-  const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll()
+  const [hidden, setHidden] = useState(false)
 
   useMotionValueEvent(scrollY, "change", (current) => {
-    const previous = scrollY.getPrevious() ?? 0;
+    const previous = scrollY.getPrevious() ?? 0
     if (current > previous && current > 250) {
-      setHidden(true);
+      setHidden(true)
     } else {
-      setHidden(false);
+      setHidden(false)
     }
-  });
+  })
 
   return (
     <motion.header
@@ -32,5 +32,5 @@ export default function PublicHeader() {
         </nav>
       </div>
     </motion.header>
-  );
+  )
 }

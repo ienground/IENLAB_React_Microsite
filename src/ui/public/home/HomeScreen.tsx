@@ -1,19 +1,20 @@
-import {Carousel, Ticker, useCarousel, useTickerItem} from "motion-plus/react";
+import {Carousel, Ticker, useCarousel, useTickerItem} from "motion-plus/react"
 import Sample from "@/assets/brand/Page04_01_white.png"
 // import Sample from "@/assets/brand/img_logo_typo.png"
-import {motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react";
-import {CrossfadeImage} from "@ienlab/react-library";
-import {useTranslation} from "react-i18next";
-import {useEffect, useRef, useState} from "react";
-import {RiArrowDropDownLine} from "@remixicon/react";
-import * as React from "react";
-import {splitText} from "motion-plus";
-import {animate, stagger} from "motion";
+import {motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react"
+import {CrossfadeImage} from "@ienlab/react-library"
+import {useTranslation} from "react-i18next"
+import {useEffect, useRef, useState} from "react"
+import {RiArrowDropDownLine} from "@remixicon/react"
+import * as React from "react"
+import {splitText} from "motion-plus"
+import {animate, stagger} from "motion"
+import {cn} from "@/lib/utils.ts";
 
 export default function HomeScreen() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const [activeService, setActiveService] = useState<number | null>(null);
+  const [activeService, setActiveService] = useState<number | null>(null)
   const services: Service[] = [
     { name: "Branding" },
     { name: "Web Design" },
@@ -39,28 +40,28 @@ export default function HomeScreen() {
       title: "Three",
       image: Sample,
     },
-  ];
-  const splitTextContainerRef = useRef<HTMLDivElement | null>(null);
-  const horizontalScrollContainerRef = useRef<HTMLDivElement | null>(null);
+  ]
+  const splitTextContainerRef = useRef<HTMLDivElement | null>(null)
+  const horizontalScrollContainerRef = useRef<HTMLDivElement | null>(null)
   const { scrollYProgress } = useScroll({
     target: horizontalScrollContainerRef,
     offset: ["start start", "end end"]
-  });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+  })
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
 
   const items2 = [
     { id: 1, title: "One", color: "bg-orange-300" },
     { id: 2, title: "Two", color: "bg-pink-300" },
     { id: 3, title: "Three", color: "bg-emerald-300" },
     { id: 4, title: "Four", color: "bg-sky-300" },
-  ];
+  ]
 
   useEffect(() => {
     document.fonts.ready.then(() => {
-      if (!splitTextContainerRef.current) return;
-      splitTextContainerRef.current.style.visibility = "visible";
+      if (!splitTextContainerRef.current) return
+      splitTextContainerRef.current.style.visibility = "visible"
 
-      const { words } = splitText(splitTextContainerRef.current.querySelector("h1"));
+      const { words } = splitText(splitTextContainerRef.current.querySelector("h1"))
 
       animate(
         words,
@@ -71,12 +72,12 @@ export default function HomeScreen() {
           bounce: 0,
           delay: stagger(0.05),
         }
-      );
+      )
     })
-  }, []);
+  }, [])
 
   return (
-    <div className="w-full flex flex-col items-center"
+    <div className="w-full flex flex-col items-center overflow-x-clip"
     >
       <Carousel
         align="center"
@@ -162,40 +163,19 @@ export default function HomeScreen() {
 
         </div>
       </section>
-      <section className="bg-yellow-200 w-full p-8">
+      <section className="bg-yellow-200 w-full p-8 app-store">
         <SectionHeader index={2} label={t("strings:home.header.project")} />
-        <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3">
-          <article className="rounded-2xl bg-neutral-100 p-6">
-            <h3 className="text-xl font-semibold">제목 1</h3>
-            <p className="mt-3 text-sm text-neutral-600">
-              설명 텍스트입니다.
-            </p>
-          </article>
-
-          <article className="rounded-2xl bg-neutral-100 p-6">
-            <h3 className="text-xl font-semibold">제목 2</h3>
-            <p className="mt-3 text-sm text-neutral-600">
-              설명 텍스트입니다.
-            </p>
-          </article>
-
-          <article className="rounded-2xl bg-neutral-100 p-6">
-            <h3 className="text-xl font-semibold">제목 3</h3>
-            <p className="mt-3 text-sm text-neutral-600">
-              설명 텍스트입니다.
-            </p>
-          </article>
-        </div>
+        <ProjectFront />
       </section>
       <section className="bg-green-500 w-full p-8">
         <SectionHeader index={3} label={t("strings:home.header.skills")} />
-        <div ref={horizontalScrollContainerRef} className="h-[300vh]">
+        <div ref={horizontalScrollContainerRef} className="h-[300vh] bg-amber-800">
           <div className="sticky top-0 flex h-screen items-center">
-            <motion.div style={{ x }} className="flex gap-6 px-6">
+            <motion.div style={{ x }} className="flex gap-8">
               {items2.map((item) => (
                 <article
                   key={item.id}
-                  className={`flex h-[calc(100vh-48px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
+                  className={`flex h-[calc(100vh-64px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
                 >
                   {item.title}
                 </article>
@@ -242,13 +222,14 @@ export default function HomeScreen() {
           />
         </div>
       </section>
+      {/*<StyleSheet />*/}
     </div>
-  );
+  )
 }
 
 function SectionHeader({ index, label }: { index: number, label: string }) {
-  const indexFormatted = String(index).padStart(2, '0');
-  const labelFormatted = label.toUpperCase();
+  const indexFormatted = String(index).padStart(2, '0')
+  const labelFormatted = label.toUpperCase()
   return (
     <p className="text-xl font-medium tracking-tight md:text-2xl">({indexFormatted}) {labelFormatted}</p>
   )
@@ -283,8 +264,8 @@ function ScrollHighlightItem({service, index, isHighlighted, onHighlight}: { ser
 }
 
 function SkillItem({ header, children }: { header: string, children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [hasFocus, setHasFocus] = useState(false)
 
   return (
     <MotionConfig transition={{ duration: 0.3 }}>
@@ -366,9 +347,9 @@ function AutoplayProgress({ duration }: { duration: number }) {
     })
 
     return () => animation.stop()
-  }, [duration, nextPage, progress, currentPage]);
+  }, [duration, nextPage, progress, currentPage])
 
-  console.log(progress.get());
+  console.log(progress.get())
 
   return (
     <div className="w-30 h-1.5 bg-pink-400 rounded-4xl z-50 ">
@@ -379,3 +360,282 @@ function AutoplayProgress({ duration }: { duration: number }) {
     </div>
   )
 }
+
+function ProjectFront() {
+  const [openId, open] = useState<string | null>(null)
+  const close = () => open(null)
+
+  return (
+    <>
+      <ProjectList open={open} />
+      {openId && <Item close={close} id={openId} />}
+    </>
+  )
+}
+
+function ProjectList({ open }: { open: (id: string) => void }) {
+  return (
+    <ul className="flex flex-wrap content-start gap-5 p-0 m-0 list-none max-[990px]:gap-2.5">
+      {items.map((card) => (
+        <Card key={card.id} {...card} open={() => open(card.id)} />
+      ))}
+    </ul>
+  )
+}
+
+function CardContent({
+                       id,
+                       title,
+                       category,
+                       open,
+                       top,
+                       bottom,
+                       width = "100%",
+                       left,
+                       theme,
+  isOpen = false,
+  children = <></>
+                     }: CardProps & { isOpen?: boolean, children?: React.ReactNode }) {
+  const titleTone =
+    theme === "dark" ? "text-[#0f1115]" : "text-white"
+
+  return (
+    <motion.div
+      className={cn(
+        "relative mx-auto overflow-hidden rounded-[20px] bg-[#0b1011]",
+        isOpen
+          ? "w-auto h-auto max-w-[700px] pointer-events-none"
+          : "w-full h-full pointer-events-auto"
+      )}
+      layoutId={`card-container-${id}`}
+    >
+      <motion.div
+        className="relative flex h-[420px] flex-col justify-stretch overflow-hidden max-[990px]:h-[280px]"
+        layoutId={`card-image-container-${id}`}
+      >
+        <motion.img
+          className={cn(
+            "absolute w-full",
+            "max-[990px]:!top-auto",
+            "max-[990px]:!bottom-[-10px]",
+            "max-[990px]:!left-0",
+            "max-[990px]:!right-0",
+            "max-[990px]:min-w-[250px]",
+            "max-[990px]:min-h-[300px]"
+          )}
+          src={`/photos/app-store/${id}.jpg`}
+          alt=""
+          style={{ top, bottom, width, left }}
+          layoutId={`card-image-${id}`}
+        />
+      </motion.div>
+
+      <motion.div
+        className={cn(
+          "absolute top-[15px] left-[15px] max-w-[300px]",
+          "max-[990px]:invisible",
+          titleTone
+        )}
+        layoutId={`title-container-${id}`}
+        layout="position"
+      >
+        <span className="text-sm">{category}</span>
+        <h2 className="mt-2 text-balance text-[32px] leading-[1.05] tracking-[-0.05em]">
+          {title}
+        </h2>
+      </motion.div>
+      {children}
+    </motion.div>
+  )
+}
+
+function Card({
+                id,
+                title,
+                category,
+                open,
+                top,
+                bottom,
+                width = "100%",
+                left,
+                theme,
+              }: CardProps) {
+  return (
+    <li
+      onClick={open}
+      className={cn(
+        "relative box-border list-none p-0 h-[420px]",
+        "flex-[0_0_40%]",
+        "[&:nth-child(4n+1)]:flex-[0_1_calc(60%-20px)]",
+        "[&:nth-child(4n+4)]:flex-[0_1_calc(60%-20px)]",
+        "max-[990px]:h-[280px]",
+        "max-[990px]:flex-[0_1_calc(50%-5px)]",
+        "max-[990px]:[&:nth-child(4n+1)]:flex-[0_1_calc(50%-5px)]",
+        "max-[990px]:[&:nth-child(4n+4)]:flex-[0_1_calc(50%-5px)]",
+        "cursor-pointer"
+      )}
+    >
+      <CardContent id={id} title={title} category={category} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} />
+    </li>
+  )
+}
+
+function Item({ id, close }: { id: string; close: VoidFunction }) {
+  const {
+    category,
+    title,
+    content,
+    top,
+    bottom,
+    theme,
+    width = "100%",
+    left,
+  } = items.find((item) => item.id === id)!
+  const titleTone =
+    theme === "dark" ? "text-[#0f1115]" : "text-white"
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, delay: 0.1 }}
+        style={{ pointerEvents: "auto" }}
+        className="fixed inset-0 z-[1000000] bg-black/80"
+        onClick={close}
+      />
+      <div
+        className={cn(
+          "fixed inset-x-0 top-0 z-[1000001] flex h-full w-full flex-col justify-center overflow-hidden py-10",
+          "pointer-events-none",
+          "max-[990px]:py-0"
+        )}
+      >
+        <CardContent id={id} title={title} category={category} open={open} top={top} bottom={bottom} width={width} left={left} theme={theme} isOpen
+        children={
+          <motion.div className="w-[90vw] max-w-[700px] p-[35px]">
+            {content}
+          </motion.div>
+        }
+        />
+      </div>
+    </>
+  )
+}
+
+interface CardProps {
+  id: string
+  title: string
+  category: string
+  open: VoidFunction
+  top?: number
+  bottom?: number
+  width?: string
+  left?: number
+  theme?: "dark" | "light"
+}
+
+interface Item {
+  id: string
+  category: string
+  title: string
+  content: React.ReactNode
+  top?: number
+  bottom?: number
+  width?: string
+  left?: number
+  theme?: "dark" | "light"
+}
+
+const items: Item[] = [
+  {
+    id: "a",
+    category: "Travel",
+    title: "5 Inspiring Apps for Your Next Trip",
+    content: (
+      <>
+        <p className="big">
+          Love to travel? So do the makers of these five subscription
+          apps. For a small monthly fee, they'll help you find the
+          best deals on flights, hotels, and some other stuff we turn
+          a blind eye to.
+        </p>
+        <p className="big">
+          Plan your perfect itinerary with intelligent recommendations
+          based on your interests, time, and credit history.
+        </p>
+      </>
+    ),
+    top: -300,
+  },
+  {
+    id: "c",
+    category: "How to",
+    title: "Contemplate the Meaning of Life Twice a Day",
+    content: (
+      <>
+        <p className="big">
+          What is life? You can't spell "life" without "i". You also
+          can't spell "life" without "l", "f", and "e". Worth thinking
+          about.
+        </p>
+        <p className="big">
+          The only way to find out more about life is to think about
+          it. And the only way to think about it is twice daily using
+          an app.
+        </p>
+        <p className="big">
+          Apps? We got 'em. Therefore we got the meaning of life.
+        </p>
+      </>
+    ),
+    bottom: -50,
+    theme: "dark",
+    width: "110%",
+    left: -20,
+  },
+  {
+    id: "d",
+    category: "Steps",
+    title: "Urban Exploration Apps for the Vertically-Inclined",
+    content: (
+      <>
+        <p className="big">
+          Get off the beaten path. Find the best views, skywalks, and
+          elevated gardens in your city.
+        </p>
+        <p className="big">
+          Locked door? No problem! This app crowdsources the access
+          code to every door in your city.
+        </p>
+      </>
+    ),
+    theme: "dark",
+    width: "200%",
+    left: -100,
+  },
+  {
+    id: "b",
+    category: "Hats",
+    title: "Take Control of Your Hat Life With This Stunning New App",
+    content: (
+      <>
+        <p className="big">
+          Whether you're serious hat enthusiast, or just a filthy
+          casual, this new app revolutionizes how you organize, care
+          for, and expand your hat collection.
+        </p>
+        <p className="big">
+          Stay up to date with the latest hat trends, get personalized
+          hat care reminders, and use predictive analytics to discover
+          the last place you left your hat.
+        </p>
+        <p className="big">
+          Why follow the crowd when you can be the crowd?
+        </p>
+      </>
+    ),
+    bottom: -100,
+  },
+]
