@@ -10,7 +10,6 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <PublicFooter />
-      {/*public footer*/}
     </div>
   )
 }
