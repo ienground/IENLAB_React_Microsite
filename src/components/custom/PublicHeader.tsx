@@ -16,7 +16,7 @@ export default function PublicHeader() {
 
   return (
     <motion.header
-      className="fixed w-full bg-pink-400 z-999"
+      className="fixed w-full h-24 z-999 bg-pink-200"
       animate={{
         y: hidden ? -140 : 0,
         opacity: hidden ? 0 : 1,

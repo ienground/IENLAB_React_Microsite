@@ -16,20 +16,13 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
-                <HomeScreen />
-              </HomeViewModel.Provider>
-            )
+            element: <HomeScreen />
           }
         ]
       },
       {
         path: "",
         element: <></>,
-        children: [
-
-        ]
       },
       {
         path: "*",

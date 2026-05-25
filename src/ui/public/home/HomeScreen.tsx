@@ -12,8 +12,17 @@ import {animate, stagger} from "motion"
 import {cn} from "@/lib/utils.ts";
 import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts";
 import {Portfolio} from "@/domain/model/Portfolio.ts";
+import {portfolioRepository} from "@/di/container.ts";
 
 export default function HomeScreen() {
+  return (
+    <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
+      <ScreenBody />
+    </HomeViewModel.Provider>
+  )
+}
+
+function ScreenBody() {
   const { t } = useTranslation()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
@@ -85,8 +94,7 @@ export default function HomeScreen() {
   }, [])
 
   return (
-    <div className="w-full flex flex-col items-center overflow-x-clip"
-    >
+    <div className="w-full flex flex-col items-center overflow-x-clip">
       <Carousel
         align="center"
         gap={16}
@@ -356,8 +364,6 @@ function AutoplayProgress({ duration }: { duration: number }) {
 
     return () => animation.stop()
   }, [duration, nextPage, progress, currentPage])
-
-  console.log(progress.get())
 
   return (
     <div className="w-30 h-1.5 bg-pink-400 rounded-4xl z-50 ">
