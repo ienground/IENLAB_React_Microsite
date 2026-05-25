@@ -1,13 +1,32 @@
 export const FirestorePath = {
+  USER: "user",
   ESTIMATE: "estimate",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
   PORTFOLIO: "portfolio",
+  COMPANY: "company",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
-  DELETE: "delete",
+  DELETED_AT: "deletedAt",
+
+  User: {
+    /** Timestamp */
+    VISIT_AT: "visitAt",
+    /** string */
+    NAME: "name",
+    /** DocumentReference */
+    COMPANY: "company",
+    /** number */
+    LEVEL: "level",
+    /** number */
+    STATE: "state",
+    /** string */
+    PHONE: "phone",
+    /** string */
+    EMAIL: "email",
+  },
 
   Estimate: {
     IDENTIFIER: "identifier", // string
@@ -31,10 +50,6 @@ export const FirestorePath = {
     COSTS: "costs", // { string, string, number }[]
   },
 
-  Outsource: {
-
-  },
-
   Notice: {
     CATEGORY: "category", // string, id
     TITLE: "title", // string
@@ -51,6 +66,8 @@ export const FirestorePath = {
   Portfolio: {
     /** boolean */
     IS_PRIMARY: "isPrimary",
+    /** number */
+    VISIBILITY: "visibility",
     /** Record<Locale, string> */
     TITLE: "title",
     /** Record<Locale, string> */
@@ -81,5 +98,125 @@ export const FirestorePath = {
     APP_STORE_LINK: "appStoreLink",
     /** Record<Locale, string[]> */
     IMAGE_URLS: "imageUrls",
+  },
+
+  Company: {
+    /** Record<Locale, string> */
+    NAME: "name",
+    /** number */
+    STATE: "state"
+  },
+
+  Outsource: {
+    /** DocumentReference */
+    TARGET_COMPANY: "targetCompany",
+    /** Record<Locale, string> */
+    TITLE: "title",
+    /** number */
+    STATE: "state",
+    /** number */
+    PHASE: "phase",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** DocumentReference */
+    ESTIMATE: "estimate",
+    /** number */
+    ESTIMATE_AMOUNT: "estimateAmount",
+    /** number */
+    REVISION_REQUEST_AMOUNT: "revisionRequestAmount",
+    /** Timestamp | null */
+    QUOTED_AT: "quotedAt",
+    /** Timestamp | null */
+    CONTRACTED_AT: "contractedAt",
+    /** Timestamp | null */
+    STARTED_AT: "startedAt",
+    /** Timestamp | null */
+    DUE_AT: "dueAt",
+    /** Timestamp | null */
+    COMPLETED_AT: "completedAt",
+    /** Timestamp | null */
+    CANCELLED_AT: "cancelledAt",
+    /** Timestamp | null */
+    PAUSED_AT: "pausedAt",
+    /** Timestamp | null */
+    WAITING_CLIENT_AT: "waitingClientAt",
+
+    /** Collection */
+    REVISION_REQUESTS: "revisionRequests",
+    RevisionRequest: {
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      REASON: "reason",
+      /** number */
+      AMOUNT_DELTA: "amountDelta",
+      /** number */
+      DUE_DATE_DELTA_DAYS: "dueDateDeltaDays",
+      /** number */
+      STATE: "state",
+      /** Timestamp | null */
+      SENT_AT: "sentAt",
+      /** Timestamp | null */
+      APPROVED_AT: "approvedAt",
+      /** Timestamp | null */
+      REJECTED_AT: "rejectedAt",
+      /** Timestamp | null */
+      APPLIED_AT: "appliedAt"
+    },
+
+    /** Collection */
+    INFO_REQUESTS: "infoRequests",
+    InfoRequest: {
+      /** Timestamp */
+      EXPIRE_AT: "expireAt",
+      /** DocumentReference | null */
+      TARGET_OUTSOURCE: "targetOutsource",
+      /** number */
+      STATE: "state",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      REASON: "reason",
+      /** number */
+      TYPE: "type",
+      /** Map[] */
+      TEXT_ITEMS: "textItems",
+      /** Map */
+      MEDIA: "media",
+
+      TextItem: {
+        /** Record<Locale, string> */
+        LABEL: "label",
+        /** boolean */
+        SECURE: "secure"
+      },
+
+      Media: {
+        /** Record<Locale, string> */
+        LABEL: "label",
+        /** Record<Locale, string> */
+        DESCRIPTION: "description",
+        /** number */
+        MAX_COUNT: "maxCount",
+        /** number */
+        ALLOWED_TYPE: "allowedType",
+        /** Map[] */
+        FILES: "files",
+
+        File: {
+          /** string */
+          PATH: "path",
+          /** string */
+          NAME: "name",
+          /** string */
+          CONTENT_TYPE: "contentType",
+          /** number */
+          SIZE: "size",
+          /** string */
+          DOWNLOAD_URL: "downloadUrl"
+        }
+      }
+    }
+
   }
 }

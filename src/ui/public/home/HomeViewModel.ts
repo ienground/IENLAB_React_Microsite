@@ -1,5 +1,4 @@
 import {Portfolio} from "@/domain/model/Portfolio.ts";
-import {portfolioRepository} from "@/di/container.ts";
 import type { PortfolioRepository } from "@/domain/repository/PortfolioRepository";
 import {createStore} from "zustand";
 import {createZustandContext} from "@ienlab/react-library";
@@ -9,7 +8,7 @@ export interface PortfolioInfoStateList {
   isInitialized: boolean
 }
 
-export type HomeViewModelProps = {
+type HomeViewModelProps = {
   portfolioRepository: PortfolioRepository
 }
 
@@ -19,12 +18,11 @@ interface HomeViewModelStore {
   init: () => void
 }
 
-const createHomeStore = ({ portfolioRepository }: HomeViewModelProps) => createStore<HomeViewModelStore>((set, get) => ({
+const createHomeStore = (props: HomeViewModelProps) => createStore<HomeViewModelStore>((set, get) => ({
   portfolioInfoStateList: { itemList: [], isInitialized: false },
 
   init: () => {
-    portfolioRepository.getPrimaries(items => {
-      console.log(items.map(item => JSON.stringify(item)))
+    props.portfolioRepository.getPrimaries(items => {
       set({ portfolioInfoStateList: { itemList: items, isInitialized: true } })
     })
   }
