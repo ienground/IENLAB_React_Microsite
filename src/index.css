@@ -52,6 +52,9 @@
     --color-naver-foreground: var(--naver-foreground);
     --color-kakao-background: var(--kakao-background);
     --color-kakao-foreground: var(--kakao-foreground);
+
+    --color-light-muted: var(--light-muted);
+    --color-light-muted-foreground: var(--light-muted-foreground);
 }
 
 :root {
@@ -98,6 +101,9 @@
     --naver-foreground: oklch(1 0 0);
     --kakao-background: oklch(0.902 0.198 96.61);
     --kakao-foreground: oklch(0 0 0);
+
+    --light-muted: oklch(0.97 0 0);
+    --light-muted-foreground: oklch(0.556 0 0);
 }
 
 .dark {

@@ -8,7 +8,7 @@ import {useEffect, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
-  RiCloseLargeFill,
+  RiCloseLargeFill, RiCursorHand,
   RiGithubFill, RiPagesFill
 } from "@remixicon/react"
 import * as React from "react"
@@ -38,6 +38,7 @@ function ScreenBody() {
   const {t} = useTranslation()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
+  const navigate = useNavigate()
 
   useEffect(() => {
     init()
@@ -53,21 +54,24 @@ function ScreenBody() {
     {name: "Motion Design"},
   ]
 
-  const items = [
+  const carouselItems = [
     {
       id: 1,
       title: "One",
       image: Sample,
+      url: "asdf",
     },
     {
       id: 2,
       image: Sample,
       title: "Two",
+      url: "",
     },
     {
       id: 3,
       title: "Three",
       image: Sample,
+      url: "",
     },
   ]
   const splitTextContainerRef = useRef<HTMLDivElement | null>(null)
@@ -107,27 +111,42 @@ function ScreenBody() {
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-clip">
-      <Carousel
-        align="center"
-        gap={16}
-        className="w-350 bg-amber-200"
-        overflow
-        itemSize="fill"
-        items={items.map(item => (
-          <div
-            key={item.id}
-            className="w-350 rounded-4xl overflow-hidden"
-          >
-            <CrossfadeImage
-              draggable={false}
-              src={item.image}
-              alt={item.title}
-            />
-          </div>
-        ))}
-      >
-        <AutoplayProgress duration={3}/>
-      </Carousel>
+      <section className="relative">
+        <Carousel
+          align="center"
+          gap={16}
+          className="w-350"
+          overflow
+          itemSize="fill"
+          items={carouselItems.map(item => (
+            <div
+              key={item.id}
+              className="w-350 rounded-4xl overflow-hidden relative"
+            >
+              <CrossfadeImage
+                draggable={false}
+                src={item.image}
+                alt={item.title}
+              />
+
+              {item.url.length === 0 && <Button
+                className={cn(
+                  "absolute bottom-16 left-1/2 -translate-x-1/2",
+                  "bg-primary-foreground/50 text-primary",
+                  "hover:bg-primary-foreground"
+                )}
+                size="icon-lg"
+                onClick={() => navigate(item.url)}
+              ><RiCursorHand /></Button>}
+            </div>
+          ))}
+        >
+          <AutoplayProgress
+            duration={4}
+            className="z-300 absolute bottom-4 left-1/2 -translate-x-1/2"
+          />
+        </Carousel>
+      </section>
       <section className="bg-red-500 w-full p-8">
         <div className="w-full bg-blue-500">
           <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
@@ -243,7 +262,7 @@ function ScreenBody() {
             hoverFactor={0}
             overflow
             gap={16}
-            items={items.map((item) => (
+            items={carouselItems.map((item) => (
               <div
                 key={item.id}
                 className="w-350 rounded-4xl overflow-hidden"
@@ -376,9 +395,10 @@ function onlyKeyboardFocus(callback: () => void) {
   }
 }
 
-function AutoplayProgress({duration}: { duration: number }) {
+function AutoplayProgress({duration, className = ""}: { duration: number, className?: string }) {
   const {currentPage, nextPage} = useCarousel()
   const progress = useMotionValue(0)
+  const progressWidth = useTransform(progress, [0, 1], ["0%", "100%"])
 
   useEffect(() => {
     const animation = animate(progress, [0, 1], {
@@ -391,10 +411,15 @@ function AutoplayProgress({duration}: { duration: number }) {
   }, [duration, nextPage, progress, currentPage])
 
   return (
-    <div className="w-30 h-1.5 bg-pink-400 rounded-4xl z-50 ">
+    <div
+      className={cn(
+        "w-30 h-2 overflow-hidden rounded-4xl border border-light-muted bg-light-muted",
+        className
+      )}
+    >
       <motion.div
-        className="w-full h-full bg-white origin-left rounded-4xl"
-        style={{scaleX: progress, willChange: "transform"}}
+        className="h-full rounded-4xl bg-light-muted-foreground"
+        style={{ width: progressWidth, willChange: "width" }}
       />
     </div>
   )
