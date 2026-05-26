@@ -34,11 +34,15 @@ export default function PublicHeader() {
           <a href="#">Examples</a>
           <a href="#">Blog</a>
           <button
-            onClick={() => setTheme(resolvedTheme === "light" ? "dark": "light")}
-          >{resolvedTheme}</button>
+            onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+          >
+            {resolvedTheme === "light" ? "Dark Mode" : "Light Mode"}
+          </button>
           <button
-            onClick={() => i18n.changeLanguage(i18n.language === "ko" ? "en" : "ko")}
-          >{i18n.language}</button>
+            onClick={() => i18n.changeLanguage(i18n.resolvedLanguage?.startsWith("ko") ? "en" : "ko")}
+          >
+            {i18n.resolvedLanguage?.startsWith("ko") ? "English" : "한국어"}
+          </button>
         </nav>
       </div>
     </motion.header>
