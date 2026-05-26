@@ -1,13 +1,32 @@
 export const FirestorePath = {
+  USER: "user",
   ESTIMATE: "estimate",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
-  DEV_PROJECT: "devProject",
+  PORTFOLIO: "portfolio",
+  COMPANY: "company",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
-  DELETE: "delete",
+  DELETED_AT: "deletedAt",
+
+  User: {
+    /** Timestamp */
+    VISIT_AT: "visitAt",
+    /** string */
+    NAME: "name",
+    /** DocumentReference */
+    COMPANY: "company",
+    /** number */
+    LEVEL: "level",
+    /** number */
+    STATE: "state",
+    /** string */
+    PHONE: "phone",
+    /** string */
+    EMAIL: "email",
+  },
 
   Estimate: {
     IDENTIFIER: "identifier", // string
@@ -31,10 +50,6 @@ export const FirestorePath = {
     COSTS: "costs", // { string, string, number }[]
   },
 
-  Outsource: {
-
-  },
-
   Notice: {
     CATEGORY: "category", // string, id
     TITLE: "title", // string
@@ -48,24 +63,162 @@ export const FirestorePath = {
     }
   },
 
-  DevProject: {
-    CATEGORIES: "categories",
+  Portfolio: {
+    /** boolean */
     IS_PRIMARY: "isPrimary",
-    THUMBNAIL: "thumbnail",
-    LOGO: "logo",
+    /** number */
+    VISIBILITY: "visibility",
+    /** Record<Locale, string> */
     TITLE: "title",
+    /** Record<Locale, string> */
     SUMMARY: "summary",
+    /** Record<Locale, string> */
+    ROLE: "role",
+    /** string */
+    LOGO: "logo",
+    /** Record<Locale, string> */
+    THUMBNAIL: "thumbnail",
+    /** number[] */
+    CATEGORIES: "categories",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** number */
     STATE: "state",
+    /** Timestamp */
     START_AT: "startAt",
+    /** Timestamp */
     END_AT: "endAt",
+    /** Record<Locale, string> */
     DEVELOPER: "developer",
-    GITHUB: "github",
-    LINK: "link",
-    GOOGLE_PLAY: "googlePlay",
-    APP_STORE: "appStore",
+    /** string */
+    GITHUB_LINK: "githubLink",
+    /** string */
+    WEB_LINK: "webLink",
+    /** string */
+    GOOGLE_PLAY_LINK: "googlePlayLink",
+    /** string */
+    APP_STORE_LINK: "appStoreLink",
+    /** Record<Locale, string[]> */
     IMAGE_URLS: "imageUrls",
-    FUNCTIONS: "functions",
-    TECHS: "techs",
-    PLATFORM: "platform",
+  },
+
+  Company: {
+    /** Record<Locale, string> */
+    NAME: "name",
+    /** number */
+    STATE: "state"
+  },
+
+  Outsource: {
+    /** DocumentReference */
+    TARGET_COMPANY: "targetCompany",
+    /** Record<Locale, string> */
+    TITLE: "title",
+    /** number */
+    STATE: "state",
+    /** number */
+    PHASE: "phase",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** DocumentReference */
+    ESTIMATE: "estimate",
+    /** number */
+    ESTIMATE_AMOUNT: "estimateAmount",
+    /** number */
+    REVISION_REQUEST_AMOUNT: "revisionRequestAmount",
+    /** Timestamp | null */
+    QUOTED_AT: "quotedAt",
+    /** Timestamp | null */
+    CONTRACTED_AT: "contractedAt",
+    /** Timestamp | null */
+    STARTED_AT: "startedAt",
+    /** Timestamp | null */
+    DUE_AT: "dueAt",
+    /** Timestamp | null */
+    COMPLETED_AT: "completedAt",
+    /** Timestamp | null */
+    CANCELLED_AT: "cancelledAt",
+    /** Timestamp | null */
+    PAUSED_AT: "pausedAt",
+    /** Timestamp | null */
+    WAITING_CLIENT_AT: "waitingClientAt",
+
+    /** Collection */
+    REVISION_REQUESTS: "revisionRequests",
+    RevisionRequest: {
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      REASON: "reason",
+      /** number */
+      AMOUNT_DELTA: "amountDelta",
+      /** number */
+      DUE_DATE_DELTA_DAYS: "dueDateDeltaDays",
+      /** number */
+      STATE: "state",
+      /** Timestamp | null */
+      SENT_AT: "sentAt",
+      /** Timestamp | null */
+      APPROVED_AT: "approvedAt",
+      /** Timestamp | null */
+      REJECTED_AT: "rejectedAt",
+      /** Timestamp | null */
+      APPLIED_AT: "appliedAt"
+    },
+
+    /** Collection */
+    INFO_REQUESTS: "infoRequests",
+    InfoRequest: {
+      /** Timestamp */
+      EXPIRE_AT: "expireAt",
+      /** DocumentReference | null */
+      TARGET_OUTSOURCE: "targetOutsource",
+      /** number */
+      STATE: "state",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      REASON: "reason",
+      /** number */
+      TYPE: "type",
+      /** Map[] */
+      TEXT_ITEMS: "textItems",
+      /** Map */
+      MEDIA: "media",
+
+      TextItem: {
+        /** Record<Locale, string> */
+        LABEL: "label",
+        /** boolean */
+        SECURE: "secure"
+      },
+
+      Media: {
+        /** Record<Locale, string> */
+        LABEL: "label",
+        /** Record<Locale, string> */
+        DESCRIPTION: "description",
+        /** number */
+        MAX_COUNT: "maxCount",
+        /** number */
+        ALLOWED_TYPE: "allowedType",
+        /** Map[] */
+        FILES: "files",
+
+        File: {
+          /** string */
+          PATH: "path",
+          /** string */
+          NAME: "name",
+          /** string */
+          CONTENT_TYPE: "contentType",
+          /** number */
+          SIZE: "size",
+          /** string */
+          DOWNLOAD_URL: "downloadUrl"
+        }
+      }
+    }
+
   }
 }

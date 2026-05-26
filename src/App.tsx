@@ -6,10 +6,11 @@ import dayjs from "dayjs"
 import isLeapYear from 'dayjs/plugin/isLeapYear' //윤년을 판단하는 플러그인
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {useTranslation} from "react-i18next"
-import {useEffect} from "react"
-import {ThemeProvider} from "@/components/theme-provider.tsx"
+import {useEffect, useMemo} from "react"
 import {RouterProvider} from "react-router"
-import {router} from "./ui/router/Router.tsx"
+import {getRouter} from "./ui/router/Router.tsx"
+import {ThemeProvider, useTheme} from "@ienlab/react-library"
+import { Toaster } from "./components/ui/sonner.tsx"
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -22,7 +23,20 @@ export default function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
+      <ScreenBody />
     </ThemeProvider>
+  )
+}
+
+function ScreenBody() {
+  const { t } = useTranslation()
+  const router = useMemo(() => getRouter(t), [t])
+  const { theme } = useTheme()
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster theme={theme} position="bottom-center" richColors/>
+    </>
   )
 }

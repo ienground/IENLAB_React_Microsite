@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "ienlab-ienground"
-  }
+  },
+  "targets": {
+    "ienlab-ienground": {
+      "hosting": {
+        "public": [
+          "ienlab-ienground"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

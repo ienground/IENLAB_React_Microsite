@@ -1,5 +1,28 @@
 {
+  "add_assets": "애셋 추가",
+  "add_new_item": "새 항목 추가",
+  "already_existed_id": "이미 존재하는 식별자입니다.",
   "amount": "개수",
+  "cancel": "취소",
+  "check_session": "세션 확인 중...",
+  "company_placeholder": "회사 검색..",
+  "confirm": "확인",
+  "content_count": "{{cnt}}개의 항목",
+  "create_date": "생성일",
+  "current_state": "현재 상태",
+  "datetime": {
+    "month_year": "YYYY.MM"
+  },
+  "delete": "삭제",
+  "delete_dialog_desc": "이 항목을 삭제합니다.",
+  "delete_dialog_title": "삭제할까요?",
+  "delete_successfully": "삭제했습니다.",
+  "desc_english": "영어 설명",
+  "desc_korean": "한국어 설명",
+  "edit": "수정하기",
+  "email": "이메일",
+  "english": "영어",
+  "error_occurred": "오류가 발생했습니다: {{error}}",
   "home": {
     "header": {
       "about": "About",
@@ -7,6 +30,456 @@
       "project": "Project",
       "services": "Services",
       "skills": "Skills"
+    },
+    "label": "홈",
+    "project": {
+      "role": {
+        "label": "역할"
+      }
+    }
+  },
+  "input_developer": "개발자를 입력하세요..",
+  "input_email": "이메일을 입력하세요..",
+  "input_name": "이름을 입력하세요..",
+  "input_number": "숫자 입력..",
+  "input_phone": "전화번호를 입력하세요..",
+  "input_summary": "요약을 입력하세요..",
+  "input_title": "제목을 입력하세요..",
+  "korean": "한국어",
+  "list_end": "항목 끝",
+  "login": "로그인",
+  "outsource_manage": {
+    "budget": {
+      "label": "예산 및 정산"
+    },
+    "company": {
+      "create": "회사 추가",
+      "detail": "회사 보기",
+      "edit": "회사 수정",
+      "label": "회사",
+      "name": {
+        "label": "회사명"
+      },
+      "state": {
+        "desc": "회사를 승인하면 사용자가 회사 칸에 작성할 수 있습니다.",
+        "label": "승인 여부"
+      }
+    },
+    "label": "외주 관리",
+    "outsource": {
+      "create": "외주 프로젝트 추가",
+      "edit": "외주 프로젝트 수정",
+      "info_request": {
+        "deadline": {
+          "desc": "정보 요청의 시한을 설정합니다.",
+          "label": "만료 기한"
+        },
+        "desc": {
+          "label": "정보 요청 설명 및 지시사항"
+        },
+        "image": {
+          "label": "요청할 미디어 항목"
+        },
+        "label": "정보 요청",
+        "max_count": {
+          "label": "최대 갯수"
+        },
+        "media": {
+          "type": {
+            "label": "허용된 타입"
+          }
+        },
+        "outsource": {
+          "label": "대상 외주"
+        },
+        "props": {
+          "label": "세부 사항"
+        },
+        "secured": {
+          "false": {
+            "label": "암호화 해제"
+          },
+          "label": "암호화",
+          "true": {
+            "label": "암호화 적용"
+          }
+        },
+        "state": {
+          "label": "상태",
+          "placeholder": "상태 선택.."
+        },
+        "text_items": {
+          "desc": "최대 {{cnt}}개까지 요청할 수 있습니다.",
+          "label": "요청할 텍스트 항목"
+        },
+        "title": {
+          "label": "정보 요청 제목"
+        },
+        "type": {
+          "desc": "고객에게 요청할 정보의 타입을 선택해 주세요.",
+          "label": "요청할 정보 타입"
+        }
+      },
+      "label": "외주 프로젝트",
+      "phase": {
+        "desc": "현재 진행 단계와 변동일을 작성해 주세요.",
+        "label": "진행 단계"
+      },
+      "revision_request": {
+        "label": "수정 요청"
+      },
+      "state": {
+        "desc": "현재 진행 상태와 변동일을 작성해 주세요.",
+        "label": "진행 상태"
+      },
+      "target_company": {
+        "desc": "외주를 의뢰한 회사를 선택해 주세요.",
+        "label": "대상 회사"
+      },
+      "view": "외주 프로젝트 보기",
+      "work_logs": {
+        "label": "작업 일지",
+        "latest": {
+          "label": "최신 작업 일지"
+        }
+      }
+    },
+    "user": {
+      "company": {
+        "label": "소속 회사"
+      },
+      "edit": "사용자 수정",
+      "email": {
+        "label": "이메일"
+      },
+      "label": "사용자",
+      "level": {
+        "desc": "사용자 권한 설정을 위한 등급을 선택해 주세요.",
+        "label": "등급"
+      },
+      "name": {
+        "label": "이름"
+      },
+      "personal": {
+        "label": "개인정보"
+      },
+      "phone": {
+        "label": "전화번호"
+      },
+      "state": {
+        "desc": "사용자의 상태를 선택해 주세요.",
+        "label": "상태"
+      }
+    }
+  },
+  "password": "비밀번호",
+  "privacy_policy": "개인정보처리방침",
+  "quit_warning_title": "모든 변경 사항을 취소할까요?",
+  "quite_warning_desc": "변경된 모든 사항을 취소하고 이전 화면으로 돌아갑니다.",
+  "save": "저장",
+  "saved_successfully": "저장되었습니다.",
+  "search_placeholder": "검색하기..",
+  "select_date": "날짜 선택",
+  "settings": {
+    "dark_mode": "어두운 모드",
+    "light_mode": "밝은 모드",
+    "system_mode": "시스템과 동일",
+    "toggle_theme": "테마 변경하기"
+  },
+  "signin": {
+    "agreement": "계속 진행하시면 <termsLink>{{termsLabel}}</termsLink> 및 <privacyLink>{{privacyLabel}}</privacyLink>에 동의하는 것으로 간주됩니다.",
+    "ask_no_account": "계정이 없으신가요?",
+    "continue_with": "또는 다음으로 계속하기",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "loging_in": "로그인 중..",
+    "signin_with_apple": "Apple ID로 로그인",
+    "signin_with_google": "Google 계정으로 로그인",
+    "signin_with_kakao": "카카오계정으로 로그인",
+    "signin_with_naver": "네이버 아이디로 로그인",
+    "signup": "회원가입"
+  },
+  "signout": {
+    "dialog_desc": "계정에서 로그아웃하고 로그인 화면으로 돌아갑니다.",
+    "dialog_title": "로그아웃할까요?",
+    "label": "로그아웃"
+  },
+  "terms_of_service": "이용약관",
+  "time": "시각",
+  "title": "제목",
+  "title_english": "영어 제목",
+  "title_korean": "한국어 제목",
+  "type": {
+    "company": {
+      "state": {
+        "admitted": {
+          "desc": "승인된 상태로, 사용자는 회사를 본인의 정보에 기입할 수 있습니다.",
+          "label": "승인됨"
+        },
+        "pending": {
+          "desc": "승인되지 않았으며, 사용자는 회사를 본인의 정보에 기입할 수 없습니다.",
+          "label": "대기 중"
+        }
+      }
+    },
+    "outsource": {
+      "info_request": {
+        "media": {
+          "type": {
+            "doc": {
+              "desc": "PPTX, HWP, DOCX 등의 문서 파일이 해당합니다.",
+              "label": "문서"
+            },
+            "image": {
+              "desc": "스크린샷, 로고 등의 PNG, JPG, SVG 이미지 파일이 해당합니다.",
+              "label": "이미지"
+            }
+          }
+        },
+        "state": {
+          "draft": {
+            "label": "초안"
+          },
+          "received": {
+            "label": "받음"
+          },
+          "rejected": {
+            "label": "거부"
+          },
+          "sent": {
+            "label": "전송됨"
+          }
+        },
+        "type": {
+          "media": {
+            "desc": "이미지, 문서 등이 해당합니다.",
+            "label": "미디어"
+          },
+          "password": {
+            "desc": "공개가 민감한 API 키나 비밀번호 등이 해당합니다. 암호화가 강제됩니다.",
+            "label": "비밀번호"
+          },
+          "text": {
+            "desc": "이메일이나 아이디, 비밀번호나 혹은 패키지명 등이 해당합니다.",
+            "label": "텍스트"
+          }
+        }
+      },
+      "phase": {
+        "completed": {
+          "label": "개발 완료"
+        },
+        "contract_pending": {
+          "label": "계약 대기 중"
+        },
+        "in_progress": {
+          "label": "개발 중"
+        },
+        "quoting": {
+          "label": "견적서 작성 중"
+        },
+        "waiting_client": {
+          "label": "클라이언트 대기 중"
+        }
+      },
+      "state": {
+        "active": {
+          "desc": "현재 진행되거나 완료된 외주입니다. 아래에서 현재 진행 단계도 작성해 주세요.",
+          "label": "활성화됨"
+        },
+        "cancelled": {
+          "desc": "완전히 취소된 외주입니다. 취소된 일자를 작성해 주세요.",
+          "label": "취소됨"
+        },
+        "paused": {
+          "desc": "일시 정지된 외주입니다. 일시 정지된 일자를 작성해 주세요.",
+          "label": "일시 정지"
+        }
+      }
+    },
+    "portfolio": {
+      "category": {
+        "creative_computing": {
+          "desc": "p5.js 등 인터랙티브 미디어",
+          "title": "크리에이티브 컴퓨팅"
+        },
+        "game": {
+          "desc": "Unity, p5.js 등으로 제작한 게임",
+          "title": "게임"
+        },
+        "physical_computing": {
+          "desc": "Arduino 등의 물리적 창작물",
+          "title": "피지컬 컴퓨팅"
+        },
+        "social": {
+          "desc": "커뮤니티 형태의 소셜 미디어",
+          "title": "소셜"
+        },
+        "utility": {
+          "desc": "사용할 수 있는 도구 형태",
+          "title": "유틸리티"
+        }
+      },
+      "is_primary": {
+        "false": {
+          "desc": "메인 페이지에 노출하지 않습니다.",
+          "title": "주요 프로젝트 제외"
+        },
+        "true": {
+          "desc": "메인 페이지에 노출하고, 포트폴리오 목록에서 별도 표시합니다.",
+          "title": "주요 프로젝트 선정"
+        }
+      },
+      "platform": {
+        "android": {
+          "desc": "Android용 모바일 어플리케이션",
+          "title": "Android"
+        },
+        "arduino": {
+          "desc": "Arduino 피지컬 제품",
+          "title": "Arduino"
+        },
+        "ios": {
+          "desc": "iOS 및 iPadOS용 모바일 어플리케이션",
+          "title": "iOS · iPadOS"
+        },
+        "pc": {
+          "desc": "Windows 및 macOS용 어플리케이션",
+          "title": "Windows · macOS"
+        },
+        "web": {
+          "desc": "웹용 어플리케이션",
+          "title": "웹"
+        }
+      },
+      "state": {
+        "done": {
+          "desc": "더 이상 유지보수가 이뤄지지 않는 프로젝트입니다.",
+          "title": "종료됨"
+        },
+        "launched": {
+          "desc": "출시가 완료되었고, 유지 보수 및 업데이트 중에 있습니다.",
+          "title": "출시 완료"
+        },
+        "working": {
+          "desc": "아직 개발 중인 프로젝트입니다.",
+          "title": "개발 중"
+        }
+      },
+      "visibility": {
+        "archived": {
+          "desc": "보관되어 목록에 뜨지 않습니다.",
+          "title": "보관됨"
+        },
+        "draft": {
+          "desc": "아직 준비되지 않았으며, 목록에 뜨지 않습니다. 추후 작성을 위해 목록에 우선 표시됩니다.",
+          "title": "초안"
+        },
+        "published": {
+          "desc": "발행되어 목록에 표시됩니다.",
+          "title": "발행됨"
+        }
+      }
+    },
+    "user": {
+      "level": {
+        "admin": {
+          "desc": "관리자 콘솔을 사용할 수 있습니다.",
+          "label": "관리자"
+        },
+        "member": {
+          "desc": "일반 고객 사용자입니다. 웹사이트의 콘솔을 상태에 따라 사용할 수 있습니다.",
+          "label": "회원"
+        }
+      },
+      "state": {
+        "active": {
+          "desc": "관리자의 승인을 받아 웹사이트 콘솔에 접근 가능한 사용자입니다.",
+          "label": "활성화됨"
+        },
+        "ended": {
+          "desc": "계약이 종료되어 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+          "label": "종료됨"
+        },
+        "pending": {
+          "desc": "가입하였으나 관리자의 승인을 받지 않은 사용자입니다.",
+          "label": "대기 중"
+        },
+        "suspended": {
+          "desc": "특정 사유로 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+          "label": "중지됨"
+        }
+      }
+    }
+  },
+  "update_date": "수정일",
+  "view_all": "전체 보기",
+  "website_manage": {
+    "label": "웹사이트 관리",
+    "notice": {
+      "board": "게시판",
+      "category": "카테고리",
+      "label": "공지사항"
+    },
+    "portfolio": {
+      "category": {
+        "desc": "포트폴리오의 카테고리를 설정해주세요. 목록에서 필터할 수 있습니다.",
+        "label": "카테고리"
+      },
+      "create": "포트폴리오 추가",
+      "date": {
+        "desc": "포트폴리오의 시작 및 종료일을 설정해주세요. 종료일은 없는 경우 생략할 수 있습니다.",
+        "end_at": "종료일",
+        "label": "시작, 종료일",
+        "start_at": "시작일"
+      },
+      "developer": "개발자",
+      "edit": "포트폴리오 수정",
+      "graphic": "그래픽 요소",
+      "id": {
+        "desc": "식별자는 고유하며, 변경할 수 없습니다.",
+        "title": "식별자"
+      },
+      "label": "포트폴리오",
+      "link": {
+        "app_store": "App Store",
+        "app_store_placeholder": "1234567 형태로 입력하세요..",
+        "github": "GitHub",
+        "github_placeholder": "@username/repository 형태로 입력하세요..",
+        "google_play": "Google Play",
+        "google_play_placeholder": "com.example.app 형태로 입력하세요..",
+        "label": "외부 링크",
+        "web": "웹 링크",
+        "web_placeholder": "https://www.example.com 형태로 입력하세요.."
+      },
+      "logo": "로고",
+      "logo_desc": "1:1 비율로, 512x512 사이즈를 권장합니다.",
+      "logo_upload": "로고 이미지를 업로드하세요.",
+      "platform": {
+        "desc": "포트폴리오가 동작하는 플랫폼을 선택해주세요.",
+        "label": "플랫폼"
+      },
+      "primary": {
+        "desc": "메인 페이지에 노출할 수 있습니다.",
+        "label": "주요 프로젝트"
+      },
+      "screenshots_+ko": "한국어 스크린샷",
+      "screenshots_description": "1/2 비율로, 1080x2160 사이즈를 권장합니다.",
+      "screenshots_en": "영어 스크린샷",
+      "screenshots_ko": "한국어 스크린샷",
+      "screenshots_upload": "스크린샷을 업로드하세요.",
+      "state": {
+        "desc": "프로젝트 진행 상태를 표시합니다.",
+        "label": "프로젝트 상태"
+      },
+      "summary": "요약",
+      "thumbnail_desc": "16/9 비율로, 2560x1440 사이즈를 권장합니다.",
+      "thumbnail_en": "영어 썸네일",
+      "thumbnail_ko": "한국어 썸네일",
+      "thumbnail_upload": "썸네일 이미지를 업로드하세요.",
+      "visibility": {
+        "desc": "포트폴리오의 보기 상태를 설정합니다.",
+        "label": "보기 상태"
+      }
     }
   }
 }
