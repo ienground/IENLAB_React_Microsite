@@ -148,8 +148,8 @@ function ScreenBody() {
             <div className="col-span-12 xl:col-span-4">
               <div className="w-full max-w-90">
                 <div className="aspect-3/4 overflow-hidden rounded-lg bg-black">
-                  <img
-                    src={Sample}
+                  <CrossfadeImage
+                    src={ImgProfile}
                     alt="lorem1"
                     className="h-full w-full object-cover"
                   />
@@ -199,7 +199,7 @@ function ScreenBody() {
 
         </div>
       </section>
-      <section className="bg-yellow-200 w-full p-8 app-store">
+      <section className="bg-yellow-200 w-full p-8 flex flex-col gap-y-4">
         <SectionHeader index={2} label={t("strings:home.project.header")}/>
         <PortfolioSection infoStateList={portfolioInfoStateList}/>
       </section>
@@ -211,7 +211,7 @@ function ScreenBody() {
               {items2.map((item) => (
                 <article
                   key={item.id}
-                  className={`flex h-[calc(100vh-64px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
+                  className={`flex h-[calc(100vh-32px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
                 >
                   {item.title}
                 </article>
@@ -220,7 +220,7 @@ function ScreenBody() {
           </div>
         </div>
       </section>
-      <section className="bg-cyan-200 w-full p-8">
+      <section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">
         <SectionHeader index={4} label={t("strings:home.services.header")}/>
         <div className="flex">
           <ul className="m-0 flex flex-col gap-5 p-0 list-none">
@@ -236,7 +236,7 @@ function ScreenBody() {
           </ul>
         </div>
       </section>
-      <section className="bg-pink-200 w-full p-8">
+      <section className="bg-pink-200 w-full p-8 flex flex-col gap-y-4">
         <SectionHeader index={5} label={t("strings:home.feedback.header")}/>
         <div>
           <Ticker
