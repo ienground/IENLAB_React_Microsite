@@ -25,7 +25,9 @@
   "error_occurred": "오류가 발생했습니다: {{error}}",
   "home": {
     "about": {
-      "header": "About"
+      "header": "About",
+      "leading_message": "재판의 전심절차로서 행정심판을 할 수 있다. 행정심판의 절차는 법률로 정하되, 사법절차가 준용되어야 한다.",
+      "name": "이현우 IENGROUND"
     },
     "feedback": {
       "header": "Feedback"

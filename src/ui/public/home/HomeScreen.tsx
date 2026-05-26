@@ -1,4 +1,4 @@
-import {Carousel, Ticker, useCarousel} from "motion-plus/react"
+import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import Sample from "@/assets/brand/Page04_01_white.png"
 // import Sample from "@/assets/brand/img_logo_typo.png"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react"
@@ -9,11 +9,11 @@ import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
   RiCloseLargeFill, RiCursorHand,
-  RiGithubFill, RiPagesFill
+  RiGithubFill, RiPagesFill, RiPauseMiniFill, RiPlayFill
 } from "@remixicon/react"
 import * as React from "react"
 import {splitText} from "motion-plus"
-import {animate, stagger} from "motion"
+import {animate, delay, stagger, wrap} from "motion"
 import {cn} from "@/lib/utils.ts"
 import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts"
 import {Portfolio} from "@/domain/model/Portfolio.tsx"
@@ -25,6 +25,10 @@ import IcGooglePlay from "@/assets/icon/google_play.svg?react"
 import {useNavigate} from "react-router"
 import {Field, FieldDescription, FieldTitle} from "@/components/ui/field"
 import ImgProfile from "@/assets/image/ienground_profile_2024.jpg"
+import ImgFront01 from "@/assets/image/front_01.png"
+import ImgFront02 from "@/assets/image/front_02.png"
+import ImgFront03 from "@/assets/image/front_03.png"
+import ImgFrontForward from "@/assets/image/front_forward.png"
 
 export default function HomeScreen() {
   return (
@@ -44,16 +48,7 @@ function ScreenBody() {
     init()
   }, [])
 
-  const [activeService, setActiveService] = useState<number | null>(null)
-  const services: Service[] = [
-    {name: "Branding"},
-    {name: "Web Design"},
-    {name: "Marketing"},
-    {name: "UI/UX Design"},
-    {name: "Development"},
-    {name: "Motion Design"},
-  ]
-
+  // Section 1. Carousel
   const carouselItems = [
     {
       id: 1,
@@ -74,21 +69,10 @@ function ScreenBody() {
       url: "",
     },
   ]
+  const [isScrambleHovered, setIsScrambleHovered] = useState(false)
+
+  // Section 2. About
   const splitTextContainerRef = useRef<HTMLDivElement | null>(null)
-  const horizontalScrollContainerRef = useRef<HTMLDivElement | null>(null)
-  const {scrollYProgress} = useScroll({
-    target: horizontalScrollContainerRef,
-    offset: ["start start", "end end"]
-  })
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
-
-  const items2 = [
-    {id: 1, title: "One", color: "bg-orange-300"},
-    {id: 2, title: "Two", color: "bg-pink-300"},
-    {id: 3, title: "Three", color: "bg-emerald-300"},
-    {id: 4, title: "Four", color: "bg-sky-300"},
-  ]
-
   useEffect(() => {
     document.fonts.ready.then(() => {
       if (!splitTextContainerRef.current) return
@@ -109,37 +93,119 @@ function ScreenBody() {
     })
   }, [])
 
+  // Section 3. Project
+
+  // Section 4. Skills
+  const skillsHorizontalScrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const { scrollYProgress } = useScroll({
+    target: skillsHorizontalScrollContainerRef,
+    offset: ["start start", "end end"]
+  })
+  const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
+  const skillItems = [
+    {id: 1, title: "One", color: "bg-orange-300"},
+    {id: 2, title: "Two", color: "bg-pink-300"},
+    {id: 3, title: "Three", color: "bg-emerald-300"},
+    {id: 4, title: "Four", color: "bg-sky-300"},
+  ]
+
+  // Section 5. Services
+  const [activeService, setActiveService] = useState<number | null>(null)
+  const services: Service[] = [
+    {name: "Branding"},
+    {name: "Web Design"},
+    {name: "Marketing"},
+    {name: "UI/UX Design"},
+    {name: "Development"},
+    {name: "Motion Design"},
+  ]
+
+  // Section 6. Feedback
+  const [index, setIndex] = useState(0)
+  const text = ["모바일 개발자", "웹 개발자", "그래픽 디자이너"]
   return (
     <div className="w-full flex flex-col items-center overflow-x-clip">
       <section className="relative">
         <Carousel
           align="center"
           gap={16}
-          className="w-350"
+          className="w-full max-w-350"
           overflow
           itemSize="fill"
-          items={carouselItems.map(item => (
+          items={[
             <div
-              key={item.id}
-              className="w-350 rounded-4xl overflow-hidden relative"
+              key="extra-layered-slide"
+              className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl border-border border-2 bg-muted"
             >
-              <CrossfadeImage
-                draggable={false}
-                src={item.image}
-                alt={item.title}
+              <LayeredSlides
+                backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
+                foreground={ImgFrontForward}
               />
 
-              {item.url.length === 0 && <Button
+              <h2
                 className={cn(
-                  "absolute bottom-16 left-1/2 -translate-x-1/2",
-                  "bg-primary-foreground/50 text-primary",
-                  "hover:bg-primary-foreground"
+                  "absolute left-2/5 top-1/2 -translate-1/2",
+                  "flex flex-col items-start font-medium text-4xl lg:text-5xl xl:text-6xl leading-[0.92] tracking-[-0.06em]"
                 )}
-                size="icon-lg"
-                onClick={() => navigate(item.url)}
-              ><RiCursorHand /></Button>}
-            </div>
-          ))}
+              >
+                <span>안녕하세요,</span>
+
+                <div className="relative">
+                  <span className="invisible block">{text.reduce((a, b) => (a.length > b.length ? a : b))}    ㅤ</span>
+                  <Typewriter
+                    as="div"
+                    className="absolute inset-0"
+                    cursorStyle={{ background: "var(--chart-3)", width: "3px" }}
+                    onComplete={() => {
+                      delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
+                    }}
+                  >{text[index]}</Typewriter>
+                </div>
+
+                <span className="mt-4">아이엔입니다👋</span>
+              </h2>
+            </div>,
+
+            ...carouselItems.map((item) => (
+              <div
+                key={item.id}
+                className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl"
+              >
+                {/* background blur */}
+                <img
+                  src={item.image}
+                  alt=""
+                  draggable={false}
+                  className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-3xl"
+                />
+
+                {/* optional dark overlay */}
+                <div className="absolute inset-0 z-10 bg-black/15" />
+
+                {/* original image */}
+                <CrossfadeImage
+                  draggable={false}
+                  src={item.image}
+                  alt={item.title}
+                  className="relative z-20 w-full h-full object-contain md:object-cover"
+                />
+
+                {item.url.length > 0 && (
+                  <Button
+                    className={cn(
+                      "absolute bottom-16 left-1/2 z-30 -translate-x-1/2",
+                      "bg-primary-foreground/50 text-primary",
+                      "hover:bg-primary-foreground"
+                    )}
+                    size="icon-lg"
+                    onClick={() => navigate(item.url)}
+                  >
+                    <RiCursorHand />
+                  </Button>
+                )}
+              </div>
+            )),
+          ]}
         >
           <AutoplayProgress
             duration={4}
@@ -147,7 +213,7 @@ function ScreenBody() {
           />
         </Carousel>
       </section>
-      <section className="bg-red-500 w-full p-8">
+      <section className="w-full p-8">
         <div className="w-full bg-blue-500">
           <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
             <aside className="col-span-12 xl:col-span-2">
@@ -156,28 +222,24 @@ function ScreenBody() {
 
             <div className="col-span-12 xl:col-span-10" ref={splitTextContainerRef}>
               <h1
-                className="max-w-400 text-[48px] font-medium leading-[0.92] tracking-[-0.06em] sm:text-[64px] md:text-[88px] lg:text-[112px] xl:text-[92px] 2xl:text-[108px]">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad autem consectetur dignissimos, dolores
-                excepturi ipsa iste molestias quis reiciendis sunt.
-              </h1>
+                className="max-w-400 text-[48px] font-medium leading-[0.92] tracking-[-0.06em] sm:text-[64px] md:text-[88px] lg:text-[112px] xl:text-[92px] 2xl:text-[108px]"
+              >{t("strings:home.about.leading_message")}</h1>
             </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-12 gap-y-10 xl:mt-24 xl:gap-x-10">
+          <div className="mt-8 grid grid-cols-12 gap-y-4 xl:mt-16 xl:gap-x-4">
             <div className="col-span-12 xl:col-span-4">
               <div className="w-full max-w-90">
-                <div className="aspect-3/4 overflow-hidden rounded-lg bg-black">
+                <div className="aspect-3/4 overflow-hidden rounded-4xl">
                   <CrossfadeImage
                     src={ImgProfile}
-                    alt="lorem1"
+                    alt={t("strings:home.about.name")}
                     className="h-full w-full object-cover"
                   />
                 </div>
 
                 <div className="mt-4 space-y-0.5">
-                  <p className="text-[18px] font-medium tracking-[-0.03em] md:text-[20px]">
-                    Lorem.
-                  </p>
+                  <p className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
                   <p className="text-[18px] tracking-[-0.03em] text-black/85 md:text-[20px]">
                     ©2024
                   </p>
@@ -224,10 +286,10 @@ function ScreenBody() {
       </section>
       <section className="bg-green-500 w-full p-8">
         <SectionHeader index={3} label={t("strings:home.skills.header")}/>
-        <div ref={horizontalScrollContainerRef} className="h-[300vh] bg-amber-800">
+        <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh] bg-amber-800">
           <div className="sticky top-0 flex h-screen items-center">
-            <motion.div style={{x}} className="flex gap-8">
-              {items2.map((item) => (
+            <motion.div style={{x: skillsX}} className="flex gap-8">
+              {skillItems.map((item) => (
                 <article
                   key={item.id}
                   className={`flex h-[calc(100vh-32px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
@@ -395,32 +457,78 @@ function onlyKeyboardFocus(callback: () => void) {
   }
 }
 
-function AutoplayProgress({duration, className = ""}: { duration: number, className?: string }) {
-  const {currentPage, nextPage} = useCarousel()
+function AutoplayProgress({
+                            duration,
+                            className = "",
+                          }: {
+  duration: number
+  className?: string
+}) {
+  const { currentPage, nextPage } = useCarousel()
+
   const progress = useMotionValue(0)
   const progressWidth = useTransform(progress, [0, 1], ["0%", "100%"])
 
+  const animationRef = useRef<ReturnType<typeof animate> | null>(null)
+  const nextPageRef = useRef(nextPage)
+  const [paused, setPaused] = useState(false)
+
   useEffect(() => {
+    nextPageRef.current = nextPage
+  }, [nextPage])
+
+  useEffect(() => {
+    progress.set(0)
+    setPaused(false)
+
     const animation = animate(progress, [0, 1], {
       duration,
       ease: "linear",
-      onComplete: nextPage,
+      onComplete: () => {
+        nextPageRef.current()
+      },
     })
 
-    return () => animation.stop()
-  }, [duration, nextPage, progress, currentPage])
+    animationRef.current = animation
+
+    return () => {
+      animation.stop()
+      animationRef.current = null
+    }
+  }, [duration, currentPage])
+
+  const togglePaused = () => {
+    const animation = animationRef.current
+    if (!animation) return
+
+    if (paused) {
+      animation.play()
+      setPaused(false)
+    } else {
+      animation.pause()
+      setPaused(true)
+    }
+  }
 
   return (
-    <div
-      className={cn(
-        "w-30 h-2 overflow-hidden rounded-4xl border border-light-muted bg-light-muted",
-        className
-      )}
-    >
-      <motion.div
-        className="h-full rounded-4xl bg-light-muted-foreground"
-        style={{ width: progressWidth, willChange: "width" }}
-      />
+    <div className={cn("flex items-center gap-2", className)}>
+      <div className="h-2 w-30 overflow-hidden rounded-4xl border border-light-muted bg-light-muted">
+        <motion.div
+          className="h-full rounded-4xl bg-light-muted-foreground"
+          style={{ width: progressWidth, willChange: "width" }}
+        />
+      </div>
+
+      <Button
+        type="button"
+        size="icon-sm"
+        variant="ghost"
+        onClick={togglePaused}
+        className="shrink-0 rounded-full text-muted-foreground hover:text-foreground"
+        aria-label={paused ? "자동재생 다시 시작" : "자동재생 일시정지"}
+      >
+        {paused ? <RiPlayFill size={16} /> : <RiPauseMiniFill size={16} />}
+      </Button>
     </div>
   )
 }
@@ -755,11 +863,51 @@ interface PortfolioItemProps {
   theme?: "dark" | "light"
 }
 
-interface Item {
-  id: string
-  category: string
-  content: React.ReactNode
-  top?: number
-  bottom?: number
-  left?: number
+type LayeredSlidesProps = {
+  backgrounds: string[]
+  foreground: string
+  interval?: number
+}
+
+function LayeredSlides({
+                                backgrounds,
+                                foreground,
+                                interval = 300,
+                              }: LayeredSlidesProps) {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    if (backgrounds.length <= 1) return
+
+    const id = window.setInterval(() => {
+      setIndex((prev) => (prev + 1) % backgrounds.length)
+    }, interval)
+
+    return () => window.clearInterval(id)
+  }, [backgrounds.length, interval])
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      {/* Background slideshow */}
+      <div className="absolute inset-0 z-0">
+        <img
+          key={backgrounds[index]}
+          src={backgrounds[index]}
+          alt=""
+          className="absolute inset-0 h-full w-full object-contain md:object-cover"
+          draggable={false}
+        />
+      </div>
+
+      {/* Foreground fixed image */}
+      <div className="pointer-events-none absolute inset-0 z-10">
+        <img
+          src={foreground}
+          alt=""
+          className="h-full w-full object-contain md:object-cover"
+          draggable={false}
+        />
+      </div>
+    </div>
+  )
 }

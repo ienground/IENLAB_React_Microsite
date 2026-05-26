@@ -4,7 +4,9 @@
   },
   "home": {
     "about": {
-      "header": "About"
+      "header": "About",
+      "leading_message": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad autem consectetur dignissimos, dolores                 excepturi ipsa iste molestias quis reiciendis sunt.",
+      "name": "Hyunwoo Rhee / IENGROUND"
     },
     "feedback": {
       "header": "Feedback"
