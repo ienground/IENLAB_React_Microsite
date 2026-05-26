@@ -2,6 +2,9 @@ import { FirestorePath } from "@/constant/FirestorePath";
 import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
 import {DocumentReference, DocumentSnapshot, FieldValue, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore";
 import type {TFunction} from "i18next";
+import {RiAppleFill, RiComputerFill, RiPagesFill} from "@remixicon/react"
+import IcAndroid from "@/assets/icon/android.svg?react"
+import IcArduino from "@/assets/icon/arduino.svg?react"
 
 export class Portfolio implements FirestoreItem {
   id: string = ""
@@ -13,6 +16,7 @@ export class Portfolio implements FirestoreItem {
   visibility: Portfolio.Visibility = Portfolio.Visibility.Default
   title: Localized<string> = { ko: "", en: "" }
   summary: Localized<string> = { ko: "", en: "" }
+  role: Localized<string> = { ko: "", en: "" }
   logo: string = ""
   thumbnail: Localized<string> = { ko: "", en: "" }
   categories: Portfolio.Category[] = []
@@ -39,6 +43,7 @@ export class Portfolio implements FirestoreItem {
       [FirestorePath.Portfolio.VISIBILITY]: this.visibility,
       [FirestorePath.Portfolio.TITLE]: this.title,
       [FirestorePath.Portfolio.SUMMARY]: this.summary,
+      [FirestorePath.Portfolio.ROLE]: this.role,
       [FirestorePath.Portfolio.LOGO]: this.logo,
       [FirestorePath.Portfolio.THUMBNAIL]: this.thumbnail,
       [FirestorePath.Portfolio.CATEGORIES]: this.categories,
@@ -73,6 +78,7 @@ export class Portfolio implements FirestoreItem {
       visibility: doc[FirestorePath.Portfolio.VISIBILITY],
       title: doc[FirestorePath.Portfolio.TITLE],
       summary: doc[FirestorePath.Portfolio.SUMMARY],
+      role: doc[FirestorePath.Portfolio.ROLE],
       logo: doc[FirestorePath.Portfolio.LOGO],
       thumbnail: doc[FirestorePath.Portfolio.THUMBNAIL],
       categories: doc[FirestorePath.Portfolio.CATEGORIES],
@@ -207,6 +213,22 @@ export namespace Portfolio {
 
       return map[value]
     }
+    export function getBadgeColor(value: Category) {
+      const map = {
+        [Category.UTILITY]:
+          "bg-slate-100 text-slate-700 dark:bg-slate-900 dark:text-slate-300",
+        [Category.CREATIVE_COMPUTING]:
+          "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+        [Category.GAME]:
+          "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300",
+        [Category.PHYSICAL_COMPUTING]:
+          "bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-300",
+        [Category.SOCIAL]:
+          "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300",
+      }
+
+      return map[value]
+    }
   }
 
   export enum Platform {
@@ -236,6 +258,33 @@ export namespace Portfolio {
         [Platform.PC]: t("strings:type.portfolio.platform.pc.desc"),
         [Platform.ARDUINO]: t("strings:type.portfolio.platform.arduino.desc"),
       }
+
+      return map[value]
+    }
+    export function getIcon(value: Platform, size: number = 16) {
+      const map = {
+        [Platform.ANDROID]: <IcAndroid style={{ width: size, height: size }} />,
+        [Platform.IOS]: <RiAppleFill size={size} />,
+        [Platform.WEB]: <RiPagesFill size={size} />,
+        [Platform.PC]: <RiComputerFill size={size} />,
+        [Platform.ARDUINO]: <IcArduino style={{ width: size, height: size }} />,
+      }
+
+      return map[value]
+    }
+    export function getBadgeColor(value: Platform) {
+      const map = {
+        [Platform.ANDROID]:
+          "bg-[#34a853]/15 text-[#34a853] dark:bg-[#34a853]/20 dark:text-[#34a853]",
+        [Platform.IOS]:
+          "bg-black/10 text-black dark:bg-white/12 dark:text-white",
+        [Platform.WEB]:
+          "bg-[#60dcfc]/18 text-[#0b7fa0] dark:bg-[#60dcfc]/20 dark:text-[#60dcfc]",
+        [Platform.PC]:
+          "bg-[#0078d4]/15 text-[#0078d4] dark:bg-[#0078d4]/20 dark:text-[#4fb3ff]",
+        [Platform.ARDUINO]:
+          "bg-[#03979c]/15 text-[#03979c] dark:bg-[#03979c]/20 dark:text-[#39c7cb]",
+      } as const
 
       return map[value]
     }

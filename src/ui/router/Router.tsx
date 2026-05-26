@@ -5,29 +5,32 @@ import PublicLayout from "@/ui/shared/layout/PublicLayout.tsx"
 import {createBrowserRouter} from "react-router"
 import {HomeViewModel} from "@/ui/public/home/HomeViewModel.ts";
 import {portfolioRepository} from "@/di/container.ts";
+import type {TFunction} from "i18next"
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    errorElement: <RouteErrorScreen />,
-    children: [
-      {
-        element: <PublicLayout />,
-        children: [
-          {
-            index: true,
-            element: <HomeScreen />
-          }
-        ]
-      },
-      {
-        path: "",
-        element: <></>,
-      },
-      {
-        path: "*",
-        element: <NotFoundScreen />
-      }
-    ]
-  }
-])
+export function getRouter(t: TFunction) {
+  return createBrowserRouter([
+    {
+      path: "/",
+      errorElement: <RouteErrorScreen />,
+      children: [
+        {
+          element: <PublicLayout />,
+          children: [
+            {
+              index: true,
+              element: <HomeScreen />
+            }
+          ]
+        },
+        {
+          path: "",
+          element: <></>,
+        },
+        {
+          path: "*",
+          element: <NotFoundScreen />
+        }
+      ]
+    }
+  ])
+}

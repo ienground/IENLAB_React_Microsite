@@ -10,6 +10,9 @@
   "content_count": "{{cnt}}개의 항목",
   "create_date": "생성일",
   "current_state": "현재 상태",
+  "datetime": {
+    "month_year": "YYYY.MM"
+  },
   "delete": "삭제",
   "delete_dialog_desc": "이 항목을 삭제합니다.",
   "delete_dialog_title": "삭제할까요?",
@@ -20,7 +23,21 @@
   "email": "이메일",
   "english": "영어",
   "error_occurred": "오류가 발생했습니다: {{error}}",
-  "home": "홈",
+  "home": {
+    "header": {
+      "about": "About",
+      "feedback": "Feedback",
+      "project": "Project",
+      "services": "Services",
+      "skills": "Skills"
+    },
+    "label": "홈",
+    "project": {
+      "role": {
+        "label": "역할"
+      }
+    }
+  },
   "input_developer": "개발자를 입력하세요..",
   "input_email": "이메일을 입력하세요..",
   "input_name": "이름을 입력하세요..",

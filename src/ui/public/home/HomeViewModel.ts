@@ -1,4 +1,4 @@
-import {Portfolio} from "@/domain/model/Portfolio.ts";
+import {Portfolio} from "../../../domain/model/Portfolio.tsx";
 import type { PortfolioRepository } from "@/domain/repository/PortfolioRepository";
 import {createStore} from "zustand";
 import {createZustandContext} from "@ienlab/react-library";
@@ -22,7 +22,7 @@ const createHomeStore = (props: HomeViewModelProps) => createStore<HomeViewModel
   portfolioInfoStateList: { itemList: [], isInitialized: false },
 
   init: () => {
-    props.portfolioRepository.getPrimaries(items => {
+    props.portfolioRepository.observePrimaries(items => {
       set({ portfolioInfoStateList: { itemList: items, isInitialized: true } })
     })
   }

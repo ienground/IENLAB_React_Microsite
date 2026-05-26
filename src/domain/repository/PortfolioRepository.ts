@@ -1,12 +1,16 @@
 import type {InfScrollStateList} from "@ienlab/react-library";
-import type {Portfolio} from "@/domain/model/Portfolio.ts";
+import type {Portfolio} from "../model/Portfolio.tsx";
 import type { Unsubscribe } from "firebase/firestore";
 
 export interface PortfolioRepository {
   readonly portfolioInfoStateList: InfScrollStateList<Portfolio>
 
-  getPrimaries(callback: (items: Portfolio[]) => void): Unsubscribe
-  get(id: string, callback: (item: Portfolio | null) => void): Unsubscribe
+  get(id: string): Promise<Portfolio | null>
+  observe(id: string, callback: (item: Portfolio | null) => void, cache?: boolean): Unsubscribe
+  observePrimaries(callback: (items: Portfolio[]) => void): Unsubscribe
 
+  setSearchKeyword(keyword: string): void
+  clearSearch(): void
   loadNextPage(): Promise<void>
+  reset(): void
 }

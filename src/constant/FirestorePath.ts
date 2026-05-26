@@ -72,6 +72,8 @@ export const FirestorePath = {
     TITLE: "title",
     /** Record<Locale, string> */
     SUMMARY: "summary",
+    /** Record<Locale, string> */
+    ROLE: "role",
     /** string */
     LOGO: "logo",
     /** Record<Locale, string> */

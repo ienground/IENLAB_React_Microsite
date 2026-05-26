@@ -1,5 +1,7 @@
 {
-  "amount": "Amount",
+  "datetime": {
+    "month_year": "MMM YYYY"
+  },
   "home": {
     "header": {
       "about": "About",
@@ -7,6 +9,11 @@
       "project": "Project",
       "services": "Services",
       "skills": "Skills"
+    },
+    "project": {
+      "role": {
+        "label": "Roles"
+      }
     }
   }
 }
