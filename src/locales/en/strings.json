@@ -3,17 +3,23 @@
     "month_year": "MMM YYYY"
   },
   "home": {
-    "header": {
-      "about": "About",
-      "feedback": "Feedback",
-      "project": "Project",
-      "services": "Services",
-      "skills": "Skills"
+    "about": {
+      "header": "About"
+    },
+    "feedback": {
+      "header": "Feedback"
     },
     "project": {
+      "header": "Project",
       "role": {
         "label": "Roles"
       }
+    },
+    "services": {
+      "header": "Services"
+    },
+    "skills": {
+      "header": "Skills"
     }
   }
 }

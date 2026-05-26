@@ -1,4 +1,4 @@
-import {Carousel, Ticker, useCarousel, useTickerItem} from "motion-plus/react"
+import {Carousel, Ticker, useCarousel} from "motion-plus/react"
 import Sample from "@/assets/brand/Page04_01_white.png"
 // import Sample from "@/assets/brand/img_logo_typo.png"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react"
@@ -8,27 +8,23 @@ import {useEffect, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
-  RiCloseFill,
   RiCloseLargeFill,
-  RiGithubFill, RiInfoCardFill,
-  RiPagesFill, RiUserSharedFill
+  RiGithubFill, RiPagesFill
 } from "@remixicon/react"
 import * as React from "react"
 import {splitText} from "motion-plus"
 import {animate, stagger} from "motion"
-import {cn} from "@/lib/utils.ts";
-import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts";
-import {Portfolio} from "@/domain/model/Portfolio.tsx";
-import {portfolioRepository} from "@/di/container.ts";
-import {MotionButton, MotionCrossfadeImage} from "@/components/motion/components.tsx"
+import {cn} from "@/lib/utils.ts"
+import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts"
+import {Portfolio} from "@/domain/model/Portfolio.tsx"
+import {portfolioRepository} from "@/di/container.ts"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import IcAppStore from "@/assets/icon/app_store.svg?react"
 import IcGooglePlay from "@/assets/icon/google_play.svg?react"
 import {useNavigate} from "react-router"
-import {Alert, AlertAction, AlertDescription} from "@/components/ui/alert"
-import {AlertTitle} from "@/components/ui/alert.tsx"
-import {Field, FieldContent, FieldDescription, FieldTitle} from "@/components/ui/field"
+import {Field, FieldDescription, FieldTitle} from "@/components/ui/field"
+import ImgProfile from "@/assets/image/ienground_profile_2024.jpg"
 
 export default function HomeScreen() {
   return (
@@ -136,7 +132,7 @@ function ScreenBody() {
         <div className="w-full bg-blue-500">
           <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
             <aside className="col-span-12 xl:col-span-2">
-              <SectionHeader index={1} label={t("strings:home.header.about")}/>
+              <SectionHeader index={1} label={t("strings:home.about.header")}/>
             </aside>
 
             <div className="col-span-12 xl:col-span-10" ref={splitTextContainerRef}>
@@ -204,11 +200,11 @@ function ScreenBody() {
         </div>
       </section>
       <section className="bg-yellow-200 w-full p-8 app-store">
-        <SectionHeader index={2} label={t("strings:home.header.project")}/>
+        <SectionHeader index={2} label={t("strings:home.project.header")}/>
         <PortfolioSection infoStateList={portfolioInfoStateList}/>
       </section>
       <section className="bg-green-500 w-full p-8">
-        <SectionHeader index={3} label={t("strings:home.header.skills")}/>
+        <SectionHeader index={3} label={t("strings:home.skills.header")}/>
         <div ref={horizontalScrollContainerRef} className="h-[300vh] bg-amber-800">
           <div className="sticky top-0 flex h-screen items-center">
             <motion.div style={{x}} className="flex gap-8">
@@ -225,7 +221,7 @@ function ScreenBody() {
         </div>
       </section>
       <section className="bg-cyan-200 w-full p-8">
-        <SectionHeader index={4} label={t("strings:home.header.services")}/>
+        <SectionHeader index={4} label={t("strings:home.services.header")}/>
         <div className="flex">
           <ul className="m-0 flex flex-col gap-5 p-0 list-none">
             {services.map((service, index) => (
@@ -241,7 +237,7 @@ function ScreenBody() {
         </div>
       </section>
       <section className="bg-pink-200 w-full p-8">
-        <SectionHeader index={5} label={t("strings:home.header.feedback")}/>
+        <SectionHeader index={5} label={t("strings:home.feedback.header")}/>
         <div>
           <Ticker
             hoverFactor={0}
@@ -436,7 +432,7 @@ function PortfolioSection(props: { infoStateList: PortfolioInfoStateList }) {
 }
 
 function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <></>}: PortfolioItemProps & {
-  isOpen?: boolean;
+  isOpen?: boolean
   children?: React.ReactNode
 }) {
   const {t} = useTranslation()

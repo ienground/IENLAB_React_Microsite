@@ -24,18 +24,24 @@
   "english": "영어",
   "error_occurred": "오류가 발생했습니다: {{error}}",
   "home": {
-    "header": {
-      "about": "About",
-      "feedback": "Feedback",
-      "project": "Project",
-      "services": "Services",
-      "skills": "Skills"
+    "about": {
+      "header": "About"
+    },
+    "feedback": {
+      "header": "Feedback"
     },
     "label": "홈",
     "project": {
+      "header": "Project",
       "role": {
         "label": "역할"
       }
+    },
+    "services": {
+      "header": "Services"
+    },
+    "skills": {
+      "header": "Skills"
     }
   },
   "input_developer": "개발자를 입력하세요..",

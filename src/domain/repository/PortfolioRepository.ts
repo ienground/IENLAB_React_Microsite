@@ -1,6 +1,6 @@
-import type {InfScrollStateList} from "@ienlab/react-library";
-import type {Portfolio} from "../model/Portfolio.tsx";
-import type { Unsubscribe } from "firebase/firestore";
+import type {InfScrollStateList} from "@ienlab/react-library"
+import type { Unsubscribe } from "firebase/firestore"
+import type {Portfolio} from "@/domain/model/Portfolio.tsx"
 
 export interface PortfolioRepository {
   readonly portfolioInfoStateList: InfScrollStateList<Portfolio>
