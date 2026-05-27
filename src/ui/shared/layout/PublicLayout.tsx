@@ -6,7 +6,7 @@ export default function PublicLayout() {
   return (
     <div className="min-h-screen">
       <PublicHeader />
-      <main className="pt-24">
+      <main className="pt-16 md:pt-24">
         <Outlet />
       </main>
       <PublicFooter />

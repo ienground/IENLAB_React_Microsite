@@ -159,7 +159,7 @@ export default function PublicHeader() {
           "mx-auto pointer-events-auto transition-all duration-300 ease-in-out",
           scrolled
             ? "mt-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem] border border-white/15 bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] dark:border-white/10 dark:bg-white/5"
-            : "mt-0 h-24 w-full rounded-none border-b border-white/10 bg-white/8 backdrop-blur-lg [-webkit-backdrop-filter:blur(16px)] dark:border-white/10 dark:bg-white/5",
+            : "mt-0 h-16 md:h-20 w-full rounded-none border-b border-white/10 bg-white/8 backdrop-blur-lg [-webkit-backdrop-filter:blur(16px)] dark:border-white/10 dark:bg-white/5",
         )}
       >
         <div
@@ -417,8 +417,7 @@ export default function PublicHeader() {
               src={resolvedTheme === "dark" ? imgLogoShortWhite : imgLogoShort}
               alt="Logo"
               className={cn(
-                "block object-contain transition-all duration-300 md:hidden",
-                scrolled ? "h-12" : "h-16",
+                "block object-contain transition-all duration-300 md:hidden h-12"
               )}
             />
 
@@ -426,8 +425,7 @@ export default function PublicHeader() {
               src={resolvedTheme === "dark" ? imgLogoFullWhite : imgLogoFull}
               alt="Logo"
               className={cn(
-                "hidden object-contain transition-all duration-300 md:block",
-                scrolled ? "h-8" : "h-10",
+                "hidden object-contain transition-all duration-300 md:block h-8",
               )}
             />
           </Link>
