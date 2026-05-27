@@ -19,8 +19,8 @@ import {
 import {
   RiAlignRight,
   RiArrowDownSLine,
-  RiFileCodeFill,
-  RiMenuFill,
+  RiFileCodeFill, RiMenu2Fill,
+  RiMenuFill, RiMenuUnfold4Line,
   RiMoonFill,
   RiPaletteFill,
   RiSunFill,
@@ -116,7 +116,6 @@ export default function PublicHeader() {
       closeTimerRef.current = null
     }
   }
-
   const scheduleClose = () => {
     clearCloseTimer()
     closeTimerRef.current = window.setTimeout(() => {
@@ -124,7 +123,6 @@ export default function PublicHeader() {
       setActiveMenu(null)
     }, 120)
   }
-
   const contentVariants: Variants = {
     enter: (d: number) => ({
       opacity: 0,
@@ -139,7 +137,6 @@ export default function PublicHeader() {
       x: d ? d * -24 : 0,
     }),
   }
-
   const handleHover = (title: string) => {
     clearCloseTimer()
 
@@ -153,12 +150,7 @@ export default function PublicHeader() {
 
     setActiveMenu(title)
   }
-
-  const handleLeave = () => {
-    scheduleClose()
-  }
-
-  const isKo = i18n.language?.toLowerCase().startsWith("ko")
+  const handleLeave = () => scheduleClose()
 
   return (
     <header className="fixed inset-x-0 top-0 z-999 pointer-events-none">
@@ -173,98 +165,104 @@ export default function PublicHeader() {
         <div
           className={cn(
             "grid h-full grid-cols-[1fr_auto_1fr] items-center transition-all duration-300",
-            scrolled ? "px-5" : "px-6",
+            scrolled ? "px-4" : "px-8",
           )}
         >
           <div className="flex min-w-0 items-center justify-self-start">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <button
+                <Button
                   type="button"
                   aria-label="Open menu"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-foreground/85 transition-all duration-300 md:hidden dark:border-white/10 dark:bg-white/5"
+                  className="inline-flex size-10 items-center justify-center rounded-full text-foreground/85 transition-all duration-300 md:hidden"
+                  size="icon"
+                  variant="ghost"
                 >
-                  <RiMenuFill className="size-5" />
-                </button>
+                  {mobileMenuOpen ? <RiMenuUnfold4Line /> : <RiMenu2Fill />}
+                </Button>
               </SheetTrigger>
 
               <SheetContent
                 side="left"
                 className="w-full border-white/10 bg-background/95 p-0 backdrop-blur-xl sm:max-w-none"
               >
-                <div className="mt-20"></div>
-                <SheetHeader className="border-b border-border/60 px-5 py-4 text-left">
-                  <SheetTitle className="text-base font-semibold">
-                    Menu
-                  </SheetTitle>
-                </SheetHeader>
-
+                <div className={scrolled ? "h-23" : "h-28"}></div>
                 <div className="flex h-full flex-col overflow-y-auto px-5 pb-6 pt-4">
                   <nav className="flex flex-col gap-2">
-                    {navItems.map((item) =>
-                      item.items ? (
-                        <div
-                          key={item.title}
-                          className="rounded-2xl border border-border/60 bg-background/40"
-                        >
-                          <div className="px-4 py-3 text-sm font-medium text-foreground">
-                            {item.title}
-                          </div>
-
-                          <div className="border-t border-border/60 px-2 py-2">
-                            {item.items.map((subItem) => (
-                              <SheetClose asChild key={subItem.title}>
-                                <a
-                                  href={subItem.url}
-                                  className="flex items-start justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
-                                >
-                                  <div className="min-w-0">
-                                    <div className="text-sm font-medium text-foreground">
-                                      {subItem.title}
-                                    </div>
-                                    {subItem.description ? (
-                                      <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                                        {subItem.description}
-                                      </p>
-                                    ) : null}
-                                  </div>
-
-                                  <RiAlignRight className="mt-0.5 shrink-0" />
-                                </a>
-                              </SheetClose>
-                            ))}
-                          </div>
+                    {navItems.map(item => item.items ? (
+                      <div
+                        key={item.title}
+                        className="rounded-2xl border border-border/60 bg-background/40"
+                      >
+                        <div className="px-4 py-3 text-sm font-medium text-foreground">
+                          {item.title}
                         </div>
-                      ) : (
-                        <SheetClose asChild key={item.title}>
-                          <a
-                            href={item.url}
-                            className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                          >
-                            {item.title}
-                            <RiAlignRight className="shrink-0" />
-                          </a>
-                        </SheetClose>
-                      ),
+
+                        <div className="border-t border-border/60 px-2 py-2">
+                          {item.items.map(subItem => {
+                            const Icon = subItem.icon
+                            return <SheetClose asChild key={subItem.title}>
+                              <Link
+                                to={subItem.url}
+                                className="flex items-center justify-between gap-3 rounded-xl p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+                              >
+                                <div className="min-w-0">
+                                  <div className="text-sm font-medium text-foreground">
+                                    {subItem.title}
+                                  </div>
+                                  {subItem.description ? (
+                                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                                      {subItem.description}
+                                    </p>
+                                  ) : null}
+                                </div>
+                                <Icon className="shrink-0 size-6" />
+                              </Link>
+                            </SheetClose>
+                          })}
+                        </div>
+                      </div>
+                    ) : (<SheetClose asChild key={item.title}>
+                      <Link
+                        to={item.url ? item.url : ""}
+                        className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >{item.title}</Link>
+                    </SheetClose>)
                     )}
                   </nav>
 
                   <div className="mt-6 border-t border-border/60 pt-6">
-                    <button
+                    <Button
                       type="button"
-                      className="inline-flex h-11 w-full items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 text-sm text-foreground/85 transition-colors dark:border-white/10 dark:bg-white/5"
-                      onClick={() =>
-                        setTheme(resolvedTheme === "light" ? "dark" : "light")
-                      }
+                      className="inline-flex h-11 w-full items-center justify-center rounded-full border border-black/10 bg-white/10 px-4 text-sm text-foreground/85 transition-colors dark:border-white/10 dark:bg-white/5"
+                      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
                     >
-                      {resolvedTheme === "light"
-                        ? isKo
-                          ? "다크 모드"
-                          : "Dark Mode"
-                        : isKo
-                          ? "라이트 모드"
-                          : "Light Mode"}
-                    </button>
+                      <AnimatePresence mode="popLayout">
+                        {resolvedTheme === "light" ? (
+                          <motion.div
+                            key="theme-light"
+                            className="w-full flex flex-row items-center justify-center gap-x-2"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                          >
+                            <RiSunFill />
+                            <span>{t("strings:settings.light_mode")}</span>
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key="theme-dark"
+                            className="w-full flex flex-row items-center justify-center gap-x-2"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                          >
+                            <RiMoonFill />
+                            <span>{t("strings:settings.dark_mode")}</span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </Button>
                   </div>
                 </div>
               </SheetContent>

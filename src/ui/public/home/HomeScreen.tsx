@@ -209,7 +209,7 @@ function ScreenBody() {
         >
           <AutoplayProgress
             duration={4}
-            className="z-300 absolute bottom-4 left-1/2 -translate-x-1/2"
+            className="z-50 absolute bottom-4 left-1/2 -translate-x-1/2"
           />
         </Carousel>
       </section>
@@ -570,7 +570,6 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
 }) {
   const {t} = useTranslation()
   const navigate = useNavigate()
-  const { basicDateTimeFormat } = useDateTimeFormatters()
 
   return (
     <motion.div
