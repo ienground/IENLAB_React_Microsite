@@ -48,7 +48,19 @@
       "header": "Services"
     },
     "skills": {
-      "header": "Skills"
+      "design": {
+        "label": "Design"
+      },
+      "firebase": {
+        "label": "Firebase"
+      },
+      "frontend": {
+        "title": "Web Frontend"
+      },
+      "header": "What I work with",
+      "mobile": {
+        "label": "Mobile"
+      }
     }
   },
   "notice": {

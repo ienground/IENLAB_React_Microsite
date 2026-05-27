@@ -3,7 +3,7 @@ import Sample from "@/assets/brand/Page04_01_white.png"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
 import {CrossfadeImage, Localized, useDateTimeFormatters} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
-import {useEffect, useRef, useState} from "react"
+import {useEffect, useMemo, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
@@ -28,6 +28,60 @@ import ImgFront01 from "@/assets/image/front_01.png"
 import ImgFront02 from "@/assets/image/front_02.png"
 import ImgFront03 from "@/assets/image/front_03.png"
 import ImgFrontForward from "@/assets/image/front_forward.png"
+import ImgMobileGraphic from "@/assets/image/img_mobile_graphic.png"
+import ImgIllustGraphic from "@/assets/image/img_illust_graphic.png"
+import ImgWebGraphic from "@/assets/image/img_web_graphic.png"
+import ImgFirebaseGraphic from "@/assets/image/img_firebase_graphic.png"
+import ImgProfileSample01 from "@/assets/image/img_profile_sample_01.png"
+import ImgProfileSample02 from "@/assets/image/img_profile_sample_02.png"
+import ImgProfileSample03 from "@/assets/image/img_profile_sample_03.png"
+import ImgProfileSample04 from "@/assets/image/img_profile_sample_04.png"
+import ImgProfileSample05 from "@/assets/image/img_profile_sample_05.png"
+import ImgProfileSample06 from "@/assets/image/img_profile_sample_06.png"
+import ImgProfileSample07 from "@/assets/image/img_profile_sample_07.png"
+import ImgProfileSample08 from "@/assets/image/img_profile_sample_08.png"
+import ImgProfileSample09 from "@/assets/image/img_profile_sample_09.png"
+import ImgProfileSample10 from "@/assets/image/img_profile_sample_10.png"
+import ImgProfileSample11 from "@/assets/image/img_profile_sample_11.png"
+import ImgProfileSample12 from "@/assets/image/img_profile_sample_12.png"
+
+type CarouselItem = {
+  id: string
+  title: string
+  image: string
+  url?: string
+}
+
+type SkillItem = {
+  id: string
+  title: string
+  description: string
+  tags: string[]
+  image: string
+}
+
+type ServiceItem = {}
+
+type ReviewItem = {
+  name: string
+  star: number
+  review: string
+}
+
+const sampleProfiles = [
+  ImgProfileSample01,
+  ImgProfileSample02,
+  ImgProfileSample03,
+  ImgProfileSample04,
+  ImgProfileSample05,
+  ImgProfileSample06,
+  ImgProfileSample07,
+  ImgProfileSample08,
+  ImgProfileSample09,
+  ImgProfileSample10,
+  ImgProfileSample11,
+  ImgProfileSample12,
+]
 
 export default function HomeScreen() {
   return (
@@ -48,27 +102,26 @@ function ScreenBody() {
   }, [])
 
   // Section 1. Carousel
-  const carouselItems = [
+  const carouselItems: CarouselItem[] = useMemo(() => [
     {
-      id: 1,
+      id: "one",
       title: "One",
       image: Sample,
       url: "asdf",
     },
-    {
-      id: 2,
-      image: Sample,
-      title: "Two",
-      url: "",
-    },
-    {
-      id: 3,
-      title: "Three",
-      image: Sample,
-      url: "",
-    },
-  ]
-  const [isScrambleHovered, setIsScrambleHovered] = useState(false)
+    // {
+    //   id: 2,
+    //   image: Sample,
+    //   title: "Two",
+    //   url: "",
+    // },
+    // {
+    //   id: 3,
+    //   title: "Three",
+    //   image: Sample,
+    //   url: "",
+    // },
+  ], [t])
 
   // Section 2. About
   const splitTextContainerRef = useRef<HTMLDivElement | null>(null)
@@ -96,16 +149,40 @@ function ScreenBody() {
 
   // Section 4. Skills
   const skillsHorizontalScrollContainerRef = useRef<HTMLDivElement | null>(null)
-  const { scrollYProgress } = useScroll({
+  const {scrollYProgress} = useScroll({
     target: skillsHorizontalScrollContainerRef,
     offset: ["start start", "end end"]
   })
   const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
-  const skillItems = [
-    {id: 1, title: "One", color: "bg-orange-300"},
-    {id: 2, title: "Two", color: "bg-pink-300"},
-    {id: 3, title: "Three", color: "bg-emerald-300"},
-    {id: 4, title: "Four", color: "bg-sky-300"},
+  const skillItems: SkillItem[] = [
+    {
+      id: "mobile",
+      title: t('strings:home.skills.mobile.label'),
+      description: t('strings:home.skills.mobile.desc'),
+      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      image: ImgMobileGraphic
+    },
+    {
+      id: "web",
+      title: t('strings:home.skills.frontend.title'),
+      description: t("strings:home.skills.frontend.desc"),
+      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      image: ImgWebGraphic
+    },
+    {
+      id: "design",
+      title: t('strings:home.skills.design.label'),
+      description: t('strings:home.skills.design.desc'),
+      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      image: ImgIllustGraphic
+    },
+    {
+      id: "firebase",
+      title: t('strings:home.skills.firebase.label'),
+      description: t('strings:home.skills.firebase.desc'),
+      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      image: ImgFirebaseGraphic
+    },
   ]
 
   // Section 5. Services
@@ -123,6 +200,31 @@ function ScreenBody() {
   const [index, setIndex] = useState(0)
   const roleTexts = [t('strings:home.intro.mobile_dev'), t('strings:home.intro.web_dev'), t('strings:home.intro.designer')]
   const isNameFirst = i18n.resolvedLanguage === "en"
+  const reviews: ReviewItem[] = [
+    {name: "도*****", review: "친절하게 상담해주시고 꼼꼼하게 작업해주십니다.", star: 5},
+    {
+      name: "드*****",
+      review: "제가 생각했던 앱을 그대로 실현시켜서 만들어주셨습니다. 매우 빠르셔서 기한보다 더 빨리 완성이 되었으며, 답장도 빠르게 해주셔서 소통도 정말 잘되었고 너무 만족합니다. 앞으로 앱 만들 일 있으면 계속 부탁드릴 예정입니다.",
+      star: 5
+    },
+    {
+      name: "전*****",
+      review: "막연하고 어려운 아이디어를 다른 분들보다 합리적인 가격에 제공해주셔서 정말 감사했습니다 ㅠㅠ  API 연결이 어려워 문의드렸는데, 데이터 통신 하셔서 바로 해결해주시는 모습 보면서 정말 놀랐습니다. 그리고 무엇보다도 이러한 극악조건 속에서도 작업속도가 5일 밖에 안걸리시는 유능한 개발자십니다!!",
+      star: 5
+    },
+    {
+      name: "날*****",
+      review: "합리적인 가격으로 빠른 시간 내에 좋은 결과물을 얻었습니다. 늦은 시간까지 작업하시고, 소통이 잘 이뤄져서 좋았습니다. 다음에도 작업 맡길 수 있을 것 같습니다! 감사합니다.",
+      star: 5
+    },
+    {
+      name: "리*****", review: "최고에요~~!!^^ 개발자님 천재이시고 인품도 최고세요. 열정적으로 정말 책임감있게 작업해주세요!!! \n" +
+        "다음에도 또 작업 부탁드리고 싶어요", star: 5
+    },
+    {name: "Ins*****", review: "원했던대로 잘만들어졌네요. 고급스러움보단 심플함", star: 5},
+    {name: "태*****", review: "요청드린대로 구현해주셨습니다~ 수정 사항이나 변경도 상황에 맞게 잘 설명해주셔서 좋은 작업물 받아볼 수 있었습니다!", star: 5},
+    {name: "달*****", review: "고생 많으셨습니다.", star: 5},
+  ]
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-clip">
@@ -164,11 +266,11 @@ function ScreenBody() {
 
                 {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
                 <div className="relative">
-                  <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))}    ㅤ</span>
+                  <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))} ㅤ</span>
                   <Typewriter
                     as="div"
                     className="absolute inset-0"
-                    cursorStyle={{ background: "var(--chart-3)", width: "3px" }}
+                    cursorStyle={{background: "var(--chart-3)", width: "3px"}}
                     onComplete={() => {
                       delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)
                     }}
@@ -193,7 +295,7 @@ function ScreenBody() {
                 />
 
                 {/* optional dark overlay */}
-                <div className="absolute inset-0 z-10 bg-black/15" />
+                <div className="absolute inset-0 z-10 bg-black/15"/>
 
                 {/* original image */}
                 <CrossfadeImage
@@ -203,7 +305,7 @@ function ScreenBody() {
                   className="relative z-20 w-full h-full object-contain md:object-cover"
                 />
 
-                {item.url.length > 0 && (
+                {item.url && item.url.length > 0 && (
                   <Button
                     className={cn(
                       "absolute bottom-16 left-1/2 z-30 -translate-x-1/2",
@@ -211,9 +313,9 @@ function ScreenBody() {
                       "hover:bg-primary-foreground"
                     )}
                     size="icon-lg"
-                    onClick={() => navigate(item.url)}
+                    onClick={() => navigate(item.url ? item.url : "")}
                   >
-                    <RiCursorHand />
+                    <RiCursorHand/>
                   </Button>
                 )}
               </div>
@@ -252,7 +354,8 @@ function ScreenBody() {
                 </div>
 
                 <div className="mt-4 space-y-0.5">
-                  <p className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
+                  <p
+                    className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
                   <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[20px]">©2024</p>
                 </div>
               </div>
@@ -260,19 +363,21 @@ function ScreenBody() {
 
             <div className="col-span-12 xl:col-span-4">
               <div className="max-w-130">
-                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
+                <p
+                  className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
                 <Button
                   className="mt-14 font-medium"
                 >
                   {t("strings:home.about.see_more")}
-                  <RiArrowRightUpLine />
+                  <RiArrowRightUpLine/>
                 </Button>
               </div>
             </div>
 
             <div className="col-span-12 xl:col-span-4">
               <div className="max-w-130">
-                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
+                <p
+                  className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
               </div>
             </div>
           </div>
@@ -283,57 +388,43 @@ function ScreenBody() {
         <SectionHeader index={2} label={t("strings:home.project.header")}/>
         <PortfolioSection infoStateList={portfolioInfoStateList}/>
       </section>
-      <section className="bg-green-500 w-full p-8">
+      <section className="w-full p-8">
         <SectionHeader index={3} label={t("strings:home.skills.header")}/>
-        <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh] bg-amber-800">
+        <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh]">
           <div className="sticky top-0 flex h-screen items-center">
             <motion.div style={{x: skillsX}} className="flex gap-8">
-              {skillItems.map((item) => (
-                <article
-                  key={item.id}
-                  className={`flex h-[calc(100vh-32px)] w-[50vw] shrink-0 items-end rounded-3xl p-8 text-4xl font-semibold text-black ${item.color}`}
-                >
-                  {item.title}
-                </article>
+              {skillItems.map((item, index) => (
+                <SkillCardItem index={index} item={item}/>
               ))}
             </motion.div>
           </div>
         </div>
       </section>
-      <section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">
-        <SectionHeader index={4} label={t("strings:home.services.header")}/>
-        <div className="flex">
-          <ul className="m-0 flex flex-col gap-5 p-0 list-none">
-            {services.map((service, index) => (
-              <ScrollHighlightItem
-                key={service.name}
-                service={service}
-                index={index}
-                isHighlighted={activeService === index}
-                onHighlight={() => setActiveService(index)}
-              />
-            ))}
-          </ul>
-        </div>
-      </section>
-      <section className="bg-pink-200 w-full p-8 flex flex-col gap-y-4">
-        <SectionHeader index={5} label={t("strings:home.feedback.header")}/>
+      {/*<section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">*/}
+      {/*  <SectionHeader index={4} label={t("strings:home.services.header")}/>*/}
+      {/*  <div className="flex">*/}
+      {/*    <ul className="m-0 flex flex-col gap-5 p-0 list-none">*/}
+      {/*      {services.map((service, index) => (*/}
+      {/*        <ScrollHighlightItem*/}
+      {/*          key={service.name}*/}
+      {/*          service={service}*/}
+      {/*          index={index}*/}
+      {/*          isHighlighted={activeService === index}*/}
+      {/*          onHighlight={() => setActiveService(index)}*/}
+      {/*        />*/}
+      {/*      ))}*/}
+      {/*    </ul>*/}
+      {/*  </div>*/}
+      {/*</section>*/}
+      <section className="w-full p-8 flex flex-col gap-y-4">
+        <SectionHeader index={4} label={t("strings:home.feedback.header")}/>
         <div>
           <Ticker
             hoverFactor={0}
             overflow
             gap={16}
-            items={carouselItems.map((item) => (
-              <div
-                key={item.id}
-                className="w-350 rounded-4xl overflow-hidden"
-              >
-                <CrossfadeImage
-                  src={item.image}
-                  alt={item.title}
-                  draggable={false}
-                />
-              </div>
+            items={reviews.map((item, index) => (
+              <ReviewCardItem index={index} item={item}/>
             ))}
           />
         </div>
@@ -463,14 +554,18 @@ function AutoplayProgress({
   duration: number
   className?: string
 }) {
-  const { currentPage, nextPage } = useCarousel()
+  const {currentPage, nextPage} = useCarousel()
 
   const progress = useMotionValue(0)
   const progressWidth = useTransform(progress, [0, 1], ["0%", "100%"])
 
   const animationRef = useRef<ReturnType<typeof animate> | null>(null)
   const nextPageRef = useRef(nextPage)
-  const [paused, setPaused] = useState(false)
+
+  const [manuallyPaused, setManuallyPaused] = useState(false)
+  const [hoverPaused, setHoverPaused] = useState(false)
+
+  const isPaused = manuallyPaused || hoverPaused
 
   useEffect(() => {
     nextPageRef.current = nextPage
@@ -478,7 +573,6 @@ function AutoplayProgress({
 
   useEffect(() => {
     progress.set(0)
-    setPaused(false)
 
     const animation = animate(progress, [0, 1], {
       duration,
@@ -490,31 +584,41 @@ function AutoplayProgress({
 
     animationRef.current = animation
 
+    if (isPaused) {
+      animation.pause()
+    }
+
     return () => {
       animation.stop()
       animationRef.current = null
     }
-  }, [duration, currentPage])
+  }, [currentPage, duration])
 
-  const togglePaused = () => {
+  useEffect(() => {
     const animation = animationRef.current
     if (!animation) return
 
-    if (paused) {
-      animation.play()
-      setPaused(false)
-    } else {
+    if (isPaused) {
       animation.pause()
-      setPaused(true)
+    } else {
+      animation.play()
     }
+  }, [isPaused])
+
+  const togglePaused = () => {
+    setManuallyPaused((prev) => !prev)
   }
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <div className="h-2 w-30 overflow-hidden rounded-4xl border border-light-muted bg-light-muted">
+      <div
+        className="h-2 w-30 overflow-hidden rounded-4xl border border-light-muted bg-light-muted"
+        onMouseEnter={() => setHoverPaused(true)}
+        onMouseLeave={() => setHoverPaused(false)}
+      >
         <motion.div
           className="h-full rounded-4xl bg-light-muted-foreground"
-          style={{ width: progressWidth, willChange: "width" }}
+          style={{width: progressWidth, willChange: "width"}}
         />
       </div>
 
@@ -524,9 +628,9 @@ function AutoplayProgress({
         variant="ghost"
         onClick={togglePaused}
         className="shrink-0 rounded-full text-muted-foreground hover:text-foreground"
-        aria-label={paused ? "자동재생 다시 시작" : "자동재생 일시정지"}
+        aria-label={isPaused ? "자동재생 다시 시작" : "자동재생 일시정지"}
       >
-        {paused ? <RiPlayFill size={16} /> : <RiPauseMiniFill size={16} />}
+        {isPaused ? <RiPlayFill size={16}/> : <RiPauseMiniFill size={16}/>}
       </Button>
     </div>
   )
@@ -623,7 +727,8 @@ function PortfolioItemContent({
           />
         </div>
 
-        <div className="pointer-events-none absolute inset-0 z-0 bg-linear-to-b from-black/45 via-black/15 to-transparent" />
+        <div
+          className="pointer-events-none absolute inset-0 z-0 bg-linear-to-b from-black/45 via-black/15 to-transparent"/>
 
         <motion.div
           className="absolute left-4 top-4 z-10 h-[calc(100%-32px)] w-[calc(100%-32px)] text-white"
@@ -666,7 +771,7 @@ function PortfolioItemContent({
             {isOpen && (
               <motion.div className="absolute right-0 top-0 flex flex-col">
                 <Button onClick={setOpen} size="icon-lg" variant="ghost">
-                  <RiCloseLargeFill />
+                  <RiCloseLargeFill/>
                 </Button>
 
                 <Button
@@ -677,7 +782,7 @@ function PortfolioItemContent({
                     "dark:bg-gray-400 dark:text-gray-100 dark:hover:bg-gray-500 dark:hover:text-gray-900",
                   )}
                 >
-                  <RiArrowRightUpLine />
+                  <RiArrowRightUpLine/>
                 </Button>
               </motion.div>
             )}
@@ -694,7 +799,7 @@ function PortfolioItemContent({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <IcGooglePlay />
+                        <IcGooglePlay/>
                       </a>
                     </Button>
                   )}
@@ -706,7 +811,7 @@ function PortfolioItemContent({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <IcAppStore />
+                        <IcAppStore/>
                       </a>
                     </Button>
                   )}
@@ -714,7 +819,7 @@ function PortfolioItemContent({
                   {item.webLink && (
                     <Button className="website-button" size="icon-lg" asChild>
                       <a href={item.webLink} target="_blank" rel="noopener noreferrer">
-                        <RiPagesFill size={60} />
+                        <RiPagesFill size={60}/>
                       </a>
                     </Button>
                   )}
@@ -726,7 +831,7 @@ function PortfolioItemContent({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <RiGithubFill size={60} />
+                        <RiGithubFill size={60}/>
                       </a>
                     </Button>
                   )}
@@ -976,6 +1081,104 @@ function LayeredSlides({
           draggable={false}
         />
       </div>
+    </div>
+  )
+}
+
+function SkillCardItem(props: { index: number, item: SkillItem }) {
+  return (
+    <article
+      className={cn(
+        "relative flex w-[50vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden"
+      )}
+    >
+      <CrossfadeImage
+        src={props.item.image}
+        className="absolute left-0 top-0 w-full h-full object-cover"
+      />
+
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0 backdrop-blur-2xl"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 0%, black 30%, transparent 45%)",
+            maskImage:
+              "linear-gradient(to bottom, black 0%, black 30%, transparent 45%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 backdrop-blur-lg"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 20%, black 38%, transparent 60%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 20%, black 38%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 backdrop-blur-sm"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 45%, black 60%, transparent 72%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 45%, black 60%, transparent 72%)",
+          }}
+        />
+      </div>
+      {/* light / dark tint overlay */}
+      <div className="absolute inset-0 bg-white/8 dark:bg-black/24" />
+
+      {/* text readability gradient */}
+      <div className="absolute inset-0 bg-linear-to-b from-white/12 via-transparent to-black/10 dark:from-black/38 dark:via-black/18 dark:to-black/42" />
+
+      <div
+        className="absolute w-full h-full p-16 flex flex-col gap-y-16"
+      >
+        <div className="flex flex-row gap-x-4 items-center text-foreground/50">
+          <div className="w-1/16 h-0.5 bg-foreground/50"/>
+          <span className="font-medium tracking-wider">{(props.index + 1).toString().padStart(2, '0')}</span>
+        </div>
+        <h1 className="font-black tracking-tighter text-6xl text-foreground">{props.item.title}</h1>
+        <p className="font-medium text-2xl text-accent-foreground/60">{props.item.description}</p>
+        <div className="flex flex-row mt-auto gap-4">
+          {props.item.tags.map(tag => (
+            <div
+              className="px-4 py-2 font-extrabold text-lg rounded-2xl backdrop-blur-md bg-background/20 font-mona"
+              style={{
+                fontVariationSettings: '"wdth" 125, "opsz" 100',
+              }}
+            >{tag}</div>
+          ))}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function ReviewCardItem(props: { index: number, item: ReviewItem }) {
+  return (
+    <div
+      className="w-full max-w-105 rounded-3xl border border-border bg-card p-6 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
+      <div className="flex items-center gap-4">
+        <div className="h-14 w-14 overflow-hidden rounded-full bg-muted-foreground">
+          <img
+            src={sampleProfiles[props.index % sampleProfiles.length]}
+            alt="도***** 프로필 이미지"
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <span className="text-[28px] font-semibold tracking-[-0.03em] text-card-foreground">{props.item.name}</span>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="text-[#62d26f]">★</span>
+            <span className="text-[20px] font-bold text-card-foreground">5.0</span>
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-6 text-[30px] font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">친절하게 상담해주시고 꼼꼼하게 작업해주십니다.</p>
     </div>
   )
 }
