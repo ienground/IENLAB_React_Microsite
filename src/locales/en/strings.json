@@ -1,9 +1,17 @@
 {
   "about": {
     "branding": {
+      "desc": "IENLAB Brand Identity",
       "label": "Brand"
     },
-    "label": "About"
+    "ienground": {
+      "description": "What kid of person am I?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "Check out my projects."
+    }
   },
   "console": {
     "label": "Console"

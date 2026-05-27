@@ -1,9 +1,17 @@
 {
   "about": {
     "branding": {
+      "desc": "아이엔랩 브랜드 아이덴티티",
       "label": "브랜딩"
     },
-    "label": "About"
+    "ienground": {
+      "description": "저는 무엇을 하는 사람일까요?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "참여한 프로젝트를 살펴보세요."
+    }
   },
   "add_assets": "애셋 추가",
   "add_new_item": "새 항목 추가",

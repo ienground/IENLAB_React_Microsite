@@ -60,21 +60,21 @@ export default function PublicHeader() {
         title: t("strings:about.label"),
         items: [
           {
-            title: "@IENGROUND",
+            title: t('strings:about.ienground.label'),
             url: "#",
-            description: "프로젝트 세팅과 기본 사용법을 확인하세요.",
+            description: t('strings:about.ienground.description'),
             icon: LogoSolid,
           },
           {
             title: t("strings:about.branding.label"),
             url: "#",
-            description: "shadcn 기반 UI 컴포넌트 목록입니다.",
+            description: t('strings:about.branding.desc'),
             icon: RiPaletteFill,
           },
           {
             title: t("strings:home.project.header"),
             url: "#",
-            description: "라이트/다크 모드와 토큰 설정을 다룹니다.",
+            description: t('strings:about.project.desc'),
             icon: RiFileCodeFill,
           },
         ],
