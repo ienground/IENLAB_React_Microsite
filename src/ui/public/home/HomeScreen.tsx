@@ -1,6 +1,6 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import Sample from "@/assets/brand/Page04_01_white.png"
-import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react"
+import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
 import {CrossfadeImage, Localized, useDateTimeFormatters} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {useEffect, useRef, useState} from "react"
@@ -227,7 +227,7 @@ function ScreenBody() {
         </Carousel>
       </section>
       <section className="w-full p-8">
-        <div className="w-full bg-blue-500">
+        <div className="w-full">
           <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
             <aside className="col-span-12 xl:col-span-2">
               <SectionHeader index={1} label={t("strings:home.about.header")}/>
@@ -253,47 +253,33 @@ function ScreenBody() {
 
                 <div className="mt-4 space-y-0.5">
                   <p className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
-                  <p className="text-[18px] tracking-[-0.03em] text-black/85 md:text-[20px]">
-                    ©2024
-                  </p>
+                  <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[20px]">©2024</p>
                 </div>
               </div>
             </div>
 
             <div className="col-span-12 xl:col-span-4">
               <div className="max-w-130">
-                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem cumque fugiat quo voluptas voluptates.
-                  Ab animi at atque, delectus deserunt dolorem dolorum enim eos est fugiat hic id labore libero
-                  necessitatibus nostrum omnis perferendis placeat possimus quas quasi, quisquam rem similique tempora,
-                  ullam ut vitae voluptas? Dolores eveniet perferendis quis!
-                </p>
-
-                <a
-                  href="#"
-                  className="mt-14 inline-flex items-center gap-3 bg-black px-3 py-1.5 text-[16px] font-medium tracking-[-0.03em] text-white transition hover:bg-black/85 md:text-[18px]"
+                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
+                <Button
+                  className="mt-14 font-medium"
                 >
-                  <span>Lorem.</span>
-                  <span aria-hidden>↗</span>
-                </a>
+                  {t("strings:home.about.see_more")}
+                  <RiArrowRightUpLine />
+                </Button>
               </div>
             </div>
 
             <div className="col-span-12 xl:col-span-4">
               <div className="max-w-130">
-                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae blanditiis cum deleniti
-                  dolores doloribus dolorum, earum facere fugit hic impedit in libero maxime molestiae molestias nulla
-                  perspiciatis placeat quibusdam quisquam recusandae suscipit tempora tenetur ullam voluptatibus
-                  voluptatum. Adipisci beatae et facilis quidem reiciendis? Ab aut dolorum harum molestiae perferendis.
-                </p>
+                <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
               </div>
             </div>
           </div>
 
         </div>
       </section>
-      <section className="bg-yellow-200 w-full p-8 flex flex-col gap-y-4">
+      <section className="w-full p-8 flex flex-col gap-y-4">
         <SectionHeader index={2} label={t("strings:home.project.header")}/>
         <PortfolioSection infoStateList={portfolioInfoStateList}/>
       </section>
@@ -547,18 +533,19 @@ function AutoplayProgress({
 }
 
 function PortfolioSection(props: { infoStateList: PortfolioInfoStateList }) {
-  const [openId, open] = useState<string | null>(null)
-  const close = () => open(null)
+  const [openId, setOpenId] = useState<string | null>(null)
+  const close = () => setOpenId(null)
 
   return (
     <>
-      <ul className="flex flex-wrap content-start gap-4 p-0 m-0 list-none">
+      <ul className="m-0 flex list-none flex-wrap content-start gap-4 p-0">
         {props.infoStateList.itemList.map((item) => (
           <PortfolioItem
             key={item.id}
-            item={item}
-            setOpen={() => open(item.id)}
             id={item.id}
+            item={item}
+            setOpen={() => setOpenId(item.id)}
+            isHidden={openId === item.id}
           />
         ))}
       </ul>
@@ -577,7 +564,13 @@ function PortfolioSection(props: { infoStateList: PortfolioInfoStateList }) {
   )
 }
 
-function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <></>}: PortfolioItemProps & {
+function PortfolioItemContent({
+                                id,
+                                item,
+                                setOpen,
+                                isOpen = false,
+                                children = <></>,
+                              }: PortfolioItemProps & {
   isOpen?: boolean
   children?: React.ReactNode
 }) {
@@ -590,20 +583,19 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
         "relative mx-auto overflow-hidden rounded-4xl bg-muted",
         isOpen
           ? "pointer-events-auto w-auto max-w-175"
-          : "pointer-events-auto h-full w-full"
+          : "pointer-events-auto h-full w-full",
       )}
       layoutId={`card-container-${id}`}
     >
       <motion.div
         className={cn(
           "relative z-10 overflow-hidden",
-          isOpen ? "h-80" : "h-full"
+          isOpen ? "h-80" : "h-full",
         )}
         layoutId={`card-image-container-${id}`}
       >
         <div className="relative h-full w-full">
           <motion.img
-            // className="block h-full w-full object-cover"
             className={cn(
               "block h-full w-full object-cover",
               isOpen
@@ -611,12 +603,13 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
                 : "",
               isOpen
                 ? "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_52%,black_68%,rgba(0,0,0,0.82)_80%,rgba(0,0,0,0.38)_92%,transparent_100%)]"
-                : ""
+                : "",
             )}
             src={Localized.get(item.thumbnail)}
             alt=""
             layoutId={`card-image-${id}`}
           />
+
           <div
             className={cn(
               "pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 dark:bg-black/15",
@@ -625,7 +618,7 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
                 : "",
               isOpen
                 ? "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_52%,black_68%,rgba(0,0,0,0.82)_80%,rgba(0,0,0,0.38)_92%,transparent_100%)]"
-                : ""
+                : "",
             )}
           />
         </div>
@@ -637,7 +630,6 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
           layoutId={`title-container-${id}`}
           layout="position"
         >
-          {/*카테고리*/}
           <div className="flex flex-wrap gap-1">
             {item.categories.map((category) => (
               <Badge
@@ -649,11 +641,10 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
             ))}
           </div>
 
-          {/*제목*/}
           <h2
             className={cn(
-              "w-[90%] mt-2 text-pretty break-keep leading-[1.05] tracking-tighter drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
-              "text-5xl md:text-4xl font-bold"
+              "mt-2 w-[90%] break-keep text-pretty font-bold leading-[1.05] tracking-tighter drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
+              "text-5xl md:text-4xl",
             )}
           >
             {Localized.get(item.title)}
@@ -674,13 +665,10 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
           <AnimatePresence>
             {isOpen && (
               <motion.div className="absolute right-0 top-0 flex flex-col">
-                <Button
-                  onClick={setOpen}
-                  size="icon-lg"
-                  variant="ghost"
-                >
+                <Button onClick={setOpen} size="icon-lg" variant="ghost">
                   <RiCloseLargeFill />
                 </Button>
+
                 <Button
                   onClick={() => navigate("")}
                   size="icon-lg"
@@ -697,51 +685,47 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
 
           <AnimatePresence>
             {isOpen && (
-              <motion.div
-                className="absolute bottom-0 right-0 flex flex-row items-end justify-between gap-x-2"
-              >
+              <motion.div className="absolute bottom-0 right-0 flex flex-row items-end justify-between gap-x-2">
                 <div className="flex flex-row items-center gap-x-2">
                   {item.googlePlayLink && (
-                    <Button
-                      className="google-play-button"
-                      size="icon-lg"
-                      asChild
-                    >
-                      <a href={`https://play.google.com/store/apps/details?id=${item.googlePlayLink}`}>
+                    <Button className="google-play-button" size="icon-lg" asChild>
+                      <a
+                        href={`https://play.google.com/store/apps/details?id=${item.googlePlayLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <IcGooglePlay />
                       </a>
                     </Button>
                   )}
 
                   {item.appStoreLink && (
-                    <Button
-                      className="app-store-button"
-                      size="icon-lg"
-                      asChild
-                    >
-                      <a href={`https://apps.apple.com/us/app/id${item.googlePlayLink}`}>
+                    <Button className="app-store-button" size="icon-lg" asChild>
+                      <a
+                        href={`https://apps.apple.com/us/app/id${item.appStoreLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <IcAppStore />
                       </a>
                     </Button>
                   )}
 
                   {item.webLink && (
-                    <Button
-                      className="website-button"
-                      size="icon-lg"
-                    >
-                      <a href={item.webLink}>
+                    <Button className="website-button" size="icon-lg" asChild>
+                      <a href={item.webLink} target="_blank" rel="noopener noreferrer">
                         <RiPagesFill size={60} />
                       </a>
                     </Button>
                   )}
 
                   {item.githubLink && (
-                    <Button
-                      className="github-button"
-                      size="icon-lg"
-                    >
-                      <a href={`https://github.com/${item.githubLink}`}>
+                    <Button className="github-button" size="icon-lg" asChild>
+                      <a
+                        href={`https://github.com/${item.githubLink}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <RiGithubFill size={60} />
                       </a>
                     </Button>
@@ -753,41 +737,99 @@ function PortfolioItemContent({id, item, setOpen, isOpen = false, children = <><
         </motion.div>
       </motion.div>
 
-      <motion.div className="relative z-0">
-        {children}
-      </motion.div>
+      <motion.div className="relative z-0">{children}</motion.div>
     </motion.div>
   )
 }
 
-function PortfolioItem({id, item, setOpen, width = "100%", theme}: PortfolioItemProps) {
+function PortfolioItem({
+                         id,
+                         item,
+                         setOpen,
+                         width = "100%",
+                         theme,
+                         isHidden = false,
+                       }: PortfolioItemProps) {
+  const maxTilt = 15
+  const cardRef = useRef<HTMLLIElement>(null)
+  const z = useSpring(0)
+  const rotateX = useSpring(0)
+  const rotateY = useSpring(0)
+
+  const calculateTilt = (event: React.PointerEvent<HTMLLIElement>) => {
+    if (!cardRef.current) return {rotateX: 0, rotateY: 0}
+
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+
+    const xPercent = x / rect.width
+    const yPercent = y / rect.height
+
+    return {
+      rotateX: maxTilt * (0.5 - yPercent),
+      rotateY: maxTilt * (xPercent - 0.5),
+    }
+  }
+
+  const handleOpen = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+    z.set(0)
+    setOpen()
+  }
+
   return (
-    <li
-      onClick={setOpen}
+    <motion.li
+      onClick={handleOpen}
       className={cn(
-        "relative box-border list-none p-0 h-100",
+        "relative box-border h-100 list-none p-0",
         "flex-[1_1_100%]",
         "md:flex-[0_0_40%]",
         "md:nth-[4n+1]:flex-[0_1_calc(60%-16px)]",
         "md:nth-[4n+4]:flex-[0_1_calc(60%-16px)]",
-        "cursor-pointer"
+        "cursor-pointer transition-opacity duration-200",
+        isHidden && "pointer-events-none opacity-0",
       )}
+      ref={cardRef}
+      style={{
+        z,
+        rotateX,
+        rotateY,
+      }}
+      transition={{type: "spring", stiffness: 200, damping: 20}}
+      onPointerMove={(e) => {
+        if (isHidden) return
+        const tilt = calculateTilt(e)
+        rotateX.set(tilt.rotateX)
+        rotateY.set(tilt.rotateY)
+      }}
+      onPointerLeave={() => {
+        rotateX.set(0)
+        rotateY.set(0)
+        z.set(0)
+      }}
+      onPointerEnter={() => {
+        if (isHidden) return
+        z.set(-10)
+      }}
     >
       <PortfolioItemContent
         id={id}
         item={item}
-        setOpen={setOpen}
+        setOpen={handleOpen}
         width={width}
         theme={theme}
+        isHidden={isHidden}
       />
-    </li>
+    </motion.li>
   )
 }
 
 function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfolio[], close: VoidFunction }) {
   const {t} = useTranslation()
   const item = items.find((item) => item.id === id)!
-  const { basicDateTimeFormat } = useDateTimeFormatters()
+  const {basicDateTimeFormat} = useDateTimeFormatters()
 
   return (
     <>
@@ -802,59 +844,72 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
 
       <div
         className={cn(
-          "fixed inset-x-0 top-0 z-1000001 flex h-full w-full flex-col justify-center overflow-hidden py-10",
-          "pointer-events-none",
-          "max-[990px]:py-0"
+          "pointer-events-none fixed inset-x-0 top-0 z-1000001 flex h-full w-full flex-col justify-center overflow-hidden py-10",
+          "max-[990px]:py-0",
         )}
       >
         <div className="pointer-events-auto mx-auto w-full max-w-200">
-          <PortfolioItemContent
-            id={id}
-            item={item}
-            setOpen={close}
-            isOpen
-          >
-            <div className={cn(
-              "w-full p-4 grid grid-cols-[20%_35%_45%]",
-              "max-md:grid-cols-1 max-md:gap-y-4"
-            )}>
-              <Field className={cn(
-                "h-full md:border-r md:pr-4",
-                "max-md:grid max-md:grid-cols-[120px_1fr]"
-              )}>
+          <PortfolioItemContent id={id} item={item} setOpen={close} isOpen>
+            <div
+              className={cn(
+                "grid w-full grid-cols-[20%_35%_45%] p-4",
+                "max-md:grid-cols-1 max-md:gap-y-4",
+              )}
+            >
+              <Field
+                className={cn(
+                  "h-full md:border-r md:pr-4",
+                  "max-md:grid max-md:grid-cols-[120px_1fr]",
+                )}
+              >
                 <FieldTitle>
-                  <Badge variant="secondary" className="border-border border">
-                    {basicDateTimeFormat(item.startAt.toDate(), "strings:datetime.month_year")} - {item.endAt ? basicDateTimeFormat(item.endAt.toDate(), "strings:datetime.month_year") : ""}
+                  <Badge variant="secondary" className="border border-border">
+                    {basicDateTimeFormat(item.startAt.toDate(), "strings:datetime.month_year")} -{" "}
+                    {item.endAt
+                      ? basicDateTimeFormat(item.endAt.toDate(), "strings:datetime.month_year")
+                      : ""}
                   </Badge>
                 </FieldTitle>
+
                 <FieldDescription>
                   <Badge variant={Portfolio.State.getBadgeColor(item.state)}>
                     {Portfolio.State.getLabel(t, item.state)}
                   </Badge>
                 </FieldDescription>
               </Field>
-              <Field className={cn(
-                "h-full md:border-r md:px-4",
-                "max-md:grid max-md:grid-cols-[120px_1fr] max-md:items-start"
-              )}>
+
+              <Field
+                className={cn(
+                  "h-full md:border-r md:px-4",
+                  "max-md:grid max-md:grid-cols-[120px_1fr] max-md:items-start",
+                )}
+              >
                 <FieldTitle>{t("strings:home.project.role.label")}</FieldTitle>
-                <FieldDescription className="text-pretty break-keep">{Localized.get(item.role)}</FieldDescription>
+                <FieldDescription className="break-keep text-pretty">{Localized.get(item.role)}</FieldDescription>
               </Field>
-              <Field className={cn(
-                "h-full md:pl-4 flex flex-col gap-y-2",
-                "max-md:grid max-md:grid-cols-[120px_1fr] max-md:items-start"
-              )}>
+
+              <Field
+                className={cn(
+                  "flex h-full flex-col gap-y-2 md:pl-4",
+                  "max-md:grid max-md:grid-cols-[120px_1fr] max-md:items-start",
+                )}
+              >
                 <FieldTitle>
                   <div className="flex flex-wrap gap-2">
                     {item.platforms.map(platform => (
-                      <Badge className={Portfolio.Platform.getBadgeColor(platform)}>
-                        <div data-icon="inline-start" className="mr-1">{Portfolio.Platform.getIcon(platform, 12)}</div>
-                        <div className="">{Portfolio.Platform.getLabel(t, platform)}</div>
+                      <Badge key={platform} className={Portfolio.Platform.getBadgeColor(platform)}>
+                        <div data-icon="inline-start" className="mr-1">
+                          {Portfolio.Platform.getIcon(platform, 12)}
+                        </div>
+                        <div>{Portfolio.Platform.getLabel(t, platform)}</div>
                       </Badge>
                     ))}
                   </div>
                 </FieldTitle>
-                <FieldDescription className="text-pretty break-keep">{Localized.get(item.summary)}</FieldDescription>
+
+                <FieldDescription className="break-keep text-pretty">
+                  {Localized.get(item.summary)}
+                </FieldDescription>
               </Field>
             </div>
           </PortfolioItemContent>
@@ -873,6 +928,7 @@ interface PortfolioItemProps {
   width?: string
   left?: number
   theme?: "dark" | "light"
+  isHidden?: boolean
 }
 
 type LayeredSlidesProps = {
@@ -882,10 +938,10 @@ type LayeredSlidesProps = {
 }
 
 function LayeredSlides({
-                                backgrounds,
-                                foreground,
-                                interval = 300,
-                              }: LayeredSlidesProps) {
+                         backgrounds,
+                         foreground,
+                         interval = 300,
+                       }: LayeredSlidesProps) {
   const [index, setIndex] = useState(0)
 
   useEffect(() => {

@@ -44,7 +44,10 @@
     "about": {
       "header": "About",
       "leading_message": "재판의 전심절차로서 행정심판을 할 수 있다. 행정심판의 절차는 법률로 정하되, 사법절차가 준용되어야 한다.",
-      "name": "이현우 IENGROUND"
+      "name": "이현우 IENGROUND",
+      "p1": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem cumque fugiat quo voluptas voluptates. Ab animi at atque, delectus deserunt dolorem dolorum enim eos est fugiat hic id labore libero necessitatibus nostrum omnis perferendis placeat possimus quas quasi, quisquam rem similique tempora, ullam ut vitae voluptas? Dolores eveniet perferendis quis!",
+      "p2": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae blanditiis cum deleniti                   dolores doloribus dolorum, earum facere fugit hic impedit in libero maxime molestiae molestias nulla                   perspiciatis placeat quibusdam quisquam recusandae suscipit tempora tenetur ullam voluptatibus                   voluptatum. Adipisci beatae et facilis quidem reiciendis? Ab aut dolorum harum molestiae perferendis.",
+      "see_more": "자세히 보기"
     },
     "feedback": {
       "header": "Feedback"
