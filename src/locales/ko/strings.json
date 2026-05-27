@@ -40,6 +40,9 @@
   "email": "이메일",
   "english": "영어",
   "error_occurred": "오류가 발생했습니다: {{error}}",
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
+  },
   "home": {
     "about": {
       "header": "About",
@@ -50,7 +53,7 @@
       "see_more": "자세히 보기"
     },
     "feedback": {
-      "header": "Feedback"
+      "header": "리뷰"
     },
     "intro": {
       "designer": "그래픽 디자이너",

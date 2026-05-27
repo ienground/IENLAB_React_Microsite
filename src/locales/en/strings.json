@@ -19,6 +19,9 @@
   "datetime": {
     "month_year": "MMM YYYY"
   },
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. All Rights Reserved."
+  },
   "home": {
     "about": {
       "header": "About",
@@ -29,7 +32,7 @@
       "see_more": "See more"
     },
     "feedback": {
-      "header": "Feedback"
+      "header": "Review"
     },
     "intro": {
       "designer": "a Graphic Designer",
@@ -66,6 +69,7 @@
   "notice": {
     "label": "Notice"
   },
+  "privacy_policy": "Privacy Policy",
   "settings": {
     "toggle_theme": "Toggle theme"
   }

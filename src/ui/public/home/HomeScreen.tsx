@@ -1159,12 +1159,12 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
 function ReviewCardItem(props: { index: number, item: ReviewItem }) {
   return (
     <div
-      className="w-full max-w-105 rounded-3xl border border-border bg-card p-6 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
+      className="w-100 h-80 rounded-3xl border border-border bg-card p-6 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
       <div className="flex items-center gap-4">
         <div className="h-14 w-14 overflow-hidden rounded-full bg-muted-foreground">
           <img
             src={sampleProfiles[props.index % sampleProfiles.length]}
-            alt="도***** 프로필 이미지"
+            alt="프로필 이미지"
             className="h-full w-full object-cover"
           />
         </div>
@@ -1173,12 +1173,12 @@ function ReviewCardItem(props: { index: number, item: ReviewItem }) {
           <span className="text-[28px] font-semibold tracking-[-0.03em] text-card-foreground">{props.item.name}</span>
           <div className="mt-1 flex items-center gap-2">
             <span className="text-[#62d26f]">★</span>
-            <span className="text-[20px] font-bold text-card-foreground">5.0</span>
+            <span className="text-[20px] font-bold text-card-foreground">{props.item.star.toFixed(1)}</span>
           </div>
         </div>
       </div>
 
-      <p className="mt-6 text-[30px] font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">친절하게 상담해주시고 꼼꼼하게 작업해주십니다.</p>
+      <p className="mt-6 text-lg font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">{props.item.review}</p>
     </div>
   )
 }

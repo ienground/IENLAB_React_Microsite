@@ -439,37 +439,6 @@ export default function PublicHeader() {
             >
               <Button
                 type="button"
-                className={cn(
-                  "hidden rounded-full border text-foreground/85 shadow-none transition-all duration-300 hover:bg-white/15 hover:text-foreground md:inline-flex md:items-center md:justify-center dark:hover:bg-white/10",
-                  scrolled
-                    ? "border-white/15 bg-white/10 px-3 py-1.5 text-sm dark:border-white/10 dark:bg-white/5"
-                    : "border-white/15 bg-white/10 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5",
-                )}
-                onClick={() => i18n.changeLanguage(i18n.resolvedLanguage === "ko" ? "en" : "ko")}
-                size="icon"
-              >
-                <AnimatePresence mode="popLayout">
-                  {resolvedTheme === "light" ? (
-                    <motion.div
-                      key="theme-light"
-                      initial={{opacity: 0, width: 0}}
-                      animate={{opacity: 1, width: 16}}
-                      exit={{opacity: 0, width: 0}}
-                    >🇰🇷</motion.div>
-                  ) : (
-                    <motion.div
-                      key="theme-dark"
-                      initial={{opacity: 0, width: 0}}
-                      animate={{opacity: 1, width: 16}}
-                      exit={{opacity: 0, width: 0}}
-                    >🇬🇧</motion.div>
-                  )}
-                </AnimatePresence>
-
-                <span className="sr-only">{t("strings:settings.toggle_theme")}</span>
-              </Button>
-              <Button
-                type="button"
                 variant="ghost"
                 size="icon"
                 className={cn(

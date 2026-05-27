@@ -38,7 +38,8 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   observePrimaries(callback: (items: Portfolio[]) => void) {
     const q = query(
       this.portfoliosRef,
-      where(FirestorePath.Portfolio.IS_PRIMARY, "==", true)
+      where(FirestorePath.Portfolio.IS_PRIMARY, "==", true),
+      where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED),
     )
     return getSnapshots(
       q,
@@ -82,6 +83,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
         constraints.push(startAfter(this.portfolioInfoStateList.lastVisibleDocument))
       }
 
+      constraints.push(where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED))
       constraints.push(limit(this.PAGE_SIZE))
 
       const snapshot = await getDocs(query(this.portfoliosRef, ...constraints))
