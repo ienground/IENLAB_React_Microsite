@@ -1,7 +1,6 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
-import Sample from "@/assets/brand/Page04_01_white.png"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
-import {CrossfadeImage, Localized, useDateTimeFormatters} from "@ienlab/react-library"
+import {CrossfadeImage, Localized, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
@@ -44,6 +43,9 @@ import ImgProfileSample09 from "@/assets/image/img_profile_sample_09.png"
 import ImgProfileSample10 from "@/assets/image/img_profile_sample_10.png"
 import ImgProfileSample11 from "@/assets/image/img_profile_sample_11.png"
 import ImgProfileSample12 from "@/assets/image/img_profile_sample_12.png"
+import ImgBgColor from "@/assets/brand/img_background_color.png"
+import ImgBgDark from "@/assets/brand/img_background_dark.png"
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx"
 
 type CarouselItem = {
   id: string
@@ -93,6 +95,7 @@ export default function HomeScreen() {
 
 function ScreenBody() {
   const {t, i18n} = useTranslation()
+  const { resolvedTheme } = useTheme()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
@@ -106,22 +109,10 @@ function ScreenBody() {
     {
       id: "one",
       title: "One",
-      image: Sample,
-      url: "asdf",
+      image: resolvedTheme === "light" ? ImgBgColor : ImgBgDark,
+      url: "",
     },
-    // {
-    //   id: 2,
-    //   image: Sample,
-    //   title: "Two",
-    //   url: "",
-    // },
-    // {
-    //   id: 3,
-    //   title: "Three",
-    //   image: Sample,
-    //   url: "",
-    // },
-  ], [t])
+  ], [t, resolvedTheme])
 
   // Section 2. About
   const splitTextContainerRef = useRef<HTMLDivElement | null>(null)
@@ -365,12 +356,17 @@ function ScreenBody() {
               <div className="max-w-130">
                 <p
                   className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
-                <Button
-                  className="mt-14 font-medium"
-                >
-                  {t("strings:home.about.see_more")}
-                  <RiArrowRightUpLine/>
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="mt-14 font-medium"
+                    >
+                      {t("strings:home.about.see_more")}
+                      <RiArrowRightUpLine/>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("strings:available_soon")}</TooltipContent>
+                </Tooltip>
               </div>
             </div>
 
@@ -712,6 +708,18 @@ function PortfolioItemContent({
             src={Localized.get(item.thumbnail)}
             alt=""
             layoutId={`card-image-${id}`}
+          />
+
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 dark:bg-black/15",
+              isOpen
+                ? "mask-[linear-gradient(to_bottom,black_0%,black_52%,black_68%,rgba(0,0,0,0.82)_80%,rgba(0,0,0,0.38)_92%,transparent_100%)]"
+                : "",
+              isOpen
+                ? "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_52%,black_68%,rgba(0,0,0,0.82)_80%,rgba(0,0,0,0.38)_92%,transparent_100%)]"
+                : "",
+            )}
           />
 
           <div

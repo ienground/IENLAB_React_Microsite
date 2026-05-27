@@ -29,6 +29,7 @@ import {Button} from "@/components/ui/button.tsx"
 import {AnimatePresence, motion, type Variants} from "motion/react"
 import {cn} from "@/lib/utils.ts"
 import {Link} from "react-router"
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx"
 
 type NavLeaf = {
   icon: ElementType
@@ -281,44 +282,54 @@ export default function PublicHeader() {
                     onMouseEnter={() => item.items && handleHover(item.title)}
                   >
                     {item.items ? (
-                      <button
-                        type="button"
-                        className={cn(
-                          "relative inline-flex items-center rounded-full bg-transparent text-foreground/75 transition-all duration-300",
-                          "hover:bg-white/10 hover:text-foreground dark:hover:bg-white/10",
-                          activeMenu === item.title && "text-foreground",
-                          scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
-                        )}
-                      >
-                        {activeMenu === item.title && (
-                          <motion.div
-                            layoutId="header-nav-indicator"
-                            className="absolute inset-0 rounded-full bg-white/10"
-                            transition={{type: "spring", stiffness: 500, damping: 35}}
-                          />
-                        )}
-
-                        <span className="relative z-1 inline-flex items-center">
-                          {item.title}
-                          <motion.span
-                            className="ml-1"
-                            animate={{rotate: activeMenu === item.title ? 180 : 0}}
-                            transition={{type: "spring", stiffness: 500, damping: 30}}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            className={cn(
+                              "relative inline-flex items-center rounded-full bg-transparent text-foreground/75 transition-all duration-300",
+                              "hover:bg-white/10 hover:text-foreground dark:hover:bg-white/10",
+                              activeMenu === item.title && "text-foreground",
+                              scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
+                            )}
                           >
-                            <RiArrowDownSLine className="size-4" />
-                          </motion.span>
-                        </span>
-                      </button>
+                            {activeMenu === item.title && (
+                              <motion.div
+                                layoutId="header-nav-indicator"
+                                className="absolute inset-0 rounded-full bg-white/10"
+                                transition={{type: "spring", stiffness: 500, damping: 35}}
+                              />
+                            )}
+
+                            <span className="relative z-1 inline-flex items-center">
+                              {item.title}
+                              <motion.span
+                                className="ml-1"
+                                animate={{rotate: activeMenu === item.title ? 180 : 0}}
+                                transition={{type: "spring", stiffness: 500, damping: 30}}
+                              >
+                                <RiArrowDownSLine className="size-4" />
+                              </motion.span>
+                            </span>
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="z-1500">{t("strings:available_soon")}</TooltipContent>
+                      </Tooltip>
                     ) : (
-                      <Link
-                        to={item.url ? item.url : ""}
-                        className={cn(
-                          "inline-flex items-center rounded-full text-foreground/75 transition-all duration-300 hover:bg-white/10 hover:text-foreground focus:bg-white/10 focus:text-foreground dark:hover:bg-white/10",
-                          scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
-                        )}
-                      >
-                        {item.title}
-                      </Link>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Link
+                            to={item.url ? item.url : ""}
+                            className={cn(
+                              "inline-flex items-center rounded-full text-foreground/75 transition-all duration-300 hover:bg-white/10 hover:text-foreground focus:bg-white/10 focus:text-foreground dark:hover:bg-white/10",
+                              scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
+                            )}
+                          >
+                            {item.title}
+                          </Link>
+                        </TooltipTrigger>
+                        <TooltipContent className="z-1500">{t("strings:available_soon")}</TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
                 ))}
