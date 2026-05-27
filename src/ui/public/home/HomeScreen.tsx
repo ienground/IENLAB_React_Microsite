@@ -1,6 +1,5 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import Sample from "@/assets/brand/Page04_01_white.png"
-// import Sample from "@/assets/brand/img_logo_typo.png"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useTransform} from "motion/react"
 import {CrossfadeImage, Localized, useDateTimeFormatters} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
@@ -39,7 +38,7 @@ export default function HomeScreen() {
 }
 
 function ScreenBody() {
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
@@ -122,7 +121,9 @@ function ScreenBody() {
 
   // Section 6. Feedback
   const [index, setIndex] = useState(0)
-  const text = ["모바일 개발자", "웹 개발자", "그래픽 디자이너"]
+  const roleTexts = [t('strings:home.intro.mobile_dev'), t('strings:home.intro.web_dev'), t('strings:home.intro.designer')]
+  const isNameFirst = i18n.resolvedLanguage === "en"
+
   return (
     <div className="w-full flex flex-col items-center overflow-x-clip">
       <section className="relative">
@@ -135,34 +136,46 @@ function ScreenBody() {
           items={[
             <div
               key="extra-layered-slide"
-              className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl border-border border-2 bg-muted"
+              className={cn(
+                "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",
+                "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"
+              )}
             >
-              <LayeredSlides
-                backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
-                foreground={ImgFrontForward}
-              />
+              <div className={cn(
+                "w-full h-[60svh]",
+                "md:h-full"
+              )}>
+                <LayeredSlides
+                  backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
+                  foreground={ImgFrontForward}
+                />
+              </div>
+
 
               <h2
                 className={cn(
-                  "absolute left-2/5 top-1/2 -translate-1/2",
-                  "flex flex-col items-start font-medium text-4xl lg:text-5xl xl:text-6xl leading-[0.92] tracking-[-0.06em]"
+                  "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",
+                  "lg:text-5xl",
+                  "xl:text-6xl",
+                  "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",
                 )}
               >
-                <span>안녕하세요,</span>
+                <span>{t('strings:home.intro.hello')}</span>
 
+                {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
                 <div className="relative">
-                  <span className="invisible block">{text.reduce((a, b) => (a.length > b.length ? a : b))}    ㅤ</span>
+                  <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))}    ㅤ</span>
                   <Typewriter
                     as="div"
                     className="absolute inset-0"
                     cursorStyle={{ background: "var(--chart-3)", width: "3px" }}
                     onComplete={() => {
-                      delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
+                      delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)
                     }}
-                  >{text[index]}</Typewriter>
+                  >{roleTexts[index]}</Typewriter>
                 </div>
 
-                <span className="mt-4">아이엔입니다👋</span>
+                {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
               </h2>
             </div>,
 

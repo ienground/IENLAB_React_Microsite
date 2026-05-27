@@ -49,6 +49,13 @@
     "feedback": {
       "header": "Feedback"
     },
+    "intro": {
+      "designer": "그래픽 디자이너",
+      "hello": "안녕하세요,",
+      "ienground": "아이엔입니다👋",
+      "mobile_dev": "모바일 개발자",
+      "web_dev": "웹 개발자"
+    },
     "label": "홈",
     "project": {
       "header": "프로젝트",

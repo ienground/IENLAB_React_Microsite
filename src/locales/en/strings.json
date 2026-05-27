@@ -28,6 +28,13 @@
     "feedback": {
       "header": "Feedback"
     },
+    "intro": {
+      "designer": "a Graphic Designer",
+      "hello": "Hello👋 this is",
+      "ienground": "IENGROUND,",
+      "mobile_dev": "a Mobile Developer",
+      "web_dev": "a Web Developer"
+    },
     "project": {
       "header": "Project",
       "role": {
