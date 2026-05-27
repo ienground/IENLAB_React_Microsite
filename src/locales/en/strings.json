@@ -1,4 +1,13 @@
 {
+  "about": {
+    "branding": {
+      "label": "Brand"
+    },
+    "label": "About"
+  },
+  "console": {
+    "label": "Console"
+  },
   "datetime": {
     "month_year": "MMM YYYY"
   },
@@ -23,5 +32,11 @@
     "skills": {
       "header": "Skills"
     }
+  },
+  "notice": {
+    "label": "Notice"
+  },
+  "settings": {
+    "toggle_theme": "Toggle theme"
   }
 }

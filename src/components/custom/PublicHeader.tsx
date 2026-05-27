@@ -1,50 +1,485 @@
-import {motion, useMotionValueEvent, useScroll } from "motion/react"
-import {useState} from "react"
+import {type ElementType, useEffect, useMemo, useRef, useState} from "react"
 import {useTheme} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 
-export default function PublicHeader() {
-  const { scrollY } = useScroll()
-  const [hidden, setHidden] = useState(false)
-  const { resolvedTheme, setTheme } = useTheme()
-  const { i18n } = useTranslation()
+import imgLogoFull from "@/assets/brand/img_logo_full.png"
+import imgLogoFullWhite from "@/assets/brand/img_logo_full_white.png"
+import imgLogoShort from "@/assets/brand/img_logo_short.png"
+import imgLogoShortWhite from "@/assets/brand/img_logo_short_white.png"
+import LogoSolid from "@/assets/brand/logo_solid.svg?react"
 
-  useMotionValueEvent(scrollY, "change", (current) => {
-    const previous = scrollY.getPrevious() ?? 0
-    if (current > previous && current > 250) {
-      setHidden(true)
-    } else {
-      setHidden(false)
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import {
+  RiAlignRight,
+  RiArrowDownSLine,
+  RiFileCodeFill,
+  RiMenuFill,
+  RiMoonFill,
+  RiPaletteFill,
+  RiSunFill,
+} from "@remixicon/react"
+import {Button} from "@/components/ui/button.tsx"
+import {AnimatePresence, motion, type Variants} from "motion/react"
+import {cn} from "@/lib/utils.ts"
+import {Link} from "react-router"
+
+type NavLeaf = {
+  icon: ElementType
+  title: string
+  url: string
+  description?: string
+}
+
+type NavItem = {
+  title: string
+  url?: string
+  items?: NavLeaf[]
+}
+
+export default function PublicHeader() {
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeMenu, setActiveMenu] = useState<string | null>(null)
+  const [direction, setDirection] = useState(0)
+
+  const closeTimerRef = useRef<number | null>(null)
+
+  const {resolvedTheme, setTheme} = useTheme()
+  const {t, i18n} = useTranslation()
+
+  const navItems: NavItem[] = useMemo(
+    () => [
+      {
+        title: t("strings:about.label"),
+        items: [
+          {
+            title: "@IENGROUND",
+            url: "#",
+            description: "프로젝트 세팅과 기본 사용법을 확인하세요.",
+            icon: LogoSolid,
+          },
+          {
+            title: t("strings:about.branding.label"),
+            url: "#",
+            description: "shadcn 기반 UI 컴포넌트 목록입니다.",
+            icon: RiPaletteFill,
+          },
+          {
+            title: t("strings:home.project.header"),
+            url: "#",
+            description: "라이트/다크 모드와 토큰 설정을 다룹니다.",
+            icon: RiFileCodeFill,
+          },
+        ],
+      },
+      {
+        title: t("strings:notice.label"),
+        url: "#",
+      },
+      {
+        title: t("strings:console.label"),
+        url: "#",
+      },
+    ],
+    [t],
+  )
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 24)
     }
-  })
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, {passive: true})
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current)
+    }
+  }, [])
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+  }
+
+  const scheduleClose = () => {
+    clearCloseTimer()
+    closeTimerRef.current = window.setTimeout(() => {
+      setDirection(0)
+      setActiveMenu(null)
+    }, 120)
+  }
+
+  const contentVariants: Variants = {
+    enter: (d: number) => ({
+      opacity: 0,
+      x: d ? d * 24 : 0,
+    }),
+    center: {
+      opacity: 1,
+      x: 0,
+    },
+    exit: (d: number) => ({
+      opacity: 0,
+      x: d ? d * -24 : 0,
+    }),
+  }
+
+  const handleHover = (title: string) => {
+    clearCloseTimer()
+
+    if (activeMenu !== null && activeMenu !== title) {
+      const oldIdx = navItems.findIndex((n) => n.title === activeMenu)
+      const newIdx = navItems.findIndex((n) => n.title === title)
+      setDirection(newIdx > oldIdx ? 1 : -1)
+    } else {
+      setDirection(0)
+    }
+
+    setActiveMenu(title)
+  }
+
+  const handleLeave = () => {
+    scheduleClose()
+  }
+
+  const isKo = i18n.language?.toLowerCase().startsWith("ko")
 
   return (
-    <motion.header
-      className="fixed w-full h-24 z-999 bg-pink-200"
-      animate={{
-        y: hidden ? -140 : 0,
-        opacity: hidden ? 0 : 1,
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-    >
-      <div className="header-content">
-        <div className="logo">Logo</div>
-        <nav>
-          <a href="#">Docs</a>
-          <a href="#">Examples</a>
-          <a href="#">Blog</a>
-          <button
-            onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+    <header className="fixed inset-x-0 top-0 z-999 pointer-events-none">
+      <div
+        className={cn(
+          "mx-auto pointer-events-auto transition-all duration-300 ease-in-out",
+          scrolled
+            ? "mt-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem] border border-white/15 bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] dark:border-white/10 dark:bg-white/5"
+            : "mt-0 h-24 w-full rounded-none border-b border-white/10 bg-white/8 backdrop-blur-lg [-webkit-backdrop-filter:blur(16px)] dark:border-white/10 dark:bg-white/5",
+        )}
+      >
+        <div
+          className={cn(
+            "grid h-full grid-cols-[1fr_auto_1fr] items-center transition-all duration-300",
+            scrolled ? "px-5" : "px-6",
+          )}
+        >
+          <div className="flex min-w-0 items-center justify-self-start">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Open menu"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-foreground/85 transition-all duration-300 md:hidden dark:border-white/10 dark:bg-white/5"
+                >
+                  <RiMenuFill className="size-5" />
+                </button>
+              </SheetTrigger>
+
+              <SheetContent
+                side="left"
+                className="w-full border-white/10 bg-background/95 p-0 backdrop-blur-xl sm:max-w-none"
+              >
+                <div className="mt-20"></div>
+                <SheetHeader className="border-b border-border/60 px-5 py-4 text-left">
+                  <SheetTitle className="text-base font-semibold">
+                    Menu
+                  </SheetTitle>
+                </SheetHeader>
+
+                <div className="flex h-full flex-col overflow-y-auto px-5 pb-6 pt-4">
+                  <nav className="flex flex-col gap-2">
+                    {navItems.map((item) =>
+                      item.items ? (
+                        <div
+                          key={item.title}
+                          className="rounded-2xl border border-border/60 bg-background/40"
+                        >
+                          <div className="px-4 py-3 text-sm font-medium text-foreground">
+                            {item.title}
+                          </div>
+
+                          <div className="border-t border-border/60 px-2 py-2">
+                            {item.items.map((subItem) => (
+                              <SheetClose asChild key={subItem.title}>
+                                <a
+                                  href={subItem.url}
+                                  className="flex items-start justify-between gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"
+                                >
+                                  <div className="min-w-0">
+                                    <div className="text-sm font-medium text-foreground">
+                                      {subItem.title}
+                                    </div>
+                                    {subItem.description ? (
+                                      <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                                        {subItem.description}
+                                      </p>
+                                    ) : null}
+                                  </div>
+
+                                  <RiAlignRight className="mt-0.5 shrink-0" />
+                                </a>
+                              </SheetClose>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <SheetClose asChild key={item.title}>
+                          <a
+                            href={item.url}
+                            className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                          >
+                            {item.title}
+                            <RiAlignRight className="shrink-0" />
+                          </a>
+                        </SheetClose>
+                      ),
+                    )}
+                  </nav>
+
+                  <div className="mt-6 border-t border-border/60 pt-6">
+                    <button
+                      type="button"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-full border border-white/15 bg-white/10 px-4 text-sm text-foreground/85 transition-colors dark:border-white/10 dark:bg-white/5"
+                      onClick={() =>
+                        setTheme(resolvedTheme === "light" ? "dark" : "light")
+                      }
+                    >
+                      {resolvedTheme === "light"
+                        ? isKo
+                          ? "다크 모드"
+                          : "Dark Mode"
+                        : isKo
+                          ? "라이트 모드"
+                          : "Light Mode"}
+                    </button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <div
+              className="relative hidden md:flex"
+              onMouseEnter={clearCloseTimer}
+              onMouseLeave={handleLeave}
+            >
+              <div className="flex items-center gap-1">
+                {navItems.map((item) => (
+                  <div
+                    key={item.title}
+                    className="relative"
+                    onMouseEnter={() => item.items && handleHover(item.title)}
+                  >
+                    {item.items ? (
+                      <button
+                        type="button"
+                        className={cn(
+                          "relative inline-flex items-center rounded-full bg-transparent text-foreground/75 transition-all duration-300",
+                          "hover:bg-white/10 hover:text-foreground dark:hover:bg-white/10",
+                          activeMenu === item.title && "text-foreground",
+                          scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
+                        )}
+                      >
+                        {activeMenu === item.title && (
+                          <motion.div
+                            layoutId="header-nav-indicator"
+                            className="absolute inset-0 rounded-full bg-white/10"
+                            transition={{type: "spring", stiffness: 500, damping: 35}}
+                          />
+                        )}
+
+                        <span className="relative z-1 inline-flex items-center">
+                          {item.title}
+                          <motion.span
+                            className="ml-1"
+                            animate={{rotate: activeMenu === item.title ? 180 : 0}}
+                            transition={{type: "spring", stiffness: 500, damping: 30}}
+                          >
+                            <RiArrowDownSLine className="size-4" />
+                          </motion.span>
+                        </span>
+                      </button>
+                    ) : (
+                      <Link
+                        to={item.url ? item.url : ""}
+                        className={cn(
+                          "inline-flex items-center rounded-full text-foreground/75 transition-all duration-300 hover:bg-white/10 hover:text-foreground focus:bg-white/10 focus:text-foreground dark:hover:bg-white/10",
+                          scrolled ? "h-9 px-3 text-sm" : "h-10 px-3 text-sm",
+                        )}
+                      >
+                        {item.title}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <AnimatePresence>
+                {activeMenu && (
+                  <motion.div
+                    key="panel"
+                    initial={{opacity: 0, y: -8}}
+                    animate={{
+                      opacity: 1,
+                      y: 8,
+                      transition: {type: "spring", stiffness: 500, damping: 35},
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -8,
+                      transition: {duration: 0.15, ease: "easeOut"},
+                    }}
+                    className="absolute left-0 top-[calc(100%+8px)] z-50"
+                    onMouseEnter={clearCloseTimer}
+                    onMouseLeave={handleLeave}
+                  >
+                    <div
+                      className={cn(
+                        "overflow-hidden rounded-3xl border p-2 shadow-[0_10px_40px_rgba(0,0,0,0.12)]",
+                        "border-white/20 bg-white/92 dark:border-white/10 dark:bg-zinc-900/92",
+                      )}
+                    >
+                      <AnimatePresence mode="popLayout" custom={direction}>
+                        <motion.ul
+                          key={activeMenu}
+                          custom={direction}
+                          variants={contentVariants}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          transition={{type: "spring", stiffness: 300, damping: 30}}
+                          className="grid w-90 gap-2"
+                        >
+                          {navItems
+                            .find((item) => item.title === activeMenu)
+                            ?.items?.map((subItem, i) => {
+                              const Icon = subItem.icon
+
+                              return (
+                                <motion.li
+                                  key={subItem.title}
+                                  initial={{opacity: 0, y: direction ? 0 : 8}}
+                                  animate={{opacity: 1, y: 0}}
+                                  transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 30,
+                                    delay: i * 0.04,
+                                  }}
+                                >
+                                  <Link
+                                    to={subItem.url}
+                                    className="flex flex-row items-center justify-between rounded-2xl p-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+                                  >
+                                    <div className="flex min-w-0 flex-col items-start">
+                                      <div className="text-sm font-medium leading-none text-foreground">
+                                        {subItem.title}
+                                      </div>
+                                      {subItem.description ? (
+                                        <p className="mt-1 line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                          {subItem.description}
+                                        </p>
+                                      ) : null}
+                                    </div>
+
+                                    <div className="flex size-10 shrink-0 items-center justify-center">
+                                      <Icon className="size-6" />
+                                    </div>
+                                  </Link>
+                                </motion.li>
+                              )
+                            })}
+                        </motion.ul>
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <Link
+            to="/"
+            className="justify-self-center transition-all duration-300"
+            aria-label="Home"
           >
-            {resolvedTheme === "light" ? "Dark Mode" : "Light Mode"}
-          </button>
-          <button
-            onClick={() => i18n.changeLanguage(i18n.resolvedLanguage?.startsWith("ko") ? "en" : "ko")}
-          >
-            {i18n.resolvedLanguage?.startsWith("ko") ? "English" : "한국어"}
-          </button>
-        </nav>
+            <img
+              src={resolvedTheme === "dark" ? imgLogoShortWhite : imgLogoShort}
+              alt="Logo"
+              className={cn(
+                "block object-contain transition-all duration-300 md:hidden",
+                scrolled ? "h-12" : "h-16",
+              )}
+            />
+
+            <img
+              src={resolvedTheme === "dark" ? imgLogoFullWhite : imgLogoFull}
+              alt="Logo"
+              className={cn(
+                "hidden object-contain transition-all duration-300 md:block",
+                scrolled ? "h-8" : "h-10",
+              )}
+            />
+          </Link>
+
+          <div className="flex min-w-0 items-center justify-self-end">
+            <div
+              className={cn(
+                "flex items-center transition-all duration-300",
+                scrolled ? "gap-2" : "gap-3",
+              )}
+            >
+              <Button
+                type="button"
+                className={cn(
+                  "hidden rounded-full border text-foreground/85 transition-all duration-300 md:inline-flex md:items-center md:justify-center",
+                  scrolled
+                    ? "border-white/15 bg-white/10 px-3 py-1.5 text-sm dark:border-white/10 dark:bg-white/5"
+                    : "border-white/15 bg-white/10 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5",
+                )}
+                onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
+                size="icon"
+              >
+                <AnimatePresence mode="popLayout">
+                  {resolvedTheme === "light" ? (
+                    <motion.div
+                      key="theme-light"
+                      initial={{opacity: 0, width: 0}}
+                      animate={{opacity: 1, width: 16}}
+                      exit={{opacity: 0, width: 0}}
+                    >
+                      <RiSunFill />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="theme-dark"
+                      initial={{opacity: 0, width: 0}}
+                      animate={{opacity: 1, width: 16}}
+                      exit={{opacity: 0, width: 0}}
+                    >
+                      <RiMoonFill />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <span className="sr-only">{t("strings:settings.toggle_theme")}</span>
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
-    </motion.header>
+    </header>
   )
 }

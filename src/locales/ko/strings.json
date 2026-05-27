@@ -1,4 +1,10 @@
 {
+  "about": {
+    "branding": {
+      "label": "브랜딩"
+    },
+    "label": "About"
+  },
   "add_assets": "애셋 추가",
   "add_new_item": "새 항목 추가",
   "already_existed_id": "이미 존재하는 식별자입니다.",
@@ -7,6 +13,9 @@
   "check_session": "세션 확인 중...",
   "company_placeholder": "회사 검색..",
   "confirm": "확인",
+  "console": {
+    "label": "콘솔"
+  },
   "content_count": "{{cnt}}개의 항목",
   "create_date": "생성일",
   "current_state": "현재 상태",
@@ -34,7 +43,7 @@
     },
     "label": "홈",
     "project": {
-      "header": "Project",
+      "header": "프로젝트",
       "role": {
         "label": "역할"
       }
@@ -56,6 +65,9 @@
   "korean": "한국어",
   "list_end": "항목 끝",
   "login": "로그인",
+  "notice": {
+    "label": "공지사항"
+  },
   "outsource_manage": {
     "budget": {
       "label": "예산 및 정산"
