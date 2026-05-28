@@ -1,14 +1,14 @@
-import type {PortfolioRepository} from "@/domain/repository/PortfolioRepository.ts";
+import type {PortfolioRepository} from "@/domain/repository/PortfolioRepository.ts"
 import {collection, doc, endAt, getDoc, getDocs, limit, orderBy, query,
-  QueryConstraint, startAfter, startAt, where, type Firestore, type Unsubscribe} from "firebase/firestore";
-import {FirestorePath} from "@/constant/FirestorePath.ts";
-import {Portfolio} from "../../domain/model/Portfolio.tsx";
-import {fetchItems, type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library";
+  QueryConstraint, startAfter, startAt, where, type Firestore, type Unsubscribe} from "firebase/firestore"
+import {FirestorePath} from "@/constant/FirestorePath.ts"
+import {type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
 import i18n from "@/locales/i18n.ts"
+import {Portfolio} from "@/domain/model/Portfolio.tsx"
 
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef
-  private readonly PAGE_SIZE = 20;
+  private readonly PAGE_SIZE = 20
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
 
@@ -38,7 +38,8 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   observePrimaries(callback: (items: Portfolio[]) => void) {
     const q = query(
       this.portfoliosRef,
-      where(FirestorePath.Portfolio.IS_PRIMARY, "==", true)
+      where(FirestorePath.Portfolio.IS_PRIMARY, "==", true),
+      where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED),
     )
     return getSnapshots(
       q,
@@ -82,6 +83,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
         constraints.push(startAfter(this.portfolioInfoStateList.lastVisibleDocument))
       }
 
+      constraints.push(where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED))
       constraints.push(limit(this.PAGE_SIZE))
 
       const snapshot = await getDocs(query(this.portfoliosRef, ...constraints))

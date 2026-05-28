@@ -1,18 +1,212 @@
 {
+  "about": {
+    "branding": {
+      "desc": "IENLAB Brand Identity",
+      "label": "Brand"
+    },
+    "ienground": {
+      "description": "What kind of person am I?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "Check out my projects."
+    }
+  },
+  "add_assets": "Add assets",
+  "add_new_item": "Add new item",
+  "amount": "Amount",
+  "available_soon": "Available soon",
+  "cancel": "Cancel",
+  "check_session": "Checking session...",
+  "company_placeholder": "Search company..",
+  "confirm": "Confirm",
+  "console": {
+    "label": "Console"
+  },
+  "content_count": "{{cnt}} items",
+  "create_date": "Create date",
+  "current_state": "Current state",
   "datetime": {
     "month_year": "MMM YYYY"
   },
+  "delete": "Delete",
+  "email": "Email",
+  "error_occurred": "An error occured. {{error}}",
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. All Rights Reserved."
+  },
   "home": {
-    "header": {
-      "about": "About",
-      "feedback": "Feedback",
-      "project": "Project",
-      "services": "Services",
-      "skills": "Skills"
+    "about": {
+      "header": "About",
+      "leading_message": "Is there anything more valuable than being able to imagine something, create it, and bring it out?",
+      "name": "Hyunwoo Rhee / IENGROUND",
+      "p1": "Since I love creating things, enjoyed assembling Leo and playing Minecraft. Made games in PowerPoint and often took charge of decks for group projects.<br/><br/> Once dreamed of becoming a car designer, did graphic design, and now I’m weaving code.<br/><br/> Is there anything more valuable and enjoyable than being able to imagine something, create it, and bring it out?",
+      "p2": "Started Android development in 2017, now developing Android and iOS applications with Compose Multiplatform.<br/><br/> Proceed through many conversations with clients to create the software they want.<br/><br/> Nonstop busy working alone, but take pride in understanding clients’ projects better because of it. ",
+      "see_more": "See more"
+    },
+    "feedback": {
+      "header": "Review"
+    },
+    "intro": {
+      "designer": "a Graphic Designer",
+      "hello": "Hello👋 this is",
+      "ienground": "IENGROUND,",
+      "mobile_dev": "a Mobile Developer",
+      "web_dev": "a Web Developer"
     },
     "project": {
+      "header": "Project",
       "role": {
         "label": "Roles"
+      }
+    },
+    "services": {
+      "header": "Services"
+    },
+    "skills": {
+      "design": {
+        "desc": "Design application-related resources using Adobe Photoshop, Illustrator, and AI.",
+        "label": "Design"
+      },
+      "firebase": {
+        "desc": "Connect development, database, push notifications, and deployment to build actual service flow.",
+        "label": "Firebase"
+      },
+      "frontend": {
+        "desc": "Create interactive web UIs and components with React and TypeScript.",
+        "title": "Web Frontend"
+      },
+      "header": "What I work with",
+      "mobile": {
+        "desc": "Design and implement Android and iOS applications based on Compose Multiplatform.",
+        "label": "Mobile"
+      }
+    }
+  },
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
+  },
+  "notice": {
+    "label": "Notice"
+  },
+  "privacy_policy": "Privacy Policy",
+  "settings": {
+    "toggle_theme": "Toggle theme"
+  },
+  "type": {
+    "company": {
+      "state": {
+        "pending": {
+          "label": "Pending"
+        }
+      }
+    },
+    "outsource": {
+      "info_request": {
+        "state": {
+          "draft": {
+            "label": "Draft"
+          },
+          "received": {
+            "label": "Received"
+          },
+          "rejected": {
+            "label": "Rejected"
+          },
+          "sent": {
+            "label": "Sent"
+          }
+        }
+      }
+    },
+    "portfolio": {
+      "category": {
+        "creative_computing": {
+          "desc": "Interactive media such as p5.js",
+          "title": "Creative Computing"
+        },
+        "game": {
+          "desc": "Games created with Unity, p5.js, etc.",
+          "title": "Game"
+        },
+        "physical_computing": {
+          "desc": "Physical creations such as Arduino projects",
+          "title": "Physical Computing"
+        },
+        "social": {
+          "desc": "Community-style social media",
+          "title": "Social"
+        },
+        "utility": {
+          "desc": "Usable tools and utilities",
+          "title": "Utility"
+        }
+      },
+      "is_primary": {
+        "false": {
+          "desc": "Not shown on the main page.",
+          "title": "Exclude from Featured Projects"
+        },
+        "true": {
+          "desc": "Shown on the main page and specially marked in the portfolio list.",
+          "title": "Featured Project"
+        }
+      },
+      "platform": {
+        "android": {
+          "desc": "Mobile applications for Android",
+          "title": "Android"
+        },
+        "arduino": {
+          "desc": "Arduino-based physical products",
+          "title": "Arduino"
+        },
+        "ios": {
+          "desc": "Mobile applications for iOS and iPadOS",
+          "title": "iOS · iPadOS"
+        },
+        "pc": {
+          "desc": "Applications for Windows and macOS",
+          "title": "Windows · macOS"
+        },
+        "web": {
+          "desc": "Web applications",
+          "title": "Web"
+        }
+      },
+      "state": {
+        "done": {
+          "desc": "This project is no longer being maintained.",
+          "title": "Ended"
+        },
+        "launched": {
+          "desc": "The project has been launched and is currently being maintained and updated.",
+          "title": "Launched"
+        },
+        "working": {
+          "desc": "This project is still in development.",
+          "title": "In Development"
+        }
+      },
+      "visibility": {
+        "archived": {
+          "desc": "Archived and hidden from the list.",
+          "title": "Archived"
+        },
+        "draft": {
+          "desc": "Not ready yet and hidden from the list. Still shown internally for future writing.",
+          "title": "Draft"
+        },
+        "published": {
+          "desc": "Published and visible in the list.",
+          "title": "Published"
+        }
       }
     }
   }

@@ -11,6 +11,7 @@ import {RouterProvider} from "react-router"
 import {getRouter} from "./ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
 import { Toaster } from "./components/ui/sonner.tsx"
+import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -23,7 +24,7 @@ export default function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <ScreenBody />
+      <TooltipProvider><ScreenBody /></TooltipProvider>
     </ThemeProvider>
   )
 }

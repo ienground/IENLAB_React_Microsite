@@ -1,7 +1,7 @@
-import { FirestorePath } from "@/constant/FirestorePath";
-import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
-import {DocumentReference, DocumentSnapshot, FieldValue, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore";
-import type {TFunction} from "i18next";
+import { FirestorePath } from "@/constant/FirestorePath"
+import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library"
+import {DocumentReference, DocumentSnapshot, FieldValue, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore"
+import type {TFunction} from "i18next"
 import {RiAppleFill, RiComputerFill, RiPagesFill} from "@remixicon/react"
 import IcAndroid from "@/assets/icon/android.svg?react"
 import IcArduino from "@/assets/icon/arduino.svg?react"
@@ -57,13 +57,13 @@ export class Portfolio implements FirestoreItem {
       [FirestorePath.Portfolio.GOOGLE_PLAY_LINK]: this.googlePlayLink,
       [FirestorePath.Portfolio.APP_STORE_LINK]: this.appStoreLink,
       [FirestorePath.Portfolio.IMAGE_URLS]: this.imageUrls
-    };
+    }
 
     if (!isUpdate) {
       map[FirestorePath.CREATE_AT] = serverTimestamp()
     }
 
-    return map;
+    return map
   }
 
   static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Portfolio {
@@ -121,7 +121,7 @@ export namespace Portfolio {
         [Visibility.DRAFT]: t("strings:type.portfolio.visibility.draft.title"),
         [Visibility.PUBLISHED]: t("strings:type.portfolio.visibility.published.title"),
         [Visibility.ARCHIVED]: t("strings:type.portfolio.visibility.archived.title"),
-      };
+      }
 
       return map[value]
     }
@@ -130,7 +130,7 @@ export namespace Portfolio {
         [Visibility.DRAFT]: t("strings:type.portfolio.visibility.draft.desc"),
         [Visibility.PUBLISHED]: t("strings:type.portfolio.visibility.published.desc"),
         [Visibility.ARCHIVED]: t("strings:type.portfolio.visibility.archived.desc"),
-      };
+      }
 
       return map[value]
     }
@@ -159,7 +159,7 @@ export namespace Portfolio {
         [State.WORKING]: t("strings:type.portfolio.state.working.title"),
         [State.LAUNCHED]: t("strings:type.portfolio.state.launched.title"),
         [State.DONE]: t("strings:type.portfolio.state.done.title")
-      };
+      }
 
       return map[value]
     }

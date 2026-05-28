@@ -1,12 +1,29 @@
 {
+  "about": {
+    "branding": {
+      "desc": "아이엔랩 브랜드 아이덴티티",
+      "label": "브랜딩"
+    },
+    "ienground": {
+      "description": "저는 무엇을 하는 사람일까요?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "참여한 프로젝트를 살펴보세요."
+    }
+  },
   "add_assets": "애셋 추가",
   "add_new_item": "새 항목 추가",
-  "already_existed_id": "이미 존재하는 식별자입니다.",
   "amount": "개수",
+  "available_soon": "지원 예정",
   "cancel": "취소",
   "check_session": "세션 확인 중...",
   "company_placeholder": "회사 검색..",
   "confirm": "확인",
+  "console": {
+    "label": "콘솔"
+  },
   "content_count": "{{cnt}}개의 항목",
   "create_date": "생성일",
   "current_state": "현재 상태",
@@ -21,20 +38,56 @@
   "desc_korean": "한국어 설명",
   "edit": "수정하기",
   "email": "이메일",
-  "english": "영어",
   "error_occurred": "오류가 발생했습니다: {{error}}",
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
+  },
   "home": {
-    "header": {
-      "about": "About",
-      "feedback": "Feedback",
-      "project": "Project",
-      "services": "Services",
-      "skills": "Skills"
+    "about": {
+      "header": "About",
+      "leading_message": "무언가를 상상하고,  만들고,  꺼내놓을 수 있다는 것보다 더 가치있는 일이 있을까요?",
+      "name": "이현우 IENGROUND",
+      "p1": "무언가를 만드는 게 좋아서 레고 조립과 Minecraft를 즐겨했습니다. PowerPoint로 게임을 만들고, 조별과제에서는 발표 자료를 맡는 경우가 많았습니다.<br/><br/>한때는 자동차 디자이너를 꿈꾸기도 했고, 그래픽 디자인을 하다 현재는 코드를 직조하는 작업을 하고 있습니다.<br/><br/>상상하고, 만들고, 그것을 꺼내놓을 수 있다는 것보다 더 가치있고 즐거운 일이 있을까요?",
+      "p2": "2017년부터 Android 개발을 시작해 현재는 Compose Multiplatform으로 Android 및 iOS 어플리케이션을 개발하고 있습니다. <br/><br/> 고객이 원하는 소프트웨어를 만들기 위해 많은 대화를 나누며 진행하고 있습니다. <br/><br/> 혼자 진행해 쉴 새 없이 바쁘지만, 그만큼 고객의 프로젝트를 더 잘 이해하고 있다고 자부합니다.",
+      "see_more": "자세히 보기"
+    },
+    "feedback": {
+      "header": "리뷰"
+    },
+    "intro": {
+      "designer": "그래픽 디자이너",
+      "hello": "안녕하세요,",
+      "ienground": "아이엔입니다👋",
+      "mobile_dev": "모바일 개발자",
+      "web_dev": "웹 개발자"
     },
     "label": "홈",
     "project": {
+      "header": "프로젝트",
       "role": {
         "label": "역할"
+      }
+    },
+    "services": {
+      "header": "서비스"
+    },
+    "skills": {
+      "design": {
+        "desc": "Adobe Photoshop, Illustrator 및 AI를 활용하여 어플리케이션과 관련한 리소스를 디자인합니다.",
+        "label": "디자인"
+      },
+      "firebase": {
+        "desc": "개발, 데이터베이스와 푸시 알림, 배포까지 연결해 실제 서비스 흐름을 구축합니다.",
+        "label": "Firebase"
+      },
+      "frontend": {
+        "desc": "React와 Typescript로 인터랙티브한 웹 UI와 컴포넌트를 제작합니다.",
+        "title": "웹 프론트엔드"
+      },
+      "header": "다루는 것들",
+      "mobile": {
+        "desc": "Compose Multiplatform 기반으로 Android 및 iOS 어플리케이션을 설계하고 구현합니다.",
+        "label": "모바일"
       }
     }
   },
@@ -45,9 +98,19 @@
   "input_phone": "전화번호를 입력하세요..",
   "input_summary": "요약을 입력하세요..",
   "input_title": "제목을 입력하세요..",
-  "korean": "한국어",
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
+  },
   "list_end": "항목 끝",
   "login": "로그인",
+  "notice": {
+    "label": "공지사항"
+  },
   "outsource_manage": {
     "budget": {
       "label": "예산 및 정산"
