@@ -1,7 +1,7 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
 import {CrossfadeImage, Localized, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
-import {useTranslation} from "react-i18next"
+import {Trans, useTranslation} from "react-i18next"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
@@ -46,6 +46,7 @@ import ImgProfileSample12 from "@/assets/image/img_profile_sample_12.png"
 import ImgBgColor from "@/assets/brand/img_background_color.png"
 import ImgBgDark from "@/assets/brand/img_background_dark.png"
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx"
+import {Separator} from "@/components/ui/separator.tsx"
 
 type CarouselItem = {
   id: string
@@ -157,21 +158,21 @@ function ScreenBody() {
       id: "web",
       title: t('strings:home.skills.frontend.title'),
       description: t("strings:home.skills.frontend.desc"),
-      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      tags: ["React", "Typescript", "Motion+", "shadcn.io"],
       image: ImgWebGraphic
     },
     {
       id: "design",
       title: t('strings:home.skills.design.label'),
       description: t('strings:home.skills.design.desc'),
-      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      tags: ["Photoshop", "Illustrator", "Stitch", "Figma"],
       image: ImgIllustGraphic
     },
     {
       id: "firebase",
       title: t('strings:home.skills.firebase.label'),
       description: t('strings:home.skills.firebase.desc'),
-      tags: ["Kotlin", "Compose Multiplatform", "Android", "iOS"],
+      tags: ["Authentication", "Firestore", "Storage", "Cloud Messaging", "Hosting"],
       image: ImgFirebaseGraphic
     },
   ]
@@ -348,7 +349,7 @@ function ScreenBody() {
                 <div className="mt-4 space-y-0.5">
                   <p
                     className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
-                  <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[20px]">©2024</p>
+                  <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[16px]">©2024</p>
                 </div>
               </div>
             </div>
@@ -361,17 +362,16 @@ function ScreenBody() {
                 "flex flex-col gap-y-4",
                 "xl:flex-row xl:gap-x-4"
               )}>
-                <div className="col-span-12 xl:col-span-4 xl:grow">
+                <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p
-                      className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
+                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p1" components={{ br: <br /> }} /></p>
                   </div>
                 </div>
-
-                <div className="col-span-12 xl:col-span-4 xl:grow">
+                <Separator className="xl:hidden" />
+                <Separator className="max-xl:hidden" orientation="vertical" />
+                <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p
-                      className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
+                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p2" components={{ br: <br /> }} /></p>
                   </div>
                 </div>
               </div>
@@ -403,6 +403,7 @@ function ScreenBody() {
               {skillItems.map((item, index) => (
                 <SkillCardItem index={index} item={item}/>
               ))}
+              <div className="relative flex min-w-60 w-[20vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden" />
             </motion.div>
           </div>
         </div>
@@ -976,7 +977,7 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
           <PortfolioItemContent id={id} item={item} setOpen={close} isOpen>
             <div
               className={cn(
-                "grid w-full grid-cols-[20%_35%_45%] p-4",
+                "grid w-full grid-cols-[25%_35%_40%] p-4",
                 "max-md:grid-cols-1 max-md:gap-y-4",
               )}
             >

@@ -33,20 +33,16 @@ export default function PublicFooter() {
               className="transition-colors hover:text-foreground"
             >{t("strings:privacy_policy")}</Link>
             <span className="text-muted-foreground/50">|</span>
-            <Button
+            <button
               type="button"
               className="p-0"
-              variant="ghost"
-              size="xs"
               onClick={() => i18n.changeLanguage("ko")}
-            >{t("strings:lang.korean.native_label")}</Button>
-            <Button
+            >{t("strings:lang.korean.native_label")}</button>
+            <button
               type="button"
               className="p-0"
-              variant="ghost"
-              size="xs"
               onClick={() => i18n.changeLanguage("en")}
-            >{t("strings:lang.english.native_label")}</Button>
+            >{t("strings:lang.english.native_label")}</button>
           </div>
         </div>
 
