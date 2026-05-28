@@ -39,7 +39,6 @@
   "desc_korean": "한국어 설명",
   "edit": "수정하기",
   "email": "이메일",
-  "english": "영어",
   "error_occurred": "오류가 발생했습니다: {{error}}",
   "footer": {
     "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
@@ -100,7 +99,14 @@
   "input_phone": "전화번호를 입력하세요..",
   "input_summary": "요약을 입력하세요..",
   "input_title": "제목을 입력하세요..",
-  "korean": "한국어",
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
+  },
   "list_end": "항목 끝",
   "login": "로그인",
   "notice": {

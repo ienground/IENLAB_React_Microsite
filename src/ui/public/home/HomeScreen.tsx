@@ -219,11 +219,12 @@ function ScreenBody() {
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-clip">
-      <section className="relative">
+
+      <section className="max-w-350 w-full relative">
         <Carousel
           align="center"
           gap={16}
-          className="w-full max-w-350"
+          className="w-full"
           overflow
           itemSize="fill"
           items={[
@@ -282,7 +283,7 @@ function ScreenBody() {
                   src={item.image}
                   alt=""
                   draggable={false}
-                  className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-3xl"
+                  className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-md"
                 />
 
                 {/* optional dark overlay */}
@@ -352,29 +353,39 @@ function ScreenBody() {
               </div>
             </div>
 
-            <div className="col-span-12 xl:col-span-4">
-              <div className="max-w-130">
-                <p
-                  className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      className="mt-14 font-medium"
-                    >
-                      {t("strings:home.about.see_more")}
-                      <RiArrowRightUpLine/>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>{t("strings:available_soon")}</TooltipContent>
-                </Tooltip>
-              </div>
-            </div>
+            <div className={cn(
+              "col-span-12 flex flex-col gap-y-4",
+              "xl:col-span-8"
+            )}>
+              <div className={cn(
+                "flex flex-col gap-y-4",
+                "xl:flex-row xl:gap-x-4"
+              )}>
+                <div className="col-span-12 xl:col-span-4 xl:grow">
+                  <div className="max-w-130">
+                    <p
+                      className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p1')}</p>
+                  </div>
+                </div>
 
-            <div className="col-span-12 xl:col-span-4">
-              <div className="max-w-130">
-                <p
-                  className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
+                <div className="col-span-12 xl:col-span-4 xl:grow">
+                  <div className="max-w-130">
+                    <p
+                      className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]">{t('strings:home.about.p2')}</p>
+                  </div>
+                </div>
               </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    className="w-fit mt-8 font-medium"
+                  >
+                    {t("strings:home.about.see_more")}
+                    <RiArrowRightUpLine/>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{t("strings:available_soon")}</TooltipContent>
+              </Tooltip>
             </div>
           </div>
 
@@ -1097,7 +1108,7 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
   return (
     <article
       className={cn(
-        "relative flex w-[50vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden"
+        "relative flex min-w-120 w-[50vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden",
       )}
     >
       <CrossfadeImage
@@ -1147,9 +1158,9 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
           <div className="w-1/16 h-0.5 bg-foreground/50"/>
           <span className="font-medium tracking-wider">{(props.index + 1).toString().padStart(2, '0')}</span>
         </div>
-        <h1 className="font-black tracking-tighter text-6xl text-foreground">{props.item.title}</h1>
+        <h1 className="font-black tracking-tighter text-6xl text-foreground text-pretty break-keep">{props.item.title}</h1>
         <p className="font-medium text-2xl text-accent-foreground/60">{props.item.description}</p>
-        <div className="flex flex-row mt-auto gap-4">
+        <div className="flex flex-wrap mt-auto gap-4">
           {props.item.tags.map(tag => (
             <div
               className="px-4 py-2 font-extrabold text-lg rounded-2xl backdrop-blur-md bg-background/20 font-mona"

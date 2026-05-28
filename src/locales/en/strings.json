@@ -67,6 +67,14 @@
       }
     }
   },
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
+  },
   "notice": {
     "label": "Notice"
   },

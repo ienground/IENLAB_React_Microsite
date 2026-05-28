@@ -39,14 +39,14 @@ export default function PublicFooter() {
               variant="ghost"
               size="xs"
               onClick={() => i18n.changeLanguage("ko")}
-            >한국어</Button>
+            >{t("strings:lang.korean.native_label")}</Button>
             <Button
               type="button"
               className="p-0"
               variant="ghost"
               size="xs"
               onClick={() => i18n.changeLanguage("en")}
-            >English</Button>
+            >{t("strings:lang.english.native_label")}</Button>
           </div>
         </div>
 
