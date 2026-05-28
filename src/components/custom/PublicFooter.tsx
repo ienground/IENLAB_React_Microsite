@@ -6,9 +6,7 @@ import imgLogoShortWhite from "@/assets/brand/img_logo_short_white.png"
 import {CrossfadeImage, useTheme} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router"
-import {Button} from "@/components/ui/button.tsx"
 import dayjs from "dayjs"
-import {Separator} from "@/components/ui/separator.tsx"
 
 export default function PublicFooter() {
   const { resolvedTheme } = useTheme()

@@ -1,5 +1,5 @@
 import {type ElementType, useEffect, useMemo, useRef, useState} from "react"
-import {useTheme} from "@ienlab/react-library"
+import {CrossfadeImage, useTheme} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 
 import imgLogoFull from "@/assets/brand/img_logo_full.png"
@@ -12,15 +12,12 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import {
-  RiAlignRight,
   RiArrowDownSLine,
   RiFileCodeFill, RiMenu2Fill,
-  RiMenuFill, RiMenuUnfold4Line,
+  RiMenuUnfold4Line,
   RiMoonFill,
   RiPaletteFill,
   RiSunFill,
@@ -424,7 +421,7 @@ export default function PublicHeader() {
             className="justify-self-center transition-all duration-300"
             aria-label="Home"
           >
-            <img
+            <CrossfadeImage
               src={resolvedTheme === "dark" ? imgLogoShortWhite : imgLogoShort}
               alt="Logo"
               className={cn(
@@ -432,7 +429,7 @@ export default function PublicHeader() {
               )}
             />
 
-            <img
+            <CrossfadeImage
               src={resolvedTheme === "dark" ? imgLogoFullWhite : imgLogoFull}
               alt="Logo"
               className={cn(
