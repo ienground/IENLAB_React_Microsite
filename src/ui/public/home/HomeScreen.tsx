@@ -1094,7 +1094,7 @@ function LayeredSlides({
 
       {/* Foreground fixed image */}
       <div className="pointer-events-none absolute inset-0 z-10">
-        <img
+        <CrossfadeImage
           src={foreground}
           alt=""
           className="h-full w-full object-contain md:object-cover"
