@@ -7,6 +7,7 @@ import {CrossfadeImage, useTheme} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {Link} from "react-router"
 import dayjs from "dayjs"
+import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 
 export default function PublicFooter() {
   const { resolvedTheme } = useTheme()
@@ -27,7 +28,7 @@ export default function PublicFooter() {
 
           <div className="flex flex-wrap items-center gap-x-2 text-[12px]! text-muted-foreground">
             <Link
-              to="/privacy"
+              to={PrivacyDestination.root}
               className="transition-colors hover:text-foreground"
             >{t("strings:privacy_policy")}</Link>
             <span className="text-muted-foreground/50">|</span>

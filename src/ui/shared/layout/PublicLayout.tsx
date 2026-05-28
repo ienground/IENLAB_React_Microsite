@@ -4,9 +4,9 @@ import PublicFooter from "@/components/custom/PublicFooter.tsx"
 
 export default function PublicLayout() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <PublicHeader />
-      <main className="pt-16 md:pt-24">
+      <main className="pt-16 md:pt-24 flex-grow">
         <Outlet />
       </main>
       <PublicFooter />

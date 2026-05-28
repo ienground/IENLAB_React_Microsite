@@ -1,6 +1,6 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
-import {CrossfadeImage, Localized, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
+import {CrossfadeImage, Localized, slideFadeProps, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
 import {Trans, useTranslation} from "react-i18next"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
@@ -20,7 +20,7 @@ import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import IcAppStore from "@/assets/icon/app_store.svg?react"
 import IcGooglePlay from "@/assets/icon/google_play.svg?react"
-import {useNavigate} from "react-router"
+import {Link, useNavigate} from "react-router"
 import {Field, FieldDescription, FieldTitle} from "@/components/ui/field"
 import ImgProfile from "@/assets/image/ienground_profile_2024.jpg"
 import ImgFront01 from "@/assets/image/front_01.png"
@@ -45,8 +45,8 @@ import ImgProfileSample11 from "@/assets/image/img_profile_sample_11.png"
 import ImgProfileSample12 from "@/assets/image/img_profile_sample_12.png"
 import ImgBgColor from "@/assets/brand/img_background_color.png"
 import ImgBgDark from "@/assets/brand/img_background_dark.png"
-import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx"
 import {Separator} from "@/components/ui/separator.tsx"
+import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 
 type CarouselItem = {
   id: string
@@ -219,226 +219,272 @@ function ScreenBody() {
   ]
 
   return (
-    <div className="w-full flex flex-col items-center overflow-x-clip">
+    <AnimatePresence mode="popLayout">
+      <motion.div
+        {...slideFadeProps}
+        transition={{ duration: 0.7 }}
+        className="w-full flex flex-col items-center overflow-x-clip"
+      >
+        <section className="w-full relative">
+          {/*<section className="max-w-350 w-full relative">*/}
+          <div
+            key="extra-layered-slide"
+            className={cn(
+              "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",
+              "md:relative md:h-auto md:aspect-video xl:aspect-21/9 md:block"
+              // "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"
+            )}
+          >
+            <div className={cn(
+              "w-full h-[60svh]",
+              "md:h-full"
+            )}>
+              <LayeredSlides
+                backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
+                foreground={ImgFrontForward}
+              />
+            </div>
 
-      <section className="max-w-350 w-full relative">
-        <Carousel
-          align="center"
-          gap={16}
-          className="w-full"
-          overflow
-          itemSize="fill"
-          items={[
-            <div
-              key="extra-layered-slide"
+            <h2
               className={cn(
-                "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",
-                "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"
+                "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",
+                "lg:text-5xl",
+                "xl:text-6xl",
+                "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",
               )}
             >
-              <div className={cn(
-                "w-full h-[60svh]",
-                "md:h-full"
-              )}>
-                <LayeredSlides
-                  backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
-                  foreground={ImgFrontForward}
-                />
+              <span>{t('strings:home.intro.hello')}</span>
+
+              {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
+              <div className="relative">
+                <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))} ㅤ</span>
+                <Typewriter
+                  as="div"
+                  className="absolute inset-0"
+                  cursorStyle={{background: "var(--chart-3)", width: "3px"}}
+                  onComplete={() => {
+                    delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)
+                  }}
+                >{roleTexts[index]}</Typewriter>
               </div>
 
+              {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
+            </h2>
+          </div>,
+          {/*<Carousel*/}
+          {/*  align="center"*/}
+          {/*  gap={16}*/}
+          {/*  className="w-full"*/}
+          {/*  overflow*/}
+          {/*  itemSize="fill"*/}
+          {/*  items={[*/}
+          {/*    <div*/}
+          {/*      key="extra-layered-slide"*/}
+          {/*      className={cn(*/}
+          {/*        "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",*/}
+          {/*        "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"*/}
+          {/*      )}*/}
+          {/*    >*/}
+          {/*      <div className={cn(*/}
+          {/*        "w-full h-[60svh]",*/}
+          {/*        "md:h-full"*/}
+          {/*      )}>*/}
+          {/*        <LayeredSlides*/}
+          {/*          backgrounds={[ImgFront01, ImgFront02, ImgFront03]}*/}
+          {/*          foreground={ImgFrontForward}*/}
+          {/*        />*/}
+          {/*      </div>*/}
 
-              <h2
-                className={cn(
-                  "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",
-                  "lg:text-5xl",
-                  "xl:text-6xl",
-                  "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",
-                )}
-              >
-                <span>{t('strings:home.intro.hello')}</span>
 
-                {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
-                <div className="relative">
-                  <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))} ㅤ</span>
-                  <Typewriter
-                    as="div"
-                    className="absolute inset-0"
-                    cursorStyle={{background: "var(--chart-3)", width: "3px"}}
-                    onComplete={() => {
-                      delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)
-                    }}
-                  >{roleTexts[index]}</Typewriter>
-                </div>
+          {/*      <h2*/}
+          {/*        className={cn(*/}
+          {/*          "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",*/}
+          {/*          "lg:text-5xl",*/}
+          {/*          "xl:text-6xl",*/}
+          {/*          "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",*/}
+          {/*        )}*/}
+          {/*      >*/}
+          {/*        <span>{t('strings:home.intro.hello')}</span>*/}
 
-                {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
-              </h2>
-            </div>,
+          {/*        {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}*/}
+          {/*        <div className="relative">*/}
+          {/*          <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))} ㅤ</span>*/}
+          {/*          <Typewriter*/}
+          {/*            as="div"*/}
+          {/*            className="absolute inset-0"*/}
+          {/*            cursorStyle={{background: "var(--chart-3)", width: "3px"}}*/}
+          {/*            onComplete={() => {*/}
+          {/*              delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)*/}
+          {/*            }}*/}
+          {/*          >{roleTexts[index]}</Typewriter>*/}
+          {/*        </div>*/}
 
-            ...carouselItems.map((item) => (
-              <div
-                key={item.id}
-                className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl"
-              >
-                {/* background blur */}
-                <img
-                  src={item.image}
-                  alt=""
-                  draggable={false}
-                  className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-md"
-                />
+          {/*        {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}*/}
+          {/*      </h2>*/}
+          {/*    </div>,*/}
 
-                {/* optional dark overlay */}
-                <div className="absolute inset-0 z-10 bg-black/15"/>
+          {/*    ...carouselItems.map((item) => (*/}
+          {/*      <div*/}
+          {/*        key={item.id}*/}
+          {/*        className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl"*/}
+          {/*      >*/}
+          {/*        /!* background blur *!/*/}
+          {/*        <img*/}
+          {/*          src={item.image}*/}
+          {/*          alt=""*/}
+          {/*          draggable={false}*/}
+          {/*          className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-md"*/}
+          {/*        />*/}
 
-                {/* original image */}
-                <CrossfadeImage
-                  draggable={false}
-                  src={item.image}
-                  alt={item.title}
-                  className="relative z-20 w-full h-full object-contain md:object-cover"
-                />
+          {/*        /!* optional dark overlay *!/*/}
+          {/*        <div className="absolute inset-0 z-10 bg-black/15"/>*/}
 
-                {item.url && item.url.length > 0 && (
-                  <Button
-                    className={cn(
-                      "absolute bottom-16 left-1/2 z-30 -translate-x-1/2",
-                      "bg-primary-foreground/50 text-primary",
-                      "hover:bg-primary-foreground"
-                    )}
-                    size="icon-lg"
-                    onClick={() => navigate(item.url ? item.url : "")}
-                  >
-                    <RiCursorHand/>
-                  </Button>
-                )}
+          {/*        /!* original image *!/*/}
+          {/*        <CrossfadeImage*/}
+          {/*          draggable={false}*/}
+          {/*          src={item.image}*/}
+          {/*          alt={item.title}*/}
+          {/*          className="relative z-20 w-full h-full object-contain md:object-cover"*/}
+          {/*        />*/}
+
+          {/*        {item.url && item.url.length > 0 && (*/}
+          {/*          <Button*/}
+          {/*            className={cn(*/}
+          {/*              "absolute bottom-16 left-1/2 z-30 -translate-x-1/2",*/}
+          {/*              "bg-primary-foreground/50 text-primary",*/}
+          {/*              "hover:bg-primary-foreground"*/}
+          {/*            )}*/}
+          {/*            size="icon-lg"*/}
+          {/*            onClick={() => navigate(item.url ? item.url : "")}*/}
+          {/*          >*/}
+          {/*            <RiCursorHand/>*/}
+          {/*          </Button>*/}
+          {/*        )}*/}
+          {/*      </div>*/}
+          {/*    )),*/}
+          {/*  ]}*/}
+          {/*>*/}
+          {/*  <AutoplayProgress*/}
+          {/*    duration={4}*/}
+          {/*    className="z-50 absolute bottom-4 left-1/2 -translate-x-1/2"*/}
+          {/*  />*/}
+          {/*</Carousel>*/}
+        </section>
+        <section className="w-full p-8">
+          <div className="w-full">
+            <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
+              <aside className="col-span-12 xl:col-span-2">
+                <SectionHeader index={1} label={t("strings:home.about.header")}/>
+              </aside>
+
+              <div className="col-span-12 xl:col-span-10" ref={splitTextContainerRef}>
+                <h1
+                  className="max-w-400 text-[48px] font-medium leading-[0.92] tracking-[-0.06em] sm:text-[64px] md:text-[88px] lg:text-[112px] xl:text-[92px] 2xl:text-[108px]"
+                >{t("strings:home.about.leading_message")}</h1>
               </div>
-            )),
-          ]}
-        >
-          <AutoplayProgress
-            duration={4}
-            className="z-50 absolute bottom-4 left-1/2 -translate-x-1/2"
-          />
-        </Carousel>
-      </section>
-      <section className="w-full p-8">
-        <div className="w-full">
-          <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
-            <aside className="col-span-12 xl:col-span-2">
-              <SectionHeader index={1} label={t("strings:home.about.header")}/>
-            </aside>
-
-            <div className="col-span-12 xl:col-span-10" ref={splitTextContainerRef}>
-              <h1
-                className="max-w-400 text-[48px] font-medium leading-[0.92] tracking-[-0.06em] sm:text-[64px] md:text-[88px] lg:text-[112px] xl:text-[92px] 2xl:text-[108px]"
-              >{t("strings:home.about.leading_message")}</h1>
             </div>
-          </div>
 
-          <div className="mt-8 grid grid-cols-12 gap-y-4 xl:mt-16 xl:gap-x-4">
-            <div className="col-span-12 xl:col-span-4">
-              <div className="w-full max-w-90">
-                <div className="aspect-3/4 overflow-hidden rounded-4xl">
-                  <CrossfadeImage
-                    src={ImgProfile}
-                    alt={t("strings:home.about.name")}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+            <div className="mt-8 grid grid-cols-12 gap-y-4 xl:mt-16 xl:gap-x-4">
+              <div className="col-span-12 xl:col-span-4">
+                <div className="w-full max-w-90">
+                  <div className="aspect-3/4 overflow-hidden rounded-4xl">
+                    <CrossfadeImage
+                      src={ImgProfile}
+                      alt={t("strings:home.about.name")}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
 
-                <div className="mt-4 space-y-0.5">
-                  <p
-                    className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
-                  <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[16px]">©2024</p>
-                </div>
-              </div>
-            </div>
-
-            <div className={cn(
-              "col-span-12 flex flex-col gap-y-4",
-              "xl:col-span-8"
-            )}>
-              <div className={cn(
-                "flex flex-col gap-y-4",
-                "xl:flex-row xl:gap-x-4"
-              )}>
-                <div className="col-span-12 xl:grow">
-                  <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p1" components={{ br: <br /> }} /></p>
+                  <div className="mt-4 space-y-0.5">
+                    <p
+                      className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
+                    <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[16px]">©2024</p>
                   </div>
                 </div>
-                <Separator className="xl:hidden" />
-                <Separator className="max-xl:hidden" orientation="vertical" />
-                <div className="col-span-12 xl:grow">
-                  <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p2" components={{ br: <br /> }} /></p>
+              </div>
+
+              <div className={cn(
+                "col-span-12 flex flex-col gap-y-4",
+                "xl:col-span-8"
+              )}>
+                <div className={cn(
+                  "flex flex-col gap-y-4",
+                  "xl:flex-row xl:gap-x-4"
+                )}>
+                  <div className="col-span-12 xl:grow">
+                    <div className="max-w-130">
+                      <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p1" components={{ br: <br /> }} /></p>
+                    </div>
+                  </div>
+                  <Separator className="xl:hidden" />
+                  <Separator className="max-xl:hidden" orientation="vertical" />
+                  <div className="col-span-12 xl:grow">
+                    <div className="max-w-130">
+                      <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p2" components={{ br: <br /> }} /></p>
+                    </div>
                   </div>
                 </div>
+                <Button
+                  className="w-fit mt-8 font-medium"
+                  onClick={() => navigate(AboutDestination.root)}
+                >
+                  {t("strings:home.about.see_more")}
+                  <RiArrowRightUpLine/>
+                </Button>
               </div>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    className="w-fit mt-8 font-medium"
-                  >
-                    {t("strings:home.about.see_more")}
-                    <RiArrowRightUpLine/>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{t("strings:available_soon")}</TooltipContent>
-              </Tooltip>
+            </div>
+
+          </div>
+        </section>
+        <section className="w-full p-8 flex flex-col gap-y-4">
+          <SectionHeader index={2} label={t("strings:home.project.header")}/>
+          <PortfolioSection infoStateList={portfolioInfoStateList}/>
+        </section>
+        <section className="w-full p-8">
+          <SectionHeader index={3} label={t("strings:home.skills.header")}/>
+          <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh]">
+            <div className="sticky top-0 flex h-screen items-center">
+              <motion.div style={{x: skillsX}} className="flex gap-8">
+                {skillItems.map((item, index) => (
+                  <SkillCardItem index={index} item={item}/>
+                ))}
+                <div className="relative flex min-w-60 w-[20vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden" />
+              </motion.div>
             </div>
           </div>
-
-        </div>
-      </section>
-      <section className="w-full p-8 flex flex-col gap-y-4">
-        <SectionHeader index={2} label={t("strings:home.project.header")}/>
-        <PortfolioSection infoStateList={portfolioInfoStateList}/>
-      </section>
-      <section className="w-full p-8">
-        <SectionHeader index={3} label={t("strings:home.skills.header")}/>
-        <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh]">
-          <div className="sticky top-0 flex h-screen items-center">
-            <motion.div style={{x: skillsX}} className="flex gap-8">
-              {skillItems.map((item, index) => (
-                <SkillCardItem index={index} item={item}/>
+        </section>
+        {/*<section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">*/}
+        {/*  <SectionHeader index={4} label={t("strings:home.services.header")}/>*/}
+        {/*  <div className="flex">*/}
+        {/*    <ul className="m-0 flex flex-col gap-5 p-0 list-none">*/}
+        {/*      {services.map((service, index) => (*/}
+        {/*        <ScrollHighlightItem*/}
+        {/*          key={service.name}*/}
+        {/*          service={service}*/}
+        {/*          index={index}*/}
+        {/*          isHighlighted={activeService === index}*/}
+        {/*          onHighlight={() => setActiveService(index)}*/}
+        {/*        />*/}
+        {/*      ))}*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+        {/*</section>*/}
+        <section className="w-full p-8 flex flex-col gap-y-4">
+          <SectionHeader index={4} label={t("strings:home.feedback.header")}/>
+          <div>
+            <Ticker
+              hoverFactor={0}
+              overflow
+              gap={16}
+              items={reviews.map((item, index) => (
+                <ReviewCardItem index={index} item={item}/>
               ))}
-              <div className="relative flex min-w-60 w-[20vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden" />
-            </motion.div>
+            />
           </div>
-        </div>
-      </section>
-      {/*<section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">*/}
-      {/*  <SectionHeader index={4} label={t("strings:home.services.header")}/>*/}
-      {/*  <div className="flex">*/}
-      {/*    <ul className="m-0 flex flex-col gap-5 p-0 list-none">*/}
-      {/*      {services.map((service, index) => (*/}
-      {/*        <ScrollHighlightItem*/}
-      {/*          key={service.name}*/}
-      {/*          service={service}*/}
-      {/*          index={index}*/}
-      {/*          isHighlighted={activeService === index}*/}
-      {/*          onHighlight={() => setActiveService(index)}*/}
-      {/*        />*/}
-      {/*      ))}*/}
-      {/*    </ul>*/}
-      {/*  </div>*/}
-      {/*</section>*/}
-      <section className="w-full p-8 flex flex-col gap-y-4">
-        <SectionHeader index={4} label={t("strings:home.feedback.header")}/>
-        <div>
-          <Ticker
-            hoverFactor={0}
-            overflow
-            gap={16}
-            items={reviews.map((item, index) => (
-              <ReviewCardItem index={index} item={item}/>
-            ))}
-          />
-        </div>
-      </section>
-      {/*<StyleSheet />*/}
-    </div>
+        </section>
+        {/*<StyleSheet />*/}
+      </motion.div>
+    </AnimatePresence>
   )
 }
 
@@ -1068,23 +1114,48 @@ function LayeredSlides({
                          interval = 300,
                        }: LayeredSlidesProps) {
   const [index, setIndex] = useState(0)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    if (backgrounds.length <= 1) return
+    let cancelled = false
+
+    Promise.all(
+      backgrounds.map(
+        (src) =>
+          new Promise<void>((resolve) => {
+            const img = new Image()
+            img.src = src
+            img.onload = () => resolve()
+            img.onerror = () => resolve()
+          })
+      )
+    ).then(() => {
+      if (!cancelled) setReady(true)
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [backgrounds])
+
+  useEffect(() => {
+    if (!ready || backgrounds.length <= 1) return
 
     const id = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % backgrounds.length)
     }, interval)
 
     return () => window.clearInterval(id)
-  }, [backgrounds.length, interval])
+  }, [ready, backgrounds.length, interval])
+
+  if (!ready) {
+    return <div className="relative h-full w-full bg-black" />
+  }
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {/* Background slideshow */}
       <div className="absolute inset-0 z-0">
         <img
-          key={backgrounds[index]}
           src={backgrounds[index]}
           alt=""
           className="absolute inset-0 h-full w-full object-contain md:object-cover"
@@ -1092,7 +1163,6 @@ function LayeredSlides({
         />
       </div>
 
-      {/* Foreground fixed image */}
       <div className="pointer-events-none absolute inset-0 z-10">
         <CrossfadeImage
           src={foreground}
