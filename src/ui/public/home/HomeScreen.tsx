@@ -48,6 +48,8 @@ import ImgBgDark from "@/assets/brand/img_background_dark.png"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
+import {Seo} from "@/components/custom/Seo.tsx"
 
 type CarouselItem = {
   id: string
@@ -88,8 +90,13 @@ const sampleProfiles = [
 ]
 
 export default function HomeScreen() {
+  const { t } = useTranslation()
   return (
     <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
+      <Seo
+        title={t("strings:ienlab")}
+        description={t("strings:og.description")}
+      />
       <ScreenBody/>
     </HomeViewModel.Provider>
   )
@@ -850,7 +857,7 @@ function PortfolioItemContent({
                   {item.googlePlayLink && (
                     <Button className="google-play-button" size="icon-lg" asChild>
                       <a
-                        href={`https://play.google.com/store/apps/details?id=${item.googlePlayLink}`}
+                        href={getGooglePlayLink(item.googlePlayLink)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -862,7 +869,7 @@ function PortfolioItemContent({
                   {item.appStoreLink && (
                     <Button className="app-store-button" size="icon-lg" asChild>
                       <a
-                        href={`https://apps.apple.com/us/app/id${item.appStoreLink}`}
+                        href={getAppStoreLink(item.appStoreLink)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

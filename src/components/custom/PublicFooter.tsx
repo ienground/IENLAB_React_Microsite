@@ -30,7 +30,7 @@ export default function PublicFooter() {
             <Link
               to={PrivacyDestination.root}
               className="transition-colors hover:text-foreground"
-            >{t("strings:privacy_policy")}</Link>
+            >{t("strings:privacy_policy.label")}</Link>
             <span className="text-muted-foreground/50">|</span>
             <button
               type="button"

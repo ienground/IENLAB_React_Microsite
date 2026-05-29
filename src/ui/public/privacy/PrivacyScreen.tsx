@@ -12,10 +12,20 @@ import {
   RiUser3Fill
 } from "@remixicon/react"
 import {cn} from "@/lib/utils.ts"
+import {Seo} from "@/components/custom/Seo.tsx"
+import OgPolicy from "@/assets/image/og-policy.png"
 
 export default function PrivacyScreen() {
+  const { t } = useTranslation()
   return (
-    <ScreenBody />
+    <>
+      <Seo
+        title={`${t("strings:privacy_policy.label")} | ${t("strings:ienlab")}`}
+        description={t("strings:privacy_policy.desc")}
+        image={OgPolicy}
+      />
+      <ScreenBody />
+    </>
   )
 }
 
@@ -27,8 +37,7 @@ function ScreenBody() {
   const connectWord = getCompleteWord(companyName, "은", "는")
   const connectWord2 = getCompleteWord(companyName, "이", "가")
 
-  const summary = `${companyName}(이하 "회사")${connectWord} 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다.
-​ 이에 「개인정보 보호법」 제30조에 따라 정보주체에게 개인정보의 처리와 보호에 관한 절차 및 기준을 안내하고, 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보 처리방침을 수립·공개합니다.`
+  const summary = `${companyName}(이하 "회사")${connectWord} 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다. 이에 「개인정보 보호법」 제30조에 따라 정보주체에게 개인정보의 처리와 보호에 관한 절차 및 기준을 안내하고, 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보 처리방침을 수립·공개합니다.`
   const content = useMemo(() => [
     {
       id: "service",
@@ -395,7 +404,6 @@ function ScreenBody() {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           setActiveId(entry.target.id)
-          console.log(entry.target.id)
         }
       })
     }, {
@@ -427,10 +435,10 @@ function ScreenBody() {
 
       <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
         <aside className="col-span-12 xl:col-span-2">
-          <SectionHeader index={0} label={t("strings:privacy_policy")} />
+          <SectionHeader index={0} label={t("strings:privacy_policy.label")} />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="large-text-title">{t("strings:privacy_policy")}</div>
+          <div className="large-text-title">{t("strings:privacy_policy.label")}</div>
           <p className="mt-32">{summary}</p>
         </div>
       </div>

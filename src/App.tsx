@@ -12,6 +12,7 @@ import {getRouter} from "./ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
 import { Toaster } from "./components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
+import {HelmetProvider} from "react-helmet-async"
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -23,9 +24,13 @@ export default function App() {
   }, [i18n, i18n.language])
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <TooltipProvider><ScreenBody /></TooltipProvider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+        <TooltipProvider>
+          <ScreenBody />
+        </TooltipProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   )
 }
 

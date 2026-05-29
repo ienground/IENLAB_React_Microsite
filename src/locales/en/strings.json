@@ -92,6 +92,7 @@
       }
     }
   },
+  "ienlab": "IENLAB",
   "lang": {
     "english": {
       "native_label": "English"
@@ -103,7 +104,13 @@
   "notice": {
     "label": "Notice"
   },
-  "privacy_policy": "Privacy Policy",
+  "og": {
+    "description": "Mobile Developer, Graphic Designer."
+  },
+  "privacy_policy": {
+    "desc": "Privacy Policy Information",
+    "label": "Privacy Policy"
+  },
   "settings": {
     "toggle_theme": "Toggle theme"
   },
