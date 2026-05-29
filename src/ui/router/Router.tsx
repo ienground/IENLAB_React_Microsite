@@ -57,17 +57,13 @@ export function getRouter(t: TFunction) {
             {
               path: ProjectDestination.detail,
               element: <ProjectDetailScreen />
+            },
+            {
+              path: "*",
+              element: <NotFoundScreen />
             }
           ]
         },
-        {
-          path: "",
-          element: <></>,
-        },
-        {
-          path: "*",
-          element: <NotFoundScreen />
-        }
       ]
     }
   ])

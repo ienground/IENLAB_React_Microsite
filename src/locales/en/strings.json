@@ -33,10 +33,17 @@
   },
   "delete": "Delete",
   "email": "Email",
+  "error": {
+    "not_found": {
+      "desc": "Looks like you're in the wrong place.",
+      "label": "404 Not Found"
+    }
+  },
   "error_occurred": "An error occured. {{error}}",
   "footer": {
     "copyright": "Copyright © 2014-{{year}} ienlab. All Rights Reserved."
   },
+  "go_back": "Go to previous page",
   "home": {
     "about": {
       "header": "About",

@@ -39,10 +39,17 @@
   "desc_korean": "한국어 설명",
   "edit": "수정하기",
   "email": "이메일",
+  "error": {
+    "not_found": {
+      "desc": "뭔가 잘못된 곳에 있는 것 같아요.",
+      "label": "페이지를 찾을 수 없음"
+    }
+  },
   "error_occurred": "오류가 발생했습니다: {{error}}",
   "footer": {
     "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
   },
+  "go_back": "이전 화면으로",
   "home": {
     "about": {
       "header": "About",
