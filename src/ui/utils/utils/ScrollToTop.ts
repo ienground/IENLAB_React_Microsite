@@ -9,13 +9,7 @@ export function useScrollToTop() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-
-    // 선택 사항: 부드러운 스크롤을 원하면 다음과 같이 사용합니다.
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    })
-
+    // 페이지 이동 시 즉시 맨 위로 스크롤
+    window.scrollTo(0, 0)
   }, [pathname]) // 💡 pathname을 의존성 배열에 넣어 URL 변경을 감지합니다.
 }
