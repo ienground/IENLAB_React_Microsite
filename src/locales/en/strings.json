@@ -1,184 +1,232 @@
 {
+  "about": {
+    "branding": {
+      "desc": "IENLAB Brand Identity",
+      "label": "Brand"
+    },
+    "ienground": {
+      "description": "What kind of person am I?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "Check out my projects."
+    }
+  },
+  "add_assets": "Add assets",
+  "add_new_item": "Add new item",
   "amount": "Amount",
-  "android": "Android",
-  "ask_outsource": "Ask for Outsourcing",
-  "ask_outsource_desc": "Estimate and timeline inquiry",
-  "at_ienground": "@IENGROUND",
-  "backend_etc": "Backend & etc.",
-  "budget": {
-    "100_300": "1M - 3M KRW",
-    "300_500": "3M - 5M KRW",
-    "etc": "To be discussed",
-    "less_100": "Less than 1M KRW",
-    "more_500": "More than 5M KRW"
+  "available_soon": "Available soon",
+  "back_to_home": "Back to home",
+  "cancel": "Cancel",
+  "check_session": "Checking session...",
+  "company_placeholder": "Search company..",
+  "confirm": "Confirm",
+  "console": {
+    "label": "Console"
   },
-  "budget_range": "Budget range",
-  "cannot_find_inquiry": "Please verify the estimate number or name.",
-  "category": "Category",
-  "cmp": "Compose Multiplatform",
-  "company_name": "Company name",
-  "company_optional_input": "Company (Optional)",
-  "contact_info": "Contact Info",
-  "contact_project_inq": "Contact us for project inquiries",
-  "content": "Content",
-  "copied_desc": "Paste it in the desired location.",
-  "copied_title": "Link Copied!",
-  "copyright": "Copyright © 2014-{{year}} ienlab. All rights reserved.",
-  "creative_computing": "Creative Computing",
-  "css": "CSS",
-  "currency": "{{value, currency}}",
+  "content_count": "{{cnt}} items",
+  "create_date": "Create date",
+  "current_state": "Current state",
   "datetime": {
-    "date_format": "MMM DD, YYYY",
-    "date_time_format": "MMM DD, YYYY h:mm:ss a",
-    "time_format": "h:mm:ss a"
+    "month_year": "MMM YYYY"
   },
-  "description": "Description",
-  "design": {
-    "title": "Design"
-  },
-  "developer": "Developer",
-  "education": "Education",
+  "delete": "Delete",
   "email": "Email",
-  "end_date": "End Date",
-  "english_no_trans": "English",
-  "estimate": {
-    "admit": "Admit",
-    "cancel": "Canceled",
-    "customer_name": "Name",
-    "date": "Estimate Date",
-    "detailed_cost": "Detailed Cost",
-    "dev_schedule": "Development Schedule",
-    "done": "Finished",
-    "draft": "Draft",
-    "overview": "Project Overview",
-    "pending": "Pending",
-    "range": "Project Range",
-    "reject": "Rejected",
-    "sent": "Sent",
-    "summary": "Summary",
-    "terms_of_the_contract": "Terms of the Contract",
-    "working": "Working"
+  "error": {
+    "not_found": {
+      "desc": "Looks like you're in the wrong place.",
+      "label": "404 Not Found"
+    }
   },
-  "estimate_cost_format": "{{amount}} {{unit}} * {{price, currency}} = {{sum, currency}}",
-  "etc": "Etc..",
-  "example_colon": "Ex: ",
-  "featured_projects": "Featured Projects",
-  "firebase": "Firebase",
-  "fixed": "Fixed",
-  "format_a_day": "A day",
-  "format_days": "{{day}} days",
-  "functions": "Functions",
-  "github": "GitHub",
-  "google_cloud": "Google Cloud",
-  "header": {
-    "check_news": "Check out the latest news.",
-    "service_app": "Services & Applications",
-    "what_do_i_do": "Introduce myself"
+  "error_occurred": "An error occured. {{error}}",
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. All Rights Reserved."
   },
-  "history_type_solo": "Personal",
-  "history_type_team": "Team",
-  "html": "HTML",
-  "input_name": "Input name",
-  "inquiry": {
-    "desc1": "You can find the quotation number in the document you received by email.",
-    "desc2": "The quote number is not case-sensitive.",
-    "desc3": "For inquiries, please contact us.",
-    "input": "Enter quote number",
-    "number": "Quote number"
+  "go_back": "Go to previous page",
+  "home": {
+    "about": {
+      "header": "About",
+      "leading_message": "Is there anything more valuable than being able to imagine something, create it, and bring it out?",
+      "name": "Hyunwoo Rhee / IENGROUND",
+      "p1": "Since I love creating things, enjoyed assembling Leo and playing Minecraft. Made games in PowerPoint and often took charge of decks for group projects.<br/><br/> Once dreamed of becoming a car designer, did graphic design, and now I’m weaving code.<br/><br/> Is there anything more valuable and enjoyable than being able to imagine something, create it, and bring it out?",
+      "p2": "Started Android development in 2017, now developing Android and iOS applications with Compose Multiplatform.<br/><br/> Proceed through many conversations with clients to create the software they want.<br/><br/> Nonstop busy working alone, but take pride in understanding clients’ projects better because of it. ",
+      "see_more": "See more"
+    },
+    "feedback": {
+      "header": "Review"
+    },
+    "intro": {
+      "designer": "a Graphic Designer",
+      "hello": "Hello👋 this is",
+      "ienground": "IENGROUND,",
+      "mobile_dev": "a Mobile Developer",
+      "web_dev": "a Web Developer"
+    },
+    "project": {
+      "header": "Project",
+      "role": {
+        "label": "Roles"
+      }
+    },
+    "services": {
+      "header": "Services"
+    },
+    "skills": {
+      "design": {
+        "desc": "Design application-related resources using Adobe Photoshop, Illustrator, and AI.",
+        "label": "Design"
+      },
+      "firebase": {
+        "desc": "Connect development, database, push notifications, and deployment to build actual service flow.",
+        "label": "Firebase"
+      },
+      "frontend": {
+        "desc": "Create interactive web UIs and components with React and TypeScript.",
+        "title": "Web Frontend"
+      },
+      "header": "What I work with",
+      "mobile": {
+        "desc": "Design and implement Android and iOS applications based on Compose Multiplatform.",
+        "label": "Mobile"
+      }
+    }
   },
-  "instagram": "Instagram",
-  "intro_mobile_creator": "A Mobile Creator\nwho develops\nand design.",
-  "ios": "iOS",
-  "jetpack_compose": "Jetpack Compose",
-  "key_experience": "Key Experience",
-  "korean_no_trans": "한국어",
-  "kotlin": "Kotlin",
-  "mobile": "Mobile",
-  "my_name": "Hyunwoo Rhee",
-  "name": "Name",
-  "next": "Next",
-  "no_data_to_display": "No data to display.",
-  "noticeboard": "Noticeboard",
-  "overview": "Overview",
-  "overview_desc": "Introduction and Notices",
-  "p5_js": "p5.js",
-  "period": "Period",
-  "phone_number": "Phone",
-  "platforms": "Platforms",
-  "prev": "Prev",
-  "price": "Price",
-  "primary_project": "Featured",
-  "privacy_policy": "Privacy Policy",
-  "processing": "Processing",
-  "project": {
-    "title": "Project",
-    "type_admin": "Admin Page Dev",
-    "type_ai": "AI Dev",
-    "type_android": "Android Dev",
-    "type_bt": "Bluetooth Dev",
-    "type_community": "Community Dev",
-    "type_inhouse": "In-house service Dev",
-    "type_ios": "iOS Dev",
-    "type_multiplatform": "Multiplatform Dev",
-    "type_service": "Service Dev",
-    "type_uiux": "UI/UX Implementation",
-    "type_utility": "Utility Dev"
+  "ienlab": "IENLAB",
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
   },
-  "project_desc": "Personal and Outsourced Projects",
-  "project_description": "Project description",
-  "project_description_desc": "Please describe your project in detail.",
-  "quote_inquiry": "Quote Inquiry",
-  "quote_inquiry_desc": "Check estimate status and progress",
-  "react": "React",
-  "remarks": "Remarks",
-  "return_to_inquiry": "Back to Quote Inquiry",
-  "return_to_list": "Back to List",
-  "root": {
-    "ask_project": "Project Inquiry",
-    "check_portfolio": "Check Portfolio",
-    "inquiry_submitted": "Inquiry Submitted",
-    "inquiry_submitted_desc": "Your project inquiry has been sent!",
-    "inquiry_submitted_fail": "Inquiry Submission Failed",
-    "inquiry_submitted_fail_desc": "Failed to submit the project inquiry. Please try again.",
-    "intro_desc1": "Turn your vague ideas into reality.",
-    "intro_desc2": "Entrust us with UI/UX, development, and app publishing!",
-    "page1_desc1": "9-Year Experienced Android Developer\nFrom simple utility to complex native features.",
-    "page1_desc2": "Commission possible regardless of UI/UX Designs\nApplication that we create together with you.",
-    "page1_desc3": "Your service will never fall behind thanks to the continuous integration of new technologies",
-    "page1_title": "Your Success, Powered by My Skills.",
-    "page2_title": "Technology Stack & Core Services",
-    "project_type": "Project type"
+  "notice": {
+    "label": "Notice"
   },
-  "root_hello": "Hello,",
-  "root_im_ienground": "This is IENGROUND,",
-  "root_mobile_creator": "a Mobile Creator",
-  "root_mobile_dev_design": "a Mobile Developer & Designer",
-  "school_type_class": "Coursework",
-  "school_type_comm": "Student Comm.",
-  "school_type_compet": "Competition",
-  "school_type_grad": "Degree",
-  "screenshots": "Screenshots",
-  "search_inquiry": "Inquiry",
-  "select_platforms": "Select platforms..",
-  "select_type": "Select type...",
-  "set_budget_range": "Set budget range",
-  "social_connect": "Connect",
-  "social_connect_desc": "Blog & SNS, GitHub",
-  "start_date": "Start Date",
-  "state": "Status",
-  "state_done": "Finished",
-  "state_working": "Working",
-  "submit_inquiry": "Submit Inquiry",
-  "swift": "Swift",
-  "table_of_contents": "Table of Contents",
-  "tech_stacks": "Tech Stacks",
-  "tistory": "TISTORY",
-  "total_estimated_duration": "Total Estimated Duration",
-  "total_format": "Total {{day}}",
-  "total_price": "Total Price",
-  "typescript": "Typescript",
-  "unit": "Unit",
-  "unit_price": "Unit Price",
-  "unnamed_inquiry": "Unnamed Inquiry",
-  "web": "Web"
+  "og": {
+    "description": "Mobile Developer, Graphic Designer."
+  },
+  "privacy_policy": {
+    "desc": "Privacy Policy Information",
+    "label": "Privacy Policy"
+  },
+  "settings": {
+    "toggle_theme": "Toggle theme"
+  },
+  "type": {
+    "company": {
+      "state": {
+        "pending": {
+          "label": "Pending"
+        }
+      }
+    },
+    "outsource": {
+      "info_request": {
+        "state": {
+          "draft": {
+            "label": "Draft"
+          },
+          "received": {
+            "label": "Received"
+          },
+          "rejected": {
+            "label": "Rejected"
+          },
+          "sent": {
+            "label": "Sent"
+          }
+        }
+      }
+    },
+    "portfolio": {
+      "category": {
+        "creative_computing": {
+          "desc": "Interactive media such as p5.js",
+          "title": "Creative Computing"
+        },
+        "game": {
+          "desc": "Games created with Unity, p5.js, etc.",
+          "title": "Game"
+        },
+        "physical_computing": {
+          "desc": "Physical creations such as Arduino projects",
+          "title": "Physical Computing"
+        },
+        "social": {
+          "desc": "Community-style social media",
+          "title": "Social"
+        },
+        "utility": {
+          "desc": "Usable tools and utilities",
+          "title": "Utility"
+        }
+      },
+      "is_primary": {
+        "false": {
+          "desc": "Not shown on the main page.",
+          "title": "Exclude from Featured Projects"
+        },
+        "true": {
+          "desc": "Shown on the main page and specially marked in the portfolio list.",
+          "title": "Featured Project"
+        }
+      },
+      "platform": {
+        "android": {
+          "desc": "Mobile applications for Android",
+          "title": "Android"
+        },
+        "arduino": {
+          "desc": "Arduino-based physical products",
+          "title": "Arduino"
+        },
+        "ios": {
+          "desc": "Mobile applications for iOS and iPadOS",
+          "title": "iOS · iPadOS"
+        },
+        "pc": {
+          "desc": "Applications for Windows and macOS",
+          "title": "Windows · macOS"
+        },
+        "web": {
+          "desc": "Web applications",
+          "title": "Web"
+        }
+      },
+      "state": {
+        "done": {
+          "desc": "This project is no longer being maintained.",
+          "title": "Ended"
+        },
+        "launched": {
+          "desc": "The project has been launched and is currently being maintained and updated.",
+          "title": "Launched"
+        },
+        "working": {
+          "desc": "This project is still in development.",
+          "title": "In Development"
+        }
+      },
+      "visibility": {
+        "archived": {
+          "desc": "Archived and hidden from the list.",
+          "title": "Archived"
+        },
+        "draft": {
+          "desc": "Not ready yet and hidden from the list. Still shown internally for future writing.",
+          "title": "Draft"
+        },
+        "published": {
+          "desc": "Published and visible in the list.",
+          "title": "Published"
+        }
+      }
+    }
+  },
+  "under_construction": {
+    "desc": "This page is currently under construction. Please wait a little longer.",
+    "label": "Under construction"
+  }
 }

@@ -1,184 +1,567 @@
 {
+  "about": {
+    "branding": {
+      "desc": "아이엔랩 브랜드 아이덴티티",
+      "label": "브랜딩"
+    },
+    "ienground": {
+      "description": "저는 무엇을 하는 사람일까요?",
+      "label": "@IENGROUND"
+    },
+    "label": "About",
+    "project": {
+      "desc": "참여한 프로젝트를 살펴보세요."
+    }
+  },
+  "add_assets": "애셋 추가",
+  "add_new_item": "새 항목 추가",
   "amount": "개수",
-  "android": "안드로이드",
-  "ask_outsource": "외주 문의",
-  "ask_outsource_desc": "외주 견적 및 기간 문의",
-  "at_ienground": "@IENGROUND",
-  "backend_etc": "백엔드 및 기타",
-  "budget": {
-    "100_300": "100-300만원",
-    "300_500": "300-500만원",
-    "etc": "논의 후 결정",
-    "less_100": "100만원 미만",
-    "more_500": "500만원 이상"
+  "available_soon": "지원 예정",
+  "back_to_home": "처음 화면으로",
+  "cancel": "취소",
+  "check_session": "세션 확인 중...",
+  "company_placeholder": "회사 검색..",
+  "confirm": "확인",
+  "console": {
+    "label": "콘솔"
   },
-  "budget_range": "예산 범위",
-  "cannot_find_inquiry": "견적 번호나 이름을 다시 확인해주세요.",
-  "category": "분류",
-  "cmp": "Compose Multiplatform",
-  "company_name": "회사명",
-  "company_optional_input": "소속 회사 (선택사항)",
-  "contact_info": "연락처 정보",
-  "contact_project_inq": "프로젝트 문의하기",
-  "content": "항목",
-  "copied_desc": "원하는 곳에 붙여넣으세요.",
-  "copied_title": "복사되었습니다!",
-  "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유.",
-  "creative_computing": "크리에이티브 컴퓨팅",
-  "css": "CSS",
-  "currency": "{{value, currency}}",
+  "content_count": "{{cnt}}개의 항목",
+  "create_date": "생성일",
+  "current_state": "현재 상태",
   "datetime": {
-    "date_format": "YYYY년 M월 D일",
-    "date_time_format": "YYYY년 M월 D일 a h:mm:ss",
-    "time_format": "a h:mm:ss"
+    "month_year": "YYYY.MM"
   },
-  "description": "설명",
-  "design": {
-    "title": "디자인"
-  },
-  "developer": "개발자",
-  "education": "학력",
+  "delete": "삭제",
+  "delete_dialog_desc": "이 항목을 삭제합니다.",
+  "delete_dialog_title": "삭제할까요?",
+  "delete_successfully": "삭제했습니다.",
+  "desc_english": "영어 설명",
+  "desc_korean": "한국어 설명",
+  "edit": "수정하기",
   "email": "이메일",
-  "end_date": "마감일",
-  "english_no_trans": "English",
-  "estimate": {
-    "admit": "승인됨",
-    "cancel": "취소됨",
-    "customer_name": "고객명",
-    "date": "견적일",
-    "detailed_cost": "상세 비용",
-    "dev_schedule": "개발 일정",
-    "done": "완료됨",
-    "draft": "초안",
-    "overview": "프로젝트 개요",
-    "pending": "대기 중",
-    "range": "프로젝트 범위",
-    "reject": "거절됨",
-    "sent": "전송됨",
-    "summary": "요약",
-    "terms_of_the_contract": "계약 조건",
-    "working": "작업 중"
+  "error": {
+    "not_found": {
+      "desc": "뭔가 잘못된 곳에 있는 것 같아요.",
+      "label": "페이지를 찾을 수 없음"
+    }
   },
-  "estimate_cost_format": "{{amount}}{{unit}} * {{price, currency}} = {{sum, currency}}",
-  "etc": "기타",
-  "example_colon": "예: ",
-  "featured_projects": "주요 프로젝트",
-  "firebase": "Firebase",
-  "fixed": "고정됨",
-  "format_a_day": "1일",
-  "format_days": "{{day}}일",
-  "functions": "기능",
-  "github": "GitHub",
-  "google_cloud": "Google Cloud",
-  "header": {
-    "check_news": "새로운 소식을 살펴보세요.",
-    "service_app": "서비스 및 어플리케이션",
-    "what_do_i_do": "저는 무엇을 하는 사람일까요?"
+  "error_occurred": "오류가 발생했습니다: {{error}}",
+  "footer": {
+    "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
   },
-  "history_type_solo": "개인 앱",
-  "history_type_team": "팀 활동",
-  "html": "HTML",
-  "input_name": "이름 입력",
-  "inquiry": {
-    "desc1": "견적 번호는 이메일로 전달받으신 문서에서 확인하실 수 있습니다.",
-    "desc2": "견적 번호는 대소문자를 구분하지 않습니다.",
-    "desc3": "문의사항이 있으시면 연락처로 문의해주세요.",
-    "input": "견적 번호 입력",
-    "number": "견적 번호"
+  "go_back": "이전 화면으로",
+  "home": {
+    "about": {
+      "header": "About",
+      "leading_message": "무언가를 상상하고,  만들고,  꺼내놓을 수 있다는 것보다 더 가치있는 일이 있을까요?",
+      "name": "이현우 IENGROUND",
+      "p1": "무언가를 만드는 게 좋아서 레고 조립과 Minecraft를 즐겨했습니다. PowerPoint로 게임을 만들고, 조별과제에서는 발표 자료를 맡는 경우가 많았습니다.<br/><br/>한때는 자동차 디자이너를 꿈꾸기도 했고, 그래픽 디자인을 하다 현재는 코드를 직조하는 작업을 하고 있습니다.<br/><br/>상상하고, 만들고, 그것을 꺼내놓을 수 있다는 것보다 더 가치있고 즐거운 일이 있을까요?",
+      "p2": "2017년부터 Android 개발을 시작해 현재는 Compose Multiplatform으로 Android 및 iOS 어플리케이션을 개발하고 있습니다. <br/><br/> 고객이 원하는 소프트웨어를 만들기 위해 많은 대화를 나누며 진행하고 있습니다. <br/><br/> 혼자 진행해 쉴 새 없이 바쁘지만, 그만큼 고객의 프로젝트를 더 잘 이해하고 있다고 자부합니다.",
+      "see_more": "자세히 보기"
+    },
+    "feedback": {
+      "header": "리뷰"
+    },
+    "intro": {
+      "designer": "그래픽 디자이너",
+      "hello": "안녕하세요,",
+      "ienground": "아이엔입니다👋",
+      "mobile_dev": "모바일 개발자",
+      "web_dev": "웹 개발자"
+    },
+    "label": "홈",
+    "project": {
+      "header": "프로젝트",
+      "role": {
+        "label": "역할"
+      }
+    },
+    "services": {
+      "header": "서비스"
+    },
+    "skills": {
+      "design": {
+        "desc": "Adobe Photoshop, Illustrator 및 AI를 활용하여 어플리케이션과 관련한 리소스를 디자인합니다.",
+        "label": "디자인"
+      },
+      "firebase": {
+        "desc": "개발, 데이터베이스와 푸시 알림, 배포까지 연결해 실제 서비스 흐름을 구축합니다.",
+        "label": "Firebase"
+      },
+      "frontend": {
+        "desc": "React와 Typescript로 인터랙티브한 웹 UI와 컴포넌트를 제작합니다.",
+        "title": "웹 프론트엔드"
+      },
+      "header": "다루는 것들",
+      "mobile": {
+        "desc": "Compose Multiplatform 기반으로 Android 및 iOS 어플리케이션을 설계하고 구현합니다.",
+        "label": "모바일"
+      }
+    }
   },
-  "instagram": "Instagram",
-  "intro_mobile_creator": "개발과\n디자인을 하는\n모바일 크리에이터.",
-  "ios": "iOS",
-  "jetpack_compose": "Jetpack Compose",
-  "key_experience": "주요 경력",
-  "korean_no_trans": "한국어",
-  "kotlin": "Kotlin",
-  "mobile": "모바일",
-  "my_name": "이현우",
-  "name": "이름",
-  "next": "다음",
-  "no_data_to_display": "표시할 데이터가 없습니다",
-  "noticeboard": "공지사항",
-  "overview": "개요",
-  "overview_desc": "소개 및 공지사항",
-  "p5_js": "p5.js",
-  "period": "기간",
-  "phone_number": "전화번호",
-  "platforms": "플랫폼",
-  "prev": "이전",
-  "price": "금액",
-  "primary_project": "주요 프로젝트",
-  "privacy_policy": "개인정보처리방침",
-  "processing": "Processing",
-  "project": {
-    "title": "프로젝트",
-    "type_admin": "관리자 페이지 개발",
-    "type_ai": "AI 앱 개발",
-    "type_android": "안드로이드 앱 개발",
-    "type_bt": "블루투스 통신 앱 개발",
-    "type_community": "커뮤니티 앱 개발",
-    "type_inhouse": "사내 서비스 앱 개발",
-    "type_ios": "iOS 앱 개발",
-    "type_multiplatform": "멀티플랫폼 앱 개발",
-    "type_service": "서비스 앱 개발",
-    "type_uiux": "UI/UX 구현",
-    "type_utility": "유틸리티 개발"
+  "ienlab": "아이엔랩 ienlab",
+  "input_developer": "개발자를 입력하세요..",
+  "input_email": "이메일을 입력하세요..",
+  "input_name": "이름을 입력하세요..",
+  "input_number": "숫자 입력..",
+  "input_phone": "전화번호를 입력하세요..",
+  "input_summary": "요약을 입력하세요..",
+  "input_title": "제목을 입력하세요..",
+  "lang": {
+    "english": {
+      "native_label": "English"
+    },
+    "korean": {
+      "native_label": "한국어"
+    }
   },
-  "project_desc": "작업한 개인 및 외주 프로젝트",
-  "project_description": "프로젝트 설명",
-  "project_description_desc": "프로젝트에 대해 자세히 설명해 주세요.",
-  "quote_inquiry": "견적 조회",
-  "quote_inquiry_desc": "견적서 확인 및 진행 상황 보기",
-  "react": "React",
-  "remarks": "특이사항",
-  "return_to_inquiry": "견적 조회로 돌아가기",
-  "return_to_list": "목록으로 돌아가기",
-  "root": {
-    "ask_project": "프로젝트 문의",
-    "check_portfolio": "포트폴리오 보기",
-    "inquiry_submitted": "문의 전송 완료",
-    "inquiry_submitted_desc": "프로젝트 문의가 전송되었습니다!",
-    "inquiry_submitted_fail": "문의 전송 실패",
-    "inquiry_submitted_fail_desc": "프로젝트 문의 전송이 실패했습니다. 다시 시도해 주세요.",
-    "intro_desc1": "두루뭉술한 아이디어를 현실로 만들어드립니다.",
-    "intro_desc2": "UI/UX부터 개발, 어플리케이션 퍼블리싱까지 맡겨주세요!",
-    "page1_desc1": "9년 차 안드로이드 개발자\n간단한 유틸리티부터 커뮤니티, 복잡한 네이티브 기능까지",
-    "page1_desc2": "UI·UX 디자인이 없어도 가능한 서비스 의뢰\n당신과 함께 만들어가는 어플리케이션",
-    "page1_desc3": "끊임 없는 새로운 기술 도입으로\n뒤쳐지지 않는 당신의 서비스",
-    "page1_title": "당신의 성공에 제 기술력을 더합니다.",
-    "page2_title": "기술 스택 및 서비스",
-    "project_type": "프로젝트 유형"
+  "list_end": "항목 끝",
+  "login": "로그인",
+  "notice": {
+    "label": "공지사항"
   },
-  "root_hello": "안녕하세요,",
-  "root_im_ienground": "아이엔입니다",
-  "root_mobile_creator": "모바일 크리에이터",
-  "root_mobile_dev_design": "모바일 개발자 & 디자이너",
-  "school_type_class": "학과수업",
-  "school_type_comm": "학생사회",
-  "school_type_compet": "대회",
-  "school_type_grad": "학위",
-  "screenshots": "스크린샷",
-  "search_inquiry": "조회하기",
-  "select_platforms": "플랫폼을 선택하세요",
-  "select_type": "유형을 선택하세요",
-  "set_budget_range": "예산 범위를 설정하세요",
-  "social_connect": "소셜 및 연결",
-  "social_connect_desc": "블로그 및 SNS, GitHub",
-  "start_date": "시작일",
-  "state": "상태",
-  "state_done": "완료",
-  "state_working": "개발 중",
-  "submit_inquiry": "문의 보내기",
-  "swift": "Swift",
-  "table_of_contents": "목차",
-  "tech_stacks": "기술 스택",
-  "tistory": "티스토리",
-  "total_estimated_duration": "전체 예상 기간",
-  "total_format": "총 {{day}}",
-  "total_price": "총 금액",
-  "typescript": "Typescript",
-  "unit": "단위",
-  "unit_price": "단가",
-  "unnamed_inquiry": "이름 없는 견적",
-  "web": "웹"
+  "og": {
+    "description": "모바일 개발자, 그래픽 디자이너."
+  },
+  "outsource_manage": {
+    "budget": {
+      "label": "예산 및 정산"
+    },
+    "company": {
+      "create": "회사 추가",
+      "detail": "회사 보기",
+      "edit": "회사 수정",
+      "label": "회사",
+      "name": {
+        "label": "회사명"
+      },
+      "state": {
+        "desc": "회사를 승인하면 사용자가 회사 칸에 작성할 수 있습니다.",
+        "label": "승인 여부"
+      }
+    },
+    "label": "외주 관리",
+    "outsource": {
+      "create": "외주 프로젝트 추가",
+      "edit": "외주 프로젝트 수정",
+      "info_request": {
+        "deadline": {
+          "desc": "정보 요청의 시한을 설정합니다.",
+          "label": "만료 기한"
+        },
+        "desc": {
+          "label": "정보 요청 설명 및 지시사항"
+        },
+        "image": {
+          "label": "요청할 미디어 항목"
+        },
+        "label": "정보 요청",
+        "max_count": {
+          "label": "최대 갯수"
+        },
+        "media": {
+          "type": {
+            "label": "허용된 타입"
+          }
+        },
+        "outsource": {
+          "label": "대상 외주"
+        },
+        "props": {
+          "label": "세부 사항"
+        },
+        "secured": {
+          "false": {
+            "label": "암호화 해제"
+          },
+          "label": "암호화",
+          "true": {
+            "label": "암호화 적용"
+          }
+        },
+        "state": {
+          "label": "상태",
+          "placeholder": "상태 선택.."
+        },
+        "text_items": {
+          "desc": "최대 {{cnt}}개까지 요청할 수 있습니다.",
+          "label": "요청할 텍스트 항목"
+        },
+        "title": {
+          "label": "정보 요청 제목"
+        },
+        "type": {
+          "desc": "고객에게 요청할 정보의 타입을 선택해 주세요.",
+          "label": "요청할 정보 타입"
+        }
+      },
+      "label": "외주 프로젝트",
+      "phase": {
+        "desc": "현재 진행 단계와 변동일을 작성해 주세요.",
+        "label": "진행 단계"
+      },
+      "revision_request": {
+        "label": "수정 요청"
+      },
+      "state": {
+        "desc": "현재 진행 상태와 변동일을 작성해 주세요.",
+        "label": "진행 상태"
+      },
+      "target_company": {
+        "desc": "외주를 의뢰한 회사를 선택해 주세요.",
+        "label": "대상 회사"
+      },
+      "view": "외주 프로젝트 보기",
+      "work_logs": {
+        "label": "작업 일지",
+        "latest": {
+          "label": "최신 작업 일지"
+        }
+      }
+    },
+    "user": {
+      "company": {
+        "label": "소속 회사"
+      },
+      "edit": "사용자 수정",
+      "email": {
+        "label": "이메일"
+      },
+      "label": "사용자",
+      "level": {
+        "desc": "사용자 권한 설정을 위한 등급을 선택해 주세요.",
+        "label": "등급"
+      },
+      "name": {
+        "label": "이름"
+      },
+      "personal": {
+        "label": "개인정보"
+      },
+      "phone": {
+        "label": "전화번호"
+      },
+      "state": {
+        "desc": "사용자의 상태를 선택해 주세요.",
+        "label": "상태"
+      }
+    }
+  },
+  "password": "비밀번호",
+  "privacy_policy": {
+    "desc": "개인정보처리방침 안내",
+    "label": "개인정보처리방침"
+  },
+  "quit_warning_title": "모든 변경 사항을 취소할까요?",
+  "quite_warning_desc": "변경된 모든 사항을 취소하고 이전 화면으로 돌아갑니다.",
+  "save": "저장",
+  "saved_successfully": "저장되었습니다.",
+  "search_placeholder": "검색하기..",
+  "select_date": "날짜 선택",
+  "settings": {
+    "dark_mode": "어두운 모드",
+    "light_mode": "밝은 모드",
+    "system_mode": "시스템과 동일",
+    "toggle_theme": "테마 변경하기"
+  },
+  "signin": {
+    "agreement": "계속 진행하시면 <termsLink>{{termsLabel}}</termsLink> 및 <privacyLink>{{privacyLabel}}</privacyLink>에 동의하는 것으로 간주됩니다.",
+    "ask_no_account": "계정이 없으신가요?",
+    "continue_with": "또는 다음으로 계속하기",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "loging_in": "로그인 중..",
+    "signin_with_apple": "Apple ID로 로그인",
+    "signin_with_google": "Google 계정으로 로그인",
+    "signin_with_kakao": "카카오계정으로 로그인",
+    "signin_with_naver": "네이버 아이디로 로그인",
+    "signup": "회원가입"
+  },
+  "signout": {
+    "dialog_desc": "계정에서 로그아웃하고 로그인 화면으로 돌아갑니다.",
+    "dialog_title": "로그아웃할까요?",
+    "label": "로그아웃"
+  },
+  "terms_of_service": "이용약관",
+  "time": "시각",
+  "title": "제목",
+  "title_english": "영어 제목",
+  "title_korean": "한국어 제목",
+  "type": {
+    "company": {
+      "state": {
+        "admitted": {
+          "desc": "승인된 상태로, 사용자는 회사를 본인의 정보에 기입할 수 있습니다.",
+          "label": "승인됨"
+        },
+        "pending": {
+          "desc": "승인되지 않았으며, 사용자는 회사를 본인의 정보에 기입할 수 없습니다.",
+          "label": "대기 중"
+        }
+      }
+    },
+    "outsource": {
+      "info_request": {
+        "media": {
+          "type": {
+            "doc": {
+              "desc": "PPTX, HWP, DOCX 등의 문서 파일이 해당합니다.",
+              "label": "문서"
+            },
+            "image": {
+              "desc": "스크린샷, 로고 등의 PNG, JPG, SVG 이미지 파일이 해당합니다.",
+              "label": "이미지"
+            }
+          }
+        },
+        "state": {
+          "draft": {
+            "label": "초안"
+          },
+          "received": {
+            "label": "받음"
+          },
+          "rejected": {
+            "label": "거부"
+          },
+          "sent": {
+            "label": "전송됨"
+          }
+        },
+        "type": {
+          "media": {
+            "desc": "이미지, 문서 등이 해당합니다.",
+            "label": "미디어"
+          },
+          "password": {
+            "desc": "공개가 민감한 API 키나 비밀번호 등이 해당합니다. 암호화가 강제됩니다.",
+            "label": "비밀번호"
+          },
+          "text": {
+            "desc": "이메일이나 아이디, 비밀번호나 혹은 패키지명 등이 해당합니다.",
+            "label": "텍스트"
+          }
+        }
+      },
+      "phase": {
+        "completed": {
+          "label": "개발 완료"
+        },
+        "contract_pending": {
+          "label": "계약 대기 중"
+        },
+        "in_progress": {
+          "label": "개발 중"
+        },
+        "quoting": {
+          "label": "견적서 작성 중"
+        },
+        "waiting_client": {
+          "label": "클라이언트 대기 중"
+        }
+      },
+      "state": {
+        "active": {
+          "desc": "현재 진행되거나 완료된 외주입니다. 아래에서 현재 진행 단계도 작성해 주세요.",
+          "label": "활성화됨"
+        },
+        "cancelled": {
+          "desc": "완전히 취소된 외주입니다. 취소된 일자를 작성해 주세요.",
+          "label": "취소됨"
+        },
+        "paused": {
+          "desc": "일시 정지된 외주입니다. 일시 정지된 일자를 작성해 주세요.",
+          "label": "일시 정지"
+        }
+      }
+    },
+    "portfolio": {
+      "category": {
+        "creative_computing": {
+          "desc": "p5.js 등 인터랙티브 미디어",
+          "title": "크리에이티브 컴퓨팅"
+        },
+        "game": {
+          "desc": "Unity, p5.js 등으로 제작한 게임",
+          "title": "게임"
+        },
+        "physical_computing": {
+          "desc": "Arduino 등의 물리적 창작물",
+          "title": "피지컬 컴퓨팅"
+        },
+        "social": {
+          "desc": "커뮤니티 형태의 소셜 미디어",
+          "title": "소셜"
+        },
+        "utility": {
+          "desc": "사용할 수 있는 도구 형태",
+          "title": "유틸리티"
+        }
+      },
+      "is_primary": {
+        "false": {
+          "desc": "메인 페이지에 노출하지 않습니다.",
+          "title": "주요 프로젝트 제외"
+        },
+        "true": {
+          "desc": "메인 페이지에 노출하고, 포트폴리오 목록에서 별도 표시합니다.",
+          "title": "주요 프로젝트 선정"
+        }
+      },
+      "platform": {
+        "android": {
+          "desc": "Android용 모바일 어플리케이션",
+          "title": "Android"
+        },
+        "arduino": {
+          "desc": "Arduino 피지컬 제품",
+          "title": "Arduino"
+        },
+        "ios": {
+          "desc": "iOS 및 iPadOS용 모바일 어플리케이션",
+          "title": "iOS · iPadOS"
+        },
+        "pc": {
+          "desc": "Windows 및 macOS용 어플리케이션",
+          "title": "Windows · macOS"
+        },
+        "web": {
+          "desc": "웹용 어플리케이션",
+          "title": "웹"
+        }
+      },
+      "state": {
+        "done": {
+          "desc": "더 이상 유지보수가 이뤄지지 않는 프로젝트입니다.",
+          "title": "종료됨"
+        },
+        "launched": {
+          "desc": "출시가 완료되었고, 유지 보수 및 업데이트 중에 있습니다.",
+          "title": "출시 완료"
+        },
+        "working": {
+          "desc": "아직 개발 중인 프로젝트입니다.",
+          "title": "개발 중"
+        }
+      },
+      "visibility": {
+        "archived": {
+          "desc": "보관되어 목록에 뜨지 않습니다.",
+          "title": "보관됨"
+        },
+        "draft": {
+          "desc": "아직 준비되지 않았으며, 목록에 뜨지 않습니다. 추후 작성을 위해 목록에 우선 표시됩니다.",
+          "title": "초안"
+        },
+        "published": {
+          "desc": "발행되어 목록에 표시됩니다.",
+          "title": "발행됨"
+        }
+      }
+    },
+    "user": {
+      "level": {
+        "admin": {
+          "desc": "관리자 콘솔을 사용할 수 있습니다.",
+          "label": "관리자"
+        },
+        "member": {
+          "desc": "일반 고객 사용자입니다. 웹사이트의 콘솔을 상태에 따라 사용할 수 있습니다.",
+          "label": "회원"
+        }
+      },
+      "state": {
+        "active": {
+          "desc": "관리자의 승인을 받아 웹사이트 콘솔에 접근 가능한 사용자입니다.",
+          "label": "활성화됨"
+        },
+        "ended": {
+          "desc": "계약이 종료되어 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+          "label": "종료됨"
+        },
+        "pending": {
+          "desc": "가입하였으나 관리자의 승인을 받지 않은 사용자입니다.",
+          "label": "대기 중"
+        },
+        "suspended": {
+          "desc": "특정 사유로 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+          "label": "중지됨"
+        }
+      }
+    }
+  },
+  "under_construction": {
+    "desc": "이 페이지는 현재 열심히 공사하는 중입니다. 조금만 더 기다려 주세요.",
+    "label": "공사 중"
+  },
+  "update_date": "수정일",
+  "view_all": "전체 보기",
+  "website_manage": {
+    "label": "웹사이트 관리",
+    "notice": {
+      "board": "게시판",
+      "category": "카테고리",
+      "label": "공지사항"
+    },
+    "portfolio": {
+      "category": {
+        "desc": "포트폴리오의 카테고리를 설정해주세요. 목록에서 필터할 수 있습니다.",
+        "label": "카테고리"
+      },
+      "create": "포트폴리오 추가",
+      "date": {
+        "desc": "포트폴리오의 시작 및 종료일을 설정해주세요. 종료일은 없는 경우 생략할 수 있습니다.",
+        "end_at": "종료일",
+        "label": "시작, 종료일",
+        "start_at": "시작일"
+      },
+      "developer": "개발자",
+      "edit": "포트폴리오 수정",
+      "graphic": "그래픽 요소",
+      "id": {
+        "desc": "식별자는 고유하며, 변경할 수 없습니다.",
+        "title": "식별자"
+      },
+      "label": "포트폴리오",
+      "link": {
+        "app_store": "App Store",
+        "app_store_placeholder": "1234567 형태로 입력하세요..",
+        "github": "GitHub",
+        "github_placeholder": "@username/repository 형태로 입력하세요..",
+        "google_play": "Google Play",
+        "google_play_placeholder": "com.example.app 형태로 입력하세요..",
+        "label": "외부 링크",
+        "web": "웹 링크",
+        "web_placeholder": "https://www.example.com 형태로 입력하세요.."
+      },
+      "logo": "로고",
+      "logo_desc": "1:1 비율로, 512x512 사이즈를 권장합니다.",
+      "logo_upload": "로고 이미지를 업로드하세요.",
+      "platform": {
+        "desc": "포트폴리오가 동작하는 플랫폼을 선택해주세요.",
+        "label": "플랫폼"
+      },
+      "primary": {
+        "desc": "메인 페이지에 노출할 수 있습니다.",
+        "label": "주요 프로젝트"
+      },
+      "screenshots_+ko": "한국어 스크린샷",
+      "screenshots_description": "1/2 비율로, 1080x2160 사이즈를 권장합니다.",
+      "screenshots_en": "영어 스크린샷",
+      "screenshots_ko": "한국어 스크린샷",
+      "screenshots_upload": "스크린샷을 업로드하세요.",
+      "state": {
+        "desc": "프로젝트 진행 상태를 표시합니다.",
+        "label": "프로젝트 상태"
+      },
+      "summary": "요약",
+      "thumbnail_desc": "16/9 비율로, 2560x1440 사이즈를 권장합니다.",
+      "thumbnail_en": "영어 썸네일",
+      "thumbnail_ko": "한국어 썸네일",
+      "thumbnail_upload": "썸네일 이미지를 업로드하세요.",
+      "visibility": {
+        "desc": "포트폴리오의 보기 상태를 설정합니다.",
+        "label": "보기 상태"
+      }
+    }
+  }
 }

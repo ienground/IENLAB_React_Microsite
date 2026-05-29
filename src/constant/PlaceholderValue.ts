@@ -7,4 +7,4 @@ export const PlaceholderValue = {
   divDateTime: "2025년 12월 31일 오후 11:59:59",
   divDate: "2025년 12월 31일",
   chipState: "Loading",
-};
+}

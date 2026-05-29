@@ -1,91 +1,66 @@
 import './App.css'
-import {type NavigateOptions, useHref, useNavigate} from "react-router";
-import RootRouter from "./ui/router/RootRouter.tsx";
-import {HeroUIProvider} from "@heroui/system";
-import styled, { ThemeProvider } from 'styled-components';
-import {screen} from "./theme";
-import { ToastProvider } from "@heroui/react";
 
-import 'dayjs/locale/ko'; // 한국어 가져오기
-import 'dayjs/locale/en'; // 영어 가져오기
-import dayjs from "dayjs";
-import isLeapYear from 'dayjs/plugin/isLeapYear'; //윤년을 판단하는 플러그인
-import relativeTime from 'dayjs/plugin/relativeTime';
-import {useScrollToTop} from "./ui/utils/utils/ScrollToTop.ts";
-import {useTranslation} from "react-i18next";
-import {useEffect} from "react";
+import 'dayjs/locale/ko' // 한국어 가져오기
+import 'dayjs/locale/en' // 영어 가져오기
+import dayjs from "dayjs"
+import isLeapYear from 'dayjs/plugin/isLeapYear' //윤년을 판단하는 플러그인
+import relativeTime from 'dayjs/plugin/relativeTime'
+import {useTranslation} from "react-i18next"
+import {type CSSProperties, useEffect, useMemo} from "react"
+import {RouterProvider} from "react-router"
+import {getRouter} from "./ui/router/Router.tsx"
+import {ThemeProvider, useTheme} from "@ienlab/react-library"
+import { Toaster } from "./components/ui/sonner.tsx"
+import {TooltipProvider} from "@/components/ui/tooltip.tsx"
+import {HelmetProvider} from "react-helmet-async"
+import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
+import {Cursor, useCursorState} from "motion-plus/react"
 
-declare module "@react-types/shared" {
-  interface RouterConfig {
-    routerOptions: NavigateOptions;
-  }
-}
+export default function App() {
+  const { i18n } = useTranslation()
 
-function App() {
-  const navigate = useNavigate();
-  const { i18n } = useTranslation();
-
-  dayjs.extend(isLeapYear, relativeTime); // 플러그인 등록
-
-  useScrollToTop();
+  dayjs.extend(isLeapYear, relativeTime) // 플러그인 등록
 
   useEffect(() => {
-    dayjs.locale(i18n.language);
-  }, [i18n, i18n.language]);
+    dayjs.locale(i18n.language)
+  }, [i18n, i18n.language])
 
   return (
-    <Wrapper>
-      <HeroUIProvider navigate={navigate} useHref={useHref}>
-        <ThemeProvider theme={screen}>
-          <RootRouter />
-          <ToastProvider
-            regionProps={{
-              className: "z-999"
-            }}
-          />
-        </ThemeProvider>
-      </HeroUIProvider>
-    </Wrapper>
-  );
+    <HelmetProvider>
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+        <LoadingLineReveal>
+          <TooltipProvider>
+            <ScreenBody />
+          </TooltipProvider>
+        </LoadingLineReveal>
+      </ThemeProvider>
+    </HelmetProvider>
+  )
 }
 
-const Wrapper = styled.div`
-  // .after\\:text-danger {
-  //   &::after {
-  //     color: ${'hsl(var(--heroui-danger-500))'};
-  //   }
-  // }
-  //
-  // .\\text-danger {
-  //   color: ${'hsl(var(--heroui-danger-500) / 1)'};
-  // }
-  
-  .google-play-button {
-    background: conic-gradient(
-            from 270deg at center,
-            #4285F4 0deg,
-            #4285F4 30deg,
-            #34A853 60deg,
-            #34A853 120deg,
-            #FBBC04 150deg,
-            #FBBC04 210deg,
-            #EA4335 240deg,
-            #EA4335 300deg,
-            #4285F4 330deg
-    );
-    color: white;
-  }
-  
-  .app-store-button {
-    background: linear-gradient(#38b2ff, #0d62d4);
-    color: white;
-  }
-  
-  .github-button {
-    background-color: ${`hsl(var(--heroui-foreground))`};
-    color: ${`hsl(var(--heroui-background))`};
-  }
-  
-`;
+function ScreenBody() {
+  const { t } = useTranslation()
+  const router = useMemo(() => getRouter(t), [t])
+  const { theme } = useTheme()
+  const { zone } = useCursorState()
 
-export default App;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster theme={theme} position="bottom-center" richColors/>
+      <Cursor
+        magnetic
+        className="cursor"
+        variants={{
+          default: {backgroundColor: zone === "overlay" ? "var(--cursor-default-overlay)" : "var(--cursor-default)",},
+          pointer: {backgroundColor: zone === "overlay" ? "var(--cursor-pointer-overlay)" : "var(--cursor-pointer)",},
+          text: { backgroundColor: "var(--primary)" }
+        }}
+        style={{
+          borderRadius: 10,
+          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
+        }}
+      />
+    </>
+  )
+}
