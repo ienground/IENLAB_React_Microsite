@@ -1,9 +1,17 @@
 import {cn} from "@/lib/utils.ts"
 import * as React from "react"
 
-export function SectionHeader({index, label, selected = true, className = "", onClick = () => {}}: { index: number, label: string, selected?: boolean, className?: string, onClick?: () => void }) {
+export function SectionHeader({index, label, selected = true, className = "", onClick}: { index: number, label: string, selected?: boolean, className?: string, onClick?: () => void }) {
   const indexFormatted = String(index).padStart(2, '0')
   const labelFormatted = label.toUpperCase()
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (onClick && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault()
+      onClick()
+    }
+  }
+
   return (
     <p
       className={cn(
@@ -12,6 +20,9 @@ export function SectionHeader({index, label, selected = true, className = "", on
         className
       )}
       onClick={onClick}
+      onKeyDown={onClick ? handleKeyDown : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      role={onClick ? "button" : undefined}
     >({indexFormatted}) {labelFormatted}</p>
   )
 }

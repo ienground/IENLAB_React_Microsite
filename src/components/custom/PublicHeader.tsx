@@ -284,6 +284,7 @@ export default function PublicHeader() {
                     {item.items ? (
                       <button
                         type="button"
+                        onFocus={() => handleHover(item.title)}
                         className={cn(
                           "relative inline-flex items-center rounded-full bg-transparent text-foreground/75 transition-all duration-300",
                           "hover:bg-white/10 hover:text-foreground dark:hover:bg-white/10",
