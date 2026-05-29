@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import isLeapYear from 'dayjs/plugin/isLeapYear' //윤년을 판단하는 플러그인
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {useTranslation} from "react-i18next"
-import {useEffect, useMemo} from "react"
+import {type CSSProperties, useEffect, useMemo} from "react"
 import {RouterProvider} from "react-router"
 import {getRouter} from "./ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
@@ -58,7 +58,7 @@ function ScreenBody() {
         }}
         style={{
           borderRadius: 10,
-          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as React.CSSProperties["mixBlendMode"],
+          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
         }}
       />
     </>
