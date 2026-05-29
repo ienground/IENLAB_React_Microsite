@@ -14,10 +14,8 @@ export default function LoadingLineReveal({
 
   const leftEdge = useMotionValue("calc(50% - 2px)")
   const rightEdge = useMotionValue("calc(50% + 2px)")
-  const { topEdge, bottomEdge } = useTransform(progress, [0, 1], {
-    topEdge: ["50%", "0%"],
-    bottomEdge: ["50%", "100%"],
-  })
+  const topEdge = useTransform(progress, [0, 1], ["50%", "0%"])
+  const bottomEdge = useTransform(progress, [0, 1], ["50%", "100%"])
 
   const clipPath = useMotionTemplate`polygon(
     0% 0%, ${leftEdge} 0%, ${leftEdge} ${topEdge}, ${leftEdge} ${bottomEdge}, ${rightEdge} ${bottomEdge}, ${rightEdge} ${topEdge},
