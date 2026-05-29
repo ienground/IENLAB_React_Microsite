@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
-    "@ienlab/react-library": "^0.17.0-beta.22",
+    "@ienlab/react-library": "^0.17.0-beta.23",
     "@remixicon/react": "^4.9.0",
     "@tailwindcss/vite": "^4.3.0",
     "@vitejs/plugin-react": "^6.0.2",
