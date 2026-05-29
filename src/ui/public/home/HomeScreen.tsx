@@ -47,6 +47,7 @@ import ImgBgColor from "@/assets/brand/img_background_color.png"
 import ImgBgDark from "@/assets/brand/img_background_dark.png"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
+import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 
 type CarouselItem = {
   id: string
@@ -379,7 +380,7 @@ function ScreenBody() {
 
               <div className="col-span-12 xl:col-span-10" ref={splitTextContainerRef}>
                 <h1
-                  className="max-w-400 text-[48px] font-medium leading-[0.92] tracking-[-0.06em] sm:text-[64px] md:text-[88px] lg:text-[112px] xl:text-[92px] 2xl:text-[108px]"
+                  className="max-w-400 large-text-title"
                 >{t("strings:home.about.leading_message")}</h1>
               </div>
             </div>
@@ -485,14 +486,6 @@ function ScreenBody() {
         {/*<StyleSheet />*/}
       </motion.div>
     </AnimatePresence>
-  )
-}
-
-function SectionHeader({index, label}: { index: number, label: string }) {
-  const indexFormatted = String(index).padStart(2, '0')
-  const labelFormatted = label.toUpperCase()
-  return (
-    <p className="text-xl font-medium tracking-tight md:text-2xl">({indexFormatted}) {labelFormatted}</p>
   )
 }
 
