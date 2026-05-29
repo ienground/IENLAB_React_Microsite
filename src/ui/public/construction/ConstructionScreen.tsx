@@ -20,7 +20,7 @@ export default function ConstructionScreen() {
           <SectionHeader index={0} label="" />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="flex flex-col md:flex-row w-full justify-between">
+          <div className="flex flex-col lg:flex-row w-full justify-between">
             <div className="large-text-title">{t("strings:under_construction.label")}</div>
             <CrossfadeImage
               alt="Under Construction Character"
