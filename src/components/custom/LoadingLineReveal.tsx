@@ -1,6 +1,6 @@
 import {type ReactElement, type ReactNode, useEffect, useState} from "react"
 import {useMotionValue, useSpring, useTransform, useMotionValueEvent, useMotionTemplate, motion} from "motion/react"
-import {animate, progress, type Transition} from "motion"
+import {animate, type Transition} from "motion"
 
 type LoadingLineRevealProps = {
   children: ReactNode
