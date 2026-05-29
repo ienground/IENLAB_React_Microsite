@@ -210,5 +210,9 @@
         }
       }
     }
+  },
+  "under_construction": {
+    "desc": "This page is currently under construction. Please wait a little longer.",
+    "label": "Under construction"
   }
 }
