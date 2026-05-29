@@ -23,7 +23,3 @@ export const fbAuth = getAuth(app)
 export const fbFirestore = getFirestore(app)
 export const fbStorage = getStorage(app)
 export const fbFunctions = getFunctions(app)
-
-if (location.hostname === "localhost") {
-  connectFunctionsEmulator(fbFunctions, "127.0.0.1", 5001)
-}
