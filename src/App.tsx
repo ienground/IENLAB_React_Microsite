@@ -14,6 +14,7 @@ import { Toaster } from "./components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
 import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
+import {Cursor, useCursorState} from "motion-plus/react"
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -41,11 +42,25 @@ function ScreenBody() {
   const { t } = useTranslation()
   const router = useMemo(() => getRouter(t), [t])
   const { theme } = useTheme()
+  const { zone } = useCursorState()
 
   return (
     <>
       <RouterProvider router={router} />
       <Toaster theme={theme} position="bottom-center" richColors/>
+      <Cursor
+        magnetic
+        className="cursor"
+        variants={{
+          default: {backgroundColor: zone === "overlay" ? "var(--cursor-default-overlay)" : "var(--cursor-default)",},
+          pointer: {backgroundColor: zone === "overlay" ? "var(--cursor-pointer-overlay)" : "var(--cursor-pointer)",},
+          text: { backgroundColor: "var(--primary)" }
+        }}
+        style={{
+          borderRadius: 10,
+          mixBlendMode: zone === "overlay" ? "difference" : "var(--cursor-blend)" as never,
+        }}
+      />
     </>
   )
 }
