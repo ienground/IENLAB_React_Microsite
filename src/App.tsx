@@ -58,7 +58,7 @@ function ScreenBody() {
         }}
         style={{
           borderRadius: 10,
-          mixBlendMode: zone === "overlay" ? "difference" : "var(--cursor-blend)" as never,
+          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as React.CSSProperties["mixBlendMode"],
         }}
       />
     </>
