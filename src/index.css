@@ -35,7 +35,7 @@ body {
     --font-heading: var(--font-sans);
     --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
     --font-mona: "Mona Sans", sans-serif;
-    --font-jb-mono: "Jetbrains Mono", monospace;
+    --font-jb-mono: "JetBrains Mono", monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
