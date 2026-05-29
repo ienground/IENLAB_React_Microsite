@@ -13,6 +13,7 @@ import {ThemeProvider, useTheme} from "@ienlab/react-library"
 import { Toaster } from "./components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
+import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
 
 export default function App() {
   const { i18n } = useTranslation()
@@ -26,9 +27,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-        <TooltipProvider>
-          <ScreenBody />
-        </TooltipProvider>
+        <LoadingLineReveal>
+          <TooltipProvider>
+            <ScreenBody />
+          </TooltipProvider>
+        </LoadingLineReveal>
       </ThemeProvider>
     </HelmetProvider>
   )

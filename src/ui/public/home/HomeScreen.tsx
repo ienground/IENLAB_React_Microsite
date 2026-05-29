@@ -1005,13 +1005,13 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
         animate={{opacity: 1}}
         exit={{opacity: 0}}
         transition={{duration: 0.2, delay: 0.1}}
-        className="fixed inset-0 z-1000000 bg-black/80"
+        className="fixed inset-0 z-10000 bg-black/80"
         onClick={close}
       />
 
       <div
         className={cn(
-          "pointer-events-none fixed inset-x-0 top-0 z-1000001 flex h-full w-full flex-col justify-center overflow-hidden py-10",
+          "pointer-events-none fixed inset-x-0 top-0 z-10001 flex h-full w-full flex-col justify-center overflow-hidden py-10",
           "max-[990px]:py-0",
         )}
       >
