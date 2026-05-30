@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme" themeExpiryHours={3}>
         <LoadingLineReveal>
           <TooltipProvider>
             <ScreenBody />
