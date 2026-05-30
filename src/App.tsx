@@ -18,6 +18,7 @@ import {Cursor, useCursorState} from "motion-plus/react"
 
 export default function App() {
   const { i18n } = useTranslation()
+  const THEME_EXPIRY_HOURS = 3
 
   dayjs.extend(isLeapYear, relativeTime) // 플러그인 등록
 
