@@ -6,11 +6,10 @@ import dayjs from "dayjs"
 import isLeapYear from 'dayjs/plugin/isLeapYear' //윤년을 판단하는 플러그인
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {useTranslation} from "react-i18next"
-import {type CSSProperties, useEffect, useMemo} from "react"
-import {RouterProvider} from "react-router"
-import {getRouter} from "./ui/router/Router.tsx"
+import {type CSSProperties, useEffect} from "react"
+import Router from "@/ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
-import { Toaster } from "./components/ui/sonner.tsx"
+import { Toaster } from "@/components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
 import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
@@ -41,13 +40,12 @@ export default function App() {
 
 function ScreenBody() {
   const { t } = useTranslation()
-  const router = useMemo(() => getRouter(t), [t])
   const { theme } = useTheme()
   const { zone } = useCursorState()
 
   return (
     <>
-      <RouterProvider router={router} />
+      <Router />
       <Toaster theme={theme} position="bottom-center" richColors/>
       <Cursor
         magnetic
