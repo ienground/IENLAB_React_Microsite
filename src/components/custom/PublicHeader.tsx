@@ -30,7 +30,7 @@ import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {BrandDestination} from "@/ui/public/brand/BrandDestination.ts"
 import {ProjectDestination} from "@/ui/public/project/ProjectDestination.ts"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
-import {MagneticBaseButton, MagneticLink, MagneticButton, MotionButton} from "@/components/motion/components.tsx"
+import {MagneticBaseButton, MagneticLink, MagneticButton} from "@/components/motion/components.tsx"
 
 type NavLeaf = {
   icon: ElementType

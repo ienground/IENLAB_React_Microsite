@@ -2,11 +2,8 @@ import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
-import {CrossfadeImage} from "@ienlab/react-library"
-import ImgUnderConstruction from "@/assets/image/img_under_construction.png"
-import {Button} from "@/components/ui/button.tsx"
 import {RiArrowLeftLine} from "@remixicon/react"
-import {MagneticButton, MotionButton} from "@/components/motion/components.tsx"
+import {MagneticButton} from "@/components/motion/components.tsx"
 
 export default function NotFoundScreen() {
   const navigate = useNavigate()

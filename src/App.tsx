@@ -39,7 +39,6 @@ export default function App() {
 }
 
 function ScreenBody() {
-  const { t } = useTranslation()
   const { theme } = useTheme()
   const { zone } = useCursorState()
 
