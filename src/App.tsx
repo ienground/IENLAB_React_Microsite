@@ -51,13 +51,33 @@ function ScreenBody() {
         magnetic
         className="cursor"
         variants={{
-          default: {backgroundColor: zone === "overlay" ? "var(--cursor-default-overlay)" : "var(--cursor-default)",},
-          pointer: {backgroundColor: zone === "overlay" ? "var(--cursor-pointer-overlay)" : "var(--cursor-pointer)",},
-          text: { backgroundColor: "var(--primary)" }
+          default: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-default-overlay)"
+                : "var(--cursor-default)",
+          },
+          pointer: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-pointer-overlay)"
+                : "var(--cursor-pointer)",
+          },
+          text: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-text-overlay)"
+                : "var(--cursor-text)",
+            color:
+              zone === "overlay"
+                ? "var(--cursor-text-foreground-overlay)"
+                : "var(--cursor-text-foreground)",
+          },
         }}
         style={{
           borderRadius: 10,
-          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
+          mixBlendMode:
+            (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
         }}
       />
     </>
