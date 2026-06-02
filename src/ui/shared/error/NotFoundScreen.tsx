@@ -6,6 +6,7 @@ import {CrossfadeImage} from "@ienlab/react-library"
 import ImgUnderConstruction from "@/assets/image/img_under_construction.png"
 import {Button} from "@/components/ui/button.tsx"
 import {RiArrowLeftLine} from "@remixicon/react"
+import {MagneticButton, MotionButton} from "@/components/motion/components.tsx"
 
 export default function NotFoundScreen() {
   const navigate = useNavigate()
@@ -25,14 +26,14 @@ export default function NotFoundScreen() {
           </div>
           <p className="mt-32">{t("strings:error.not_found.desc")}</p>
 
-          <Button
+          <MagneticButton
             onClick={() => navigate(-1)}
             variant="outline"
             className="mt-8"
           >
             <RiArrowLeftLine />
             {t("strings:go_back")}
-          </Button>
+          </MagneticButton>
         </div>
 
       </div>

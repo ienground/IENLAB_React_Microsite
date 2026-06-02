@@ -30,6 +30,7 @@ import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {BrandDestination} from "@/ui/public/brand/BrandDestination.ts"
 import {ProjectDestination} from "@/ui/public/project/ProjectDestination.ts"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
+import {MagneticBaseButton, MagneticLink, MagneticButton, MotionButton} from "@/components/motion/components.tsx"
 
 type NavLeaf = {
   icon: ElementType
@@ -172,15 +173,15 @@ export default function PublicHeader() {
           <div className="flex min-w-0 items-center justify-self-start">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button
+                <MagneticButton
                   type="button"
                   aria-label="Open menu"
                   className="inline-flex size-10 items-center justify-center rounded-full text-foreground/85 transition-all duration-300 md:hidden"
                   size="icon"
                   variant="ghost"
                 >
-                  {mobileMenuOpen ? <RiMenuUnfold4Line /> : <RiMenu2Fill />}
-                </Button>
+                  {mobileMenuOpen ? <RiMenuUnfold4Line/> : <RiMenu2Fill/>}
+                </MagneticButton>
               </SheetTrigger>
 
               <SheetContent
@@ -191,51 +192,57 @@ export default function PublicHeader() {
                 <div className="flex h-full flex-col overflow-y-auto px-5 pb-6 pt-4">
                   <nav className="flex flex-col gap-2">
                     {navItems.map(item => item.items ? (
-                      <div
-                        key={item.title}
-                        className="rounded-2xl border border-border/60 bg-background/40"
-                      >
-                        <div className="px-4 py-3 text-sm font-medium text-foreground">
-                          {item.title}
-                        </div>
+                        <div
+                          key={item.title}
+                          className="rounded-2xl border border-border/60 bg-background/40"
+                        >
+                          <div className="px-4 py-3 text-sm font-medium text-foreground">
+                            {item.title}
+                          </div>
 
-                        <div className="border-t border-border/60 px-2 py-2">
-                          {item.items.map(subItem => {
-                            const Icon = subItem.icon
-                            return <SheetClose asChild key={subItem.title}>
-                              <Link
-                                to={subItem.url}
-                                className="flex items-center justify-between gap-3 rounded-xl p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
-                              >
-                                <div className="min-w-0">
-                                  <div className="text-sm font-medium text-foreground">
-                                    {subItem.title}
+                          <div className="border-t border-border/60 px-2 py-2">
+                            {item.items.map(subItem => {
+                              const Icon = subItem.icon
+                              return <SheetClose asChild key={subItem.title}>
+                                <Link
+                                  to={subItem.url}
+                                  className="flex items-center justify-between gap-3 rounded-xl p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+                                >
+                                  <div className="min-w-0">
+                                    <div className="text-sm font-medium text-foreground">
+                                      {subItem.title}
+                                    </div>
+                                    {subItem.description ? (
+                                      <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                                        {subItem.description}
+                                      </p>
+                                    ) : null}
                                   </div>
-                                  {subItem.description ? (
-                                    <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                                      {subItem.description}
-                                    </p>
-                                  ) : null}
-                                </div>
-                                <Icon className="shrink-0 size-6" />
-                              </Link>
-                            </SheetClose>
-                          })}
+                                  <Icon className="shrink-0 size-6"/>
+                                </Link>
+                              </SheetClose>
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    ) : (<SheetClose asChild key={item.title}>
-                      <Link
-                        to={item.url ? item.url : ""}
-                        className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                      >{item.title}</Link>
-                    </SheetClose>)
+                      ) : (<SheetClose asChild key={item.title}>
+                        <Link
+                          to={item.url ? item.url : ""}
+                          className="flex items-center justify-between rounded-2xl border border-border/60 bg-background/40 px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                        >{item.title}</Link>
+                      </SheetClose>)
                     )}
                   </nav>
 
                   <div className="mt-6 border-t border-border/60 pt-6">
                     <Button
                       type="button"
-                      className="inline-flex h-11 w-full items-center justify-center rounded-full border border-black/10 bg-white/10 px-4 text-sm text-foreground/85 transition-colors dark:border-white/10 dark:bg-white/5"
+                      className={cn(
+                        "inline-flex h-11 w-full items-center justify-center rounded-full",
+                        "border border-black/10 bg-white/10 px-4 text-sm",
+                        "text-foreground/85 transition-colors",
+                        "hover:bg-accent hover:text-accent-foreground",
+                        "dark:border-white/10 dark:bg-white/5"
+                      )}
                       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
                     >
                       <AnimatePresence mode="popLayout">
@@ -247,7 +254,7 @@ export default function PublicHeader() {
                             animate={{opacity: 1}}
                             exit={{opacity: 0}}
                           >
-                            <RiSunFill />
+                            <RiSunFill/>
                             <span>{t("strings:settings.light_mode")}</span>
                           </motion.div>
                         ) : (
@@ -258,7 +265,7 @@ export default function PublicHeader() {
                             animate={{opacity: 1}}
                             exit={{opacity: 0}}
                           >
-                            <RiMoonFill />
+                            <RiMoonFill/>
                             <span>{t("strings:settings.dark_mode")}</span>
                           </motion.div>
                         )}
@@ -282,7 +289,7 @@ export default function PublicHeader() {
                     onMouseEnter={() => item.items && handleHover(item.title)}
                   >
                     {item.items ? (
-                      <button
+                      <MagneticBaseButton
                         type="button"
                         onFocus={() => handleHover(item.title)}
                         className={cn(
@@ -301,18 +308,18 @@ export default function PublicHeader() {
                         )}
 
                         <span className="relative z-1 inline-flex items-center">
-                              {item.title}
+                          {item.title}
                           <motion.span
                             className="ml-1"
                             animate={{rotate: activeMenu === item.title ? 180 : 0}}
                             transition={{type: "spring", stiffness: 500, damping: 30}}
                           >
-                                <RiArrowDownSLine className="size-4" />
-                              </motion.span>
-                            </span>
-                      </button>
+                            <RiArrowDownSLine className="size-4"/>
+                          </motion.span>
+                        </span>
+                      </MagneticBaseButton>
                     ) : (
-                      <Link
+                      <MagneticLink
                         to={item.url ? item.url : ""}
                         className={cn(
                           "inline-flex items-center rounded-full text-foreground/75 transition-all duration-300 hover:bg-white/10 hover:text-foreground focus:bg-white/10 focus:text-foreground dark:hover:bg-white/10",
@@ -320,7 +327,7 @@ export default function PublicHeader() {
                         )}
                       >
                         {item.title}
-                      </Link>
+                      </MagneticLink>
                     )}
                   </div>
                 ))}
@@ -395,7 +402,7 @@ export default function PublicHeader() {
                                     </div>
 
                                     <div className="flex size-10 shrink-0 items-center justify-center">
-                                      <Icon className="size-6" />
+                                      <Icon className="size-6"/>
                                     </div>
                                   </Link>
                                 </motion.li>
@@ -410,7 +417,7 @@ export default function PublicHeader() {
             </div>
           </div>
 
-          <Link
+          <MagneticLink
             to="/"
             className="justify-self-center transition-all duration-300"
             aria-label="Home"
@@ -430,7 +437,7 @@ export default function PublicHeader() {
                 "hidden object-contain transition-all duration-300 md:block h-8",
               )}
             />
-          </Link>
+          </MagneticLink>
 
           <div className="flex min-w-0 items-center justify-self-end">
             <div
@@ -439,7 +446,7 @@ export default function PublicHeader() {
                 scrolled ? "gap-2" : "gap-3",
               )}
             >
-              <Button
+              <MagneticButton
                 type="button"
                 variant="ghost"
                 size="icon"
@@ -458,19 +465,19 @@ export default function PublicHeader() {
                       initial={{opacity: 0, width: 0}}
                       animate={{opacity: 1, width: 16}}
                       exit={{opacity: 0, width: 0}}
-                    ><RiSunFill /></motion.div>
+                    ><RiSunFill/></motion.div>
                   ) : (
                     <motion.div
                       key="theme-dark"
                       initial={{opacity: 0, width: 0}}
                       animate={{opacity: 1, width: 16}}
                       exit={{opacity: 0, width: 0}}
-                    ><RiMoonFill /></motion.div>
+                    ><RiMoonFill/></motion.div>
                   )}
                 </AnimatePresence>
 
                 <span className="sr-only">{t("strings:settings.toggle_theme")}</span>
-              </Button>
+              </MagneticButton>
             </div>
           </div>
         </div>

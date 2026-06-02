@@ -49,7 +49,7 @@ function ScreenBody() {
           <RiApps2AiFill />
           <AlertTitle>서비스</AlertTitle>
           <AlertDescription>
-            <ul className="list-['-_\00a0'] list-inside">
+            <ul className="custom-list list-inside">
               <li>아이엔랩 외주 고객 관리 웹사이트</li>
               <li>아텍 미디어오피스</li>
             </ul>
@@ -67,7 +67,7 @@ function ScreenBody() {
           <RiFlowChart />
           <AlertTitle>개인정보 처리 목적</AlertTitle>
           <AlertDescription>
-            <ul className="list-['-_\00a0'] list-inside">
+            <ul className="custom-list list-inside">
               <li>고객 가입 의사 확인</li>
               <li>고객에 대한 서비스 제공에 따른 본인 식별 및 인증</li>
               <li>회원자격 유지 및 관리</li>
@@ -93,7 +93,7 @@ function ScreenBody() {
           <RiFlowChart />
           <AlertTitle>개인정보 처리 목적</AlertTitle>
           <AlertDescription>
-            <ul className="list-['-_\00a0'] list-inside">
+            <ul className="custom-list list-inside">
               <li>Google 로그인 회원정보: 회원 탈퇴 또는 동의 철회 시 지체 없이 파기</li>
               <li>카카오 로그인 회원정보: 회원 탈퇴 또는 동의 철회 시 지체 없이 파기</li>
               <li>외주 고객 관리 웹사이트 회원정보: 회원 탈퇴 시까지 보관 후 지체 없이 파기</li>
@@ -106,7 +106,7 @@ function ScreenBody() {
           <RiFlowChart />
           <AlertTitle>개인정보 처리 목적</AlertTitle>
           <AlertDescription>
-            <ul className="list-['-_\00a0'] list-inside">
+            <ul className="custom-list list-inside">
               <li>계약 또는 청약철회, 대금결제, 재화 등의 공급기록: 5년</li>
               <li>소비자의 불만 또는 분쟁처리에 관한 기록: 3년</li>
               <li>접속 로그 등 통신사실확인자료: 3개월</li>
@@ -126,7 +126,7 @@ function ScreenBody() {
             <RiUser3Fill />
             <AlertTitle>Google 로그인 이용 시</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>필수항목: 프로필 정보(닉네임, 프로필 사진), Google 계정(이메일)</li>
                 <li>선택항목: 생일, 출생연도</li>
                 <li>수집목적: 서비스 이용, 회원 식별 및 인증, 회원 관리</li>
@@ -138,7 +138,7 @@ function ScreenBody() {
             <RiUser3Fill />
             <AlertTitle>카카오 로그인 이용 시</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>필수항목: 프로필 정보(닉네임, 프로필 사진), 카카오 계정(이메일)</li>
                 <li>선택항목: 생일</li>
                 <li>수집목적: 서비스 이용, 회원 식별 및 인증, 회원 관리</li>
@@ -150,7 +150,7 @@ function ScreenBody() {
             <RiUser3Fill />
             <AlertTitle>외주 고객 관리 웹사이트 회원가입 시</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>필수항목: 이름, 이메일, 휴대전화번호</li>
                 <li>서비스 이용 과정에서 생성·수집되는 항목: 회원 ID, 회사 참조값, 회원 등급, 회원 상태, 생성 시각, 수정 시각, 삭제 시각, 최근 방문 시각</li>
                 <li>수집목적: 외주 고객 회원가입 및 계정 관리, 외주 프로젝트 관리, 추가 기능 요청 접수 및 처리, 고객사 담당자 식별 및 커뮤니케이션, 서비스 접속 기록 및 운영 이력 관리</li>
@@ -162,7 +162,7 @@ function ScreenBody() {
             <RiUser3Fill />
             <AlertTitle>서비스 이용 과정에서 자동으로 생성·수집될 수 있는 항목</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>접속 IP 주소</li>
                 <li>쿠키</li>
                 <li>서비스 이용 기록</li>
@@ -222,7 +222,7 @@ function ScreenBody() {
             <RiInformationFill />
             <AlertTitle>파기 절차 및 방법</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>파기절차: 회사는 파기 사유가 발생한 개인정보를 선정하고, 개인정보 보호책임자의 승인을 받아 개인정보를 파기합니다.</li>
                 <li>파기방법: 전자적 파일 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용하며, 종이 문서에 기록된 개인정보는 분쇄하거나 소각합니다.</li>
               </ul>
@@ -277,7 +277,7 @@ function ScreenBody() {
             <RiCookieFill />
             <AlertTitle>쿠키 안내</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>쿠키의 사용 목적: 이용자가 방문한 각 서비스와 웹사이트에 대한 방문 및 이용형태 파악, 보안접속 여부 확인, 이용자에게 최적화된 정보 제공</li>
                 <li>쿠키의 설치·운영 및 거부: 이용자는 웹 브라우저 설정을 통하여 쿠키 저장을 거부할 수 있습니다. 다만 브라우저별 설정 방법은 다를 수 있습니다.</li>
                 <li>쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이 발생할 수 있습니다.</li>
@@ -308,7 +308,7 @@ function ScreenBody() {
             <RiFlowChart />
             <AlertTitle>판단 기준</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>개인정보를 추가적으로 이용·제공하려는 목적이 당초 수집 목적과 관련성이 있는지 여부</li>
                 <li>개인정보를 수집한 정황 또는 처리 관행에 비추어 볼 때 추가적인 이용·제공에 대한 예측 가능성이 있는지 여부</li>
                 <li>개인정보의 추가적인 이용·제공이 정보주체의 이익을 부당하게 침해하는지 여부</li>
@@ -330,7 +330,7 @@ function ScreenBody() {
             <RiShieldCheckFill />
             <AlertTitle>개인정보 보호책임자</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>성명: 이현우</li>
                 <li>직책: 대표 개발자</li>
                 <li>직급: 대표</li>
@@ -353,7 +353,7 @@ function ScreenBody() {
             <RiShieldCheckFill />
             <AlertTitle>개인정보 열람청구 접수·처리 부서</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>담당자: 이현우</li>
                 <li>연락처: my@ien.zone</li>
               </ul>
@@ -373,7 +373,7 @@ function ScreenBody() {
             <RiInformationFill />
             <AlertTitle>관련 기관 안내</AlertTitle>
             <AlertDescription>
-              <ul className="list-['-_\00a0'] list-inside">
+              <ul className="custom-list list-inside">
                 <li>개인정보분쟁조정위원회: (국번없이) 1833-6972 (www.kopico.go.kr)</li>
                 <li>개인정보침해신고센터: (국번없이) 118 (privacy.kisa.or.kr)</li>
                 <li>대검찰청: (국번없이) 1301 (www.spo.go.kr)</li>
