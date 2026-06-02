@@ -50,6 +50,7 @@ import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import {Seo} from "@/components/custom/Seo.tsx"
+import {MagneticButton} from "@/components/motion/components.tsx"
 
 type CarouselItem = {
   id: string
@@ -90,7 +91,7 @@ const sampleProfiles = [
 ]
 
 export default function HomeScreen() {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   return (
     <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
       <Seo
@@ -104,7 +105,7 @@ export default function HomeScreen() {
 
 function ScreenBody() {
   const {t, i18n} = useTranslation()
-  const { resolvedTheme } = useTheme()
+  const {resolvedTheme} = useTheme()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
@@ -266,7 +267,11 @@ function ScreenBody() {
               <Typewriter
                 as="div"
                 className="absolute inset-0"
-                cursorStyle={{background: "var(--chart-3)", width: "3px"}}
+                cursorStyle={{
+                  background: "var(--cursor-text)",
+                  width: "4px",
+                  borderRadius: "10px"
+                }}
                 onComplete={() => {
                   delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)
                 }}
@@ -275,7 +280,8 @@ function ScreenBody() {
 
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
-        </div>,
+        </div>
+        ,
         {/*<Carousel*/}
         {/*  align="center"*/}
         {/*  gap={16}*/}
@@ -418,24 +424,27 @@ function ScreenBody() {
               )}>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p1" components={{ br: <br /> }} /></p>
+                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans
+                      i18nKey="strings:home.about.p1" components={{br: <br/>}}/></p>
                   </div>
                 </div>
-                <Separator className="xl:hidden" />
-                <Separator className="max-xl:hidden" orientation="vertical" />
+                <Separator className="xl:hidden"/>
+                <Separator className="max-xl:hidden" orientation="vertical"/>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans i18nKey="strings:home.about.p2" components={{ br: <br /> }} /></p>
+                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans
+                      i18nKey="strings:home.about.p2" components={{br: <br/>}}/></p>
                   </div>
                 </div>
               </div>
-              <Button
+              <MagneticButton
                 className="w-fit mt-8 font-medium"
+                variant="outline"
                 onClick={() => navigate(AboutDestination.root)}
               >
                 {t("strings:home.about.see_more")}
                 <RiArrowRightUpLine/>
-              </Button>
+              </MagneticButton>
             </div>
           </div>
 
@@ -453,7 +462,8 @@ function ScreenBody() {
               {skillItems.map((item, index) => (
                 <SkillCardItem index={index} item={item}/>
               ))}
-              <div className="relative flex min-w-60 w-[20vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden" />
+              <div
+                className="relative flex min-w-60 w-[20vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden"/>
             </motion.div>
           </div>
         </div>
@@ -832,11 +842,11 @@ function PortfolioItemContent({
           <AnimatePresence>
             {isOpen && (
               <motion.div className="absolute right-0 top-0 flex flex-col">
-                <Button onClick={setOpen} size="icon-lg" variant="ghost">
+                <MagneticButton onClick={setOpen} size="icon-lg" variant="ghost">
                   <RiCloseLargeFill/>
-                </Button>
+                </MagneticButton>
 
-                <Button
+                <MagneticButton
                   onClick={() => navigate("")}
                   size="icon-lg"
                   className={cn(
@@ -845,7 +855,7 @@ function PortfolioItemContent({
                   )}
                 >
                   <RiArrowRightUpLine/>
-                </Button>
+                </MagneticButton>
               </motion.div>
             )}
           </AnimatePresence>
@@ -855,7 +865,7 @@ function PortfolioItemContent({
               <motion.div className="absolute bottom-0 right-0 flex flex-row items-end justify-between gap-x-2">
                 <div className="flex flex-row items-center gap-x-2">
                   {item.googlePlayLink && (
-                    <Button className="google-play-button" size="icon-lg" asChild>
+                    <MagneticButton className="google-play-button" size="icon-lg" asChild>
                       <a
                         href={getGooglePlayLink(item.googlePlayLink)}
                         target="_blank"
@@ -863,11 +873,11 @@ function PortfolioItemContent({
                       >
                         <IcGooglePlay/>
                       </a>
-                    </Button>
+                    </MagneticButton>
                   )}
 
                   {item.appStoreLink && (
-                    <Button className="app-store-button" size="icon-lg" asChild>
+                    <MagneticButton className="app-store-button" size="icon-lg" asChild>
                       <a
                         href={getAppStoreLink(item.appStoreLink)}
                         target="_blank"
@@ -875,7 +885,7 @@ function PortfolioItemContent({
                       >
                         <IcAppStore/>
                       </a>
-                    </Button>
+                    </MagneticButton>
                   )}
 
                   {item.webLink && (
@@ -1145,7 +1155,7 @@ function LayeredSlides({
   }, [ready, backgrounds.length, interval])
 
   if (!ready) {
-    return <div className="relative h-full w-full bg-black" />
+    return <div className="relative h-full w-full bg-black"/>
   }
 
   return (
@@ -1213,10 +1223,11 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
         />
       </div>
       {/* light / dark tint overlay */}
-      <div className="absolute inset-0 bg-white/8 dark:bg-black/24" />
+      <div className="absolute inset-0 bg-white/8 dark:bg-black/24"/>
 
       {/* text readability gradient */}
-      <div className="absolute inset-0 bg-linear-to-b from-white/12 via-transparent to-black/10 dark:from-black/38 dark:via-black/18 dark:to-black/42" />
+      <div
+        className="absolute inset-0 bg-linear-to-b from-white/12 via-transparent to-black/10 dark:from-black/38 dark:via-black/18 dark:to-black/42"/>
 
       <div
         className="absolute w-full h-full p-16 flex flex-col gap-y-16"
@@ -1225,7 +1236,8 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
           <div className="w-1/16 h-0.5 bg-foreground/50"/>
           <span className="font-medium tracking-wider">{(props.index + 1).toString().padStart(2, '0')}</span>
         </div>
-        <h1 className="font-black tracking-tighter text-6xl text-foreground text-pretty break-keep">{props.item.title}</h1>
+        <h1
+          className="font-black tracking-tighter text-6xl text-foreground text-pretty break-keep">{props.item.title}</h1>
         <p className="font-medium text-2xl text-accent-foreground/60">{props.item.description}</p>
         <div className="flex flex-wrap mt-auto gap-4">
           {props.item.tags.map(tag => (
@@ -1264,7 +1276,8 @@ function ReviewCardItem(props: { index: number, item: ReviewItem }) {
         </div>
       </div>
 
-      <p className="mt-6 text-lg font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">{props.item.review}</p>
+      <p
+        className="mt-6 text-lg font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">{props.item.review}</p>
     </div>
   )
 }

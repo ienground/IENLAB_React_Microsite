@@ -6,11 +6,10 @@ import dayjs from "dayjs"
 import isLeapYear from 'dayjs/plugin/isLeapYear' //윤년을 판단하는 플러그인
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {useTranslation} from "react-i18next"
-import {type CSSProperties, useEffect, useMemo} from "react"
-import {RouterProvider} from "react-router"
-import {getRouter} from "./ui/router/Router.tsx"
+import {type CSSProperties, useEffect} from "react"
+import Router from "@/ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
-import { Toaster } from "./components/ui/sonner.tsx"
+import { Toaster } from "@/components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
 import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
@@ -28,7 +27,7 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme" themeExpiryHours={THEME_EXPIRY_HOURS}>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme" themeExpiryHours={THEME_EXPIRY_HOURS}>
         <LoadingLineReveal>
           <TooltipProvider>
             <ScreenBody />
@@ -40,26 +39,44 @@ export default function App() {
 }
 
 function ScreenBody() {
-  const { t } = useTranslation()
-  const router = useMemo(() => getRouter(t), [t])
   const { theme } = useTheme()
   const { zone } = useCursorState()
 
   return (
     <>
-      <RouterProvider router={router} />
+      <Router />
       <Toaster theme={theme} position="bottom-center" richColors/>
       <Cursor
         magnetic
         className="cursor"
         variants={{
-          default: {backgroundColor: zone === "overlay" ? "var(--cursor-default-overlay)" : "var(--cursor-default)",},
-          pointer: {backgroundColor: zone === "overlay" ? "var(--cursor-pointer-overlay)" : "var(--cursor-pointer)",},
-          text: { backgroundColor: "var(--primary)" }
+          default: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-default-overlay)"
+                : "var(--cursor-default)",
+          },
+          pointer: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-pointer-overlay)"
+                : "var(--cursor-pointer)",
+          },
+          text: {
+            backgroundColor:
+              zone === "overlay"
+                ? "var(--cursor-text-overlay)"
+                : "var(--cursor-text)",
+            color:
+              zone === "overlay"
+                ? "var(--cursor-text-foreground-overlay)"
+                : "var(--cursor-text-foreground)",
+          },
         }}
         style={{
           borderRadius: 10,
-          mixBlendMode: (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
+          mixBlendMode:
+            (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
         }}
       />
     </>

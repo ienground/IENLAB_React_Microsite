@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 import {CrossfadeImage} from "@ienlab/react-library"
+import {MagneticButton} from "@/components/motion/components.tsx"
 
 export default function ConstructionScreen() {
   const navigate = useNavigate()
@@ -24,20 +25,20 @@ export default function ConstructionScreen() {
             <div className="large-text-title">{t("strings:under_construction.label")}</div>
             <CrossfadeImage
               alt="Under Construction Character"
-              className="max-w-full w-160 h-auto object-contain mix-blend-multiply opacity-90"
+              className="max-w-full w-160 h-auto object-contain opacity-90"
               src={ImgUnderConstruction}
             />
           </div>
           <p className="mt-32">{t("strings:under_construction.desc")}</p>
 
-          <Button
+          <MagneticButton
             onClick={() => navigate("/")}
             variant="outline"
             className="mt-8"
           >
             <RiArrowLeftLine />
             {t("strings:back_to_home")}
-          </Button>
+          </MagneticButton>
         </div>
 
       </div>
