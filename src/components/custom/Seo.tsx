@@ -9,7 +9,7 @@ type Props = {
 
 export function Seo({title, description, image}: Props) {
   const fullTitle = title
-  const fallbackImage = `${window.location.origin}/og-default.png`
+  const fallbackImage = `${window.location.origin}/og/og-default.png`
   const ogImage = image ?? fallbackImage
   const url = window.location.href
 
