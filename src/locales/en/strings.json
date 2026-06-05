@@ -9,6 +9,7 @@
       "label": "@IENGROUND"
     },
     "label": "About",
+    "label2": "About",
     "project": {
       "desc": "Check out my projects."
     }
@@ -102,13 +103,14 @@
     }
   },
   "notice": {
+    "desc": "Explore the latest news.",
     "label": "Notice"
   },
   "og": {
     "description": "Mobile Developer, Graphic Designer."
   },
   "privacy_policy": {
-    "desc": "Privacy Policy Information",
+    "desc": "It explains how we collect, use, retain, and delete personal information needed for service use.",
     "label": "Privacy Policy"
   },
   "settings": {

@@ -11,8 +11,7 @@ import {
   RiUser3Fill
 } from "@remixicon/react"
 import {cn} from "@/lib/utils.ts"
-import {Seo} from "@/components/custom/Seo.tsx"
-import OgPolicy from "@/assets/image/og-policy.png"
+import { Seo } from "@ienlab/react-library"
 import {hasLastConsonant} from "@ienlab/react-library"
 
 export default function PrivacyScreen() {
@@ -20,9 +19,8 @@ export default function PrivacyScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:privacy_policy.label")} | ${t("strings:ienlab")}`}
+        title={`${t("strings:privacy_policy.label")} - ${t("strings:ienlab")}`}
         description={t("strings:privacy_policy.desc")}
-        image={OgPolicy}
       />
       <ScreenBody />
     </>

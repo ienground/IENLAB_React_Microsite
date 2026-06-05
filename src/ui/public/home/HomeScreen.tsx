@@ -49,7 +49,7 @@ import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
-import {Seo} from "@/components/custom/Seo.tsx"
+import { Seo } from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
 
 type CarouselItem = {

@@ -1,7 +1,16 @@
 import ConstructionScreen from "@/ui/public/construction/ConstructionScreen.tsx"
+import { Seo } from "@ienlab/react-library"
+import {useTranslation} from "react-i18next"
 
 export default function NoticeListScreen() {
+  const { t } = useTranslation()
   return (
-    <ConstructionScreen />
+    <>
+      <Seo
+        title={`${t("strings:notice.label")} - ${t("strings:ienlab")}`}
+        description={t("strings:notice.desc")}
+      />
+      <ConstructionScreen />
+    </>
   )
 }
