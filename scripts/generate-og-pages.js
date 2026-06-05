@@ -1,32 +1,37 @@
+import {readFileSync} from "node:fs"
+import {resolve} from "node:path"
 import {generateOGPages} from "@ienlab/react-library/og"
 
 const title = "아이엔랩 ienlab"
 const domain = "https://www.ien.zone"
 
+const koPath = resolve("src/locales/ko/strings.json")
+const ko = JSON.parse(readFileSync(koPath, "utf-8"))
+
 generateOGPages("dist", {
   "/about": {
-    title: `소개 - ${title}`,
-    description: "모바일 개발자, 그래픽 디자이너.",
+    title: `${ko.about.label2} - ${title}`,
+    description: ko.og.description,
     image: `${domain}/og/og-default.png`,
   },
   "/brand": {
-    title: `브랜딩 - ${title}`,
-    description: "아이엔랩 브랜드 아이덴티티",
+    title: `${ko.about.branding.label} - ${title}`,
+    description: ko.about.branding.desc,
     image: `${domain}/og/og-default.png`,
   },
   "/notice": {
-    title: `공지사항 - ${title}`,
-    description: "새로운 소식을 살펴보세요.",
+    title: `${ko.notice.label} - ${title}`,
+    description: ko.notice.desc,
     image: `${domain}/og/og-default.png`,
   },
   "/project": {
-    title: `프로젝트 - ${title}`,
-    description: "참여한 프로젝트를 살펴보세요.",
+    title: `${ko.home.project.header} - ${title}`,
+    description: ko.about.project.desc,
     image: `${domain}/og/og-default.png`,
   },
   "/privacy": {
-    title: `개인정보처리방침 - ${title}`,
-    description: "서비스 이용에 필요한 개인정보의 수집·이용·보관·파기 기준을 설명합니다.",
+    title: `${ko.privacy_policy.label} - ${title}`,
+    description: ko.privacy_policy.desc,
     image: `${domain}/og/og-policy.png`,
   },
 })
