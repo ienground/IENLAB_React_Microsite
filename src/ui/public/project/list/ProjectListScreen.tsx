@@ -1,8 +1,17 @@
 import {useParams} from "react-router"
 import ConstructionScreen from "@/ui/public/construction/ConstructionScreen.tsx"
+import {useTranslation} from "react-i18next"
+import {Seo} from "@/components/custom/Seo.tsx"
 
 export default function ProjectListScreen() {
+  const { t } = useTranslation()
   return (
-    <ConstructionScreen />
+    <>
+      <Seo
+        title={`${t("strings:home.project.header")} - ${t("strings:ienlab")}`}
+        description={t("strings:about.project.desc")}
+      />
+      <ConstructionScreen />
+    </>
   )
 }

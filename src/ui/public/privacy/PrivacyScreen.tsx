@@ -19,7 +19,7 @@ export default function PrivacyScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:privacy_policy.label")} | ${t("strings:ienlab")}`}
+        title={`${t("strings:privacy_policy.label")} - ${t("strings:ienlab")}`}
         description={t("strings:privacy_policy.desc")}
       />
       <ScreenBody />

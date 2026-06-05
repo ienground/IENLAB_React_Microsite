@@ -9,6 +9,7 @@
       "label": "@IENGROUND"
     },
     "label": "About",
+    "label2": "소개",
     "project": {
       "desc": "참여한 프로젝트를 살펴보세요."
     }
@@ -118,6 +119,7 @@
   "list_end": "항목 끝",
   "login": "로그인",
   "notice": {
+    "desc": "새로운 소식을 살펴보세요.",
     "label": "공지사항"
   },
   "og": {
@@ -249,7 +251,7 @@
   },
   "password": "비밀번호",
   "privacy_policy": {
-    "desc": "개인정보처리방침 안내",
+    "desc": "서비스 이용에 필요한 개인정보의 수집·이용·보관·파기 기준을 설명합니다.",
     "label": "개인정보처리방침"
   },
   "quit_warning_title": "모든 변경 사항을 취소할까요?",

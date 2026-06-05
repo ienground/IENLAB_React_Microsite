@@ -17,8 +17,8 @@ const OG_DATA = {
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/brand": {
-    title: `브랜드 - ${title}`,
-    description: "2016년부터의 브랜드 아이덴티티.",
+    title: `브랜딩 - ${title}`,
+    description: "아이엔랩 브랜드 아이덴티티",
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/notice": {
