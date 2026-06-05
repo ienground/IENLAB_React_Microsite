@@ -1,7 +1,7 @@
 import {useParams} from "react-router"
 import ConstructionScreen from "@/ui/public/construction/ConstructionScreen.tsx"
 import {useTranslation} from "react-i18next"
-import {Seo} from "@/components/custom/Seo.tsx"
+import { Seo } from "@ienlab/react-library"
 
 export default function ProjectListScreen() {
   const { t } = useTranslation()

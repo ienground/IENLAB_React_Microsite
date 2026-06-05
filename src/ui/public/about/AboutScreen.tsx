@@ -1,5 +1,5 @@
 import ConstructionScreen from "@/ui/public/construction/ConstructionScreen.tsx"
-import {Seo} from "@/components/custom/Seo.tsx"
+import { Seo } from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 
 export default function AboutScreen() {

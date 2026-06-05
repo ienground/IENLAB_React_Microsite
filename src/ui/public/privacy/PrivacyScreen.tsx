@@ -11,7 +11,7 @@ import {
   RiUser3Fill
 } from "@remixicon/react"
 import {cn} from "@/lib/utils.ts"
-import {Seo} from "@/components/custom/Seo.tsx"
+import { Seo } from "@ienlab/react-library"
 import {hasLastConsonant} from "@ienlab/react-library"
 
 export default function PrivacyScreen() {
