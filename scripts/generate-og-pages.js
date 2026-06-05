@@ -8,30 +8,32 @@ const distDir = path.resolve(__dirname, "..", "dist")
 /* ------------------------------------------------------------------ */
 /*  Route-specific OG data                                              */
 /* ------------------------------------------------------------------ */
+const title = "아이엔랩 ienlab"
+
 const OG_DATA = {
   "/about": {
-    title: "아이엔랩 - 소개",
-    description: "아이엔랩(ienlab) 소개 페이지입니다.",
+    title: `소개 - ${title}`,
+    description: "모바일 개발자, 그래픽 디자이너.",
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/brand": {
-    title: "아이엔랩 - 브랜드",
-    description: "아이엔랩 브랜드 아카이브입니다.",
+    title: `브랜드 - ${title}`,
+    description: "2016년부터의 브랜드 아이덴티티.",
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/notice": {
-    title: "아이엔랩 - 공지사항",
-    description: "아이엔랩 공지사항 목록입니다.",
+    title: `공지사항 - ${title}`,
+    description: "새로운 소식을 살펴보세요.",
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/project": {
-    title: "아이엔랩 - 프로젝트",
-    description: "아이엔랩 프로젝트 포트폴리오입니다.",
+    title: `프로젝트 - ${title}`,
+    description: "참여한 프로젝트를 살펴보세요.",
     image: "https://www.ien.zone/og/og-default.png",
   },
   "/privacy": {
-    title: "아이엔랩 - 개인정보처리방침",
-    description: "아이엔랩 개인정보처리방침입니다.",
+    title: `개인정보처리방침 - ${title}`,
+    description: "서비스 이용에 필요한 개인정보의 수집·이용·보관·파기 기준을 설명합니다.",
     image: "https://www.ien.zone/og/og-policy.png",
   },
 }
@@ -56,6 +58,18 @@ function replaceOG(html, {title, description, image}) {
     )
     .replace(
       /(<meta\s+property="og:image"\s+content=")[^"]*(")/,
+      `$1${image}$2`,
+    )
+    .replace(
+      /(<meta\s+name="twitter:title"\s+content=")[^"]*(")/,
+      `$1${title}$2`,
+    )
+    .replace(
+      /(<meta\s+name="twitter:description"\s+content=")[^"]*(")/,
+      `$1${description}$2`,
+    )
+    .replace(
+      /(<meta\s+name="twitter:image"\s+content=")[^"]*(")/,
       `$1${image}$2`,
     )
 }

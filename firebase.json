@@ -9,6 +9,14 @@
     ],
     "rewrites": [
       {
+        "source": "/notice/**",
+        "function": "ssrDynamicOG"
+      },
+      {
+        "source": "/project/**",
+        "function": "ssrDynamicOG"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
