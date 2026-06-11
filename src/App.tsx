@@ -74,7 +74,7 @@ function ScreenBody() {
           },
         }}
         style={{
-          borderRadius: 10,
+          borderRadius: 32,
           mixBlendMode:
             (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
         }}

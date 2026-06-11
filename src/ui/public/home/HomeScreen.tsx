@@ -282,7 +282,6 @@ function ScreenBody() {
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
         </div>
-        ,
         {/*<Carousel*/}
         {/*  align="center"*/}
         {/*  gap={16}*/}

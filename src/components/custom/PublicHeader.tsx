@@ -31,6 +31,7 @@ import {BrandDestination} from "@/ui/public/brand/BrandDestination.ts"
 import {ProjectDestination} from "@/ui/public/project/ProjectDestination.ts"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
 import {MagneticBaseButton, MagneticLink, MagneticButton} from "@/components/motion/components.tsx"
+import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 
 type NavLeaf = {
   icon: ElementType
@@ -180,7 +181,10 @@ export default function PublicHeader() {
                   size="icon"
                   variant="ghost"
                 >
-                  {mobileMenuOpen ? <RiMenuUnfold4Line/> : <RiMenu2Fill/>}
+                  <Swap swapped={mobileMenuOpen} animation="fade">
+                    <SwapOn><RiMenuUnfold4Line/></SwapOn>
+                    <SwapOff><RiMenu2Fill/></SwapOff>
+                  </Swap>
                 </MagneticButton>
               </SheetTrigger>
 
@@ -245,31 +249,16 @@ export default function PublicHeader() {
                       )}
                       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
                     >
-                      <AnimatePresence mode="popLayout">
-                        {resolvedTheme === "light" ? (
-                          <motion.div
-                            key="theme-light"
-                            className="w-full flex flex-row items-center justify-center gap-x-2"
-                            initial={{opacity: 0}}
-                            animate={{opacity: 1}}
-                            exit={{opacity: 0}}
-                          >
-                            <RiSunFill/>
-                            <span>{t("strings:settings.light_mode")}</span>
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="theme-dark"
-                            className="w-full flex flex-row items-center justify-center gap-x-2"
-                            initial={{opacity: 0}}
-                            animate={{opacity: 1}}
-                            exit={{opacity: 0}}
-                          >
-                            <RiMoonFill/>
-                            <span>{t("strings:settings.dark_mode")}</span>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <Swap swapped={resolvedTheme === "light"} animation="fade">
+                        <SwapOn className="w-full flex flex-row items-center justify-center gap-x-2">
+                          <RiSunFill/>
+                          <span>{t("strings:settings.light_mode")}</span>
+                        </SwapOn>
+                        <SwapOff className="w-full flex flex-row items-center justify-center gap-x-2">
+                          <RiMoonFill/>
+                          <span>{t("strings:settings.dark_mode")}</span>
+                        </SwapOff>
+                      </Swap>
                     </Button>
                   </div>
                 </div>
@@ -458,24 +447,10 @@ export default function PublicHeader() {
                 )}
                 onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
               >
-                <AnimatePresence mode="popLayout">
-                  {resolvedTheme === "light" ? (
-                    <motion.div
-                      key="theme-light"
-                      initial={{opacity: 0, width: 0}}
-                      animate={{opacity: 1, width: 16}}
-                      exit={{opacity: 0, width: 0}}
-                    ><RiSunFill/></motion.div>
-                  ) : (
-                    <motion.div
-                      key="theme-dark"
-                      initial={{opacity: 0, width: 0}}
-                      animate={{opacity: 1, width: 16}}
-                      exit={{opacity: 0, width: 0}}
-                    ><RiMoonFill/></motion.div>
-                  )}
-                </AnimatePresence>
-
+                <Swap swapped={resolvedTheme === "light"} animation="rotate">
+                  <SwapOn><RiSunFill/></SwapOn>
+                  <SwapOff><RiMoonFill/></SwapOff>
+                </Swap>
                 <span className="sr-only">{t("strings:settings.toggle_theme")}</span>
               </MagneticButton>
             </div>
