@@ -1,0 +1,48 @@
+import type {UserRepository} from "@/domain/repository/UserRepository.ts"
+import {createStore} from "zustand"
+import {createZustandContext} from "@ienlab/react-library"
+import type { UserCredential } from "firebase/auth"
+
+interface LoginDetails {
+  email: string
+  password: string
+  errorCode: string | null
+}
+
+class LoginUiState {
+  item: LoginDetails = { email: "", password: "", errorCode: null }
+
+  constructor(partial?: Partial<LoginUiState>) {
+    Object.assign(this, partial)
+  }
+}
+
+type Props = {
+  userRepository: UserRepository
+}
+
+interface Store {
+  uiState: LoginUiState
+
+  updateUiState: (item: Partial<LoginDetails>) => void
+  login: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+}
+
+const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
+  uiState: new LoginUiState({}),
+
+  updateUiState: (item) => {
+    set(state => ({ uiState: new LoginUiState({ item: Object.assign(state.uiState.item, item) }) }))
+  },
+
+  login: async (onSuccess, onFailure) => {
+    const result = await props.userRepository.signInWithEmailAndPassword(get().uiState.item.email, get().uiState.item.password)
+    if (result.ok) {
+      onSuccess(result.data)
+    } else {
+      onFailure(result.errorKey)
+    }
+  }
+}))
+
+export const LoginViewModel = createZustandContext<Store, Props>(createViewModel)

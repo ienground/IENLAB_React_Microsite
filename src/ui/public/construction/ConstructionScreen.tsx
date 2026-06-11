@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button.tsx"
 import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {CrossfadeImage} from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
 

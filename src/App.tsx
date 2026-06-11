@@ -12,7 +12,7 @@ import {ThemeProvider, useTheme} from "@ienlab/react-library"
 import { Toaster } from "@/components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
-import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
+import LoadingLineReveal from "@/components/custom/shared/LoadingLineReveal.tsx"
 import {Cursor, useCursorState} from "motion-plus/react"
 
 export default function App() {

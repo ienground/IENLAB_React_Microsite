@@ -7,7 +7,7 @@ export default function AboutScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:about.label2")} - ${t("strings:ienlab")}`}
+        title={`${t("strings:about.label2")} - ${t("strings:app_name")}`}
         description={t("strings:og.description")}
       />
       <ConstructionScreen />

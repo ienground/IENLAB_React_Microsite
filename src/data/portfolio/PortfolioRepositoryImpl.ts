@@ -1,10 +1,28 @@
 import type {PortfolioRepository} from "@/domain/repository/PortfolioRepository.ts"
-import {collection, doc, endAt, getDoc, getDocs, limit, orderBy, query,
-  QueryConstraint, startAfter, startAt, where, type Firestore, type Unsubscribe} from "firebase/firestore"
+import {
+  collection,
+  query,
+  type Firestore,
+  type Unsubscribe,
+  orderBy,
+  startAfter, limit, getDocs, doc, getDoc, updateDoc,
+  deleteDoc,
+  runTransaction, type QueryConstraint, startAt, endAt,
+  where
+} from "firebase/firestore"
+import {deleteObject, listAll, ref, type FirebaseStorage} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
-import {type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
-import i18n from "@/locales/i18n.ts"
 import {Portfolio} from "@/domain/model/Portfolio.ts"
+import {PortfolioEditDetails} from "@/domain/model/PortfolioEditDetails.ts"
+import {
+  type FirestoreListMode,
+  getSnapshots, type ImageCompressionPolicy, FileUploadItem,
+  type InfScrollStateList, uploadCompressedImage,
+  uploadFile
+} from "@ienlab/react-library"
+import {StoragePath} from "@/constant/StoragePath.ts"
+import i18n from "@/locales/i18n.ts"
+import imageCompression from "browser-image-compression"
 
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef
@@ -13,7 +31,8 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   private searchKeyword = ""
 
   constructor(
-    private readonly firestore: Firestore
+    readonly firestore: Firestore,
+    readonly storage: FirebaseStorage
   ) {
     this.portfoliosRef = collection(firestore, FirestorePath.PORTFOLIO)
   }
@@ -27,14 +46,23 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   }
 
   async get(id: string): Promise<Portfolio | null> {
-    return await getDoc(doc(this.portfoliosRef, id)).then(Portfolio.fromSnapshot)
+    const snapshot = await getDoc(doc(this.portfoliosRef, id))
+    if (!snapshot.exists()) return null
+
+    return Portfolio.fromSnapshot(snapshot)
   }
 
   observe(id: string, callback: (item: (Portfolio | null)) => void, cache?: boolean): Unsubscribe {
     return getSnapshots(doc(this.portfoliosRef, id), snapshot => {
+      if (!snapshot.exists()) {
+        callback(null)
+        return
+      }
+
       callback(Portfolio.fromSnapshot(snapshot))
     }, { cache: cache })
   }
+
   observePrimaries(callback: (items: Portfolio[]) => void) {
     const q = query(
       this.portfoliosRef,
@@ -47,6 +75,113 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
         callback(snapshot.docs.map(Portfolio.fromSnapshot))
       }
     )
+  }
+
+  private getCompressionPolicy(path: string): ImageCompressionPolicy {
+    if (path.includes(StoragePath.Portfolio.LOGO)) {
+      return { maxWidthOrHeight: 512 }
+    }
+
+    if (
+      path.includes(StoragePath.Portfolio.THUMBNAIL_KO) ||
+      path.includes(StoragePath.Portfolio.THUMBNAIL_EN)
+    ) {
+      return { maxWidthOrHeight: 2560 }
+    }
+
+    return { maxWidthOrHeight: 2160 }
+  }
+
+  private async transformItem(id: string, item: PortfolioEditDetails) {
+    const logoDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.LOGO}`, item.logo, this.getCompressionPolicy(StoragePath.Portfolio.LOGO))
+    const thumbnailKoDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.THUMBNAIL_KO}`, item.thumbnail.ko, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_KO))
+    const thumbnailEnDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.THUMBNAIL_EN}`, item.thumbnail.en, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_EN))
+    const imageUrlsKoDownloadUrl = await Promise.all(item.imageUrls.ko.map((item, index) =>
+      uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.IMAGE_URLS_KO}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_KO)))
+    )
+    const imageUrlsEnDownloadUrl = await Promise.all(item.imageUrls.en.map((item, index) =>
+      uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.IMAGE_URLS_EN}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_EN)))
+    )
+
+    return new Portfolio({...item.toItem(),
+      logo: logoDownloadUrl,
+      thumbnail: { ko: thumbnailKoDownloadUrl, en: thumbnailEnDownloadUrl },
+      imageUrls: { ko: imageUrlsKoDownloadUrl, en: imageUrlsEnDownloadUrl }
+    })
+  }
+
+  async createPortfolio(id: string, item: PortfolioEditDetails): Promise<void> {
+    const ref = doc(this.portfoliosRef, id)
+    const target = await this.transformItem(id, item)
+
+    return await runTransaction(this.firestore, async (transaction) => {
+      const snapshot = await transaction.get(ref)
+
+      if (snapshot.exists()) {
+        throw new Error(`already-exist`)
+      }
+
+      transaction.set(ref, target.toHashMap(false))
+    })
+  }
+
+  /**
+   * 포트폴리오 정보를 수정합니다.
+   *
+   * 1) 기존 Firestore 문서에서 이미지 URL 목록을 조회합니다.
+   * 2) 사용자가 제거한 이미지(item.*.isEmpty)를 Storage에서 삭제합니다.
+   * 3) 새로 추가/교체된 이미지는 업로드 후 Firestore 문서를 갱신합니다.
+   *
+   * @param id       대상 포트폴리오 문서 ID
+   * @param item     수정할 포트폴리오 상세 정보 (FileUploadItem 포함)
+   */
+  async updatePortfolio(id: string, item: PortfolioEditDetails): Promise<void> {
+    const existingItem = await this.get(id)
+
+    if (existingItem) {
+      const deleteOps: Promise<void>[] = []
+
+      if (item.logo.isEmpty && existingItem.logo) {
+        deleteOps.push(deleteObject(ref(this.storage, existingItem.logo)).catch(() => {}))
+      }
+
+      if (item.thumbnail.ko.isEmpty && existingItem.thumbnail.ko) {
+        deleteOps.push(deleteObject(ref(this.storage, existingItem.thumbnail.ko)).catch(() => {}))
+      }
+
+      if (item.thumbnail.en.isEmpty && existingItem.thumbnail.en) {
+        deleteOps.push(deleteObject(ref(this.storage, existingItem.thumbnail.en)).catch(() => {}))
+      }
+
+      for (let i = 0; i < existingItem.imageUrls.ko.length; i++) {
+        if ((i >= item.imageUrls.ko.length || item.imageUrls.ko[i].isEmpty) && existingItem.imageUrls.ko[i]) {
+          deleteOps.push(deleteObject(ref(this.storage, existingItem.imageUrls.ko[i])).catch(() => {}))
+        }
+      }
+
+      for (let i = 0; i < existingItem.imageUrls.en.length; i++) {
+        if ((i >= item.imageUrls.en.length || item.imageUrls.en[i].isEmpty) && existingItem.imageUrls.en[i]) {
+          deleteOps.push(deleteObject(ref(this.storage, existingItem.imageUrls.en[i])).catch(() => {}))
+        }
+      }
+
+      await Promise.all(deleteOps)
+    }
+
+    const target = await this.transformItem(id, item)
+    return await updateDoc(doc(this.portfoliosRef, id), target.toHashMap(true))
+  }
+
+  async deletePortfolio(id: string): Promise<void> {
+    const storageRef = ref(this.storage, `${StoragePath.PORTFOLIO}/${id}`)
+    try {
+      const result = await listAll(storageRef)
+      await Promise.all(result.items.map(item => deleteObject(item)))
+    } catch (e) {
+      console.warn("Failed to delete storage files for portfolio", id, e)
+    }
+
+    return await deleteDoc(doc(this.portfoliosRef, id))
   }
 
   setSearchKeyword(keyword: string) {
@@ -83,7 +218,6 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
         constraints.push(startAfter(this.portfolioInfoStateList.lastVisibleDocument))
       }
 
-      constraints.push(where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED))
       constraints.push(limit(this.PAGE_SIZE))
 
       const snapshot = await getDocs(query(this.portfoliosRef, ...constraints))
@@ -120,6 +254,4 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
       hasMore: true,
     }
   }
-
-
 }

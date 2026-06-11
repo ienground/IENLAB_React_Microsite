@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx"
@@ -19,7 +19,7 @@ export default function PrivacyScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:privacy_policy.label")} - ${t("strings:ienlab")}`}
+        title={`${t("strings:privacy_policy.label")} - ${t("strings:app_name")}`}
         description={t("strings:privacy_policy.desc")}
       />
       <ScreenBody />

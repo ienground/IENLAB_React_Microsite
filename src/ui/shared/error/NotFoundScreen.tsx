@@ -1,9 +1,9 @@
 import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 import {RiArrowLeftLine} from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 
 export default function NotFoundScreen() {
   const navigate = useNavigate()

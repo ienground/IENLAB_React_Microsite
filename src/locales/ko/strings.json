@@ -17,6 +17,7 @@
   "add_assets": "애셋 추가",
   "add_new_item": "새 항목 추가",
   "amount": "개수",
+  "app_name": "아이엔랩 ienlab",
   "available_soon": "지원 예정",
   "back_to_home": "처음 화면으로",
   "cancel": "취소",
@@ -100,7 +101,6 @@
       }
     }
   },
-  "ienlab": "아이엔랩 ienlab",
   "input_developer": "개발자를 입력하세요..",
   "input_email": "이메일을 입력하세요..",
   "input_name": "이름을 입력하세요..",

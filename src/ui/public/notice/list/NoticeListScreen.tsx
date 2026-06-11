@@ -7,7 +7,7 @@ export default function NoticeListScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:notice.label")} - ${t("strings:ienlab")}`}
+        title={`${t("strings:notice.label")} - ${t("strings:app_name")}`}
         description={t("strings:notice.desc")}
       />
       <ConstructionScreen />
