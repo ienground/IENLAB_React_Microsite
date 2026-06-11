@@ -23,6 +23,8 @@ import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
 import {userRepository} from "@/di/container.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
+import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
 
 export function getRouter(t: TFunction) {
   return createBrowserRouter([
@@ -87,7 +89,15 @@ export function getRouter(t: TFunction) {
             {
               path: ClientHomeDestination.root,
               element: <></>
-            }
+            },
+            {
+              path: ClientUserDestination.root,
+              element: <></>
+            },
+            {
+              path: ClientOutsourceDestination.root,
+              element: <></>
+            },
           ]
         }
       ]

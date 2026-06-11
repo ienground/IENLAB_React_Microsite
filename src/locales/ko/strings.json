@@ -25,7 +25,10 @@
   "company_placeholder": "회사 검색..",
   "confirm": "확인",
   "console": {
-    "label": "콘솔"
+    "label": "콘솔",
+    "user_edit": {
+      "label": "사용자 정보 수정"
+    }
   },
   "content_count": "{{cnt}}개의 항목",
   "create_date": "생성일",

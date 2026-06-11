@@ -5,7 +5,7 @@ import {
   SidebarGroup, SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu, SidebarMenuAction, SidebarMenuButton,
-  SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarRail, useSidebar,
+  SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar,
 } from "@/components/ui/sidebar"
 import type {User} from "@/domain/model/User"
 import {
@@ -15,15 +15,13 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {useTranslation} from "react-i18next";
 import {
-  RiArrowDropRightLine, RiArrowRightSLine,
-  RiArrowUpSLine, RiBuildingFill,
-  RiErrorWarningFill,
-  RiFileList3Fill, RiMegaphone2Fill,
+  RiArrowRightSLine,
+  RiArrowUpSLine, RiErrorWarningFill,
   RiMoonFill,
-  RiSunFill, RiTaskFill, RiUser3Fill, RiWallet3Fill
+  RiSunFill, RiTaskFill
 } from "@remixicon/react";
 import imgLogoColor from "@/assets/brand/logo512.png";
 import {CrossfadeImage, useTheme} from "@ienlab/react-library";
@@ -36,11 +34,12 @@ import {
   AlertDialogTitle
 } from "@/components/ui/alert-dialog.tsx";
 import {toast} from "sonner";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
 import {Swap, SwapOff, SwapOn } from "@/components/ui/swap";
-import {cn} from "@/lib/utils.ts"
 import {MagneticButton} from "@/components/motion/components.tsx"
+import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
 
 interface AppSidebarProps {
   user: User | null
@@ -67,59 +66,30 @@ type SidebarDataItem = {
 export function AppSidebar(props: AppSidebarProps) {
   const {t} = useTranslation()
   const {resolvedTheme, setTheme} = useTheme()
+  const navigate = useNavigate()
   const {isMobile, setOpenMobile} = useSidebar()
   const [showLogoutDialog, setShowLogoutDialog] = useState(false)
   const data: SidebarDataGroup[] = useMemo(() => [
-    // {
-    //   title: t("strings:website_manage.label"),
-    //   items: [
-    //     {
-    //       title: t("strings:website_manage.portfolio.label"),
-    //       url: PortfolioDestination.root,
-    //       icon: <RiFileList3Fill />,
-    //     },
-    //     {
-    //       title: t("strings:website_manage.notice.label"),
-    //       url: NoticeDestination.root,
-    //       icon: <RiMegaphone2Fill />,
-    //       items: [
-    //         {
-    //           title: t("strings:website_manage.notice.category"),
-    //           url: NoticeDestination.category.list
-    //         },
-    //         {
-    //           title: t("strings:website_manage.notice.board"),
-    //           url: NoticeDestination.board.list
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // },
-    // {
-    //   title: t("strings:outsource_manage.label"),
-    //   items: [
-    //     {
-    //       title: t("strings:outsource_manage.budget.label"),
-    //       url: BudgetDestination.root,
-    //       icon: <RiWallet3Fill />
-    //     },
-    //     {
-    //       title: t("strings:outsource_manage.company.label"),
-    //       url: CompanyDestination.root,
-    //       icon: <RiBuildingFill />
-    //     },
-    //     {
-    //       title: t("strings:outsource_manage.user.label"),
-    //       url: UserDestination.root,
-    //       icon: <RiUser3Fill />
-    //     },
-    //     {
-    //       title: t("strings:outsource_manage.outsource.label"),
-    //       url: OutsourceDestination.root,
-    //       icon: <RiTaskFill />
-    //     }
-    //   ]
-    // }
+    {
+      title: t("strings:outsource_manage.label"),
+      items: [
+        // {
+        //   title: t("strings:outsource_manage.budget.label"),
+        //   url: BudgetDestination.root,
+        //   icon: <RiWallet3Fill />
+        // },
+        // {
+        //   title: t("strings:outsource_manage.company.label"),
+        //   url: CompanyDestination.root,
+        //   icon: <RiBuildingFill />
+        // },
+        {
+          title: t("strings:outsource_manage.outsource.label"),
+          url: ClientOutsourceDestination.root,
+          icon: <RiTaskFill />
+        }
+      ]
+    }
   ], [t])
 
   return (
@@ -217,6 +187,7 @@ export function AppSidebar(props: AppSidebarProps) {
                   align="end"
                   className="w-[--radix-popper-anchor-width]"
                 >
+                  <DropdownMenuItem onClick={() => navigate(ClientUserDestination.root)}><span>{t("strings:console.user_edit.label")}</span></DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setShowLogoutDialog(true)}><span>{t("strings:signout.label")}</span></DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

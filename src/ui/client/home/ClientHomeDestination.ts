@@ -1,3 +1,3 @@
 export const ClientHomeDestination = {
-  root: "/home" as const
+  root: "/client" as const
 } as const
