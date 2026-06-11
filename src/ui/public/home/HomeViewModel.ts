@@ -1,4 +1,4 @@
-import {Portfolio} from "@/domain/model/Portfolio.tsx"
+import {Portfolio} from "@/domain/model/Portfolio.ts"
 import type { PortfolioRepository } from "@/domain/repository/PortfolioRepository"
 import {createStore} from "zustand"
 import {createZustandContext} from "@ienlab/react-library"

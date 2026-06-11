@@ -1,10 +1,7 @@
-import { FirestorePath } from "@/constant/FirestorePath"
-import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library"
-import {DocumentReference, DocumentSnapshot, FieldValue, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore"
-import type {TFunction} from "i18next"
-import {RiAppleFill, RiComputerFill, RiPagesFill} from "@remixicon/react"
-import IcAndroid from "@/assets/icon/android.svg?react"
-import IcArduino from "@/assets/icon/arduino.svg?react"
+import { FirestorePath } from "@/constant/FirestorePath";
+import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
+import {DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore";
+import type {TFunction} from "i18next";
 
 export class Portfolio implements FirestoreItem {
   id: string = ""
@@ -57,13 +54,13 @@ export class Portfolio implements FirestoreItem {
       [FirestorePath.Portfolio.GOOGLE_PLAY_LINK]: this.googlePlayLink,
       [FirestorePath.Portfolio.APP_STORE_LINK]: this.appStoreLink,
       [FirestorePath.Portfolio.IMAGE_URLS]: this.imageUrls
-    }
+    };
 
     if (!isUpdate) {
       map[FirestorePath.CREATE_AT] = serverTimestamp()
     }
 
-    return map
+    return map;
   }
 
   static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Portfolio {
@@ -100,10 +97,10 @@ export namespace Portfolio {
   export namespace IsPrimary {
     export const Default = false
     export function getLabel(t: TFunction, value: boolean) {
-      return value ? t("strings:type.portfolio.is_primary.true.title") : t("strings:type.portfolio.is_primary.false.title")
+      return value ? t("types:portfolio.is_primary.true.title") : t("types:portfolio.is_primary.false.title")
     }
     export function getDescription(t: TFunction, value: boolean) {
-      return value ? t("strings:type.portfolio.is_primary.true.desc") : t("strings:type.portfolio.is_primary.false.desc")
+      return value ? t("types:portfolio.is_primary.true.desc") : t("types:portfolio.is_primary.false.desc")
     }
   }
 
@@ -118,18 +115,18 @@ export namespace Portfolio {
     ]
     export function getLabel(t: TFunction, value: Visibility) {
       const map = {
-        [Visibility.DRAFT]: t("strings:type.portfolio.visibility.draft.title"),
-        [Visibility.PUBLISHED]: t("strings:type.portfolio.visibility.published.title"),
-        [Visibility.ARCHIVED]: t("strings:type.portfolio.visibility.archived.title"),
+        [Visibility.DRAFT]: t("types:portfolio.visibility.draft.title"),
+        [Visibility.PUBLISHED]: t("types:portfolio.visibility.published.title"),
+        [Visibility.ARCHIVED]: t("types:portfolio.visibility.archived.title"),
       }
 
       return map[value]
     }
     export function getDescription(t: TFunction, value: Visibility) {
       const map = {
-        [Visibility.DRAFT]: t("strings:type.portfolio.visibility.draft.desc"),
-        [Visibility.PUBLISHED]: t("strings:type.portfolio.visibility.published.desc"),
-        [Visibility.ARCHIVED]: t("strings:type.portfolio.visibility.archived.desc"),
+        [Visibility.DRAFT]: t("types:portfolio.visibility.draft.desc"),
+        [Visibility.PUBLISHED]: t("types:portfolio.visibility.published.desc"),
+        [Visibility.ARCHIVED]: t("types:portfolio.visibility.archived.desc"),
       }
 
       return map[value]
@@ -151,23 +148,21 @@ export namespace Portfolio {
 
   export namespace State {
     export const Default = State.LAUNCHED
-    export const values = [
-      State.WORKING, State.LAUNCHED, State.DONE
-    ]
+    export const values = [State.WORKING, State.LAUNCHED, State.DONE]
     export function getLabel(t: TFunction, value: State) {
       const map = {
-        [State.WORKING]: t("strings:type.portfolio.state.working.title"),
-        [State.LAUNCHED]: t("strings:type.portfolio.state.launched.title"),
-        [State.DONE]: t("strings:type.portfolio.state.done.title")
-      }
+        [State.WORKING]: t("types:portfolio.state.working.title"),
+        [State.LAUNCHED]: t("types:portfolio.state.launched.title"),
+        [State.DONE]: t("types:portfolio.state.done.title")
+      };
 
       return map[value]
     }
     export function getDescription(t: TFunction, value: State) {
       const map = {
-        [State.WORKING]: t("strings:type.portfolio.state.working.desc"),
-        [State.LAUNCHED]: t("strings:type.portfolio.state.launched.desc"),
-        [State.DONE]: t("strings:type.portfolio.state.done.desc")
+        [State.WORKING]: t("types:portfolio.state.working.desc"),
+        [State.LAUNCHED]: t("types:portfolio.state.launched.desc"),
+        [State.DONE]: t("types:portfolio.state.done.desc")
       }
 
       return map[value]
@@ -188,27 +183,25 @@ export namespace Portfolio {
   }
 
   export namespace Category {
-    export const values = [
-      Category.UTILITY, Category.CREATIVE_COMPUTING, Category.GAME, Category.PHYSICAL_COMPUTING, Category.SOCIAL
-    ]
+    export const values = [Category.UTILITY, Category.CREATIVE_COMPUTING, Category.GAME, Category.PHYSICAL_COMPUTING, Category.SOCIAL]
     export function getLabel(t: TFunction, value: Category) {
       const map = {
-        [Category.UTILITY]: t("strings:type.portfolio.category.utility.title"),
-        [Category.CREATIVE_COMPUTING]: t("strings:type.portfolio.category.creative_computing.title"),
-        [Category.GAME]: t("strings:type.portfolio.category.game.title"),
-        [Category.PHYSICAL_COMPUTING]: t("strings:type.portfolio.category.physical_computing.title"),
-        [Category.SOCIAL]: t("strings:type.portfolio.category.social.title")
+        [Category.UTILITY]: t("types:portfolio.category.utility.title"),
+        [Category.CREATIVE_COMPUTING]: t("types:portfolio.category.creative_computing.title"),
+        [Category.GAME]: t("types:portfolio.category.game.title"),
+        [Category.PHYSICAL_COMPUTING]: t("types:portfolio.category.physical_computing.title"),
+        [Category.SOCIAL]: t("types:portfolio.category.social.title")
       }
 
       return map[value]
     }
     export function getDescription(t: TFunction, value: Category) {
       const map = {
-        [Category.UTILITY]: t("strings:type.portfolio.category.utility.desc"),
-        [Category.CREATIVE_COMPUTING]: t("strings:type.portfolio.category.creative_computing.desc"),
-        [Category.GAME]: t("strings:type.portfolio.category.game.desc"),
-        [Category.PHYSICAL_COMPUTING]: t("strings:type.portfolio.category.physical_computing.desc"),
-        [Category.SOCIAL]: t("strings:type.portfolio.category.social.desc")
+        [Category.UTILITY]: t("types:portfolio.category.utility.desc"),
+        [Category.CREATIVE_COMPUTING]: t("types:portfolio.category.creative_computing.desc"),
+        [Category.GAME]: t("types:portfolio.category.game.desc"),
+        [Category.PHYSICAL_COMPUTING]: t("types:portfolio.category.physical_computing.desc"),
+        [Category.SOCIAL]: t("types:portfolio.category.social.desc")
       }
 
       return map[value]
@@ -241,33 +234,22 @@ export namespace Portfolio {
     ]
     export function getLabel(t: TFunction, value: Platform) {
       const map = {
-        [Platform.ANDROID]: t("strings:type.portfolio.platform.android.title"),
-        [Platform.IOS]: t("strings:type.portfolio.platform.ios.title"),
-        [Platform.WEB]: t("strings:type.portfolio.platform.web.title"),
-        [Platform.PC]: t("strings:type.portfolio.platform.pc.title"),
-        [Platform.ARDUINO]: t("strings:type.portfolio.platform.arduino.title"),
+        [Platform.ANDROID]: t("types:portfolio.platform.android.title"),
+        [Platform.IOS]: t("types:portfolio.platform.ios.title"),
+        [Platform.WEB]: t("types:portfolio.platform.web.title"),
+        [Platform.PC]: t("types:portfolio.platform.pc.title"),
+        [Platform.ARDUINO]: t("types:portfolio.platform.arduino.title"),
       }
 
       return map[value]
     }
     export function getDescription(t: TFunction, value: Platform) {
       const map = {
-        [Platform.ANDROID]: t("strings:type.portfolio.platform.android.desc"),
-        [Platform.IOS]: t("strings:type.portfolio.platform.ios.desc"),
-        [Platform.WEB]: t("strings:type.portfolio.platform.web.desc"),
-        [Platform.PC]: t("strings:type.portfolio.platform.pc.desc"),
-        [Platform.ARDUINO]: t("strings:type.portfolio.platform.arduino.desc"),
-      }
-
-      return map[value]
-    }
-    export function getIcon(value: Platform, size: number = 16) {
-      const map = {
-        [Platform.ANDROID]: <IcAndroid style={{ width: size, height: size }} />,
-        [Platform.IOS]: <RiAppleFill size={size} />,
-        [Platform.WEB]: <RiPagesFill size={size} />,
-        [Platform.PC]: <RiComputerFill size={size} />,
-        [Platform.ARDUINO]: <IcArduino style={{ width: size, height: size }} />,
+        [Platform.ANDROID]: t("types:portfolio.platform.android.desc"),
+        [Platform.IOS]: t("types:portfolio.platform.ios.desc"),
+        [Platform.WEB]: t("types:portfolio.platform.web.desc"),
+        [Platform.PC]: t("types:portfolio.platform.pc.desc"),
+        [Platform.ARDUINO]: t("types:portfolio.platform.arduino.desc"),
       }
 
       return map[value]

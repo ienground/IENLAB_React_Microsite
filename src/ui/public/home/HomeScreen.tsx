@@ -14,7 +14,7 @@ import {splitText} from "motion-plus"
 import {animate, delay, stagger, wrap} from "motion"
 import {cn} from "@/lib/utils.ts"
 import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts"
-import {Portfolio} from "@/domain/model/Portfolio.tsx"
+import {Portfolio} from "@/domain/model/Portfolio.ts"
 import {portfolioRepository} from "@/di/container.ts"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
@@ -51,6 +51,7 @@ import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import { Seo } from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
+import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
 
 type CarouselItem = {
   id: string
@@ -832,7 +833,7 @@ function PortfolioItemContent({
               <motion.div className="mt-2 flex flex-row items-center gap-1">
                 {item.platforms.map((platform) => (
                   <span key={platform}>
-                    {Portfolio.Platform.getIcon(platform, 18)}
+                    {PortfolioX.Platform.getIcon(platform, 18)}
                   </span>
                 ))}
               </motion.div>
@@ -1076,7 +1077,7 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
                     {item.platforms.map(platform => (
                       <Badge key={platform} className={Portfolio.Platform.getBadgeColor(platform)}>
                         <div data-icon="inline-start" className="mr-1">
-                          {Portfolio.Platform.getIcon(platform, 12)}
+                          {PortfolioX.Platform.getIcon(platform, 12)}
                         </div>
                         <div>{Portfolio.Platform.getLabel(t, platform)}</div>
                       </Badge>

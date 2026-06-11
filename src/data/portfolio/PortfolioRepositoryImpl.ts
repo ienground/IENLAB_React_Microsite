@@ -4,7 +4,7 @@ import {collection, doc, endAt, getDoc, getDocs, limit, orderBy, query,
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
 import i18n from "@/locales/i18n.ts"
-import {Portfolio} from "@/domain/model/Portfolio.tsx"
+import {Portfolio} from "@/domain/model/Portfolio.ts"
 
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef
