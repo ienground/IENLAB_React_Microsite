@@ -54,7 +54,7 @@ export const FirestorePath = {
     CATEGORY: "category", // string, id
     TITLE: "title", // string
     CONTENT: "content", // string
-    IMAGE_URLS: "imageUrls", // string[\,
+    IMAGE_URLS: "imageUrls", // string[]
     FIXED: "fixed", // boolean
 
     Category: {
@@ -122,10 +122,6 @@ export const FirestorePath = {
     PLATFORMS: "platforms",
     /** DocumentReference */
     ESTIMATE: "estimate",
-    /** number */
-    ESTIMATE_AMOUNT: "estimateAmount",
-    /** number */
-    REVISION_REQUEST_AMOUNT: "revisionRequestAmount",
     /** Timestamp | null */
     QUOTED_AT: "quotedAt",
     /** Timestamp | null */
@@ -146,9 +142,11 @@ export const FirestorePath = {
     /** Collection */
     REVISION_REQUESTS: "revisionRequests",
     RevisionRequest: {
-      /** Record<Locale, string> */
+      /** DocumentReference | null */
+      TARGET_OUTSOURCE: "targetOutsource",
+      /** string */
       TITLE: "title",
-      /** Record<Locale, string> */
+      /** string */
       REASON: "reason",
       /** number */
       AMOUNT_DELTA: "amountDelta",
@@ -163,7 +161,9 @@ export const FirestorePath = {
       /** Timestamp | null */
       REJECTED_AT: "rejectedAt",
       /** Timestamp | null */
-      APPLIED_AT: "appliedAt"
+      APPLIED_AT: "appliedAt",
+      /** string[] */
+      IMAGE_URLS: "imageUrls"
     },
 
     /** Collection */
@@ -190,7 +190,9 @@ export const FirestorePath = {
         /** Record<Locale, string> */
         LABEL: "label",
         /** boolean */
-        SECURE: "secure"
+        SECURE: "secure",
+        /** number */
+        MAX_LENGTH: "maxLength"
       },
 
       Media: {
@@ -202,6 +204,12 @@ export const FirestorePath = {
         MAX_COUNT: "maxCount",
         /** number */
         ALLOWED_TYPE: "allowedType",
+        /** number (MB) */
+        MAX_FILE_SIZE: "maxFileSize",
+        /** string | null (e.g. "1/1") */
+        ASPECT_RATIO: "aspectRatio",
+        /** string | null (e.g. "100x100") */
+        SIZE_CONSTRAINT: "sizeConstraint",
         /** Map[] */
         FILES: "files",
 

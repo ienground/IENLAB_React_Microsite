@@ -4,7 +4,8 @@
   "version": "4.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "predev": "node ../scripts/sync-firestore-path.js --watch &",
+    "dev": "vite --port 5301",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/generate-og-pages.js",
     "lint": "eslint .",
