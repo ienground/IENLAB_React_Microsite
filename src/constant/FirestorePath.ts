@@ -110,7 +110,6 @@ export const FirestorePath = {
   },
 
   Outsource: {
-    /** DocumentReference */
     TARGET_COMPANY: "targetCompany",
     /** Record<Locale, string> */
     TITLE: "title",
@@ -142,8 +141,6 @@ export const FirestorePath = {
     /** Collection */
     REVISION_REQUESTS: "revisionRequests",
     RevisionRequest: {
-      /** DocumentReference | null */
-      TARGET_OUTSOURCE: "targetOutsource",
       /** string */
       TITLE: "title",
       /** string */
@@ -167,12 +164,27 @@ export const FirestorePath = {
     },
 
     /** Collection */
+    WORK_LOGS: "workLogs",
+    WorkLog: {
+      /** string */
+      TITLE: "title",
+      /** string */
+      CONTENT: "content",
+      /** number */
+      STATE: "state",
+      /** Timestamp */
+      WORK_DATE: "workDate",
+      /** number */
+      DURATION_MINUTES: "durationMinutes",
+      /** string[] */
+      IMAGE_URLS: "imageUrls",
+    },
+
+    /** Collection */
     INFO_REQUESTS: "infoRequests",
     InfoRequest: {
       /** Timestamp */
       EXPIRE_AT: "expireAt",
-      /** DocumentReference | null */
-      TARGET_OUTSOURCE: "targetOutsource",
       /** number */
       STATE: "state",
       /** Record<Locale, string> */

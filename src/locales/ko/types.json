@@ -78,7 +78,7 @@
         },
         "approved": {
           "dev": {
-            "label": "승인됨"
+            "label": "승인함"
           }
         },
         "draft": {
@@ -108,6 +108,19 @@
       "paused": {
         "desc": "일시 정지된 외주입니다. 일시 정지된 일자를 작성해 주세요.",
         "label": "일시 정지"
+      }
+    },
+    "work_log": {
+      "state": {
+        "done": {
+          "label": "완료"
+        },
+        "in_progress": {
+          "label": "진행 중"
+        },
+        "planned": {
+          "label": "계획됨"
+        }
       }
     }
   },
