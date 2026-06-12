@@ -18,7 +18,7 @@ import {
   type FirestoreListMode,
   getSnapshots, type ImageCompressionPolicy, FileUploadItem,
   type InfScrollStateList, uploadCompressedImage,
-  uploadFile
+  uploadFile, deleteStorageItems
 } from "@ienlab/react-library"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import i18n from "@/locales/i18n.ts"
@@ -26,6 +26,7 @@ import imageCompression from "browser-image-compression"
 
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef
+  private readonly storageRef
   private readonly PAGE_SIZE = 20
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
@@ -35,6 +36,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     readonly storage: FirebaseStorage
   ) {
     this.portfoliosRef = collection(firestore, FirestorePath.PORTFOLIO)
+    this.storageRef = ref(storage, StoragePath.PORTFOLIO)
   }
 
   portfolioInfoStateList: InfScrollStateList<Portfolio> = {
@@ -93,14 +95,14 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   }
 
   private async transformItem(id: string, item: PortfolioEditDetails) {
-    const logoDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.LOGO}`, item.logo, this.getCompressionPolicy(StoragePath.Portfolio.LOGO))
-    const thumbnailKoDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.THUMBNAIL_KO}`, item.thumbnail.ko, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_KO))
-    const thumbnailEnDownloadUrl = await uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.THUMBNAIL_EN}`, item.thumbnail.en, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_EN))
+    const logoDownloadUrl = await uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Portfolio.LOGO}`, item.logo, this.getCompressionPolicy(StoragePath.Portfolio.LOGO))
+    const thumbnailKoDownloadUrl = await uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Portfolio.THUMBNAIL_KO}`, item.thumbnail.ko, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_KO))
+    const thumbnailEnDownloadUrl = await uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Portfolio.THUMBNAIL_EN}`, item.thumbnail.en, this.getCompressionPolicy(StoragePath.Portfolio.THUMBNAIL_EN))
     const imageUrlsKoDownloadUrl = await Promise.all(item.imageUrls.ko.map((item, index) =>
-      uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.IMAGE_URLS_KO}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_KO)))
+      uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Portfolio.IMAGE_URLS_KO}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_KO)))
     )
     const imageUrlsEnDownloadUrl = await Promise.all(item.imageUrls.en.map((item, index) =>
-      uploadCompressedImage(this.storage, `${StoragePath.PORTFOLIO}/${id}/${StoragePath.Portfolio.IMAGE_URLS_EN}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_EN)))
+      uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Portfolio.IMAGE_URLS_EN}_${index}`, item, this.getCompressionPolicy(StoragePath.Portfolio.IMAGE_URLS_EN)))
     )
 
     return new Portfolio({...item.toItem(),
@@ -139,33 +141,17 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     const existingItem = await this.get(id)
 
     if (existingItem) {
-      const deleteOps: Promise<void>[] = []
-
-      if (item.logo.isEmpty && existingItem.logo) {
-        deleteOps.push(deleteObject(ref(this.storage, existingItem.logo)).catch(() => {}))
-      }
-
-      if (item.thumbnail.ko.isEmpty && existingItem.thumbnail.ko) {
-        deleteOps.push(deleteObject(ref(this.storage, existingItem.thumbnail.ko)).catch(() => {}))
-      }
-
-      if (item.thumbnail.en.isEmpty && existingItem.thumbnail.en) {
-        deleteOps.push(deleteObject(ref(this.storage, existingItem.thumbnail.en)).catch(() => {}))
-      }
-
-      for (let i = 0; i < existingItem.imageUrls.ko.length; i++) {
-        if ((i >= item.imageUrls.ko.length || item.imageUrls.ko[i].isEmpty) && existingItem.imageUrls.ko[i]) {
-          deleteOps.push(deleteObject(ref(this.storage, existingItem.imageUrls.ko[i])).catch(() => {}))
-        }
-      }
-
-      for (let i = 0; i < existingItem.imageUrls.en.length; i++) {
-        if ((i >= item.imageUrls.en.length || item.imageUrls.en[i].isEmpty) && existingItem.imageUrls.en[i]) {
-          deleteOps.push(deleteObject(ref(this.storage, existingItem.imageUrls.en[i])).catch(() => {}))
-        }
-      }
-
-      await Promise.all(deleteOps)
+      await deleteStorageItems(this.storage, [
+        { item: item.logo, url: existingItem.logo },
+        { item: item.thumbnail.ko, url: existingItem.thumbnail.ko },
+        { item: item.thumbnail.en, url: existingItem.thumbnail.en },
+        existingItem.imageUrls.ko.map((url, index) => (
+          { item: item.imageUrls.ko[index], url }
+        )),
+        existingItem.imageUrls.en.map((url, index) => (
+          { item: item.imageUrls.en[index], url }
+        )),
+      ])
     }
 
     const target = await this.transformItem(id, item)

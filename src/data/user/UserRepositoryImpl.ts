@@ -26,21 +26,25 @@ import {
 } from "firebase/auth"
 import { User } from "@/domain/model/User.ts"
 import {
+  deleteStorageItems,
   fetchItems,
   type FirestoreListMode,
   getAuthErrorKey,
   getSnapshots,
   type InfScrollStateList,
-  type SignInResult,
+  type SignInResult, uploadCompressedImage,
 } from "@ienlab/react-library"
 import { FirebaseError } from "firebase/app"
 import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
+import {type FirebaseStorage, ref} from "firebase/storage"
+import {StoragePath} from "@/constant/StoragePath.ts"
 
 export class UserRepositoryImpl implements UserRepository {
   private readonly auth: Auth
   private readonly usersRef
   private readonly companiesRef
+  private readonly storageRef
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -57,10 +61,12 @@ export class UserRepositoryImpl implements UserRepository {
 
   constructor(
     firestore: Firestore,
+    readonly storage: FirebaseStorage,
     auth: Auth
   ) {
     this.usersRef = collection(firestore, FirestorePath.USER)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
+    this.storageRef = ref(storage, StoragePath.USER)
     this.auth = auth
   }
 
@@ -155,8 +161,22 @@ export class UserRepositoryImpl implements UserRepository {
     }, { cache: cache })
   }
 
+  private async transformItem(id: string, item: UserEditDetails) {
+    const profileDownloadUrl = await uploadCompressedImage(this.storageRef, `${id}/${StoragePath.User.PROFILE_URL}`, item.profileUrl, { maxWidthOrHeight: 1024 })
+
+    return new User({...item.toItem(), profileUrl: profileDownloadUrl})
+  }
+
   async updateUser(id: string, item: UserEditDetails): Promise<void> {
-    const target = item.toItem()
+    const existingItem = await this.get(id)
+
+    if (existingItem) {
+      await deleteStorageItems(this.storage, [
+        { item: item.profileUrl, url: existingItem.profileUrl },
+      ])
+    }
+
+    const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
   }
 

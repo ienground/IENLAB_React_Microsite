@@ -1,4 +1,4 @@
-import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
+import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library"
 import {
   type DocumentReference,
   type DocumentSnapshot,
@@ -6,8 +6,8 @@ import {
   type QueryDocumentSnapshot,
   serverTimestamp,
   Timestamp
-} from "firebase/firestore";
-import {FirestorePath} from "@/constant/FirestorePath.ts";
+} from "firebase/firestore"
+import {FirestorePath} from "@/constant/FirestorePath.ts"
 import type {TFunction} from "i18next"
 
 export class Company implements FirestoreItem {

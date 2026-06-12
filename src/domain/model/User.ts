@@ -1,4 +1,4 @@
-import {type BadgeColor, type FirestoreItem, snapshotToData} from "@ienlab/react-library";
+import {type BadgeColor, type FirestoreItem, snapshotToData} from "@ienlab/react-library"
 import {
   DocumentReference,
   DocumentSnapshot,
@@ -6,9 +6,9 @@ import {
   QueryDocumentSnapshot,
   serverTimestamp,
   Timestamp
-} from "firebase/firestore";
-import {FirestorePath} from "@/constant/FirestorePath.ts";
-import type {Company} from "@/domain/model/Company.ts";
+} from "firebase/firestore"
+import {FirestorePath} from "@/constant/FirestorePath.ts"
+import type {Company} from "@/domain/model/Company.ts"
 import type {TFunction} from "i18next"
 
 export class User implements FirestoreItem {
@@ -19,6 +19,7 @@ export class User implements FirestoreItem {
   deletedAt: Timestamp | null = null
   visitAt: Timestamp = Timestamp.now()
   name: string = ""
+  profileUrl: string = ""
   companyRef: DocumentReference | null = null
   company: Company | null = null
   level: User.Level = User.Level.Default
@@ -36,6 +37,7 @@ export class User implements FirestoreItem {
       [FirestorePath.DELETED_AT]: this.deletedAt,
       [FirestorePath.User.VISIT_AT]: this.visitAt,
       [FirestorePath.User.NAME]: this.name,
+      [FirestorePath.User.PROFILE_URL]: this.profileUrl,
       [FirestorePath.User.COMPANY]: this.companyRef,
       [FirestorePath.User.LEVEL]: this.level,
       [FirestorePath.User.STATE]: this.state,
@@ -60,6 +62,7 @@ export class User implements FirestoreItem {
       deletedAt: doc[FirestorePath.DELETED_AT],
       visitAt: doc[FirestorePath.User.VISIT_AT],
       name: doc[FirestorePath.User.NAME],
+      profileUrl: doc[FirestorePath.User.PROFILE_URL],
       companyRef: doc[FirestorePath.User.COMPANY],
       level: doc[FirestorePath.User.LEVEL],
       state: doc[FirestorePath.User.STATE],

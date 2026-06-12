@@ -13,30 +13,30 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Avatar, AvatarFallback} from "@/components/ui/avatar";
-import {useTranslation} from "react-i18next";
+} from "@/components/ui/dropdown-menu.tsx"
+import {Button} from "@/components/ui/button.tsx"
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
+import {useTranslation} from "react-i18next"
 import {
   RiArrowRightSLine,
   RiArrowUpSLine, RiErrorWarningFill,
   RiMoonFill,
   RiSunFill, RiTaskFill
-} from "@remixicon/react";
-import imgLogoColor from "@/assets/brand/logo512.png";
-import {CrossfadeImage, useTheme} from "@ienlab/react-library";
-import {type ReactNode, useMemo, useState} from "react";
+} from "@remixicon/react"
+import imgLogoColor from "@/assets/brand/logo512.png"
+import {CrossfadeImage, useTheme} from "@ienlab/react-library"
+import {type ReactNode, useMemo, useState} from "react"
 import {
   AlertDialog,
   AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
-} from "@/components/ui/alert-dialog.tsx";
-import {toast} from "sonner";
-import {Link, useNavigate} from "react-router";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx";
-import {Swap, SwapOff, SwapOn } from "@/components/ui/swap";
+} from "@/components/ui/alert-dialog.tsx"
+import {toast} from "sonner"
+import {Link, useNavigate} from "react-router"
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible.tsx"
+import {Swap, SwapOff, SwapOn } from "@/components/ui/swap"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
@@ -172,6 +172,7 @@ export function AppSidebar(props: AppSidebarProps) {
                   <SidebarMenuButton>
                     <div className="w-full flex flex-row items-center">
                       <Avatar>
+                        <AvatarImage src={props.user?.profileUrl} />
                         <AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
                       </Avatar>
                       <div className="ml-2 mr-4 grow overflow-hidden">

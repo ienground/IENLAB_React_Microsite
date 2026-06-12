@@ -2,10 +2,12 @@ import {User} from "@/domain/model/User.ts"
 import dayjs, {type Dayjs} from "dayjs"
 import {Timestamp, type DocumentReference} from "firebase/firestore"
 import {Company} from "@/domain/model/Company.ts"
+import {FileUploadItem} from "@ienlab/react-library"
 
 export class UserEditDetails {
   deletedAt: Dayjs | null = null
   name: string = ""
+  profileUrl: FileUploadItem = new FileUploadItem()
   companyRef: DocumentReference | null = null
   company: Company | null = null
   level: User.Level = User.Level.Default
@@ -23,6 +25,7 @@ export class UserEditDetails {
     return new User({
       deletedAt: this.deletedAt ? Timestamp.fromDate(this.deletedAt.toDate()) : null,
       name: this.name,
+      profileUrl: this.profileUrl.url,
       companyRef: this.companyRef,
       company: this.company,
       level: this.level,
@@ -36,6 +39,7 @@ export class UserEditDetails {
     return new UserEditDetails({
       deletedAt: item.deletedAt ? dayjs(item.deletedAt.toDate()) : null,
       name: item.name,
+      profileUrl: new FileUploadItem({ url: item.profileUrl, file: null }),
       companyRef: item.companyRef,
       company: item.company,
       level: item.level,

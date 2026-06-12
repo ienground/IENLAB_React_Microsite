@@ -1,7 +1,7 @@
 import type {User as FirebaseUser, UserCredential } from "firebase/auth"
-import type {User} from "@/domain/model/User.ts";
-import type {DocumentReference, Unsubscribe} from "firebase/firestore";
-import type {InfScrollStateList, SignInResult} from "@ienlab/react-library";
+import type {User} from "@/domain/model/User.ts"
+import type {DocumentReference, Unsubscribe} from "firebase/firestore"
+import type {InfScrollStateList, SignInResult} from "@ienlab/react-library"
 import type {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 
 export interface UserRepository {

@@ -16,6 +16,8 @@ export const FirestorePath = {
     VISIT_AT: "visitAt",
     /** string */
     NAME: "name",
+    /** string, url */
+    PROFILE_URL: "profileUrl",
     /** DocumentReference */
     COMPANY: "company",
     /** number */

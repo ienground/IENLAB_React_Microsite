@@ -9,10 +9,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import {useTranslation} from "react-i18next";
-import {Fragment} from "react";
-import {Button} from "@/components/ui/button.tsx";
-import {RiNotification3Fill} from "@remixicon/react";
+import {useTranslation} from "react-i18next"
+import {Fragment} from "react"
+import {Button} from "@/components/ui/button.tsx"
+import {RiNotification3Fill} from "@remixicon/react"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 
 export interface PathSegment {

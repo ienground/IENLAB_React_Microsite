@@ -1,22 +1,22 @@
-import {LoginViewModel} from "@/ui/public/login/LoginViewModel.ts";
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import {Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator} from "@/components/ui/field.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Trans, useTranslation} from "react-i18next";
-import {RiAppleFill, RiErrorWarningFill} from "@remixicon/react";
+import {LoginViewModel} from "@/ui/public/login/LoginViewModel.ts"
+import {Card, CardContent} from "@/components/ui/card.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator} from "@/components/ui/field.tsx"
+import {Input} from "@/components/ui/input.tsx"
+import {Button} from "@/components/ui/button.tsx"
+import {Trans, useTranslation} from "react-i18next"
+import {RiAppleFill, RiErrorWarningFill} from "@remixicon/react"
 import imgLogoFull from "@/assets/brand/img_logo_full.png"
 import imgPattern from "@/assets/brand/pattern.png"
 import icGoogle from "@/assets/icon/google.png"
 import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
-import {CrossfadeImage, Seo} from "@ienlab/react-library";
-import {type SubmitEvent, useState} from "react";
-import {useNavigate} from "react-router";
-import {Spinner} from "@/components/ui/spinner.tsx";
-import { AnimatePresence, motion } from "motion/react";
-import {toast} from "sonner";
-import {userRepository} from "@/di/container.ts";
+import {CrossfadeImage, Seo} from "@ienlab/react-library"
+import {type SubmitEvent, useState} from "react"
+import {useNavigate} from "react-router"
+import {Spinner} from "@/components/ui/spinner.tsx"
+import { AnimatePresence, motion } from "motion/react"
+import {toast} from "sonner"
+import {userRepository} from "@/di/container.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 
 export default function LoginScreen() {
