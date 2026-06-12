@@ -5,4 +5,4 @@ import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 
 export const portfolioRepository: PortfolioRepository = new PortfolioRepositoryImpl(fbFirestore, fbStorage)
-export const userRepository: UserRepository = new UserRepositoryImpl(fbFirestore, fbAuth)
+export const userRepository: UserRepository = new UserRepositoryImpl(fbFirestore, fbStorage, fbAuth)
