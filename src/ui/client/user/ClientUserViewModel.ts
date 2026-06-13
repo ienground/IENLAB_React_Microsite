@@ -141,4 +141,4 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 }))
 
-export const UserEditViewModel = createZustandContext<Store, Props>(createViewModel)
+export const ClientUserViewModel = createZustandContext<Store, Props>(createViewModel)

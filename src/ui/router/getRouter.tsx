@@ -25,6 +25,7 @@ import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
+import ClientUserScreen from "@/ui/client/user/ClientUserScreen.tsx"
 
 export function getRouter(t: TFunction) {
   return createBrowserRouter([
@@ -92,7 +93,10 @@ export function getRouter(t: TFunction) {
             },
             {
               path: ClientUserDestination.root,
-              element: <></>
+              element: <ClientUserScreen />,
+              handle: [
+                { title: t("strings:outsource_manage.user.edit"), path: ClientUserDestination.root },
+              ],
             },
             {
               path: ClientOutsourceDestination.root,
