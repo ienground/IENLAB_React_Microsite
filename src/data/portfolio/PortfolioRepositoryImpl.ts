@@ -135,20 +135,26 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
    */
   async update(id: string, item: PortfolioEditDetails): Promise<void> {
     const existingItem = await this.get(id)
-    const target = await this.transformItem(id, item)
 
     if (existingItem) {
       const newUrls = [item.logo.url, item.thumbnail.ko.url, item.thumbnail.en.url, ...item.imageUrls.ko.map(i => i.url), ...item.imageUrls.en.map(i => i.url)]
-      
+
       await deleteStorageItems(this.storage, [
-        { item: item.logo, url: existingItem.logo },
-        { item: item.thumbnail.ko, url: existingItem.thumbnail.ko },
-        { item: item.thumbnail.en, url: existingItem.thumbnail.en },
-        ...existingItem.imageUrls.ko.map((url, index) => ({ item: item.imageUrls.ko[index], url })),
-        ...existingItem.imageUrls.en.map((url, index) => ({ item: item.imageUrls.en[index], url })),
-      ].filter(target => !newUrls.includes(target.url)))
+        [
+          { item: item.logo, url: existingItem.logo },
+          { item: item.thumbnail.ko, url: existingItem.thumbnail.ko },
+          { item: item.thumbnail.en, url: existingItem.thumbnail.en },
+        ].filter(target => !newUrls.includes(target.url)),
+        existingItem.imageUrls.ko
+          .map((url, index) => ({ item: item.imageUrls.ko[index], url }))
+          .filter(target => !newUrls.includes(target.url)),
+        existingItem.imageUrls.en
+          .map((url, index) => ({ item: item.imageUrls.en[index], url }))
+          .filter(target => !newUrls.includes(target.url)),
+      ])
     }
 
+    const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.portfoliosRef, id), target.toHashMap(true))
   }
 
