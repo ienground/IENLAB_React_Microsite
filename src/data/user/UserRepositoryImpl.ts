@@ -167,20 +167,21 @@ export class UserRepositoryImpl implements UserRepository {
     return new User({...item.toItem(), profileUrl: profileDownloadUrl})
   }
 
-  async updateUser(id: string, item: UserEditDetails): Promise<void> {
+  async update(id: string, item: UserEditDetails): Promise<void> {
     const existingItem = await this.get(id)
+    const target = await this.transformItem(id, item)
 
     if (existingItem) {
+      const newUrls = [item.profileUrl.url]
       await deleteStorageItems(this.storage, [
         { item: item.profileUrl, url: existingItem.profileUrl },
-      ])
+      ].filter(target => !newUrls.includes(target.url)))
     }
 
-    const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
   }
 
-  deleteUser(credential: UserCredential): Promise<boolean> {
+  delete(credential: UserCredential): Promise<boolean> {
     throw Error("not implemented")
   }
 

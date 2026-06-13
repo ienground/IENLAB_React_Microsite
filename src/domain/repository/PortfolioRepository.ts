@@ -10,9 +10,9 @@ export interface PortfolioRepository {
   observe(id: string, callback: (item: Portfolio | null) => void, cache?: boolean): Unsubscribe
   observePrimaries(callback: (items: Portfolio[]) => void): Unsubscribe
 
-  createPortfolio(id: string, item: PortfolioEditDetails): Promise<void>
-  updatePortfolio(id: string, item: PortfolioEditDetails): Promise<void>
-  deletePortfolio(id: string): Promise<void>
+  create(id: string, item: PortfolioEditDetails): Promise<void>
+  update(id: string, item: PortfolioEditDetails): Promise<void>
+  delete(id: string): Promise<void>
 
   setSearchKeyword(keyword: string): void
   clearSearch(): void

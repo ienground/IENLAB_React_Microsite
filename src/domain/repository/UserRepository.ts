@@ -27,8 +27,8 @@ export interface UserRepository {
   get(id?: string): Promise<User | null>
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe
 
-  updateUser(id: string, user: UserEditDetails): Promise<void>
-  deleteUser(credential: UserCredential): Promise<boolean>
+  update(id: string, user: UserEditDetails): Promise<void>
+  delete(credential: UserCredential): Promise<boolean>
 
   setSearchKeyword(keyword: string): void
   clearSearch(): void
