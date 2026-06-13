@@ -8,7 +8,8 @@ import {
   startAfter, limit, getDocs, doc, getDoc, updateDoc,
   deleteDoc,
   runTransaction, type QueryConstraint, startAt, endAt,
-  where
+  where,
+  setDoc
 } from "firebase/firestore"
 import {deleteObject, listAll, ref, type FirebaseStorage} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
@@ -114,17 +115,12 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
 
   async create(id: string, item: PortfolioEditDetails): Promise<void> {
     const ref = doc(this.portfoliosRef, id)
+    const snapshot = await getDoc(ref)
+    if (snapshot.exists()) {
+      throw new Error("already-exist")
+    }
     const target = await this.transformItem(id, item)
-
-    return await runTransaction(this.firestore, async (transaction) => {
-      const snapshot = await transaction.get(ref)
-
-      if (snapshot.exists()) {
-        throw new Error(`already-exist`)
-      }
-
-      transaction.set(ref, target.toHashMap(false))
-    })
+    await setDoc(ref, target.toHashMap(true))
   }
 
   /**
