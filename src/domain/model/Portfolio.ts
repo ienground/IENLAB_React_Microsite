@@ -1,7 +1,7 @@
-import { FirestorePath } from "@/constant/FirestorePath";
-import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library";
-import {DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore";
-import type {TFunction} from "i18next";
+import { FirestorePath } from "@/constant/FirestorePath"
+import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} from "@ienlab/react-library"
+import {DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, serverTimestamp, Timestamp } from "firebase/firestore"
+import type {TFunction} from "i18next"
 
 export class Portfolio implements FirestoreItem {
   id: string = ""
@@ -54,13 +54,13 @@ export class Portfolio implements FirestoreItem {
       [FirestorePath.Portfolio.GOOGLE_PLAY_LINK]: this.googlePlayLink,
       [FirestorePath.Portfolio.APP_STORE_LINK]: this.appStoreLink,
       [FirestorePath.Portfolio.IMAGE_URLS]: this.imageUrls
-    };
+    }
 
     if (!isUpdate) {
       map[FirestorePath.CREATE_AT] = serverTimestamp()
     }
 
-    return map;
+    return map
   }
 
   static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Portfolio {
@@ -154,7 +154,7 @@ export namespace Portfolio {
         [State.WORKING]: t("types:portfolio.state.working.title"),
         [State.LAUNCHED]: t("types:portfolio.state.launched.title"),
         [State.DONE]: t("types:portfolio.state.done.title")
-      };
+      }
 
       return map[value]
     }

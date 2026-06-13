@@ -7,7 +7,7 @@ export default function BrandScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:about.branding.label")} - ${t("strings:ienlab")}`}
+        title={`${t("strings:about.branding.label")} - ${t("strings:app_name")}`}
         description={t("strings:about.branding.desc")}
       />
       <ConstructionScreen />

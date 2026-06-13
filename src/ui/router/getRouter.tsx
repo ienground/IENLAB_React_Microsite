@@ -2,7 +2,7 @@ import RouteErrorScreen from "@/ui/shared/error/RouteErrorScreen.tsx"
 import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
 import HomeScreen from "@/ui/public/home/HomeScreen.tsx"
 import PublicLayout from "@/ui/shared/layout/PublicLayout.tsx"
-import {createBrowserRouter} from "react-router"
+import {createBrowserRouter, Outlet} from "react-router"
 import type {TFunction} from "i18next"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import AboutScreen from "@/ui/public/about/AboutScreen.tsx"
@@ -16,11 +16,26 @@ import ProjectListScreen from "@/ui/public/project/list/ProjectListScreen.tsx"
 import ProjectDetailScreen from "@/ui/public/project/detail/ProjectDetailScreen.tsx"
 import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import PrivacyScreen from "@/ui/public/privacy/PrivacyScreen.tsx"
+import {ClientProtectedRoute} from "@/ui/router/ClientProtectedRoute.tsx"
+import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
+import { AuthSessionViewModel } from "../shared/auth/useAuthSession"
+import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
+import {userRepository} from "@/di/container.ts"
+import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
+import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
+import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
 
 export function getRouter(t: TFunction) {
   return createBrowserRouter([
     {
       path: "/",
+      element: (
+        <AuthSessionViewModel.Provider userRepository={userRepository}>
+          <AuthSessionInitializer />
+          <Outlet />
+        </AuthSessionViewModel.Provider>
+      ),
       errorElement: <RouteErrorScreen />,
       children: [
         {
@@ -59,11 +74,32 @@ export function getRouter(t: TFunction) {
               element: <ProjectDetailScreen />
             },
             {
+              path: LoginDestination.root,
+              element: <LoginScreen />
+            },
+            {
               path: "*",
               element: <NotFoundScreen />
             }
           ]
         },
+        {
+          element: <ClientProtectedRoute />,
+          children: [
+            {
+              path: ClientHomeDestination.root,
+              element: <></>
+            },
+            {
+              path: ClientUserDestination.root,
+              element: <></>
+            },
+            {
+              path: ClientOutsourceDestination.root,
+              element: <></>
+            },
+          ]
+        }
       ]
     }
   ])

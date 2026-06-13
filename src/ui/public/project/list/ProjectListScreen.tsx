@@ -8,7 +8,7 @@ export default function ProjectListScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:home.project.header")} - ${t("strings:ienlab")}`}
+        title={`${t("strings:home.project.header")} - ${t("strings:app_name")}`}
         description={t("strings:about.project.desc")}
       />
       <ConstructionScreen />

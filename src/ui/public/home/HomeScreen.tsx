@@ -47,7 +47,7 @@ import ImgBgColor from "@/assets/brand/img_background_color.png"
 import ImgBgDark from "@/assets/brand/img_background_dark.png"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import { Seo } from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
@@ -96,7 +96,7 @@ export default function HomeScreen() {
   return (
     <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
       <Seo
-        title={t("strings:ienlab")}
+        title={t("strings:app_name")}
         description={t("strings:og.description")}
       />
       <ScreenBody/>
@@ -282,7 +282,6 @@ function ScreenBody() {
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
         </div>
-        ,
         {/*<Carousel*/}
         {/*  align="center"*/}
         {/*  gap={16}*/}
