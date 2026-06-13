@@ -15,7 +15,7 @@ import {ButtonGroup, ButtonGroupText} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
 import {
   ImageUploadField,
-  Localized, Seo,
+  Localized, PhoneVerify, Seo,
   useDateTimeFormatters, useDebouncedSearch,
 } from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
@@ -82,6 +82,8 @@ function ScreenBody() {
   const invalid = ClientUserViewModel.use.invalid()
   const save = ClientUserViewModel.use.save()
   const del = ClientUserViewModel.use.del()
+  const sendOtpCode = ClientUserViewModel.use.sendOtpCode()
+  const verifyOtpCode = ClientUserViewModel.use.verifyOtpCode()
   const loadNextCompanyPage = ClientUserViewModel.use.loadNextCompanyPage()
   const setCompanySearchKeyword = ClientUserViewModel.use.setCompanySearchKeyword()
   const clearCompanySearch = ClientUserViewModel.use.clearCompanySearch()
@@ -93,6 +95,15 @@ function ScreenBody() {
   const [isSaveProgress, setSaveProgress] = useState(false)
   const [isDeleteProgress, setDeleteProgress] = useState(false)
   const [query, setQuery] = useState("")
+  const [otpTimer, setOtpTimer] = useState<number | null>(null)
+  const [otpRequestState, setOtpRequestState] = useState(PhoneVerify.Request.IDLE)
+  const [otpResultState, setOtpResultState] = useState(PhoneVerify.Result.IDLE)
+
+  useEffect(() => {
+    if (otpTimer === null || otpTimer <= 0) return
+    const id = setTimeout(() => setOtpTimer(otpTimer - 1), 1000)
+    return () => clearTimeout(id)
+  }, [otpTimer])
 
   const onSave = () => {
     setSaveProgress(true)
@@ -120,6 +131,23 @@ function ScreenBody() {
         setDeleteProgress(false)
         toast.error(t("strings:error_occurred", {error: err}), {icon: <RiErrorWarningFill size={18}/>})
       }
+    )
+  }
+
+  const onSendOtpCode = () => {
+    setOtpTimer(300)
+    setOtpRequestState(PhoneVerify.Request.REQUESTING)
+    sendOtpCode(
+      state => setOtpRequestState(state),
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
+    )
+  }
+
+  const onVerifyOtpCode = () => {
+    setOtpResultState(PhoneVerify.Result.REQUESTING)
+    verifyOtpCode(
+      state => setOtpResultState(state),
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
 
@@ -272,32 +300,40 @@ function ScreenBody() {
                       format="###-####-####"
                       customInput={InputGroupInput}
                     />
-                    <InputGroupButton disabled={infoState.item?.phone === uiState.item.phone}>
+                    <InputGroupButton
+                      disabled={infoState.item?.phone === uiState.item.phone}
+                      onClick={onSendOtpCode}
+                    >
                       {t("strings:user.profile.phone.send")}
                     </InputGroupButton>
                   </InputGroup>
                   <AnimatePresence initial={false} mode="popLayout">
-                    {infoState.item?.phone !== uiState.item.phone && <motion.div
+                    {(infoState.item?.phone !== uiState.item.phone || otpTimer !== null) && <motion.div
                       key="otp"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="flex flex-row justify-between"
+                      className="flex flex-row w-full items-center gap-2"
                     >
                       <InputOTP
                         maxLength={6}
                         pattern={REGEXP_ONLY_DIGITS}
+                        containerClassName="mr-auto"
                       >
                         <InputOTPGroup>{Array.from({length: 6}).map((_item, index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
                       </InputOTP>
-                      <ButtonGroup>
-
-                        <Button variant="default">
-                          <RiCheckFill />
-                          {t("strings:user.profile.phone.verify")}
-                        </Button>
-                      </ButtonGroup>
+                      {otpTimer !== null && (
+                        <span className={otpTimer === 0 ? "text-destructive text-sm" : "text-sm"}>{otpTimer === 0 ? t('strings:user.profile.phone.expired') : `${String(Math.floor(otpTimer / 60)).padStart(2, "0")}:${String(otpTimer % 60).padStart(2, "0")}`}</span>
+                      )}
+                      <Button
+                        variant="default"
+                        disabled={otpTimer === 0}
+                        onClick={onVerifyOtpCode}
+                      >
+                        <RiCheckFill />
+                        {t("strings:user.profile.phone.verify")}
+                      </Button>
                     </motion.div>}
                   </AnimatePresence>
                 </Field>

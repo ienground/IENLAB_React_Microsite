@@ -17,6 +17,8 @@ export class UserEditDetails {
   phone: string = ""
   email: string = ""
 
+  otpCode: string = ""
+
   isDirty: boolean = false
 
   constructor(partial: Partial<UserEditDetails> = {}) {

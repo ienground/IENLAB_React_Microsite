@@ -1,4 +1,4 @@
-import {createZustandContext, type InfScrollStateList} from "@ienlab/react-library"
+import {createZustandContext, type InfScrollStateList, PhoneVerify} from "@ienlab/react-library"
 import {createStore} from "zustand"
 import {User} from "@/domain/model/User.ts"
 import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
@@ -38,6 +38,9 @@ interface Store {
   save: (onSuccess: (id: string | null) => void, onFailure: (errorKey: string) => void) => void
   del: (onSuccess: () => void, onFailure: (errorKey: string) => void) => void
   unsubscribe?: () => void
+
+  sendOtpCode: (onSuccess: (result: PhoneVerify.Request) => void, onFailure: (errorKey: string) => void) => void
+  verifyOtpCode: (onSuccess: (result: PhoneVerify.Result) => void, onFailure: (errorKey: string) => void) => void
 
   loadNextCompanyPage: () => void
   setCompanySearchKeyword: (keyword: string) => void
@@ -124,6 +127,27 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     //   onFailure(String(e))
     // }
   },
+
+  sendOtpCode: async (onSuccess, onFailure) => {
+    const { uiState } = get()
+    try {
+      const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
+      onSuccess(state)
+    } catch (e) {
+      onFailure(e instanceof Error ? e.message : String(e))
+    }
+  },
+
+  verifyOtpCode: async (onSuccess, onFailure) => {
+    const { uiState } = get()
+    try {
+      const state = await props.userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
+      onSuccess(state)
+    } catch (e) {
+      onFailure(e instanceof Error ? e.message : String(e))
+    }
+  },
+
 
   loadNextCompanyPage: async () => {
     await props.companyRepository.loadNextPage()
