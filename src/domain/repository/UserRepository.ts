@@ -1,7 +1,7 @@
 import type {User as FirebaseUser, UserCredential } from "firebase/auth"
 import type {User} from "@/domain/model/User.ts"
 import type {DocumentReference, Unsubscribe} from "firebase/firestore"
-import type {InfScrollStateList, SignInResult} from "@ienlab/react-library"
+import {type InfScrollStateList, PhoneVerify, type SignInResult} from "@ienlab/react-library"
 import type {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 
 export interface UserRepository {
@@ -16,7 +16,9 @@ export interface UserRepository {
   signInWithKakao(token: string): Promise<UserCredential | null>
   reauth(password: string): Promise<UserCredential | null>
   signOut(): Promise<void>
-  // sendPhoneVerifyCode(phoneNumber: string): Promise<>
+  sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request>
+  verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result>
+
 
   /**
    * User

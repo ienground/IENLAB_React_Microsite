@@ -31,7 +31,7 @@ import {
   type FirestoreListMode,
   getAuthErrorKey,
   getSnapshots,
-  type InfScrollStateList,
+  type InfScrollStateList, PhoneVerify,
   type SignInResult, uploadCompressedImage,
 } from "@ienlab/react-library"
 import { FirebaseError } from "firebase/app"
@@ -39,12 +39,16 @@ import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
+import {httpsCallable, type Functions } from "firebase/functions"
+import {FunctionName} from "@/constant/FunctionName.ts"
 
 export class UserRepositoryImpl implements UserRepository {
   private readonly auth: Auth
   private readonly usersRef
   private readonly companiesRef
   private readonly storageRef
+  private readonly sendPhoneVerifyFn
+  private readonly verifyCodeFn
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -62,12 +66,15 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(
     firestore: Firestore,
     readonly storage: FirebaseStorage,
-    auth: Auth
+    auth: Auth,
+    functions: Functions
   ) {
     this.usersRef = collection(firestore, FirestorePath.USER)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
     this.storageRef = ref(storage, StoragePath.USER)
     this.auth = auth
+    this.sendPhoneVerifyFn = httpsCallable<PhoneVerify.Send.Params, PhoneVerify.Send.Result>(functions, FunctionName.SEND_PHONE_VERIFY)
+    this.verifyCodeFn = httpsCallable<PhoneVerify.Verify.Params, PhoneVerify.Verify.Result>(functions, FunctionName.VERIFY_CODE)
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -113,6 +120,26 @@ export class UserRepositoryImpl implements UserRepository {
 
   async signOut(): Promise<void> {
     return signOut(this.auth)
+  }
+
+  async sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request> {
+    // const uid = this.auth.currentUser?.uid
+    // if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
+    //
+    // const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
+    // return result.data.code
+    await new Promise(f => setTimeout(f, 2000))
+    return PhoneVerify.Request.SUCCESS
+  }
+
+  async verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result> {
+    // const uid = this.auth.currentUser?.uid
+    // if (!uid) return PhoneVerify.Result.FAILURE_UNKNOWN
+    //
+    // const result = await this.verifyCodeFn({ phoneNumber, uid, code })
+    // return result.data.code
+    await new Promise(f => setTimeout(f, 2000))
+    return PhoneVerify.Result.VERIFIED
   }
 
   getCurrentUser(): FirebaseUser | null {

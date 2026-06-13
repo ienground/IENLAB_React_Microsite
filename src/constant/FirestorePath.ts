@@ -6,6 +6,7 @@ export const FirestorePath = {
   NOTICE_CATEGORY: "noticeCategory",
   PORTFOLIO: "portfolio",
   COMPANY: "company",
+  OTP: "otp",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
@@ -244,5 +245,12 @@ export const FirestorePath = {
       }
     }
 
-  }
+  },
+
+  Otp: {
+    /** String */
+    CODE: "code",
+    /** String */
+    UID: "uid",
+  },
 }

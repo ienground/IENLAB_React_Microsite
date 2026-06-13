@@ -5,13 +5,13 @@ import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
-  RiCheckboxCircleFill, RiCloseFill,
+  RiCheckboxCircleFill, RiCheckFill, RiCloseFill,
   RiDeleteBinFill,
   RiErrorWarningFill,
-  RiSaveFill,
+  RiSaveFill, RiSendInsFill, RiVerifiedBadgeFill,
 
 } from "@remixicon/react"
-import {ButtonGroup} from "@/components/ui/button-group.tsx"
+import {ButtonGroup, ButtonGroupText} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
 import {
   ImageUploadField,
@@ -49,6 +49,10 @@ import {companyRepository, userRepository} from "@/di/container.ts"
 import {PatternFormat} from "react-number-format"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {ClientUserViewModel} from "@/ui/client/user/ClientUserViewModel.ts"
+import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp.tsx"
+import {REGEXP_ONLY_DIGITS} from "input-otp"
+import {AnimatePresence, motion} from "motion/react"
+import {InputGroup, InputGroupButton, InputGroupInput} from "@/components/ui/input-group.tsx"
 
 export default function ClientUserScreen() {
   const {itemId} = useParams<{ itemId: string }>()
@@ -202,6 +206,7 @@ function ScreenBody() {
                 descriptionText={t("strings:user.profile.desc")}
                 value={uiState.item.profileUrl}
                 onChange={item => updateUiState({ profileUrl: item })}
+                width="100%"
                 className="max-w-80"
                 components={{
                   Input,
@@ -258,14 +263,43 @@ function ScreenBody() {
                 </Field>
                 <Field>
                   <FieldLabel>{t("strings:outsource_manage.user.phone.label")}</FieldLabel>
-                  <PatternFormat
-                    value={uiState.item.phone}
-                    onChange={e => updateUiState({phone: e.target.value})}
-                    type="tel"
-                    placeholder={t("strings:input_phone")}
-                    format="###-####-####"
-                    customInput={Input}
-                  />
+                  <InputGroup>
+                    <PatternFormat
+                      value={uiState.item.phone}
+                      onChange={e => updateUiState({phone: e.target.value})}
+                      type="tel"
+                      placeholder={t("strings:input_phone")}
+                      format="###-####-####"
+                      customInput={InputGroupInput}
+                    />
+                    <InputGroupButton disabled={infoState.item?.phone === uiState.item.phone}>
+                      {t("strings:user.profile.phone.send")}
+                    </InputGroupButton>
+                  </InputGroup>
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {infoState.item?.phone !== uiState.item.phone && <motion.div
+                      key="otp"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex flex-row justify-between"
+                    >
+                      <InputOTP
+                        maxLength={6}
+                        pattern={REGEXP_ONLY_DIGITS}
+                      >
+                        <InputOTPGroup>{Array.from({length: 6}).map((_item, index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
+                      </InputOTP>
+                      <ButtonGroup>
+
+                        <Button variant="default">
+                          <RiCheckFill />
+                          {t("strings:user.profile.phone.verify")}
+                        </Button>
+                      </ButtonGroup>
+                    </motion.div>}
+                  </AnimatePresence>
                 </Field>
                 <Field>
                   <FieldLabel>{t("strings:outsource_manage.user.email.label")}</FieldLabel>
