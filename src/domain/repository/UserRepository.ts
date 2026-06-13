@@ -28,6 +28,8 @@ export interface UserRepository {
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe
 
   update(id: string, user: UserEditDetails): Promise<void>
+  approveTempCompany(id: string): Promise<void>
+  rejectTempCompany(id: string): Promise<void>
   delete(credential: UserCredential): Promise<boolean>
 
   setSearchKeyword(keyword: string): void

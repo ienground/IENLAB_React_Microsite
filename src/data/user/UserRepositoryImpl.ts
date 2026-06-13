@@ -14,7 +14,7 @@ import {
   startAt,
   endAt,
   type QueryConstraint,
-  type Unsubscribe, updateDoc,
+  type Unsubscribe, updateDoc, serverTimestamp,
 } from "firebase/firestore"
 import {
   signInWithCustomToken,
@@ -135,9 +135,13 @@ export class UserRepositoryImpl implements UserRepository {
     if (!snapshot.exists()) return null
 
     const item = User.fromSnapshot(snapshot)
-    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef])
+    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef, item.tempCompanyRef])
 
-    return new User({...item, company: this.companyCache.get(item.companyRef?.path ?? "")})
+    return new User({
+      ...item,
+      company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+      tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+    })
   }
 
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe {
@@ -156,8 +160,12 @@ export class UserRepositoryImpl implements UserRepository {
       }
 
       const item = User.fromSnapshot(snapshot)
-      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef])
-      callback(new User({...item, company: this.companyCache.get(item.companyRef?.path ?? "")}))
+      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef, item.tempCompanyRef])
+      callback(new User({
+        ...item,
+        company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+        tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+      }))
     }, { cache: cache })
   }
 
@@ -179,6 +187,27 @@ export class UserRepositoryImpl implements UserRepository {
 
     const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
+  }
+
+  async approveTempCompany(id: string): Promise<void> {
+    const snapshot = await getDoc(doc(this.usersRef, id))
+    if (!snapshot.exists()) return
+
+    const item = User.fromSnapshot(snapshot)
+    if (!item.tempCompanyRef) return
+
+    await updateDoc(doc(this.usersRef, id), {
+      [FirestorePath.User.COMPANY]: item.tempCompanyRef,
+      [FirestorePath.User.TEMP_COMPANY]: null,
+      [FirestorePath.UPDATE_AT]: serverTimestamp(),
+    })
+  }
+
+  async rejectTempCompany(id: string): Promise<void> {
+    await updateDoc(doc(this.usersRef, id), {
+      [FirestorePath.User.TEMP_COMPANY]: null,
+      [FirestorePath.UPDATE_AT]: serverTimestamp(),
+    })
   }
 
   delete(credential: UserCredential): Promise<boolean> {
@@ -229,11 +258,15 @@ export class UserRepositoryImpl implements UserRepository {
       const items = docs.map(User.fromSnapshot)
       const newMap = new Map(this.userInfoStateList.itemList)
 
-      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, items.map(item => item.companyRef))
+      const refs = items.flatMap(item => [item.companyRef, item.tempCompanyRef])
+      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, refs)
 
       items.forEach(item => {
-        const path = item.companyRef?.path
-        newMap.set(item.id, new User({...item, company: path ? this.companyCache.get(path) ?? null : null}))
+        newMap.set(item.id, new User({
+          ...item,
+          company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+          tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+        }))
       })
 
       this.userInfoStateList = {

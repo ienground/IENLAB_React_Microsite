@@ -20,6 +20,8 @@ export const FirestorePath = {
     PROFILE_URL: "profileUrl",
     /** DocumentReference */
     COMPANY: "company",
+    /** DocumentReference */
+    TEMP_COMPANY: "tempCompany",
     /** number */
     LEVEL: "level",
     /** number */

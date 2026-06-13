@@ -10,6 +10,8 @@ export class UserEditDetails {
   profileUrl: FileUploadItem = new FileUploadItem()
   companyRef: DocumentReference | null = null
   company: Company | null = null
+  tempCompanyRef: DocumentReference | null = null
+  tempCompany: Company | null = null
   level: User.Level = User.Level.Default
   state: User.State = User.State.Default
   phone: string = ""
@@ -28,6 +30,8 @@ export class UserEditDetails {
       profileUrl: this.profileUrl.url,
       companyRef: this.companyRef,
       company: this.company,
+      tempCompanyRef: this.tempCompanyRef,
+      tempCompany: this.tempCompany,
       level: this.level,
       state: this.state,
       phone: this.phone,
@@ -42,6 +46,8 @@ export class UserEditDetails {
       profileUrl: new FileUploadItem({ url: item.profileUrl, file: null }),
       companyRef: item.companyRef,
       company: item.company,
+      tempCompanyRef: item.tempCompanyRef,
+      tempCompany: item.tempCompany,
       level: item.level,
       state: item.state,
       phone: item.phone,
