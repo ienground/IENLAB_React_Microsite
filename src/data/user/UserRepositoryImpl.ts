@@ -167,7 +167,7 @@ export class UserRepositoryImpl implements UserRepository {
     return new User({...item.toItem(), profileUrl: profileDownloadUrl})
   }
 
-  async updateUser(id: string, item: UserEditDetails): Promise<void> {
+  async update(id: string, item: UserEditDetails): Promise<void> {
     const existingItem = await this.get(id)
 
     if (existingItem) {
@@ -180,7 +180,7 @@ export class UserRepositoryImpl implements UserRepository {
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
   }
 
-  deleteUser(credential: UserCredential): Promise<boolean> {
+  delete(credential: UserCredential): Promise<boolean> {
     throw Error("not implemented")
   }
 

@@ -112,7 +112,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     })
   }
 
-  async createPortfolio(id: string, item: PortfolioEditDetails): Promise<void> {
+  async create(id: string, item: PortfolioEditDetails): Promise<void> {
     const ref = doc(this.portfoliosRef, id)
     const target = await this.transformItem(id, item)
 
@@ -137,7 +137,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
    * @param id       대상 포트폴리오 문서 ID
    * @param item     수정할 포트폴리오 상세 정보 (FileUploadItem 포함)
    */
-  async updatePortfolio(id: string, item: PortfolioEditDetails): Promise<void> {
+  async update(id: string, item: PortfolioEditDetails): Promise<void> {
     const existingItem = await this.get(id)
     const target = await this.transformItem(id, item)
 
@@ -156,7 +156,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     return await updateDoc(doc(this.portfoliosRef, id), target.toHashMap(true))
   }
 
-  async deletePortfolio(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     const storageRef = ref(this.storage, `${StoragePath.PORTFOLIO}/${id}`)
     try {
       const result = await listAll(storageRef)
