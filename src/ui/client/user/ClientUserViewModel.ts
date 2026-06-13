@@ -4,7 +4,8 @@ import {User} from "@/domain/model/User.ts"
 import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
-import type { CompanyRepository } from "@/domain/repository/CompanyRepository"
+import type {CompanyRepository} from "@/domain/repository/CompanyRepository"
+import Result = PhoneVerify.Result
 
 class UserEditUiState {
   item: UserEditDetails = new UserEditDetails()
@@ -21,7 +22,6 @@ export interface UserInfoState {
 }
 
 type Props = {
-  id: string
   userRepository: UserRepository
   companyRepository: CompanyRepository
 }
@@ -51,6 +51,8 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   uiState: new UserEditUiState({ isInitialized: false }),
   infoState: { item: null, isInitialized: false },
   companyInfoStateList: props.companyRepository.companyInfoStateList,
+  otpRequestState: PhoneVerify.Request.IDLE,
+  otpResultState: PhoneVerify.Result.IDLE,
 
   init: async () => {
     const { unsubscribe } = get()
@@ -71,7 +73,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
         return newState
       })
-    }, props.id)
+    })
     set({ unsubscribe: off })
   },
 
@@ -91,18 +93,24 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   invalid: () => {
-    const { uiState } = get()
+    const { uiState, infoState } = get()
+    const phoneChanged = uiState.item.phone !== infoState.item?.phone
     return uiState.item.profileUrl.isEmpty
       || uiState.item.name.length === 0
       || uiState.item.company === null
       || uiState.item.phone.length === 0
       || uiState.item.email.length === 0
+      || (phoneChanged && uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED)
   },
 
   save: async (onSuccess, onFailure) => {
-    const { uiState, updateUiState } = get()
+    const { uiState, updateUiState, infoState } = get()
+    if (infoState.item === null) {
+      onFailure("strings:error_occurred")
+      return
+    }
     try {
-      await props.userRepository.update(props.id, uiState.item)
+      await props.userRepository.update(infoState.item.id, uiState.item)
 
       updateUiState({}, false)
       onSuccess(null)
@@ -129,21 +137,27 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   sendOtpCode: async (onSuccess, onFailure) => {
-    const { uiState } = get()
+    const { uiState, updateUiState } = get()
+    updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: Result.IDLE, otpCode: "" })
     try {
       const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
+      updateUiState({ otpRequestState: state })
       onSuccess(state)
     } catch (e) {
+      updateUiState({ otpRequestState: PhoneVerify.Request.FAILURE_UNKNOWN })
       onFailure(e instanceof Error ? e.message : String(e))
     }
   },
 
   verifyOtpCode: async (onSuccess, onFailure) => {
-    const { uiState } = get()
+    const { uiState, updateUiState } = get()
+    updateUiState({ otpResultState: PhoneVerify.Result.REQUESTING })
     try {
       const state = await props.userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
+      updateUiState({ otpResultState: state })
       onSuccess(state)
     } catch (e) {
+      updateUiState({ otpResultState: PhoneVerify.Result.FAILURE_UNKNOWN })
       onFailure(e instanceof Error ? e.message : String(e))
     }
   },

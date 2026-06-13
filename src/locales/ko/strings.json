@@ -507,6 +507,7 @@
       "phone": {
         "expired": "만료되었습니다.",
         "send": "전송",
+        "verified": "인증됨",
         "verify": "인증"
       }
     }

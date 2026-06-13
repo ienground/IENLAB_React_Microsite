@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {useEffect, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {Button} from "@/components/ui/button.tsx"
@@ -55,14 +55,11 @@ import {AnimatePresence, motion} from "motion/react"
 import {InputGroup, InputGroupButton, InputGroupInput} from "@/components/ui/input-group.tsx"
 
 export default function ClientUserScreen() {
-  const {itemId} = useParams<{ itemId: string }>()
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.user.label")} - ${t("strings:app_name")}`}/>
       <ClientUserViewModel.Provider
-        key={`${itemId}`}
-        id={itemId ?? ""}
         userRepository={userRepository}
         companyRepository={companyRepository}
       >
@@ -96,8 +93,6 @@ function ScreenBody() {
   const [isDeleteProgress, setDeleteProgress] = useState(false)
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
-  const [otpRequestState, setOtpRequestState] = useState(PhoneVerify.Request.IDLE)
-  const [otpResultState, setOtpResultState] = useState(PhoneVerify.Result.IDLE)
 
   useEffect(() => {
     if (otpTimer === null || otpTimer <= 0) return
@@ -136,20 +131,21 @@ function ScreenBody() {
 
   const onSendOtpCode = () => {
     setOtpTimer(300)
-    setOtpRequestState(PhoneVerify.Request.REQUESTING)
     sendOtpCode(
-      state => setOtpRequestState(state),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
 
   const onVerifyOtpCode = () => {
-    setOtpResultState(PhoneVerify.Result.REQUESTING)
     verifyOtpCode(
-      state => setOtpResultState(state),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
+
+  const  otpRequestErrorMsg = PhoneVerify.Request.getMessage(t, uiState.item.otpRequestState)
+  const otpResultErrorMsg = PhoneVerify.Result.getMessage(t, uiState.item.otpResultState)
 
   useEffect(() => {
     init()
@@ -194,18 +190,6 @@ function ScreenBody() {
                   <SwapOff><RiSaveFill/></SwapOff>
                 </Swap>
                 <div className="hidden md:block">{t("strings:save")}</div>
-              </Button>
-              <Button
-                variant="destructive"
-                size="default"
-                className="w-9 md:w-auto"
-                onClick={() => setShowDeleteDialog(true)}
-              >
-                <Swap swapped={isDeleteProgress}>
-                  <SwapOn><Spinner className="size-4"/></SwapOn>
-                  <SwapOff><RiDeleteBinFill/></SwapOff>
-                </Swap>
-                <div className="hidden md:block">{t("strings:delete")}</div>
               </Button>
             </ButtonGroup>
           </div>
@@ -294,7 +278,7 @@ function ScreenBody() {
                   <InputGroup>
                     <PatternFormat
                       value={uiState.item.phone}
-                      onChange={e => updateUiState({phone: e.target.value})}
+                      onChange={e => updateUiState({phone: e.target.value, otpRequestState: PhoneVerify.Request.IDLE})}
                       type="tel"
                       placeholder={t("strings:input_phone")}
                       format="###-####-####"
@@ -304,11 +288,14 @@ function ScreenBody() {
                       disabled={infoState.item?.phone === uiState.item.phone}
                       onClick={onSendOtpCode}
                     >
+                      <Swap swapped={uiState.item.otpRequestState === PhoneVerify.Request.REQUESTING}>
+                        <SwapOn><Spinner className="size-4"/></SwapOn>
+                      </Swap>
                       {t("strings:user.profile.phone.send")}
                     </InputGroupButton>
                   </InputGroup>
                   <AnimatePresence initial={false} mode="popLayout">
-                    {(infoState.item?.phone !== uiState.item.phone || otpTimer !== null) && <motion.div
+                    {(uiState.item.otpRequestState === PhoneVerify.Request.SUCCESS) && <motion.div
                       key="otp"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -320,21 +307,35 @@ function ScreenBody() {
                         maxLength={6}
                         pattern={REGEXP_ONLY_DIGITS}
                         containerClassName="mr-auto"
+                        value={uiState.item.otpCode}
+                        onChange={value => updateUiState({otpCode: value})}
+                        disabled={uiState.item.otpResultState === PhoneVerify.Result.VERIFIED}
                       >
                         <InputOTPGroup>{Array.from({length: 6}).map((_item, index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
                       </InputOTP>
-                      {otpTimer !== null && (
-                        <span className={otpTimer === 0 ? "text-destructive text-sm" : "text-sm"}>{otpTimer === 0 ? t('strings:user.profile.phone.expired') : `${String(Math.floor(otpTimer / 60)).padStart(2, "0")}:${String(otpTimer % 60).padStart(2, "0")}`}</span>
+                      {otpTimer !== null && uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED && (
+                        <span className={otpTimer === 0 ? "text-destructive text-sm" : "text-sm"}>{
+                          otpTimer === 0 ?
+                            t('strings:user.profile.phone.expired')
+                            : `${String(Math.floor(otpTimer / 60)).padStart(2, "0")}:${String(otpTimer % 60).padStart(2, "0")}`}
+                        </span>
                       )}
                       <Button
                         variant="default"
-                        disabled={otpTimer === 0}
+                        disabled={uiState.item.otpCode.length !== 6 || otpTimer === 0 || uiState.item.otpResultState === PhoneVerify.Result.REQUESTING || uiState.item.otpResultState === PhoneVerify.Result.VERIFIED}
                         onClick={onVerifyOtpCode}
                       >
-                        <RiCheckFill />
-                        {t("strings:user.profile.phone.verify")}
+                        <Swap swapped={uiState.item.otpResultState === PhoneVerify.Result.REQUESTING}>
+                          <SwapOn><Spinner className="size-4"/></SwapOn>
+                          <SwapOff><RiCheckFill /></SwapOff>
+                        </Swap>
+                        {
+                          uiState.item.otpResultState === PhoneVerify.Result.VERIFIED ? t("strings:user.profile.phone.verified") : t("strings:user.profile.phone.verify")
+                        }
                       </Button>
                     </motion.div>}
+                    {otpRequestErrorMsg && <p className="text-destructive text-sm">{otpRequestErrorMsg}</p>}
+                    {otpResultErrorMsg && <p className="text-destructive text-sm">{otpResultErrorMsg}</p>}
                   </AnimatePresence>
                 </Field>
                 <Field>

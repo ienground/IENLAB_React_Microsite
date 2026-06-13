@@ -236,6 +236,7 @@
       "phone": {
         "expired": "Expired.",
         "send": "Send",
+        "verified": "Verified",
         "verify": "Verify"
       }
     }

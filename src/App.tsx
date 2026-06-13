@@ -48,7 +48,7 @@ function ScreenBody() {
       <Toaster theme={theme} position="bottom-center" richColors/>
       <Cursor
         magnetic
-        className="cursor"
+        className="cursor z-9999999999!"
         variants={{
           default: {
             backgroundColor:

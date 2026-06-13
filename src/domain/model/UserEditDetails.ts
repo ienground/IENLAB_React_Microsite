@@ -2,7 +2,7 @@ import {User} from "@/domain/model/User.ts"
 import dayjs, {type Dayjs} from "dayjs"
 import {Timestamp, type DocumentReference} from "firebase/firestore"
 import {Company} from "@/domain/model/Company.ts"
-import {FileUploadItem} from "@ienlab/react-library"
+import {FileUploadItem, PhoneVerify} from "@ienlab/react-library"
 
 export class UserEditDetails {
   deletedAt: Dayjs | null = null
@@ -18,6 +18,8 @@ export class UserEditDetails {
   email: string = ""
 
   otpCode: string = ""
+  otpRequestState: PhoneVerify.Request = PhoneVerify.Request.Default
+  otpResultState: PhoneVerify.Result = PhoneVerify.Result.Default
 
   isDirty: boolean = false
 
