@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import {useTranslation} from "react-i18next"
-import {Fragment} from "react"
+import {Fragment, useMemo} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {RiNotification3Fill} from "@remixicon/react"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
@@ -23,14 +23,14 @@ export interface PathSegment {
 export default function AppHeader() {
   const { t } = useTranslation()
   const matches = useMatches()
-  const segments: PathSegment[] = matches.flatMap(match => {
+  const segments: PathSegment[] = useMemo(() => matches.flatMap(match => {
     const handle = match.handle
     if (typeof handle === "function") {
       return (handle as (match: unknown) => PathSegment[])(match)
     }
     return (handle as PathSegment[] | undefined) ?? []
-  })
-  const homePath: PathSegment = { title: t("strings:home.label"), path: ClientHomeDestination.root }
+  }), [matches])
+  const homePath = useMemo<PathSegment>(() => ({ title: t("strings:home.label"), path: ClientHomeDestination.root }), [t])
 
   return (
     <header>

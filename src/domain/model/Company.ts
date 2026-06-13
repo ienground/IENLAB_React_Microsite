@@ -24,7 +24,7 @@ export class Company implements FirestoreItem {
   }
 
   toHashMap(isUpdate: boolean = false) {
-    const map = {
+    const map: Record<string, unknown> = {
       [FirestorePath.UPDATE_AT]: serverTimestamp(),
       [FirestorePath.DELETED_AT]: this.deletedAt,
       [FirestorePath.Company.NAME]: this.name,
