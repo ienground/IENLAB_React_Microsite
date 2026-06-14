@@ -49,5 +49,5 @@ export const FunctionName = {
       /** number */
       CODE: "code",
     },
-  }
+  },
 } as const

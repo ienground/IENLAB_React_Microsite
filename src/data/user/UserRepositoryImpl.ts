@@ -23,6 +23,7 @@ import {
   type UserCredential,
   type User as FirebaseUser,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth"
 import { User } from "@/domain/model/User.ts"
 import {
@@ -120,6 +121,35 @@ export class UserRepositoryImpl implements UserRepository {
 
   async signOut(): Promise<void> {
     return signOut(this.auth)
+  }
+
+  async sendChangeEmailVerification(email: string): Promise<void> {
+    const user = this.auth.currentUser
+    if (!user) throw Error("No authenticated user")
+    const idToken = await user.getIdToken()
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${this.auth.config.apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requestType: "VERIFY_AND_CHANGE_EMAIL",
+          idToken,
+          newEmail: email,
+        }),
+      },
+    )
+    if (!res.ok) {
+      const body = await res.json()
+      console.error("sendOobCode error", body)
+      throw Error(body.error?.message ?? "sendOobCode failed")
+    }
+  }
+
+  async sendEmailVerification(): Promise<void> {
+    const user = this.auth.currentUser
+    if (!user) throw Error("No authenticated user")
+    await sendEmailVerification(user)
   }
 
   async sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request> {

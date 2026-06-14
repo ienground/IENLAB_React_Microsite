@@ -18,6 +18,8 @@ export interface UserRepository {
   signOut(): Promise<void>
   sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request>
   verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result>
+  sendChangeEmailVerification(email: string): Promise<void>
+  sendEmailVerification(): Promise<void>
 
 
   /**

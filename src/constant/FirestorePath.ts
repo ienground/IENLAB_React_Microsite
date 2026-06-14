@@ -28,9 +28,7 @@ export const FirestorePath = {
     /** number */
     STATE: "state",
     /** string */
-    PHONE: "phone",
-    /** string */
-    EMAIL: "email",
+    PHONE: "phone"
   },
 
   Estimate: {

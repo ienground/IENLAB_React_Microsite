@@ -38,12 +38,11 @@ export class UserEditDetails {
       tempCompany: this.tempCompany,
       level: this.level,
       state: this.state,
-      phone: this.phone,
-      email: this.email
+      phone: this.phone
     })
   }
 
-  static fromItem(item: User): UserEditDetails {
+  static fromItem(item: User, email?: string): UserEditDetails {
     return new UserEditDetails({
       deletedAt: item.deletedAt ? dayjs(item.deletedAt.toDate()) : null,
       name: item.name,
@@ -55,7 +54,7 @@ export class UserEditDetails {
       level: item.level,
       state: item.state,
       phone: item.phone,
-      email: item.email
+      email
     })
   }
 }

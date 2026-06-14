@@ -506,9 +506,17 @@
       "label": "프로필 사진",
       "phone": {
         "expired": "만료되었습니다.",
-        "send": "전송",
+        "send": "인증번호 전송",
+        "send_failure_over_limit": "인증번호 발송 횟수를 초과했습니다.",
+        "send_failure_unknown": "인증번호 발송에 실패했습니다.",
         "verified": "인증됨",
-        "verify": "인증"
+        "verify": "인증",
+        "verify_failure_no_send": "인증번호가 발송되지 않았습니다.",
+        "verify_failure_wrong": "인증번호가 일치하지 않습니다.",
+        "verify_failure_unknown": "인증에 실패했습니다.",
+        "verification_email_sent": "인증 메일이 발송되었습니다. 이메일을 확인해주세요.",
+        "email_not_verified": "이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.",
+        "resend_verification_email": "인증 메일 재발송"
       }
     }
   },

@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useMemo, useRef, useState} from "react"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {Button} from "@/components/ui/button.tsx"
@@ -93,6 +93,7 @@ function ScreenBody() {
   const [isDeleteProgress, setDeleteProgress] = useState(false)
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
+  const prevEmailRef = useRef(uiState.item.email)
 
   useEffect(() => {
     if (otpTimer === null || otpTimer <= 0) return
@@ -102,10 +103,15 @@ function ScreenBody() {
 
   const onSave = () => {
     setSaveProgress(true)
+    const emailChanged = uiState.item.email !== prevEmailRef.current
     save(
       async (id) => {
         setSaveProgress(false)
         toast.success(t("strings:saved_successfully"), {icon: <RiCheckboxCircleFill size={18}/>})
+        if (emailChanged) {
+          prevEmailRef.current = uiState.item.email
+          toast.success(t("strings:user.profile.phone.verification_email_sent"))
+        }
       },
       (err) => {
         setSaveProgress(false)

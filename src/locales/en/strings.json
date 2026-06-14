@@ -236,8 +236,16 @@
       "phone": {
         "expired": "Expired.",
         "send": "Send",
+        "send_failure_over_limit": "Send limit exceeded.",
+        "send_failure_unknown": "Failed to send code.",
         "verified": "Verified",
-        "verify": "Verify"
+        "verify": "Verify",
+        "verify_failure_no_send": "No code sent.",
+        "verify_failure_wrong": "Code does not match.",
+        "verify_failure_unknown": "Verification failed.",
+        "verification_email_sent": "Verification email sent. Please check your email.",
+        "email_not_verified": "Email not verified. Please check your email.",
+        "resend_verification_email": "Resend verification email"
       }
     }
   }

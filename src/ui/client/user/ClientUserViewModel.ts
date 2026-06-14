@@ -67,7 +67,8 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
         }
 
         if (!hasCapturedInitial) {
-          newState.uiState = new UserEditUiState({ item: item ? UserEditDetails.fromItem(item) : new UserEditDetails(), isInitialized: true })
+          const fbUser = props.userRepository.getCurrentUser()
+          newState.uiState = new UserEditUiState({ item: item ? UserEditDetails.fromItem(item, fbUser?.email ?? undefined) : new UserEditDetails({ email: fbUser?.email ?? undefined }), isInitialized: true })
           hasCapturedInitial = true
         }
 
@@ -99,7 +100,6 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       || uiState.item.name.length === 0
       || uiState.item.company === null
       || uiState.item.phone.length === 0
-      || uiState.item.email.length === 0
       || (phoneChanged && uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED)
   },
 
@@ -110,6 +110,12 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       return
     }
     try {
+      const currentEmail = props.userRepository.getCurrentUser()?.email
+      const emailChanged = uiState.item.email !== currentEmail
+
+      if (emailChanged) {
+        await props.userRepository.sendChangeEmailVerification(uiState.item.email)
+      }
       await props.userRepository.update(infoState.item.id, uiState.item)
 
       updateUiState({}, false)

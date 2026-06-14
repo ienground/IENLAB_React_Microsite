@@ -38,6 +38,11 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   login: async (onSuccess, onFailure) => {
     const result = await props.userRepository.signInWithEmailAndPassword(get().uiState.item.email, get().uiState.item.password)
     if (result.ok) {
+      if (!result.data.user.emailVerified) {
+        await props.userRepository.signOut()
+        onFailure("strings:user.profile.phone.email_not_verified")
+        return
+      }
       onSuccess(result.data)
     } else {
       onFailure(result.errorKey)
