@@ -94,6 +94,11 @@ function ScreenBody() {
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
   const prevEmailRef = useRef(uiState.item.email)
+  useEffect(() => {
+    if (uiState.isInitialized) {
+      prevEmailRef.current = uiState.item.email
+    }
+  }, [uiState.isInitialized])
 
   useEffect(() => {
     if (otpTimer === null || otpTimer <= 0) return
