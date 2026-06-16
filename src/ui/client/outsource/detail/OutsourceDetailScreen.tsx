@@ -177,7 +177,7 @@ function ScreenBody() {
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-medium text-sm truncate grow">{Localized.get(req.title)}</span>
                         <Badge variant={Outsource.InfoRequest.State.getBadgeColor(req.state)}>
-                          {Outsource.InfoRequest.State.getLabel(t, req.state)}
+                          {Outsource.InfoRequest.State.getClientLabel(t, req.state)}
                         </Badge>
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -212,7 +212,7 @@ function ScreenBody() {
                         <span className="font-medium text-sm truncate grow">{req.title}</span>
                         <Status variant={Outsource.RevisionRequest.State.getStatusColor(req.state)}>
                           <StatusIndicator/>
-                          <StatusLabel>{Outsource.RevisionRequest.State.getLabel(t, req.state)}</StatusLabel>
+                          <StatusLabel>{Outsource.RevisionRequest.State.getClientLabel(t, req.state)}</StatusLabel>
                         </Status>
                       </div>
                       <div className="flex flex-row gap-3 text-xs text-muted-foreground">

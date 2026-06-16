@@ -30,13 +30,23 @@
           "label": "초안"
         },
         "received": {
-          "label": "받음"
+          "admin": {
+            "label": "수신됨"
+          },
+          "client": {
+            "label": "수신함"
+          }
         },
         "rejected": {
           "label": "거부"
         },
         "sent": {
-          "label": "전송됨"
+          "admin": {
+            "label": "전송됨"
+          },
+          "client": {
+            "label": "전송함"
+          }
         }
       },
       "type": {
@@ -77,21 +87,30 @@
           "label": "적용됨"
         },
         "approved": {
-          "dev": {
+          "admin": {
             "label": "승인함"
+          },
+          "client": {
+            "label": "승인됨"
           }
         },
         "draft": {
           "label": "초안"
         },
         "rejected": {
-          "dev": {
+          "admin": {
             "label": "거부함"
+          },
+          "client": {
+            "label": "거부됨"
           }
         },
         "sent": {
-          "dev": {
+          "admin": {
             "label": "수신됨"
+          },
+          "client": {
+            "label": "전송됨"
           }
         }
       }

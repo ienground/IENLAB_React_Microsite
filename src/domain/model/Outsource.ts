@@ -251,12 +251,23 @@ export namespace Outsource {
       export const Default = State.DRAFT
       export const values = [State.DRAFT, State.SENT, State.APPROVED, State.REJECTED, State.APPLIED]
       export const valuesNoDraft = [State.SENT, State.APPROVED, State.REJECTED, State.APPLIED]
-      export function getLabel(t: TFunction, value: State) {
+      export function getAdminLabel(t: TFunction, value: State) {
         const map = {
           [State.DRAFT]: t("types:outsource.revision.state.draft.label"),
-          [State.SENT]: t("types:outsource.revision.state.sent.dev.label"),
-          [State.APPROVED]: t("types:outsource.revision.state.approved.dev.label"),
-          [State.REJECTED]: t("types:outsource.revision.state.rejected.dev.label"),
+          [State.SENT]: t("types:outsource.revision.state.sent.admin.label"),
+          [State.APPROVED]: t("types:outsource.revision.state.approved.admin.label"),
+          [State.REJECTED]: t("types:outsource.revision.state.rejected.admin.label"),
+          [State.APPLIED]: t("types:outsource.revision.state.applied.label"),
+        }
+
+        return map[value]
+      }
+      export function getClientLabel(t: TFunction, value: State) {
+        const map = {
+          [State.DRAFT]: t("types:outsource.revision.state.draft.label"),
+          [State.SENT]: t("types:outsource.revision.state.sent.client.label"),
+          [State.APPROVED]: t("types:outsource.revision.state.approved.client.label"),
+          [State.REJECTED]: t("types:outsource.revision.state.rejected.client.label"),
           [State.APPLIED]: t("types:outsource.revision.state.applied.label"),
         }
 
@@ -357,11 +368,21 @@ export namespace Outsource {
     export namespace State {
       export const Default = State.DRAFT
       export const values = [State.DRAFT, State.SENT, State.RECEIVED, State.REJECTED]
-      export function getLabel(t: TFunction, value: State) {
+      export function getAdminLabel(t: TFunction, value: State) {
         const map = {
           [State.DRAFT]: t("types:outsource.info_request.state.draft.label"),
-          [State.SENT]: t("types:outsource.info_request.state.sent.label"),
-          [State.RECEIVED]: t("types:outsource.info_request.state.received.label"),
+          [State.SENT]: t("types:outsource.info_request.state.sent.admin.label"),
+          [State.RECEIVED]: t("types:outsource.info_request.state.received.admin.label"),
+          [State.REJECTED]: t("types:outsource.info_request.state.rejected.label"),
+        }
+
+        return map[value]
+      }
+      export function getClientLabel(t: TFunction, value: State) {
+        const map = {
+          [State.DRAFT]: t("types:outsource.info_request.state.draft.label"),
+          [State.SENT]: t("types:outsource.info_request.state.sent.client.label"),
+          [State.RECEIVED]: t("types:outsource.info_request.state.received.client.label"),
           [State.REJECTED]: t("types:outsource.info_request.state.rejected.label"),
         }
 

@@ -30,6 +30,9 @@ import OutsourceListScreen from "@/ui/client/outsource/list/OutsourceListScreen.
 import OutsourceDetailScreen from "@/ui/client/outsource/detail/OutsourceDetailScreen.tsx"
 import type {Outsource} from "@/domain/model/Outsource.ts"
 import {type AppMatch, Localized} from "@ienlab/react-library"
+import OutsourceLogListScreen from "@/ui/client/outsource/log/list/OutsourceLogListScreen.tsx"
+import OutsourceRequestListScreen from "@/ui/client/outsource/request/list/OutsourceRequestListScreen.tsx"
+import OutsourceRevisionListScreen from "@/ui/client/outsource/revision/list/OutsourceRevisionListScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -123,6 +126,70 @@ export function getRouter(t: TFunction) {
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: "" },
+              ],
+            },
+
+            {
+              path: ClientOutsourceDestination.request.list,
+              element: <OutsourceRequestListScreen />,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.info_request.label"), path: "" }
+              ],
+            },
+            {
+              path: ClientOutsourceDestination.request.detail,
+              element: <></>,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.info_request.label"), path: ClientOutsourceDestination.path.request.list(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.info_request.detail"), path: "" }
+              ]
+            },
+            {
+              path: ClientOutsourceDestination.revision.list,
+              element: <OutsourceRevisionListScreen />,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" }
+              ],
+            },
+            {
+              path: ClientOutsourceDestination.revision.detail,
+              element: <></>,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.work_logs.label"), path: ClientOutsourceDestination.path.revision.list(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.revision_request.detail"), path: "" }
+              ],
+            },
+            {
+              path: ClientOutsourceDestination.log.list,
+              element: <OutsourceLogListScreen />,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.work_logs.label"), path: "" }
+              ],
+            },
+            {
+              path: ClientOutsourceDestination.log.detail,
+              element: <></>,
+              loader: outsourceLoader,
+              handle: (match: AppMatch<Outsource>) => [
+                { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
+                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.work_logs.label"), path: ClientOutsourceDestination.path.log.list(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.work_logs.detail"), path: "" },
               ],
             },
           ]

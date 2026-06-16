@@ -17,7 +17,6 @@ interface Store {
   onDisposed: () => void
   loadNextPage: () => void
   refresh: () => void
-  deleteItems: (ids: string[], onSuccess: () => void, onFailure: (errorKey: string) => void) => Promise<void>
   setSearchKeyword: (keyword: string) => void
   clearSearch: () => void
   setCompanyFilter: (companyRef: DocumentReference | null) => void
@@ -46,16 +45,6 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     props.outsourceRepository.reset()
     set({ outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList })
     get().loadNextPage()
-  },
-
-  deleteItems: async (ids, onSuccess, onFailure) => {
-    try {
-      await Promise.all(ids.map(id => props.outsourceRepository.delete(id)))
-      get().refresh()
-      onSuccess()
-    } catch (e) {
-      if (e instanceof Error) onFailure(e.message); else onFailure(String(e))
-    }
   },
 
   setSearchKeyword: (keyword) => {

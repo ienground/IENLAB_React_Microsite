@@ -161,6 +161,7 @@
         "desc": {
           "label": "정보 요청 설명 및 지시사항"
         },
+        "detail": "요청 보기",
         "image": {
           "label": "요청할 미디어 항목"
         },
@@ -210,7 +211,20 @@
         "label": "진행 단계"
       },
       "revision_request": {
-        "label": "수정 요청"
+        "amount_delta": {
+          "label": "금액 추가"
+        },
+        "detail": "요청 보기",
+        "due_date_delta": {
+          "label": "기간 연장"
+        },
+        "label": "수정 요청",
+        "sent_date": {
+          "label": "전송 시각"
+        },
+        "state": {
+          "label": "상태"
+        }
       },
       "state": {
         "desc": "현재 진행 상태와 변동일을 작성해 주세요.",
@@ -222,9 +236,15 @@
       },
       "view": "외주 프로젝트 보기",
       "work_logs": {
+        "date": "작업 일시",
+        "detail": "일지 보기",
+        "duration": "작업 시간",
         "label": "작업 일지",
         "latest": {
           "label": "최신 작업 일지"
+        },
+        "state": {
+          "label": "상태"
         }
       }
     },
