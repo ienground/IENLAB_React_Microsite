@@ -139,7 +139,11 @@ function ScreenBody() {
 
   const onVerifyOtpCode = () => {
     verifyOtpCode(
-      () => {},
+      (result) => {
+        if (result === PhoneVerify.Result.VERIFIED) {
+          setOtpTimer(null)
+        }
+      },
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
