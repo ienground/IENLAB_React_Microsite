@@ -65,7 +65,11 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     const constraints: QueryConstraint[] = []
 
     if (!this.isAdmin) {
-      constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "!=", Outsource.InfoRequest.State.DRAFT))
+      constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "in", [
+        Outsource.InfoRequest.State.SENT,
+        Outsource.InfoRequest.State.RECEIVED,
+        Outsource.InfoRequest.State.REJECTED,
+      ]))
     }
 
     constraints.push(orderBy(FirestorePath.UPDATE_AT, "desc"))
@@ -136,7 +140,11 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
       }
 
       if (!this.isAdmin) {
-        constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "!=", Outsource.InfoRequest.State.DRAFT))
+        constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "in", [
+          Outsource.InfoRequest.State.SENT,
+          Outsource.InfoRequest.State.RECEIVED,
+          Outsource.InfoRequest.State.REJECTED,
+        ]))
       }
 
       constraints.push(limit(this.PAGE_SIZE))

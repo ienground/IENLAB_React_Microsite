@@ -34,6 +34,7 @@ import OutsourceLogListScreen from "@/ui/client/outsource/log/list/OutsourceLogL
 import OutsourceRequestListScreen from "@/ui/client/outsource/request/list/OutsourceRequestListScreen.tsx"
 import OutsourceRevisionListScreen from "@/ui/client/outsource/revision/list/OutsourceRevisionListScreen.tsx"
 import OutsourceRevisionDetailScreen from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailScreen.tsx"
+import OutsourceLogDetailScreen from "@/ui/client/outsource/log/detail/OutsourceLogDetailScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -184,7 +185,7 @@ export function getRouter(t: TFunction) {
             },
             {
               path: ClientOutsourceDestination.log.detail,
-              element: <></>,
+              element: <OutsourceLogDetailScreen />,
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },

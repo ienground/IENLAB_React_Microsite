@@ -67,7 +67,12 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
     const constraints: QueryConstraint[] = []
 
     if (this.isAdmin) {
-      constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "!=", Outsource.RevisionRequest.State.DRAFT))
+      constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "in", [
+        Outsource.RevisionRequest.State.SENT,
+        Outsource.RevisionRequest.State.APPROVED,
+        Outsource.RevisionRequest.State.REJECTED,
+        Outsource.RevisionRequest.State.APPLIED,
+      ]))
     }
 
     constraints.push(orderBy(FirestorePath.UPDATE_AT, "desc"))
@@ -163,7 +168,12 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
       }
 
       if (this.isAdmin) {
-        constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "!=", Outsource.RevisionRequest.State.DRAFT))
+        constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "in", [
+          Outsource.RevisionRequest.State.SENT,
+          Outsource.RevisionRequest.State.APPROVED,
+          Outsource.RevisionRequest.State.REJECTED,
+          Outsource.RevisionRequest.State.APPLIED,
+        ]))
       }
 
       constraints.push(limit(this.PAGE_SIZE))
