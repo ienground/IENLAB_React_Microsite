@@ -28,7 +28,9 @@ export const FirestorePath = {
     /** number */
     STATE: "state",
     /** string */
-    PHONE: "phone"
+    PHONE: "phone",
+    /** string (조회용 사본, Firebase Auth가 SOURCE) */
+    EMAIL: "email"
   },
 
   Estimate: {

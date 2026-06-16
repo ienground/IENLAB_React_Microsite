@@ -94,17 +94,6 @@ function ScreenBody() {
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
   const prevEmailRef = useRef(uiState.item.email)
-  useEffect(() => {
-    if (uiState.isInitialized) {
-      prevEmailRef.current = uiState.item.email
-    }
-  }, [uiState.isInitialized])
-
-  useEffect(() => {
-    if (otpTimer === null || otpTimer <= 0) return
-    const id = setTimeout(() => setOtpTimer(otpTimer - 1), 1000)
-    return () => clearTimeout(id)
-  }, [otpTimer])
 
   const onSave = () => {
     setSaveProgress(true)
@@ -155,13 +144,25 @@ function ScreenBody() {
     )
   }
 
-  const  otpRequestErrorMsg = PhoneVerify.Request.getMessage(t, uiState.item.otpRequestState)
+  const otpRequestErrorMsg = PhoneVerify.Request.getMessage(t, uiState.item.otpRequestState)
   const otpResultErrorMsg = PhoneVerify.Result.getMessage(t, uiState.item.otpResultState)
 
   useEffect(() => {
     init()
     return () => onDisposed()
   }, [init, onDisposed])
+
+  useEffect(() => {
+    if (uiState.isInitialized) {
+      prevEmailRef.current = uiState.item.email
+    }
+  }, [uiState.isInitialized])
+
+  useEffect(() => {
+    if (otpTimer === null || otpTimer <= 0) return
+    const id = setTimeout(() => setOtpTimer(otpTimer - 1), 1000)
+    return () => clearTimeout(id)
+  }, [otpTimer])
 
   useEffect(() => {
     const company = uiState.item.company

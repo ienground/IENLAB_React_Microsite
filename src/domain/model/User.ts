@@ -27,6 +27,7 @@ export class User implements FirestoreItem {
   level: User.Level = User.Level.Default
   state: User.State = User.State.Default
   phone: string = ""
+  email: string = ""
 
   constructor(partial: Partial<User> = {}) {
     Object.assign(this, partial)
@@ -45,6 +46,7 @@ export class User implements FirestoreItem {
       [FirestorePath.User.STATE]: this.state,
       [FirestorePath.User.PHONE]: this.phone
     }
+    // email은 Firebase Auth가 SOURCE. 직접 저장하지 않음
 
     if (!isUpdate) {
       map[FirestorePath.CREATE_AT] = serverTimestamp()
@@ -68,7 +70,8 @@ export class User implements FirestoreItem {
       tempCompanyRef: doc[FirestorePath.User.TEMP_COMPANY],
       level: doc[FirestorePath.User.LEVEL],
       state: doc[FirestorePath.User.STATE],
-      phone: doc[FirestorePath.User.PHONE]
+      phone: doc[FirestorePath.User.PHONE],
+      email: doc[FirestorePath.User.EMAIL] ?? ""
     })
   }
 }
