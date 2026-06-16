@@ -36,6 +36,7 @@
   "datetime": {
     "month_year": "YYYY.MM"
   },
+  "day_format": "{{day}}일",
   "delete": "삭제",
   "delete_dialog_desc": "이 항목을 삭제합니다.",
   "delete_dialog_title": "삭제할까요?",
@@ -121,6 +122,9 @@
   },
   "list_end": "항목 끝",
   "login": "로그인",
+  "minute_format": "{{min}}분",
+  "money_format": "{{money, currency}}",
+  "no_data": "정보 없음",
   "notice": {
     "desc": "새로운 소식을 살펴보세요.",
     "label": "공지사항"
@@ -505,18 +509,18 @@
       "hint": "프로필 이미지를 업로드하세요.",
       "label": "프로필 사진",
       "phone": {
+        "email_not_verified": "이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.",
         "expired": "만료되었습니다.",
+        "resend_verification_email": "인증 메일 재발송",
         "send": "인증번호 전송",
         "send_failure_over_limit": "인증번호 발송 횟수를 초과했습니다.",
         "send_failure_unknown": "인증번호 발송에 실패했습니다.",
+        "verification_email_sent": "인증 메일이 발송되었습니다. 이메일을 확인해주세요.",
         "verified": "인증됨",
         "verify": "인증",
         "verify_failure_no_send": "인증번호가 발송되지 않았습니다.",
-        "verify_failure_wrong": "인증번호가 일치하지 않습니다.",
         "verify_failure_unknown": "인증에 실패했습니다.",
-        "verification_email_sent": "인증 메일이 발송되었습니다. 이메일을 확인해주세요.",
-        "email_not_verified": "이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.",
-        "resend_verification_email": "인증 메일 재발송"
+        "verify_failure_wrong": "인증번호가 일치하지 않습니다."
       }
     }
   },
