@@ -297,7 +297,7 @@ function ScreenBody() {
                       customInput={InputGroupInput}
                     />
                     <InputGroupButton
-                      disabled={infoState.item?.phone === uiState.item.phone}
+                      disabled={!uiState.item.phone || infoState.item?.phone === uiState.item.phone}
                       onClick={onSendOtpCode}
                     >
                       <Swap swapped={uiState.item.otpRequestState === PhoneVerify.Request.REQUESTING}>
