@@ -22,6 +22,8 @@ export class User implements FirestoreItem {
   profileUrl: string = ""
   companyRef: DocumentReference | null = null
   company: Company | null = null
+  tempCompanyRef: DocumentReference | null = null
+  tempCompany: Company | null = null
   level: User.Level = User.Level.Default
   state: User.State = User.State.Default
   phone: string = ""
@@ -39,11 +41,12 @@ export class User implements FirestoreItem {
       [FirestorePath.User.NAME]: this.name,
       [FirestorePath.User.PROFILE_URL]: this.profileUrl,
       [FirestorePath.User.COMPANY]: this.companyRef,
+      [FirestorePath.User.TEMP_COMPANY]: this.tempCompanyRef,
       [FirestorePath.User.LEVEL]: this.level,
       [FirestorePath.User.STATE]: this.state,
-      [FirestorePath.User.PHONE]: this.phone,
-      [FirestorePath.User.EMAIL]: this.email
+      [FirestorePath.User.PHONE]: this.phone
     }
+    // email은 Firebase Auth가 SOURCE. 직접 저장하지 않음
 
     if (!isUpdate) {
       map[FirestorePath.CREATE_AT] = serverTimestamp()
@@ -64,10 +67,11 @@ export class User implements FirestoreItem {
       name: doc[FirestorePath.User.NAME],
       profileUrl: doc[FirestorePath.User.PROFILE_URL],
       companyRef: doc[FirestorePath.User.COMPANY],
+      tempCompanyRef: doc[FirestorePath.User.TEMP_COMPANY],
       level: doc[FirestorePath.User.LEVEL],
       state: doc[FirestorePath.User.STATE],
       phone: doc[FirestorePath.User.PHONE],
-      email: doc[FirestorePath.User.EMAIL]
+      email: doc[FirestorePath.User.EMAIL] ?? ""
     })
   }
 }

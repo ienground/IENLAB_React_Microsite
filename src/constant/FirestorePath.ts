@@ -6,6 +6,7 @@ export const FirestorePath = {
   NOTICE_CATEGORY: "noticeCategory",
   PORTFOLIO: "portfolio",
   COMPANY: "company",
+  OTP: "otp",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
@@ -20,14 +21,16 @@ export const FirestorePath = {
     PROFILE_URL: "profileUrl",
     /** DocumentReference */
     COMPANY: "company",
+    /** DocumentReference */
+    TEMP_COMPANY: "tempCompany",
     /** number */
     LEVEL: "level",
     /** number */
     STATE: "state",
     /** string */
     PHONE: "phone",
-    /** string */
-    EMAIL: "email",
+    /** string (조회용 사본, Firebase Auth가 SOURCE) */
+    EMAIL: "email"
   },
 
   Estimate: {
@@ -242,5 +245,12 @@ export const FirestorePath = {
       }
     }
 
-  }
+  },
+
+  Otp: {
+    /** String */
+    CODE: "code",
+    /** String */
+    UID: "uid",
+  },
 }

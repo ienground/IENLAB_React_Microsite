@@ -14,7 +14,7 @@ import {
   startAt,
   endAt,
   type QueryConstraint,
-  type Unsubscribe, updateDoc,
+  type Unsubscribe, updateDoc, serverTimestamp,
 } from "firebase/firestore"
 import {
   signInWithCustomToken,
@@ -23,6 +23,7 @@ import {
   type UserCredential,
   type User as FirebaseUser,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth"
 import { User } from "@/domain/model/User.ts"
 import {
@@ -31,7 +32,7 @@ import {
   type FirestoreListMode,
   getAuthErrorKey,
   getSnapshots,
-  type InfScrollStateList,
+  type InfScrollStateList, PhoneVerify,
   type SignInResult, uploadCompressedImage,
 } from "@ienlab/react-library"
 import { FirebaseError } from "firebase/app"
@@ -39,12 +40,16 @@ import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
+import {type Functions } from "firebase/functions"
+import {createCallable} from "@/constant/FnSchema.ts"
 
 export class UserRepositoryImpl implements UserRepository {
   private readonly auth: Auth
   private readonly usersRef
   private readonly companiesRef
   private readonly storageRef
+  private readonly sendPhoneVerifyFn
+  private readonly verifyCodeFn
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -62,12 +67,15 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(
     firestore: Firestore,
     readonly storage: FirebaseStorage,
-    auth: Auth
+    auth: Auth,
+    functions: Functions
   ) {
     this.usersRef = collection(firestore, FirestorePath.USER)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
     this.storageRef = ref(storage, StoragePath.USER)
     this.auth = auth
+    this.sendPhoneVerifyFn = createCallable(functions, "SendPhoneVerify")
+    this.verifyCodeFn = createCallable(functions, "VerifyCode")
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -115,6 +123,52 @@ export class UserRepositoryImpl implements UserRepository {
     return signOut(this.auth)
   }
 
+  async sendChangeEmailVerification(email: string): Promise<void> {
+    const user = this.auth.currentUser
+    if (!user) throw Error("No authenticated user")
+    const idToken = await user.getIdToken()
+    const res = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${this.auth.config.apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requestType: "VERIFY_AND_CHANGE_EMAIL",
+          idToken,
+          newEmail: email,
+        }),
+      },
+    )
+    if (!res.ok) {
+      const body = await res.json()
+      console.error("sendOobCode error", body)
+      throw Error(body.error?.message ?? "sendOobCode failed")
+    }
+  }
+
+  async sendEmailVerification(): Promise<void> {
+    const user = this.auth.currentUser
+    if (!user) throw Error("No authenticated user")
+    await sendEmailVerification(user)
+  }
+
+  async sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request> {
+    const uid = this.auth.currentUser?.uid
+    if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
+
+
+    const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
+    return result.data.code
+  }
+
+  async verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result> {
+    const uid = this.auth.currentUser?.uid
+    if (!uid) return PhoneVerify.Result.FAILURE_UNKNOWN
+
+    const result = await this.verifyCodeFn({ phoneNumber, uid, code })
+    return result.data.code
+  }
+
   getCurrentUser(): FirebaseUser | null {
     return this.auth.currentUser
   }
@@ -135,9 +189,13 @@ export class UserRepositoryImpl implements UserRepository {
     if (!snapshot.exists()) return null
 
     const item = User.fromSnapshot(snapshot)
-    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef])
+    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef, item.tempCompanyRef])
 
-    return new User({...item, company: this.companyCache.get(item.companyRef?.path ?? "")})
+    return new User({
+      ...item,
+      company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+      tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+    })
   }
 
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe {
@@ -156,8 +214,12 @@ export class UserRepositoryImpl implements UserRepository {
       }
 
       const item = User.fromSnapshot(snapshot)
-      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef])
-      callback(new User({...item, company: this.companyCache.get(item.companyRef?.path ?? "")}))
+      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.companyRef, item.tempCompanyRef])
+      callback(new User({
+        ...item,
+        company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+        tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+      }))
     }, { cache: cache })
   }
 
@@ -179,6 +241,27 @@ export class UserRepositoryImpl implements UserRepository {
 
     const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
+  }
+
+  async approveTempCompany(id: string): Promise<void> {
+    const snapshot = await getDoc(doc(this.usersRef, id))
+    if (!snapshot.exists()) return
+
+    const item = User.fromSnapshot(snapshot)
+    if (!item.tempCompanyRef) return
+
+    await updateDoc(doc(this.usersRef, id), {
+      [FirestorePath.User.COMPANY]: item.tempCompanyRef,
+      [FirestorePath.User.TEMP_COMPANY]: null,
+      [FirestorePath.UPDATE_AT]: serverTimestamp(),
+    })
+  }
+
+  async rejectTempCompany(id: string): Promise<void> {
+    await updateDoc(doc(this.usersRef, id), {
+      [FirestorePath.User.TEMP_COMPANY]: null,
+      [FirestorePath.UPDATE_AT]: serverTimestamp(),
+    })
   }
 
   delete(credential: UserCredential): Promise<boolean> {
@@ -229,11 +312,15 @@ export class UserRepositoryImpl implements UserRepository {
       const items = docs.map(User.fromSnapshot)
       const newMap = new Map(this.userInfoStateList.itemList)
 
-      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, items.map(item => item.companyRef))
+      const refs = items.flatMap(item => [item.companyRef, item.tempCompanyRef])
+      await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, refs)
 
       items.forEach(item => {
-        const path = item.companyRef?.path
-        newMap.set(item.id, new User({...item, company: path ? this.companyCache.get(path) ?? null : null}))
+        newMap.set(item.id, new User({
+          ...item,
+          company: this.companyCache.get(item.companyRef?.path ?? "") ?? null,
+          tempCompany: this.companyCache.get(item.tempCompanyRef?.path ?? "") ?? null,
+        }))
       })
 
       this.userInfoStateList = {

@@ -43,6 +43,7 @@ import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
 
 interface AppSidebarProps {
   user: User | null
+  email?: string
   signOut: () => Promise<void>
 }
 
@@ -177,7 +178,7 @@ export function AppSidebar(props: AppSidebarProps) {
                       </Avatar>
                       <div className="ml-2 mr-4 grow overflow-hidden">
                         <div className="text-sm truncate">{props.user?.name}</div>
-                        <div className="text-xs text-muted-foreground truncate">{props.user?.email}</div>
+                        <div className="text-xs text-muted-foreground truncate">{props.email}</div>
                       </div>
                       <RiArrowUpSLine/>
                     </div>
