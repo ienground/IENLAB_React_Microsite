@@ -33,6 +33,7 @@ import {type AppMatch, Localized} from "@ienlab/react-library"
 import OutsourceLogListScreen from "@/ui/client/outsource/log/list/OutsourceLogListScreen.tsx"
 import OutsourceRequestListScreen from "@/ui/client/outsource/request/list/OutsourceRequestListScreen.tsx"
 import OutsourceRevisionListScreen from "@/ui/client/outsource/revision/list/OutsourceRevisionListScreen.tsx"
+import OutsourceRevisionDetailScreen from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -162,12 +163,12 @@ export function getRouter(t: TFunction) {
             },
             {
               path: ClientOutsourceDestination.revision.detail,
-              element: <></>,
+              element: <OutsourceRevisionDetailScreen />,
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.work_logs.label"), path: ClientOutsourceDestination.path.revision.list(match.params.itemId ?? "") },
+                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
                 { title: t("strings:outsource_manage.outsource.revision_request.detail"), path: "" }
               ],
             },

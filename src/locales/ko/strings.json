@@ -214,11 +214,20 @@
         "amount_delta": {
           "label": "금액 추가"
         },
+        "content": {
+          "label": "세부 내용"
+        },
         "detail": "요청 보기",
         "due_date_delta": {
           "label": "기간 연장"
         },
+        "images": {
+          "label": "첨부 이미지"
+        },
         "label": "수정 요청",
+        "reason": {
+          "label": "요청 이유"
+        },
         "sent_date": {
           "label": "전송 시각"
         },
