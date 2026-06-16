@@ -170,8 +170,9 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
 
   loadNextCompanyPage: async () => {
+    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
     await props.companyRepository.loadNextPage()
-    set({ companyInfoStateList: props.companyRepository.companyInfoStateList })
+    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
   },
 
   setCompanySearchKeyword: (keyword) => {
