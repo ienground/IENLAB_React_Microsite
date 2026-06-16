@@ -1,6 +1,13 @@
 import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
-import {CrossfadeImage, Localized, slideFadeProps, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
+import {
+  CrossfadeImage,
+  formatBaseDateTime,
+  Localized,
+  slideFadeProps,
+  useDateTimeFormatters,
+  useTheme
+} from "@ienlab/react-library"
 import {Trans, useTranslation} from "react-i18next"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
@@ -1006,7 +1013,6 @@ function PortfolioItem({
 function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfolio[], close: VoidFunction }) {
   const {t} = useTranslation()
   const item = items.find((item) => item.id === id)!
-  const {basicDateTimeFormat} = useDateTimeFormatters()
 
   return (
     <>
@@ -1041,9 +1047,9 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
               >
                 <FieldTitle>
                   <Badge variant="secondary" className="border border-border">
-                    {basicDateTimeFormat(item.startAt.toDate(), "strings:datetime.month_year")} -{" "}
+                    {formatBaseDateTime(item.startAt.toDate(), "strings:datetime.month_year")} -{" "}
                     {item.endAt
-                      ? basicDateTimeFormat(item.endAt.toDate(), "strings:datetime.month_year")
+                      ? formatBaseDateTime(item.endAt.toDate(), "strings:datetime.month_year")
                       : ""}
                   </Badge>
                 </FieldTitle>

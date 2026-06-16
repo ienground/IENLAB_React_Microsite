@@ -40,8 +40,8 @@ import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
-import {httpsCallable, type Functions } from "firebase/functions"
-import {FunctionName} from "@/constant/FunctionName.ts"
+import {type Functions } from "firebase/functions"
+import {createCallable} from "@/constant/FnSchema.ts"
 
 export class UserRepositoryImpl implements UserRepository {
   private readonly auth: Auth
@@ -74,8 +74,8 @@ export class UserRepositoryImpl implements UserRepository {
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
     this.storageRef = ref(storage, StoragePath.USER)
     this.auth = auth
-    this.sendPhoneVerifyFn = httpsCallable<PhoneVerify.Send.Params, PhoneVerify.Send.Result>(functions, FunctionName.SEND_PHONE_VERIFY)
-    this.verifyCodeFn = httpsCallable<PhoneVerify.Verify.Params, PhoneVerify.Verify.Result>(functions, FunctionName.VERIFY_CODE)
+    this.sendPhoneVerifyFn = createCallable(functions, "SendPhoneVerify")
+    this.verifyCodeFn = createCallable(functions, "VerifyCode")
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -155,6 +155,7 @@ export class UserRepositoryImpl implements UserRepository {
   async sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request> {
     const uid = this.auth.currentUser?.uid
     if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
+
 
     const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
     return result.data.code
