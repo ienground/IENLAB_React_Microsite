@@ -132,7 +132,11 @@ function ScreenBody() {
   const onSendOtpCode = () => {
     setOtpTimer(300)
     sendOtpCode(
-      () => {},
+      (result) => {
+        if (result === PhoneVerify.Request.SUCCESS) {
+          setOtpTimer(300)
+        }
+      },
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -269,7 +273,14 @@ function ScreenBody() {
                     />
                     <ComboboxContent>
                       <ComboboxEmpty>{t("strings:list_end")}</ComboboxEmpty>
-                      <ComboboxList>
+                      <ComboboxList
+                        onScroll={e => {
+                          const target = e.currentTarget
+                          if (target.scrollHeight - target.scrollTop <= target.clientHeight + 50) {
+                            loadNextCompanyPage()
+                          }
+                        }}
+                      >
                         {(item: Company) => (
                           <ComboboxItem
                             key={item.id}
