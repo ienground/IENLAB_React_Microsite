@@ -55,6 +55,10 @@
   "footer": {
     "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
   },
+  "forbidden_dialog": {
+    "desc": "접근할 수 없습니다. 이전 페이지로 돌아가세요.",
+    "title": "잘못된 접근입니다"
+  },
   "go_back": "이전 화면으로",
   "home": {
     "about": {

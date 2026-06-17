@@ -28,11 +28,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme" themeExpiryHours={THEME_EXPIRY_HOURS}>
-        <LoadingLineReveal>
+        {/*<LoadingLineReveal>*/}
           <TooltipProvider>
             <ScreenBody />
           </TooltipProvider>
-        </LoadingLineReveal>
+        {/*</LoadingLineReveal>*/}
       </ThemeProvider>
     </HelmetProvider>
   )

@@ -33,6 +33,7 @@ import {Card} from "@/components/ui/card.tsx"
 import ReactRouterPrompt from "react-router-prompt"
 import RouterPromptAlertDialog from "@/components/custom/shared/dialog/RouterPromptAlertDialog.tsx"
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
+import ForbiddenAlertDialog from "@/components/custom/shared/dialog/ForbiddenAlertDialog.tsx"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {createOutsourceRevisionRepository} from "@/di/container.ts"
 import {toast} from "sonner"
@@ -75,6 +76,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
   const navigate = useNavigate()
   const { dateTimeFormat } = useDateTimeFormatters()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showForbiddenDialog, setShowForbiddenDialog] = useState(false)
   const [isSaveProgress, setSaveProgress] = useState(false)
   const [isDeleteProgress, setDeleteProgress] = useState(false)
 
@@ -118,6 +120,12 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
     return () => onDisposed()
   }, [init, onDisposed])
 
+  useEffect(() => {
+    if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
+      setShowForbiddenDialog(true)
+    }
+  }, [infoState.isInitialized, infoState.item?.state, props.mode])
+
   return (
     <>
       <div className="h-full">
@@ -131,45 +139,47 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
               <div className="font-mono text-xs text-muted-foreground">{infoState.item?.id}</div>
             </div>
             <ButtonGroup>
-              <Button
-                variant="outline"
-                size="default"
-                className="w-9 md:w-auto"
-                disabled={invalid()}
-                onClick={() => onSave(Outsource.RevisionRequest.State.DRAFT)}
-              >
-                <Swap swapped={isSaveProgress}>
-                  <SwapOn><Spinner className="size-4" /></SwapOn>
-                  <SwapOff><RiDraftFill /></SwapOff>
-                </Swap>
-                <div className="hidden md:block">{t("strings:save_draft")}</div>
-              </Button>
-              <Button
-                variant="default"
-                size="default"
-                className="w-9 md:w-auto"
-                disabled={invalid()}
-                onClick={() => onSave(Outsource.RevisionRequest.State.SENT)}
-              >
-                <Swap swapped={isSaveProgress}>
-                  <SwapOn><Spinner className="size-4" /></SwapOn>
-                  <SwapOff><RiSaveFill /></SwapOff>
-                </Swap>
-                <div className="hidden md:block">{t("strings:save")}</div>
-              </Button>
-              <Button
-                variant="destructive"
-                size="default"
-                className="w-9 md:w-auto"
-                disabled={props.mode === "create"}
-                onClick={() => setShowDeleteDialog(true)}
-              >
-                <Swap swapped={isDeleteProgress}>
-                  <SwapOn><Spinner className="size-4" /></SwapOn>
-                  <SwapOff><RiDeleteBinFill /></SwapOff>
-                </Swap>
-                <div className="hidden md:block">{t("strings:delete")}</div>
-              </Button>
+              {infoState.item?.state === Outsource.RevisionRequest.State.DRAFT && <>
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  disabled={invalid()}
+                  onClick={() => onSave(Outsource.RevisionRequest.State.DRAFT)}
+                >
+                  <Swap swapped={isSaveProgress}>
+                    <SwapOn><Spinner className="size-4" /></SwapOn>
+                    <SwapOff><RiDraftFill /></SwapOff>
+                  </Swap>
+                  <div className="hidden md:block">{t("strings:save_draft")}</div>
+                </Button>
+                <Button
+                  variant="default"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  disabled={invalid()}
+                  onClick={() => onSave(Outsource.RevisionRequest.State.SENT)}
+                >
+                  <Swap swapped={isSaveProgress}>
+                    <SwapOn><Spinner className="size-4" /></SwapOn>
+                    <SwapOff><RiSaveFill /></SwapOff>
+                  </Swap>
+                  <div className="hidden md:block">{t("strings:save")}</div>
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  disabled={props.mode === "create"}
+                  onClick={() => setShowDeleteDialog(true)}
+                >
+                  <Swap swapped={isDeleteProgress}>
+                    <SwapOn><Spinner className="size-4" /></SwapOn>
+                    <SwapOff><RiDeleteBinFill /></SwapOff>
+                  </Swap>
+                  <div className="hidden md:block">{t("strings:delete")}</div>
+                </Button>
+              </>}
             </ButtonGroup>
           </div>
 
@@ -241,6 +251,11 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
       </ReactRouterPrompt>
 
       <DeleteAlertDialog visible={showDeleteDialog} onVisibleChange={setShowDeleteDialog} onConfirm={onDelete} />
+
+      <ForbiddenAlertDialog
+        visible={showForbiddenDialog}
+        onAction={() => navigate(ClientOutsourceDestination.path.revision.list(props.itemId), { replace: true })}
+      />
     </>
   )
 }
