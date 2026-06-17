@@ -5,7 +5,7 @@ import {useMemo, useState} from "react"
 import {
   DataTable,
   Seo,
-  useDateTimeFormatters, useDebouncedSearch,
+  useDateTimeFormatters, useDebouncedSearch, useDurationFormatter,
   useListScreenLifecycle
 } from "@ienlab/react-library"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
@@ -52,8 +52,7 @@ function ScreenBody(props: { itemId: string }) {
   const {t} = useTranslation()
   const navigate = useNavigate()
   const {dateTimeFormat} = useDateTimeFormatters()
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [isDeleteProgress, setDeleteProgress] = useState(false)
+  const {minFormat} = useDurationFormatter()
   const [query, setQuery] = useState("")
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -87,7 +86,7 @@ function ScreenBody(props: { itemId: string }) {
     },
     {
       header: t("strings:outsource_manage.outsource.work_logs.duration"),
-      accessorFn: row => t("strings:minute_format", {min: row.durationMinutes})
+      accessorFn: row => minFormat(row.durationMinutes)
     },
     {
       header: t("strings:outsource_manage.outsource.work_logs.state.label"),

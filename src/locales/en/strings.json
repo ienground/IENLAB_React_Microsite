@@ -103,7 +103,6 @@
       "native_label": "한국어"
     }
   },
-  "minute_format": "{{min}} mins",
   "money_format": "{{money, currency}}",
   "no_data": "No data",
   "notice": {

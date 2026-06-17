@@ -6,9 +6,9 @@ import {
   RiArrowLeftLine,
   RiCheckboxCircleFill,
   RiCheckFill,
-  RiDeleteBinFill,
+  RiDeleteBinFill, RiEditFill,
   RiErrorWarningFill, RiFileCheckFill,
-  RiProhibited2Line
+  RiProhibited2Line, RiSendInsFill
 } from "@remixicon/react"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
@@ -38,6 +38,7 @@ import {cn} from "@/lib/utils.ts"
 import {
   OutsourceRevisionDetailViewModel
 } from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailViewModel.ts"
+import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 
 export default function OutsourceRevisionDetailScreen() {
   const {itemId, revisionId} = useParams<{ itemId: string, revisionId: string }>()
@@ -77,7 +78,7 @@ function ScreenBody(props: { id: string }) {
     del(
       () => {
         setProgress(false)
-        navigate(OutsourceDestination.path.request.list(props.id), {replace: true, state: {shouldRefresh: true}})
+        navigate(ClientOutsourceDestination.path.revision.list(props.id), {replace: true, state: {shouldRefresh: true}})
       },
       (err) => {
         setProgress(false)
@@ -123,18 +124,41 @@ function ScreenBody(props: { id: string }) {
               <div>{infoState.item ? infoState.item.title : "-"}</div>
             </div>
             <ButtonGroup>
-              <Button
-                variant="destructive"
-                size="default"
-                className="w-9 md:w-auto"
-                onClick={() => setShowDeleteDialog(true)}
-              >
-                <Swap swapped={isProgress}>
-                  <SwapOn><Spinner className="size-4"/></SwapOn>
-                  <SwapOff><RiDeleteBinFill/></SwapOff>
-                </Swap>
-                <div className="hidden md:block">{t("strings:delete")}</div>
-              </Button>
+              {infoState.item?.state === Outsource.RevisionRequest.State.DRAFT && <>
+                <Button
+                  variant="secondary"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  onClick={() => onUpdateState(Outsource.RevisionRequest.State.SENT)}
+                >
+                  <Swap swapped={isProgress}>
+                    <SwapOn><Spinner className="size-4"/></SwapOn>
+                    <SwapOff><RiSendInsFill /></SwapOff>
+                  </Swap>
+                  <div className="hidden md:block">{t("strings:send")}</div>
+                </Button>
+                <Button
+                  variant="default"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  onClick={() => setShowDeleteDialog(true)}
+                >
+                  <RiEditFill />
+                  <div className="hidden md:block">{t("strings:edit")}</div>
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="default"
+                  className="w-9 md:w-auto"
+                  onClick={() => setShowDeleteDialog(true)}
+                >
+                  <Swap swapped={isProgress}>
+                    <SwapOn><Spinner className="size-4"/></SwapOn>
+                    <SwapOff><RiDeleteBinFill/></SwapOff>
+                  </Swap>
+                  <div className="hidden md:block">{t("strings:delete")}</div>
+                </Button>
+              </>}
             </ButtonGroup>
           </div>
 
@@ -160,7 +184,7 @@ function ScreenBody(props: { id: string }) {
                     variant={Outsource.RevisionRequest.State.getStatusColor(infoState.item.state)}
                   >
                     <StatusIndicator/>
-                    <StatusLabel>{Outsource.RevisionRequest.State.getAdminLabel(t, infoState.item.state)}</StatusLabel>
+                    <StatusLabel>{Outsource.RevisionRequest.State.getClientLabel(t, infoState.item.state)}</StatusLabel>
                   </Status>
                 }
               </span>

@@ -54,7 +54,7 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
   ) {
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.logsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.WORK_LOGS)
-    this.storageRef = ref(storage, StoragePath.OUTSOURCE)
+    this.storageRef = ref(storage, `${StoragePath.OUTSOURCE}/${id}/${StoragePath.Outsource.WORK_LOG}`)
   }
 
   logInfoStateList: InfScrollStateList<Outsource.WorkLog> = {
@@ -95,7 +95,7 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
 
   private async transformItem(id: string, item: OutsourceLogEditDetails) {
     const imageUrlsDownloadUrl = await Promise.all(item.imageUrls.map((item, index) =>
-      uploadCompressedImage(this.storageRef, `${id}/${StoragePath.Outsource.IMAGE_URLS}_${index}`, item, { maxWidthOrHeight: 1920 }))
+      uploadCompressedImage(this.storageRef, `${id}/${index}`, item, { maxWidthOrHeight: 1920 }))
     )
     return new Outsource.WorkLog({...item.toItem(),
       imageUrls: imageUrlsDownloadUrl
@@ -103,7 +103,6 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
   }
 
   async create(item: OutsourceLogEditDetails): Promise<DocumentReference> {
-
     const target = item.toItem()
     const ref = await addDoc(this.logsRef, target.toHashMap(false))
     const { imageUrls } = await this.transformItem(ref.id, item)

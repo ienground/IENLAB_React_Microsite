@@ -15,6 +15,7 @@ import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import type {ColumnDef, RowSelectionState} from "@tanstack/react-table"
 import {Checkbox} from "@/components/ui/checkbox.tsx"
 import {
+  RiAddFill,
   RiCheckboxCircleFill,
   RiDeleteBinFill, RiErrorWarningFill, RiSearchLine
 } from "@remixicon/react"
@@ -69,17 +70,26 @@ function ScreenBody(props: { itemId: string }) {
   const columns: ColumnDef<Outsource.RevisionRequest>[] = useMemo(() => [
     {
       id: "select",
-      header: ({table}) => (
-        <Checkbox
-          checked={table.getIsAllRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={value => table.toggleAllRowsSelected(!!value)}
-          aria-label="select all"
-        />
-      ),
+      header: ({table}) => {
+        const draftRows = table.getRowModel().rows.filter(row => row.original.state === Outsource.RevisionRequest.State.DRAFT)
+        const allSelected = draftRows.length > 0 && draftRows.every(row => row.getIsSelected())
+        const someSelected = draftRows.some(row => row.getIsSelected())
+
+        return (
+          <Checkbox
+            checked={allSelected || (someSelected && "indeterminate")}
+            onCheckedChange={value => {
+              draftRows.forEach(row => row.toggleSelected(!!value))
+            }}
+            aria-label="select all"
+          />
+        )
+      },
       cell: ({row}) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
+          disabled={row.original.state !== Outsource.RevisionRequest.State.DRAFT}
           onClick={e => e.stopPropagation()}
         />
       ),
@@ -106,11 +116,11 @@ function ScreenBody(props: { itemId: string }) {
     },
     {
       header: t("strings:outsource_manage.outsource.revision_request.amount_delta.label"),
-      accessorFn: row => t("strings:money_format", {money: row.amountDelta, currency: "KRW"})
+      accessorFn: row => !Outsource.RevisionRequest.State.valuesAfterSent.includes(row.state) ? "-" : t("strings:money_format", {money: row.amountDelta, currency: "KRW"})
     },
     {
       header: t("strings:outsource_manage.outsource.revision_request.due_date_delta.label"),
-      accessorFn: row => t("strings:day_format", {day: row.dueDateDeltaDays})
+      accessorFn: row => !Outsource.RevisionRequest.State.valuesAfterSent.includes(row.state) ? "-" : t("strings:day_format", {day: row.dueDateDeltaDays})
     }
   ], [t])
 
@@ -138,11 +148,20 @@ function ScreenBody(props: { itemId: string }) {
       <div className="h-full">
         <div className="flex flex-row px-4 items-center gap-4">
           <div className="flex flex-col grow">
-            <div>{t("strings:outsource_manage.outsource.info_request.label")}</div>
+            <div>{t("strings:outsource_manage.outsource.revision_request.label")}</div>
             {/*todo*/}
             <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: 3})}</div>
           </div>
           <ButtonGroup>
+            <Button
+              variant="default"
+              size="default"
+              className="w-9 md:w-auto"
+              onClick={() => navigate(ClientOutsourceDestination.path.revision.new(props.itemId))}
+            >
+              <RiAddFill />
+              <div className="hidden md:block">{t("strings:add_new_item")}</div>
+            </Button>
             <Button
               variant="destructive"
               size="default"

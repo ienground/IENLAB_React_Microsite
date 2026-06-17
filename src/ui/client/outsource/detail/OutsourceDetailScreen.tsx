@@ -18,7 +18,7 @@ import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
-import {Localized, Seo, useDateTimeFormatters} from "@ienlab/react-library"
+import {Localized, Seo, useDateTimeFormatters, useDurationFormatter} from "@ienlab/react-library"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Outsource} from "@/domain/model/Outsource.ts"
@@ -61,6 +61,7 @@ function ScreenBody() {
   const navigate = useNavigate()
   const {t} = useTranslation()
   const {dateTimeFormat} = useDateTimeFormatters()
+  const {minFormat} = useDurationFormatter()
 
   useEffect(() => {
     init()
@@ -146,7 +147,7 @@ function ScreenBody() {
                     </div>
                     <div className="flex flex-row gap-3 text-xs text-muted-foreground">
                       <span>{dateTimeFormat(log.workDate.toDate())}</span>
-                      <span>{t("strings:minute_format", {min: log.durationMinutes})}</span>
+                      <span>{minFormat(log.durationMinutes)}</span>
                     </div>
                   </div>
                 ))

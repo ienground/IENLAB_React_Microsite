@@ -6,7 +6,6 @@ export class OutsourceRevisionEditDetails {
   reason: string = ""
   amountDelta: number = 0
   dueDateDeltaDays: number = 0
-  state: Outsource.RevisionRequest.State = Outsource.RevisionRequest.State.Default
   imageUrls: FileUploadItem[] = []
 
   isDirty: boolean = false
@@ -21,7 +20,6 @@ export class OutsourceRevisionEditDetails {
       reason: this.reason,
       amountDelta: this.amountDelta,
       dueDateDeltaDays: this.dueDateDeltaDays,
-      state: this.state,
       imageUrls: this.imageUrls.map(item => item.url)
     })
   }
@@ -32,7 +30,6 @@ export class OutsourceRevisionEditDetails {
       reason: item.reason,
       amountDelta: item.amountDelta,
       dueDateDeltaDays: item.dueDateDeltaDays,
-      state: item.state,
       imageUrls: item.imageUrls.map(item => new FileUploadItem({ url: item }))
     })
   }

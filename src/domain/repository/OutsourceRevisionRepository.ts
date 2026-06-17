@@ -10,8 +10,10 @@ export interface OutsourceRevisionRepository {
   observe(id: string, callback: (item: Outsource.RevisionRequest | null) => void, cache?: boolean): Unsubscribe
 
   create(item: OutsourceRevisionEditDetails): Promise<DocumentReference>
+  clientCreate(item: OutsourceRevisionEditDetails): Promise<DocumentReference>
   update(id: string, item: OutsourceRevisionEditDetails): Promise<void>
   updateState(id: string, state: Outsource.RevisionRequest.State): Promise<void>
+  clientUpdate(id: string, item: OutsourceRevisionEditDetails): Promise<void>
   delete(id: string): Promise<void>
 
   getLatestItems(count: number): Promise<Outsource.RevisionRequest[]>

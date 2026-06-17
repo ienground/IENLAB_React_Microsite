@@ -220,6 +220,26 @@ export namespace Outsource {
       return map
     }
 
+    toClientHashMap(isUpdate: boolean = false) {
+      const map: Record<string, unknown> = {
+        [FirestorePath.UPDATE_AT]: serverTimestamp(),
+        [FirestorePath.DELETED_AT]: this.deletedAt,
+        [FirestorePath.Outsource.RevisionRequest.TITLE]: this.title,
+        [FirestorePath.Outsource.RevisionRequest.REASON]: this.reason,
+        [FirestorePath.Outsource.RevisionRequest.IMAGE_URLS]: this.imageUrls,
+        [FirestorePath.Outsource.RevisionRequest.STATE]: this.state
+      }
+
+      if (!isUpdate) {
+        map[FirestorePath.CREATE_AT] = serverTimestamp()
+        map[FirestorePath.Outsource.RevisionRequest.AMOUNT_DELTA] = 0
+        map[FirestorePath.Outsource.RevisionRequest.DUE_DATE_DELTA_DAYS] = 0
+
+      }
+
+      return map
+    }
+
     static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): RevisionRequest {
       const doc = snapshotToData(snapshot)
       return new RevisionRequest({
@@ -251,6 +271,7 @@ export namespace Outsource {
       export const Default = State.DRAFT
       export const values = [State.DRAFT, State.SENT, State.APPROVED, State.REJECTED, State.APPLIED]
       export const valuesNoDraft = [State.SENT, State.APPROVED, State.REJECTED, State.APPLIED]
+      export const valuesAfterSent = [State.APPROVED, State.REJECTED, State.APPLIED]
       export function getAdminLabel(t: TFunction, value: State) {
         const map = {
           [State.DRAFT]: t("types:outsource.revision.state.draft.label"),

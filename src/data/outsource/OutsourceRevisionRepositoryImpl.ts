@@ -1,4 +1,10 @@
-import {fetchItems, type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
+import {
+  fetchItems,
+  type FirestoreListMode,
+  getSnapshots,
+  type InfScrollStateList,
+  uploadCompressedImage
+} from "@ienlab/react-library"
 import {
   addDoc,
   collection,
@@ -19,7 +25,7 @@ import {
   type Unsubscribe,
   updateDoc, where
 } from "firebase/firestore"
-import type {FirebaseStorage} from "firebase/storage"
+import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import i18n from "@/locales/i18n.ts"
@@ -27,10 +33,13 @@ import {
   type OutsourceRevisionRepository
 } from "@/domain/repository/OutsourceRevisionRepository"
 import type { OutsourceRevisionEditDetails } from "@/domain/model/OutsourceRevisionEditDetails"
+import {OutsourceLogEditDetails} from "@/domain/model/OutsourceLogEditDetails.ts"
+import {StoragePath} from "@/constant/StoragePath.ts"
 
 export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionRepository {
   private readonly outsourcesRef
   private readonly requestsRef
+  private readonly storageRef
   private readonly PAGE_SIZE = 20
 
   private mode: FirestoreListMode = "list"
@@ -45,6 +54,7 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
   ) {
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.requestsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.REVISION_REQUESTS)
+    this.storageRef = ref(storage, `${StoragePath.OUTSOURCE}/${id}/${StoragePath.Outsource.REVISION_REQUEST}`)
     this.isAdmin = isAdmin
   }
 
@@ -94,13 +104,40 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
     }, { cache: cache })
   }
 
+  private async transformItem(id: string, item: OutsourceRevisionEditDetails) {
+    const imageUrlsDownloadUrl = await Promise.all(item.imageUrls.map((item, index) =>
+      uploadCompressedImage(this.storageRef, `${id}/${index}`, item, { maxWidthOrHeight: 1920 }))
+    )
+    console.log(imageUrlsDownloadUrl)
+    return new Outsource.RevisionRequest({...item.toItem(),
+      imageUrls: imageUrlsDownloadUrl
+    })
+  }
+
   async create(item: OutsourceRevisionEditDetails): Promise<DocumentReference> {
     const target = item.toItem()
-    return await addDoc(this.requestsRef, target.toHashMap(false))
+    const ref = await addDoc(this.requestsRef, target.toHashMap(false))
+    const { imageUrls } = await this.transformItem(ref.id, item)
+    await updateDoc(ref, {
+      [FirestorePath.Outsource.RevisionRequest.IMAGE_URLS]: imageUrls
+    })
+
+    return ref
+  }
+
+  async clientCreate(item: OutsourceRevisionEditDetails): Promise<DocumentReference> {
+    const target = item.toItem()
+    const ref = await addDoc(this.requestsRef, target.toClientHashMap(false))
+    const { imageUrls } = await this.transformItem(ref.id, item)
+    await updateDoc(ref, {
+      [FirestorePath.Outsource.RevisionRequest.IMAGE_URLS]: imageUrls
+    })
+
+    return ref
   }
 
   async update(id: string, item: OutsourceRevisionEditDetails): Promise<void> {
-    const target = item.toItem()
+    const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.requestsRef, id), target.toHashMap(true))
   }
 
@@ -127,6 +164,11 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
     }
 
     return await updateDoc(doc(this.requestsRef, id), item)
+  }
+
+  async clientUpdate(id: string, item: OutsourceRevisionEditDetails): Promise<void> {
+    const target = item.toItem()
+    return await updateDoc(doc(this.requestsRef, id), target.toClientHashMap(true))
   }
 
   async delete(id: string): Promise<void> {
