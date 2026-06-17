@@ -58,24 +58,6 @@ function ScreenBody(props: { itemId: string }) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const columns: ColumnDef<Outsource.WorkLog>[] = useMemo(() => [
     {
-      id: "select",
-      header: ({table}) => (
-        <Checkbox
-          checked={table.getIsAllRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={value => table.toggleAllRowsSelected(!!value)}
-          aria-label="select all"
-        />
-      ),
-      cell: ({row}) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          onClick={e => e.stopPropagation()}
-        />
-      ),
-      meta: {className: "w-9"}
-    },
-    {
       header: t("strings:title"),
       accessorFn: row => row.title,
       meta: {className: "min-w-40"}

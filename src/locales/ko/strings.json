@@ -168,14 +168,27 @@
         "image": {
           "label": "요청할 미디어 항목"
         },
+        "info": {
+          "label": "정보 요청 내용"
+        },
         "label": "정보 요청",
         "max_count": {
           "label": "최대 갯수"
         },
         "media": {
+          "desc": {
+            "count": "최대 {{size}}개",
+            "ratio": "{{size}} 형식",
+            "size": "최대 {{size}}MB",
+            "wh": "최대 {{size}} 크기"
+          },
           "type": {
             "label": "허용된 타입"
-          }
+          },
+          "upload_hint": "이미지를 업로드하세요."
+        },
+        "media_type": {
+          "label": "허용된 타입"
         },
         "outsource": {
           "label": "대상 외주"

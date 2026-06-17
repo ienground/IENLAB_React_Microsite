@@ -32,6 +32,7 @@ import type {Outsource} from "@/domain/model/Outsource.ts"
 import {type AppMatch, Localized} from "@ienlab/react-library"
 import OutsourceLogListScreen from "@/ui/client/outsource/log/list/OutsourceLogListScreen.tsx"
 import OutsourceRequestListScreen from "@/ui/client/outsource/request/list/OutsourceRequestListScreen.tsx"
+import OutsourceRequestEditScreen from "@/ui/client/outsource/request/edit/OutsourceRequestEditScreen.tsx"
 import OutsourceRevisionListScreen from "@/ui/client/outsource/revision/list/OutsourceRevisionListScreen.tsx"
 import OutsourceRevisionDetailScreen from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailScreen.tsx"
 import OutsourceLogDetailScreen from "@/ui/client/outsource/log/detail/OutsourceLogDetailScreen.tsx"
@@ -143,14 +144,14 @@ export function getRouter(t: TFunction) {
               ],
             },
             {
-              path: ClientOutsourceDestination.request.detail,
-              element: <></>,
+              path: ClientOutsourceDestination.request.edit,
+              element: <OutsourceRequestEditScreen mode="edit" />,
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.info_request.label"), path: ClientOutsourceDestination.path.request.list(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.info_request.detail"), path: "" }
+                { title: t("strings:outsource_manage.outsource.info_request.edit"), path: "" }
               ]
             },
             {

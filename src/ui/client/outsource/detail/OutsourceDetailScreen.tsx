@@ -173,7 +173,7 @@ function ScreenBody() {
                     <div
                       key={req.id}
                       className="flex flex-col gap-1 bg-muted rounded-xl p-3 cursor-pointer"
-                      onClick={() => navigate(ClientOutsourceDestination.path.request.detail(infoState.item?.id ?? "", req.id))}
+                      onClick={() => navigate(ClientOutsourceDestination.path.request.edit(infoState.item?.id ?? "", req.id))}
                     >
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-medium text-sm truncate grow">{Localized.get(req.title)}</span>

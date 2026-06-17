@@ -34,7 +34,7 @@
             "label": "수신됨"
           },
           "client": {
-            "label": "수신함"
+            "label": "전송됨"
           }
         },
         "rejected": {
@@ -45,7 +45,7 @@
             "label": "전송됨"
           },
           "client": {
-            "label": "전송함"
+            "label": "수신됨"
           }
         }
       },

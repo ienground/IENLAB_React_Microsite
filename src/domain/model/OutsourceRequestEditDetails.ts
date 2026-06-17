@@ -49,8 +49,6 @@ export class OutsourceRequestEditDetails {
 
 export namespace OutsourceRequestEditDetails {
   export class Media {
-    label: Localized<string> = { ko: "", en: "" }
-    description: Localized<string> = { ko: "", en: ""  }
     maxCount: number = 10
     maxFileSize: number = 50
     aspectRatio: string | null = null
@@ -64,8 +62,6 @@ export namespace OutsourceRequestEditDetails {
 
     toItem(): Outsource.InfoRequest.Media {
       return new Outsource.InfoRequest.Media({
-        label: this.label,
-        description: this.description,
         maxCount: this.maxCount,
         maxFileSize: this.maxFileSize,
         aspectRatio: this.aspectRatio,
@@ -77,8 +73,6 @@ export namespace OutsourceRequestEditDetails {
 
     static fromItem(item: Outsource.InfoRequest.Media) {
       return new Media({
-        label: item.label,
-        description: item.description,
         maxCount: item.maxCount,
         maxFileSize: item.maxFileSize,
         aspectRatio: item.aspectRatio,

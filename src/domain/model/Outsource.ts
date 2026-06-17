@@ -357,6 +357,14 @@ export namespace Outsource {
       return map
     }
 
+    toClientHashMap() {
+      return {
+        [FirestorePath.UPDATE_AT]: serverTimestamp(),
+        [FirestorePath.Outsource.InfoRequest.TEXT_ITEMS]: this.textItems.map(item => item.toHashMap()),
+        [FirestorePath.Outsource.InfoRequest.MEDIA]: this.media?.toHashMap() ?? null,
+      }
+    }
+
     static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): InfoRequest {
       const doc = snapshotToData(snapshot)
 
@@ -458,6 +466,7 @@ export namespace Outsource {
       label: Localized<string> = { ko: "", en: "" }
       secure: boolean = false
       maxLength: number | null = TextItem.DefaultMaxLength
+      value: string = ""
 
       constructor(partial: Partial<TextItem> = {}) {
         Object.assign(this, partial)
@@ -468,6 +477,7 @@ export namespace Outsource {
           [FirestorePath.Outsource.InfoRequest.TextItem.LABEL]: this.label,
           [FirestorePath.Outsource.InfoRequest.TextItem.SECURE]: this.secure,
           [FirestorePath.Outsource.InfoRequest.TextItem.MAX_LENGTH]: this.maxLength,
+          [FirestorePath.Outsource.InfoRequest.TextItem.VALUE]: this.value,
         }
       }
 
@@ -478,6 +488,7 @@ export namespace Outsource {
           label: data[FirestorePath.Outsource.InfoRequest.TextItem.LABEL],
           secure: data[FirestorePath.Outsource.InfoRequest.TextItem.SECURE] ?? false,
           maxLength: data[FirestorePath.Outsource.InfoRequest.TextItem.MAX_LENGTH],
+          value: data[FirestorePath.Outsource.InfoRequest.TextItem.VALUE] ?? "",
         })
       }
     }
@@ -487,8 +498,6 @@ export namespace Outsource {
     }
 
     export class Media {
-      label: Localized<string> = { ko: "", en: "" }
-      description: Localized<string> = { ko: "", en: ""  }
       maxCount: number = 10
       maxFileSize: number = 50
       aspectRatio: string | null = null
@@ -502,8 +511,6 @@ export namespace Outsource {
 
       toHashMap() {
         return {
-          [FirestorePath.Outsource.InfoRequest.Media.LABEL]: this.label,
-          [FirestorePath.Outsource.InfoRequest.Media.DESCRIPTION]: this.description,
           [FirestorePath.Outsource.InfoRequest.Media.MAX_COUNT]: this.maxCount,
           [FirestorePath.Outsource.InfoRequest.Media.MAX_FILE_SIZE]: this.maxFileSize,
           [FirestorePath.Outsource.InfoRequest.Media.ASPECT_RATIO]: this.aspectRatio,
@@ -517,8 +524,6 @@ export namespace Outsource {
         if (!data) return null
 
         return new Media({
-          label: data[FirestorePath.Outsource.InfoRequest.Media.LABEL],
-          description: data[FirestorePath.Outsource.InfoRequest.Media.DESCRIPTION],
           maxCount: data[FirestorePath.Outsource.InfoRequest.Media.MAX_COUNT],
           maxFileSize: data[FirestorePath.Outsource.InfoRequest.Media.MAX_FILE_SIZE] ?? 50,
           aspectRatio: data[FirestorePath.Outsource.InfoRequest.Media.ASPECT_RATIO] ?? null,

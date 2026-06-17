@@ -11,6 +11,8 @@ export interface OutsourceRequestRepository {
 
   create(item: OutsourceRequestEditDetails): Promise<DocumentReference>
   update(id: string, item: OutsourceRequestEditDetails): Promise<void>
+  clientUpdate(id: string, item: OutsourceRequestEditDetails): Promise<void>
+  updateState(id: string, state: Outsource.InfoRequest.State): Promise<void>
   delete(id: string): Promise<void>
 
   getLatestRequests(count: number): Promise<Outsource.InfoRequest[]>

@@ -14,6 +14,7 @@ export const StoragePath = {
   Outsource: {
     REVISION_REQUEST: "revision_request",
     WORK_LOG: "work_log",
+    INFO_REQUEST: "info_request",
   },
 
   User: {

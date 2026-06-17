@@ -1,5 +1,12 @@
 import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
-import {fetchItems, type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
+import {
+  fetchItems,
+  type FirestoreListMode,
+  getSnapshots,
+  type InfScrollStateList,
+  uploadCompressedImage,
+  uploadFile,
+} from "@ienlab/react-library"
 import {
   addDoc,
   collection,
@@ -13,16 +20,18 @@ import {
   limit,
   orderBy,
   query,
-  type QueryConstraint,
+  type QueryConstraint, serverTimestamp,
   startAfter,
   startAt,
   type Unsubscribe,
   updateDoc,
   where,
 } from "firebase/firestore"
-import type {FirebaseStorage} from "firebase/storage"
+import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
+import {StoragePath} from "@/constant/StoragePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
+import {FileUploadItem} from "@ienlab/react-library"
 import i18n from "@/locales/i18n.ts"
 import {OutsourceRequestEditDetails} from "@/domain/model/OutsourceRequestEditDetails.ts"
 
@@ -30,6 +39,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   private readonly outsourcesRef
   private readonly requestsRef
   private readonly PAGE_SIZE = 20
+  private readonly outsourceDocId: string
 
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
@@ -44,6 +54,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.requestsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.INFO_REQUESTS)
     this.isAdmin = isAdmin
+    this.outsourceDocId = id
   }
 
   requestInfoStateList: InfScrollStateList<Outsource.InfoRequest> = {
@@ -91,6 +102,33 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     }, { cache: cache })
   }
 
+  private async transformMedia(id: string, item: OutsourceRequestEditDetails) {
+    if (item.type !== Outsource.InfoRequest.Type.MEDIA || !item.media) return item
+
+    const files = await Promise.all(item.media.files.map(async (file, index) => {
+      if (!file.image.file) return file
+
+      const storageRef = ref(
+        this.storage,
+        `${StoragePath.OUTSOURCE}/${this.outsourceDocId}/${StoragePath.Outsource.INFO_REQUEST}/${id}`
+      )
+      const fileName = `${index}_${Date.now()}`
+      const downloadUrl = await uploadFile(storageRef, fileName, file.image)
+
+      return new OutsourceRequestEditDetails.Media.UploadedFile({
+        ...file,
+        path: `${StoragePath.OUTSOURCE}/${this.outsourceDocId}/${StoragePath.Outsource.INFO_REQUEST}/${id}/${fileName}`,
+        name: file.image.file.name,
+        contentType: file.image.file.type,
+        size: file.image.file.size,
+        image: new FileUploadItem({ url: downloadUrl }),
+      })
+    }))
+
+    const media = new OutsourceRequestEditDetails.Media({ ...item.media, files })
+    return new OutsourceRequestEditDetails({ ...item, media })
+  }
+
   async create(item: OutsourceRequestEditDetails): Promise<DocumentReference> {
     const target = item.toItem()
     return await addDoc(this.requestsRef, target.toHashMap(false))
@@ -99,6 +137,18 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   async update(id: string, item: OutsourceRequestEditDetails): Promise<void> {
     const target = item.toItem()
     return await updateDoc(doc(this.requestsRef, id), target.toHashMap(true))
+  }
+
+  async clientUpdate(id: string, item: OutsourceRequestEditDetails): Promise<void> {
+    const transformed = await this.transformMedia(id, item)
+    const target = transformed.toItem()
+    return await updateDoc(doc(this.requestsRef, id), target.toClientHashMap())
+  }
+
+  async updateState(id: string, state: Outsource.InfoRequest.State): Promise<void> {
+    return await updateDoc(doc(this.requestsRef, id), {
+      [FirestorePath.Outsource.InfoRequest.STATE]: state,
+    })
   }
 
   async delete(id: string): Promise<void> {

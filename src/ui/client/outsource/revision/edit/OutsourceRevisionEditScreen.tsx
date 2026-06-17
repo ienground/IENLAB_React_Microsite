@@ -223,7 +223,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                 />
               </Field>
             </FieldSet>
-            <FieldSet>
+            <FieldSet className="w-full min-w-0">
               <FieldLegend variant="legend">{t("strings:outsource_manage.outsource.revision_request.images.label")}</FieldLegend>
               <ImageUploadSortableField
                 id="images"

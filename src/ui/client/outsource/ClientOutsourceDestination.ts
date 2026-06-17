@@ -12,6 +12,7 @@ export const ClientOutsourceDestination = {
   request: {
     list: "/outsource/:itemId/request" as const,
     detail: "/outsource/:itemId/request/:requestId" as const,
+    edit: "/outsource/:itemId/request/:requestId/edit" as const,
   },
 
   revision: {
@@ -31,7 +32,7 @@ export const ClientOutsourceDestination = {
 
     request: {
       list: (itemId: string) => generatePath(ClientOutsourceDestination.request.list, { itemId }),
-      detail: (itemId: string, requestId: string) => generatePath(ClientOutsourceDestination.request.detail, { itemId, requestId }),
+      edit: (itemId: string, requestId: string) => generatePath(ClientOutsourceDestination.request.edit, { itemId, requestId }),
     },
 
     revision: {

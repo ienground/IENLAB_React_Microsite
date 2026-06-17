@@ -209,14 +209,12 @@ export const FirestorePath = {
         /** boolean */
         SECURE: "secure",
         /** number */
-        MAX_LENGTH: "maxLength"
+        MAX_LENGTH: "maxLength",
+        /** string */
+        VALUE: "value"
       },
 
       Media: {
-        /** Record<Locale, string> */
-        LABEL: "label",
-        /** Record<Locale, string> */
-        DESCRIPTION: "description",
         /** number */
         MAX_COUNT: "maxCount",
         /** number */
