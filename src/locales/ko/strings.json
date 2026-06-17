@@ -115,6 +115,7 @@
   "input_number": "숫자 입력..",
   "input_phone": "전화번호를 입력하세요..",
   "input_summary": "요약을 입력하세요..",
+  "input_text": "텍스트를 입력하세요..",
   "input_title": "제목을 입력하세요..",
   "lang": {
     "english": {
@@ -211,7 +212,7 @@
         },
         "text_items": {
           "desc": "최대 {{cnt}}개까지 요청할 수 있습니다.",
-          "label": "요청할 텍스트 항목"
+          "label": "요청된 텍스트 항목"
         },
         "title": {
           "label": "정보 요청 제목"

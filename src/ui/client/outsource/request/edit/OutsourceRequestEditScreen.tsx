@@ -45,6 +45,7 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 import {Badge} from "@/components/ui/badge.tsx"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {OutsourceRequestEditDetails} from "@/domain/model/OutsourceRequestEditDetails.ts"
+import {InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea} from "@/components/ui/input-group.tsx"
 
 export default function OutsourceRequestEditScreen(props: PageModeProps) {
   const {itemId, requestId} = useParams<{ itemId: string, requestId: string }>()
@@ -149,7 +150,6 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
             </Button>
             <div className="flex flex-col grow">
               <div>{infoState.item ? Localized.get(infoState.item.title) : "-"}</div>
-              <div className="font-mono text-xs text-muted-foreground">{infoState.item?.id}</div>
             </div>
             <ButtonGroup>
               {!readOnly && <>
@@ -214,18 +214,14 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
             {uiState.item.type === Outsource.InfoRequest.Type.TEXT ? (
               <FieldSet>
                 <FieldLegend variant="legend">{t("strings:outsource_manage.outsource.info_request.text_items.label")}</FieldLegend>
-                <FieldDescription>{t("strings:outsource_manage.outsource.info_request.text_items.desc")}</FieldDescription>
                 {uiState.item.textItems.map((item, index) => (
-                  <Card
-                    className="px-4"
-                    key={index}
-                  >
-                    <div className="flex flex-row gap-4">
-                      <FieldGroup className="grid grid-cols-1 gap-4 w-full">
-                        <Field>
-                          <FieldLabel>{Localized.get(item.label)}</FieldLabel>
-                          <div className="flex flex-row items-center gap-2">
-                            <Input
+                  <div className="flex flex-row gap-4">
+                    <FieldGroup className="grid grid-cols-1 gap-4 w-full">
+                      <Field>
+                        <FieldLabel>{Localized.get(item.label)}</FieldLabel>
+                        <div className="flex flex-row items-center gap-2">
+                          <InputGroup>
+                            <InputGroupTextarea
                               className="grow"
                               value={uiState.item.textItems[index].value}
                               onChange={e => {
@@ -238,18 +234,18 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                               }}
                               placeholder={t("strings:input_text")}
                               maxLength={item.maxLength ?? undefined}
+                              disabled={readOnly}
                             />
-                            {item.secure && <RiLockFill className="text-muted-foreground shrink-0"/>}
-                          </div>
-                          {item.maxLength != null && (
-                            <span className="text-xs text-muted-foreground">
-                              {t("strings:outsource_manage.outsource.info_request.text_items.max_length.format", {size: item.maxLength})}
-                            </span>
-                          )}
-                        </Field>
-                      </FieldGroup>
-                    </div>
-                  </Card>
+                            <InputGroupAddon align="block-end">
+                              <InputGroupText>{uiState.item.textItems[index].value.length}/{uiState.item.textItems[index].maxLength}</InputGroupText>
+                            </InputGroupAddon>
+
+                          </InputGroup>
+                          {item.secure && <RiLockFill className="text-muted-foreground shrink-0"/>}
+                        </div>
+                      </Field>
+                    </FieldGroup>
+                  </div>
                 ))}
               </FieldSet>
             ) : uiState.item.media && (

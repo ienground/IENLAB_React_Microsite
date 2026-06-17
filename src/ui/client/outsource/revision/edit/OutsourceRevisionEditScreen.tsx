@@ -136,7 +136,6 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
             </Button>
             <div className="flex flex-col grow">
               <div>{infoState.item?.title}</div>
-              <div className="font-mono text-xs text-muted-foreground">{infoState.item?.id}</div>
             </div>
             <ButtonGroup>
               {infoState.item?.state === Outsource.RevisionRequest.State.DRAFT && <>
