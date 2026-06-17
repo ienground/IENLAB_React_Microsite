@@ -75,7 +75,9 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   onDisposed: () => {
-    get().unsubscribe?.()
+    const { uiState, unsubscribe } = get()
+    uiState.item.imageUrls.forEach(item => item.revokeIfNeeded())
+    unsubscribe?.()
   },
 
   updateUiState: (item, isDirty = true) => {
