@@ -33,6 +33,7 @@ export class Outsource implements FirestoreItem {
   platforms: Portfolio.Platform[] = []
   estimate: Estimate | null = null
   estimateRef: DocumentReference | null = null
+  totalCost: number = 0
 
   quotedAt: Timestamp | null = null
   contractedAt: Timestamp | null = null
@@ -57,6 +58,7 @@ export class Outsource implements FirestoreItem {
       [FirestorePath.Outsource.PHASE]: this.phase,
       [FirestorePath.Outsource.PLATFORMS]: this.platforms,
       [FirestorePath.Outsource.ESTIMATE]: this.estimateRef,
+      [FirestorePath.Outsource.TOTAL_COST]: this.totalCost,
       [FirestorePath.Outsource.QUOTED_AT]: this.quotedAt,
       [FirestorePath.Outsource.CONTRACTED_AT]: this.contractedAt,
       [FirestorePath.Outsource.STARTED_AT]: this.startedAt,
@@ -88,6 +90,7 @@ export class Outsource implements FirestoreItem {
       phase: doc[FirestorePath.Outsource.PHASE],
       platforms: doc[FirestorePath.Outsource.PLATFORMS],
       estimateRef: doc[FirestorePath.Outsource.ESTIMATE],
+      totalCost: doc[FirestorePath.Outsource.TOTAL_COST] ?? 0,
       quotedAt: doc[FirestorePath.Outsource.QUOTED_AT],
       contractedAt: doc[FirestorePath.Outsource.CONTRACTED_AT],
       startedAt: doc[FirestorePath.Outsource.STARTED_AT],
@@ -202,18 +205,17 @@ export namespace Outsource {
     }
 
     toHashMap(isUpdate: boolean = false) {
-      const map = {
+      const map: Record<string, unknown> = {
         [FirestorePath.UPDATE_AT]: serverTimestamp(),
         [FirestorePath.DELETED_AT]: this.deletedAt,
         [FirestorePath.Outsource.RevisionRequest.TITLE]: this.title,
         [FirestorePath.Outsource.RevisionRequest.REASON]: this.reason,
         [FirestorePath.Outsource.RevisionRequest.AMOUNT_DELTA]: this.amountDelta,
         [FirestorePath.Outsource.RevisionRequest.DUE_DATE_DELTA_DAYS]: this.dueDateDeltaDays,
-        [FirestorePath.Outsource.RevisionRequest.STATE]: this.state,
         [FirestorePath.Outsource.RevisionRequest.IMAGE_URLS]: this.imageUrls,
       }
-
       if (!isUpdate) {
+        map[FirestorePath.Outsource.RevisionRequest.STATE] = this.state
         map[FirestorePath.CREATE_AT] = serverTimestamp()
       }
 
@@ -227,14 +229,12 @@ export namespace Outsource {
         [FirestorePath.Outsource.RevisionRequest.TITLE]: this.title,
         [FirestorePath.Outsource.RevisionRequest.REASON]: this.reason,
         [FirestorePath.Outsource.RevisionRequest.IMAGE_URLS]: this.imageUrls,
-        [FirestorePath.Outsource.RevisionRequest.STATE]: this.state
       }
-
       if (!isUpdate) {
+        map[FirestorePath.Outsource.RevisionRequest.STATE] = this.state
         map[FirestorePath.CREATE_AT] = serverTimestamp()
         map[FirestorePath.Outsource.RevisionRequest.AMOUNT_DELTA] = 0
         map[FirestorePath.Outsource.RevisionRequest.DUE_DATE_DELTA_DAYS] = 0
-
       }
 
       return map

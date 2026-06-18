@@ -116,6 +116,7 @@ function ScreenBody() {
                   <CrossfadeImage
                     src={item}
                     className="h-120 rounded-2xl"
+                    draggable={false}
                   />
                 )) || []}
               />

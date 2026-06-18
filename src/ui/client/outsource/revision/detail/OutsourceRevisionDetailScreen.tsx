@@ -141,7 +141,7 @@ function ScreenBody(props: { id: string }) {
                   variant="default"
                   size="default"
                   className="w-9 md:w-auto"
-                  onClick={() => setShowDeleteDialog(true)}
+                  onClick={() => infoState.item?.id && navigate(ClientOutsourceDestination.path.revision.edit(props.id, infoState.item.id))}
                 >
                   <RiEditFill />
                   <div className="hidden md:block">{t("strings:edit")}</div>
@@ -240,6 +240,7 @@ function ScreenBody(props: { id: string }) {
                   <CrossfadeImage
                     src={item}
                     className="h-120 rounded-2xl"
+                    draggable={false}
                   />
                 )) || []}
               />

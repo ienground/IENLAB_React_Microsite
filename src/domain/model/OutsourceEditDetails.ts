@@ -16,6 +16,7 @@ export class OutsourceEditDetails {
   platforms: Portfolio.Platform[] = []
   estimate: Estimate | null = null
   estimateRef: DocumentReference | null = null
+  totalCost: number = 0
 
   quotedAt: Dayjs | null = null
   contractedAt: Dayjs | null = null
@@ -43,6 +44,7 @@ export class OutsourceEditDetails {
       platforms: this.platforms,
       estimate: this.estimate,
       estimateRef: this.estimateRef,
+      totalCost: this.totalCost,
 
       quotedAt: this.quotedAt ? Timestamp.fromDate(this.quotedAt.toDate()) : null,
       contractedAt: this.contractedAt ? Timestamp.fromDate(this.contractedAt.toDate()) : null,
@@ -66,6 +68,7 @@ export class OutsourceEditDetails {
       platforms: item.platforms,
       estimate: item.estimate,
       estimateRef: item.estimateRef,
+      totalCost: item.totalCost,
 
       quotedAt: item.quotedAt ? dayjs(item.quotedAt.toDate()) : null,
       contractedAt: item.contractedAt ? dayjs(item.contractedAt.toDate()) : null,

@@ -106,7 +106,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     if (item.type !== Outsource.InfoRequest.Type.MEDIA || !item.media) return item
 
     const files = await Promise.all(item.media.files.map(async (file, index) => {
-      if (!file.image.file) return file
+      if (!file.image?.file) return file
 
       const storageRef = ref(
         this.storage,

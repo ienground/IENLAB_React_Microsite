@@ -5,7 +5,7 @@ import {
   createOutsourceRevisionRepository,
   outsourceRepository
 } from "@/di/container.ts"
-import {useEffect, useMemo} from "react"
+import {type ReactNode, useCallback, useEffect, useMemo} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
@@ -24,6 +24,9 @@ import {Badge} from "@/components/ui/badge.tsx"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import {OutsourceDetailViewModel} from "@/ui/client/outsource/detail/OutsourceDetailViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import {Portfolio} from "@/domain/model/Portfolio.ts"
+import {cn} from "@/lib/utils.ts"
+import type {Timestamp} from "firebase/firestore"
 
 export default function OutsourceDetailScreen() {
   const {itemId} = useParams<{ itemId: string }>()
@@ -47,6 +50,25 @@ export default function OutsourceDetailScreen() {
   )
 }
 
+function getStateDate(item: Outsource) {
+  switch (item.state) {
+    case Outsource.State.PAUSED: return item.pausedAt
+    case Outsource.State.CANCELLED: return item.cancelledAt
+    default: return null
+  }
+}
+
+function getPhaseDate(item: Outsource) {
+  switch (item.phase) {
+    case Outsource.Phase.QUOTING: return item.quotedAt
+    case Outsource.Phase.CONTRACT_PENDING: return item.contractedAt
+    case Outsource.Phase.IN_PROGRESS: return item.startedAt
+    case Outsource.Phase.WAITING_CLIENT: return item.waitingClientAt
+    case Outsource.Phase.COMPLETED: return item.completedAt
+    default: return null
+  }
+}
+
 function ScreenBody() {
   const init = OutsourceDetailViewModel.use.init()
   const onDisposed = OutsourceDetailViewModel.use.onDisposed()
@@ -63,10 +85,19 @@ function ScreenBody() {
   const {dateTimeFormat} = useDateTimeFormatters()
   const {minFormat} = useDurationFormatter()
 
+  const stateDate = infoState.item ? getStateDate(infoState.item) : null
+  const phaseDate = infoState.item ? getPhaseDate(infoState.item) : null
+
   useEffect(() => {
     init()
     return () => onDisposed()
   }, [init, onDisposed])
+
+  const formatDate = useCallback((date: Timestamp | null) => {
+    return date ? dateTimeFormat(date.toDate()) : ""
+  }, [dateTimeFormat])
+
+  const item = infoState.item
 
   return (
     <div className="h-full">
@@ -82,40 +113,59 @@ function ScreenBody() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4">
-          <div className="flex flex-col bg-muted rounded-4xl p-4">
-            <div className="text-sm">{t("strings:outsource_manage.outsource.work_logs.latest.label")}</div>
-            <div className="mt-4">
-              {workLogs.length > 0 ? (
-                <>
-                  <h2 className="text-lg font-bold truncate">{workLogs[0].title}</h2>
-                  <div className="text-sm text-muted-foreground">
-                    {dateTimeFormat(workLogs[0].workDate.toDate())}
-                  </div>
-                </>
-              ) : workLogsInitialized ? (
-                <div className="text-sm text-muted-foreground">{t("strings:no_data")}</div>
-              ) : null}
+        <div className="mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <DetailCard label={t("strings:website_manage.portfolio.platform.label")}>
+            <div className="flex flex-row flex-wrap gap-1">
+              {item?.platforms.map(p => (
+                <Badge key={p} className={cn(Portfolio.Platform.getBadgeColor(p))}>
+                  {Portfolio.Platform.getLabel(t, p)}
+                </Badge>
+              ))}
+              {(!item?.platforms || item.platforms.length === 0) && (
+                <span className="text-sm text-muted-foreground">-</span>
+              )}
             </div>
-          </div>
-          <div
-            className="bg-muted rounded-4xl p-4"
-          >
-            <div className="text-sm">{t("strings:outsource_manage.outsource.info_request.label")}</div>
-            <div className="mt-4">
-              <h2 className="text-3xl font-bold">-</h2>
-              <div className="text-sm text-muted-foreground"></div>
+          </DetailCard>
+
+          <DetailCard label={t("strings:outsource_manage.outsource.state.label")}>
+            <div className="flex flex-row items-center gap-2">
+              <Badge variant={Outsource.State.getBadgeColor(item?.state ?? Outsource.State.Default)}>
+                {Outsource.State.getLabel(t, item?.state ?? Outsource.State.Default)}
+              </Badge>
+              <span className="text-sm text-muted-foreground">{formatDate(stateDate)}</span>
             </div>
-          </div>
-          <div
-            className="bg-muted rounded-4xl p-4"
-          >
-            <div className="text-sm">{t("strings:outsource_manage.outsource.revision_request.label")}</div>
-            <div className="mt-4">
-              <h2 className="text-3xl font-bold">-</h2>
-              <div className="text-sm text-muted-foreground"></div>
+          </DetailCard>
+
+          <DetailCard label={t("strings:outsource_manage.outsource.phase.label")}>
+            <div className="flex flex-row items-center gap-2">
+              <Badge className={cn(Outsource.Phase.getBadgeColor(item?.phase ?? Outsource.Phase.Default))}>
+                {Outsource.Phase.getLabel(t, item?.phase ?? Outsource.Phase.Default)}
+              </Badge>
+              <span className="text-sm text-muted-foreground">{formatDate(phaseDate)}</span>
             </div>
-          </div>
+          </DetailCard>
+
+          <DetailCard label={t("strings:outsource_manage.outsource.deadline.label")}>
+            <span className="text-sm">{formatDate(item?.dueAt ?? null)}</span>
+          </DetailCard>
+
+          {/*<DetailCard label={t("strings:outsource_manage.outsource.estimate.label")}>*/}
+          {/*  {estimate || (item && item.totalCost > 0) ? (*/}
+          {/*    <div className="flex flex-row items-center gap-2">*/}
+          {/*      <span className="text-sm font-medium">*/}
+          {/*        {t("strings:money_format", {money: item?.totalCost ?? estimate?.budget ?? 0})}*/}
+          {/*      </span>*/}
+          {/*      <Button*/}
+          {/*        variant="ghost" size="icon-sm"*/}
+          {/*        onClick={() => item?.id && navigate(OutsourceDestination.path.edit(item.id))}*/}
+          {/*      >*/}
+          {/*        <RiExternalLinkLine/>*/}
+          {/*      </Button>*/}
+          {/*    </div>*/}
+          {/*  ) : (*/}
+          {/*    <span className="text-sm text-muted-foreground">{t("strings:no_data")}</span>*/}
+          {/*  )}*/}
+          {/*</DetailCard>*/}
         </div>
         <div className="grow grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 px-4">
           <div className="w-full flex flex-col gap-2">
@@ -236,3 +286,13 @@ function ScreenBody() {
     </div>
   )
 }
+
+function DetailCard({label, children}: { label: string, children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5 bg-muted rounded-xl p-4">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div>{children}</div>
+    </div>
+  )
+}
+

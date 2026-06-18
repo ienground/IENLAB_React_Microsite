@@ -108,7 +108,6 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
     const imageUrlsDownloadUrl = await Promise.all(item.imageUrls.map((item, index) =>
       uploadCompressedImage(this.storageRef, `${id}/${index}`, item, { maxWidthOrHeight: 1920 }))
     )
-    console.log(imageUrlsDownloadUrl)
     return new Outsource.RevisionRequest({...item.toItem(),
       imageUrls: imageUrlsDownloadUrl
     })
@@ -135,7 +134,6 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
 
     return ref
   }
-
   async update(id: string, item: OutsourceRevisionEditDetails): Promise<void> {
     const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.requestsRef, id), target.toHashMap(true))

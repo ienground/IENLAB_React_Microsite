@@ -1,6 +1,7 @@
 export const FirestorePath = {
   USER: "user",
   ESTIMATE: "estimate",
+  PRICE: "price",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
@@ -34,25 +35,60 @@ export const FirestorePath = {
   },
 
   Estimate: {
-    IDENTIFIER: "identifier", // string
-    EXPIRE_AT: "expireAt", // Timestamp
+    /** Timestamp */
+    EXPIRE_AT: "expireAt",
+    /** Timestamp */
     ESTIMATE_AT: "estimateAt", // Timestamp
-    TITLE: "title", // string
-    NAME: "name", // string
-    COMPANY: "company", // string
-    EMAIL: "email", // string
-    TYPE: "type", // number
-    PLATFORM: "platform", // number[]
-    BUDGET: "budget", // number
-    DESCRIPTION: "description", // string
-    STATE: "state", // number
-    SUMMARY: "summary", // string
-    SIG_NOTE: "sigNote", // string
-    PLANS: "plans", // { string, number }[]
-    CONDITIONS: "conditions", // string[]
-    TECH_STACKS: "techStacks", // string[]
-    RANGE: "range", // string[],
-    COSTS: "costs", // { string, string, number }[]
+    /** string */
+    TITLE: "title",
+    /** string */
+    MEMO: "memo",
+    /** number */
+    BUDGET: "budget",
+    /** DocumentReference | null */
+    COMPANY: "company",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** number */
+    STATE: "state",
+    /** Map<{string, number}>[] */
+    PLANS: "plans",
+    /** Collection */
+    ITEMS: "items",
+    /** number */
+    TOTAL_AMOUNT: "totalAmount"
+  },
+
+  Price: {
+    CATEGORY: "category",
+    CONTENT: "content",
+
+    /** Collection */
+    ITEMS: "items",
+
+    Category: {
+      /** Record<Locale, string> */
+      NAME: "name",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    },
+
+    Content: {
+      /** DocumentReference | null */
+      CATEGORY: "category",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      CONTENT: "content",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    }
   },
 
   Notice: {
@@ -142,6 +178,8 @@ export const FirestorePath = {
     PAUSED_AT: "pausedAt",
     /** Timestamp | null */
     WAITING_CLIENT_AT: "waitingClientAt",
+    /** number */
+    TOTAL_COST: "totalCost",
 
     /** Collection */
     REVISION_REQUESTS: "revisionRequests",

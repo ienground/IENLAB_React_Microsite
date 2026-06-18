@@ -11,6 +11,26 @@
       }
     }
   },
+  "estimate": {
+    "state": {
+      "accepted": {
+        "desc": "클라이언트가 견적을 수락했습니다.",
+        "label": "수락됨"
+      },
+      "draft": {
+        "desc": "작성 중인 견적입니다.",
+        "label": "초안"
+      },
+      "rejected": {
+        "desc": "클라이언트가 견적을 거절했습니다.",
+        "label": "거절됨"
+      },
+      "sent": {
+        "desc": "클라이언트에게 전송된 견적입니다.",
+        "label": "전송됨"
+      }
+    }
+  },
   "outsource": {
     "info_request": {
       "media": {
