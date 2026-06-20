@@ -4,20 +4,24 @@ import {Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator} from "@
 import {Input} from "@/components/ui/input.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {Trans, useTranslation} from "react-i18next"
-import {RiAppleFill, RiErrorWarningFill} from "@remixicon/react"
+import {RiErrorWarningFill} from "@remixicon/react"
 import imgLogoFull from "@/assets/brand/img_logo_full.png"
 import imgPattern from "@/assets/brand/pattern.png"
 import icGoogle from "@/assets/icon/google.png"
 import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, Seo} from "@ienlab/react-library"
-import {type SubmitEvent, useState} from "react"
-import {useNavigate} from "react-router"
+import {type SubmitEvent} from "react"
+import {Link, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
-import { AnimatePresence, motion } from "motion/react"
+import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
 import {userRepository} from "@/di/container.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
+import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
+import KakaoLogin from "react-kakao-login"
+import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
+import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 
 export default function LoginScreen() {
   const { t } = useTranslation()
@@ -32,33 +36,53 @@ export default function LoginScreen() {
 }
 
 function ScreenBody() {
+  const kakaoApiKey: string = import.meta.env.VITE_KAKAO_API_KEY
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+  const isLoading = LoginViewModel.use.isLoading()
   const uiState = LoginViewModel.use.uiState()
   const updateUiState = LoginViewModel.use.updateUiState()
   const login = LoginViewModel.use.login()
-  const [isLoading, setLoading] = useState(false)
+  const primGoogleLogin = LoginViewModel.use.googleLogin()
+  const primNaverLogin = LoginViewModel.use.naverLogin()
+  const primKakaoLogin = LoginViewModel.use.kakaoLogin()
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setLoading(true)
-
     login(
-      (credential) => {
-        setLoading(false)
-        navigate(ClientHomeDestination.root)
-      },
-      (errorKey) => {
-        setLoading(false)
+      (credential) => navigate(redirectTo),
+      (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
+    )
+  }
 
-        toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
-      }
+  const googleLogin = () => {
+    primGoogleLogin(
+      credential => navigate(redirectTo),
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
+    )
+  }
+
+  const naverLogin = (token: string) => {
+    primNaverLogin(
+      token,
+      credential => navigate(redirectTo),
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
+    )
+  }
+
+  const kakaoLogin = (token: string) => {
+    primKakaoLogin(
+      token,
+      credential => navigate(redirectTo),
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
     )
   }
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+    <div className="flex min-h-[80svh] flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
         <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
@@ -127,26 +151,44 @@ function ScreenBody() {
                   <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                     {t("strings:signin.continue_with")}
                   </FieldSeparator>
-                  <Field className="grid grid-cols-4 gap-4">
-                    <Button variant="outline" type="button">
-                      <img src={icGoogle} alt="google" className="size-4" />
+                  <Field className="grid grid-cols-3 gap-4">
+                    <Button variant="outline" type="button" onClick={googleLogin}>
+                      <Swap swapped={isLoading}>
+                        <SwapOn><Spinner className="size-4" /></SwapOn>
+                        <SwapOff><img src={icGoogle} alt="google" className="size-4" /></SwapOff>
+                      </Swap>
                       <span className="sr-only">{t("strings:signin.signin_with_google")}</span>
                     </Button>
-                    <Button variant="default" type="button" className="bg-foreground text-background">
-                      <RiAppleFill size={24} />
-                      <span className="sr-only">{t("strings:signin.signin_with_apple")}</span>
-                    </Button>
-                    <Button variant="default" type="button" className="bg-naver-background text-naver-foreground">
-                      <IcNaver className="size-4" />
+                    {/*<Button variant="default" type="button" className="bg-foreground text-background hover:bg-foreground/80">*/}
+                    {/*  <RiAppleFill size={24} />*/}
+                    {/*  <span className="sr-only">{t("strings:signin.signin_with_apple")}</span>*/}
+                    {/*</Button>*/}
+                    <Button variant="default" type="button" className="bg-naver-background text-naver-foreground hover:bg-naver-background/80">
+                      <Swap swapped={isLoading}>
+                        <SwapOn><Spinner className="size-4" /></SwapOn>
+                        <SwapOff><IcNaver className="size-4" /></SwapOff>
+                      </Swap>
                       <span className="sr-only">{t("strings:signin.signin_with_naver")}</span>
                     </Button>
-                    <Button variant="default" type="button" className="bg-kakao-background text-kakao-foreground">
-                      <IcKakao className="size-4" />
-                      <span className="sr-only">{t("strings:signin.signin_with_kakao")}</span>
-                    </Button>
+                    <KakaoLogin
+                      token={kakaoApiKey}
+                      onSuccess={response => kakaoLogin(response.response.access_token)}
+                      onFail={e => toast.error(t(e.error), {icon: <RiErrorWarningFill size={18} />})}
+                      render={e => (
+                        <Button variant="default" type="button" className="bg-kakao-background text-kakao-foreground hover:bg-kakao-foreground/80 dark:hover:bg-kakao-foreground/10"
+                                onClick={e.onClick}
+                        >
+                          <Swap swapped={isLoading}>
+                            <SwapOn><Spinner className="size-4" /></SwapOn>
+                            <SwapOff><IcKakao className="size-4" /></SwapOff>
+                          </Swap>
+                          <span className="sr-only">{t("strings:signin.signin_with_kakao")}</span>
+                        </Button>
+                      )}
+                    />
                   </Field>
                   <FieldDescription className="text-center">
-                    {t("strings:signin.ask_no_account")} <a href="#">{t("strings:signin.signup")}</a>
+                    {t("strings:signin.ask_no_account")} <Link to={SignupDestination.root}>{t("strings:signin.signup")}</Link>
                   </FieldDescription>
                 </FieldGroup>
               </form>
@@ -168,7 +210,7 @@ function ScreenBody() {
               }}
               components={{
                 termsLink: <a href="#" />,
-                privacyLink: <a href="#" />
+                privacyLink: <Link to={PrivacyDestination.root} />
               }}
             />
           </FieldDescription>

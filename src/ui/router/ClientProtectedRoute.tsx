@@ -2,8 +2,9 @@ import { Navigate, useLocation } from "react-router"
 import {useTranslation} from "react-i18next"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 import {User} from "@/domain/model/User.ts"
-import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
+import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import PrivateLayout from "@/ui/shared/layout/PrivateLayout.tsx"
+import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 
 export function ClientProtectedRoute() {
   const location = useLocation()
@@ -35,7 +36,7 @@ export function ClientProtectedRoute() {
   }
 
   if (!user) {
-    return <Navigate to={LoginDestination.root} replace />
+    return <Navigate to={SignupDestination.root} replace />
   }
 
   const canAccessConsole = user.level === User.Level.ADMIN
