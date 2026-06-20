@@ -238,6 +238,7 @@ function ScreenBody(props: { id: string }) {
                 overflow
                 items={infoState.item?.imageUrls?.map(item => (
                   <CrossfadeImage
+                    key={item}
                     src={item}
                     className="h-120 rounded-2xl"
                     draggable={false}

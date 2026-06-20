@@ -141,24 +141,6 @@ function ScreenBody() {
           <DetailCard label={t("strings:outsource_manage.outsource.deadline.label")}>
             <span className="text-sm">{formatDate(item?.dueAt ?? null)}</span>
           </DetailCard>
-
-          {/*<DetailCard label={t("strings:outsource_manage.outsource.estimate.label")}>*/}
-          {/*  {estimate || (item && item.totalCost > 0) ? (*/}
-          {/*    <div className="flex flex-row items-center gap-2">*/}
-          {/*      <span className="text-sm font-medium">*/}
-          {/*        {t("strings:money_format", {money: item?.totalCost ?? estimate?.budget ?? 0})}*/}
-          {/*      </span>*/}
-          {/*      <Button*/}
-          {/*        variant="ghost" size="icon-sm"*/}
-          {/*        onClick={() => item?.id && navigate(OutsourceDestination.path.edit(item.id))}*/}
-          {/*      >*/}
-          {/*        <RiExternalLinkLine/>*/}
-          {/*      </Button>*/}
-          {/*    </div>*/}
-          {/*  ) : (*/}
-          {/*    <span className="text-sm text-muted-foreground">{t("strings:no_data")}</span>*/}
-          {/*  )}*/}
-          {/*</DetailCard>*/}
         </div>
         <div className="grow grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 px-4">
           <div className="w-full flex flex-col gap-2">
@@ -179,7 +161,15 @@ function ScreenBody() {
                   <div
                     key={log.id}
                     className="flex flex-col gap-1 bg-muted rounded-xl p-3 cursor-pointer"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => navigate(ClientOutsourceDestination.path.log.detail(infoState.item?.id ?? "", log.id))}
+                    onKeyDown={e => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        navigate(ClientOutsourceDestination.path.log.detail(infoState.item?.id ?? "", log.id))
+                      }
+                    }}
                   >
                     <div className="flex flex-row items-center gap-2">
                       <span className="font-medium text-sm truncate grow">{log.title}</span>
@@ -216,7 +206,15 @@ function ScreenBody() {
                     <div
                       key={req.id}
                       className="flex flex-col gap-1 bg-muted rounded-xl p-3 cursor-pointer"
+                      role="button"
+                      tabIndex={0}
                       onClick={() => navigate(ClientOutsourceDestination.path.request.edit(infoState.item?.id ?? "", req.id))}
+                      onKeyDown={e => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          navigate(ClientOutsourceDestination.path.request.edit(infoState.item?.id ?? "", req.id))
+                        }
+                      }}
                     >
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-medium text-sm truncate grow">{Localized.get(req.title)}</span>
@@ -250,7 +248,15 @@ function ScreenBody() {
                     <div
                       key={req.id}
                       className="flex flex-col gap-1 bg-muted rounded-xl p-3 cursor-pointer"
+                      role="button"
+                      tabIndex={0}
                       onClick={() => navigate(ClientOutsourceDestination.path.revision.detail(infoState.item?.id ?? "", req.id))}
+                      onKeyDown={e => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault()
+                          navigate(ClientOutsourceDestination.path.revision.detail(infoState.item?.id ?? "", req.id))
+                        }
+                      }}
                     >
                       <div className="flex flex-row items-center gap-2">
                         <span className="font-medium text-sm truncate grow">{req.title}</span>

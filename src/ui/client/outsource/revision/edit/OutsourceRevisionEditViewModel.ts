@@ -104,7 +104,6 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       } else {
         await props.revisionRepository.clientUpdate(props.revisionId, uiState.item)
       }
-      }
 
       await props.revisionRepository.updateState(ref?.id ?? props.revisionId, state)
 

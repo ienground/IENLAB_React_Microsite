@@ -214,7 +214,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
               <FieldSet>
                 <FieldLegend variant="legend">{t("strings:outsource_manage.outsource.info_request.text_items.label")}</FieldLegend>
                 {uiState.item.textItems.map((item, index) => (
-                  <div key={index} className="flex flex-row gap-4">
+                  <div className="flex flex-row gap-4">
                     <FieldGroup className="grid grid-cols-1 gap-4 w-full">
                       <Field>
                         <FieldLabel>{Localized.get(item.label)}</FieldLabel>
@@ -254,10 +254,10 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                 label={t("strings:type.outsource.info_request.media.type.image.label")}
                 uploadHintText={t("strings:outsource_manage.outsource.info_request.media.upload_hint")}
                 descriptionText={[
-                  infoState.item!.media?.maxCount && t("strings:outsource_manage.outsource.info_request.media.desc.count", { size: infoState.item!.media.maxCount }),
-                  infoState.item!.media?.maxFileSize && t("strings:outsource_manage.outsource.info_request.media.desc.size", { size: infoState.item!.media.maxFileSize }),
-                  infoState.item!.media?.aspectRatio && t("strings:outsource_manage.outsource.info_request.media.desc.ratio", { size: infoState.item!.media.aspectRatio }),
-                  infoState.item!.media?.sizeConstraint && t("strings:outsource_manage.outsource.info_request.media.desc.wh", { size: infoState.item!.media.sizeConstraint }),
+                  infoState.item?.media?.maxCount && t("strings:outsource_manage.outsource.info_request.media.desc.count", { size: infoState.item.media.maxCount }),
+                  infoState.item?.media?.maxFileSize && t("strings:outsource_manage.outsource.info_request.media.desc.size", { size: infoState.item.media.maxFileSize }),
+                  infoState.item?.media?.aspectRatio && t("strings:outsource_manage.outsource.info_request.media.desc.ratio", { size: infoState.item.media.aspectRatio }),
+                  infoState.item?.media?.sizeConstraint && t("strings:outsource_manage.outsource.info_request.media.desc.wh", { size: infoState.item.media.sizeConstraint }),
                 ].filter(Boolean).join(", ")}
                 items={uiState.item.media.files.map(f => f.image)}
                 maxCount={uiState.item.media.maxCount}
