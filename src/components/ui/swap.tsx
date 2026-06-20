@@ -1,22 +1,22 @@
 "use client";
 
-import { Slot as SlotPrimitive } from "radix-ui";
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { useAsRef } from "@/hooks/use-as-ref";
-import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
-import { useLazyRef } from "@/hooks/use-lazy-ref";
+import { Slot as SlotPrimitive } from "radix-ui"
+import * as React from "react"
+import { cn } from "@/lib/utils"
+import { useAsRef } from "@/hooks/use-as-ref"
+import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect"
+import { useLazyRef } from "@/hooks/use-lazy-ref"
 
 interface DivProps extends React.ComponentProps<"div"> {
-  asChild?: boolean;
+  asChild?: boolean
 }
 
 function getDataState(swapped: boolean) {
-  return swapped ? "on" : "off";
+  return swapped ? "on" : "off"
 }
 
 interface StoreState {
-  swapped: boolean;
+  swapped: boolean
 }
 
 interface Store {

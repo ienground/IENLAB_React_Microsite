@@ -262,19 +262,19 @@ function getStateDate(state: Outsource.RevisionRequest.State, item: Outsource.Re
   let result: Timestamp | null | undefined = null
   switch (state) {
     case Outsource.RevisionRequest.State.DRAFT:
-      result = null;
+      result = null
       break
     case Outsource.RevisionRequest.State.SENT:
-      result = item?.sentAt;
+      result = item?.sentAt
       break
     case Outsource.RevisionRequest.State.APPROVED:
-      result = item?.approvedAt;
+      result = item?.approvedAt
       break
     case Outsource.RevisionRequest.State.REJECTED:
-      result = item?.rejectedAt;
+      result = item?.rejectedAt
       break
     case Outsource.RevisionRequest.State.APPLIED:
-      result = item?.appliedAt;
+      result = item?.appliedAt
       break
   }
 

@@ -113,7 +113,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       if (e instanceof Error) {
         switch (e.message) {
           case "already-exist":
-            onFailure("strings:already_existed_id");
+            onFailure("strings:already_existed_id")
             return
           default:
             onFailure(String(e))
