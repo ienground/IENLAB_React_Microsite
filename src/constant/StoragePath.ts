@@ -16,8 +16,9 @@ export const StoragePath = {
     WORK_LOG: "work_log",
     INFO_REQUEST: "info_request",
   },
-
   User: {
     PROFILE_URL: "profile_url"
-  }
+  },
+
+  ESTIMATE: "estimate",
 }

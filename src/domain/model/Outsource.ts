@@ -7,15 +7,14 @@ import {
   type StatusColor
 } from "@ienlab/react-library"
 import {
-  doc,
   type DocumentReference,
-  type DocumentSnapshot, type FieldValue,
+  type DocumentSnapshot,
   type QueryDocumentSnapshot,
-  serverTimestamp, Timestamp
+  serverTimestamp,
+  Timestamp
 } from "firebase/firestore"
 import {Estimate} from "@/domain/model/Estimate.ts"
 import {Portfolio} from "./Portfolio.ts"
-import {User} from "@/domain/model/User.ts"
 import type {TFunction} from "i18next"
 import {Company} from "@/domain/model/Company.ts"
 
@@ -33,7 +32,6 @@ export class Outsource implements FirestoreItem {
   platforms: Portfolio.Platform[] = []
   estimate: Estimate | null = null
   estimateRef: DocumentReference | null = null
-  totalCost: number = 0
 
   quotedAt: Timestamp | null = null
   contractedAt: Timestamp | null = null
@@ -58,7 +56,6 @@ export class Outsource implements FirestoreItem {
       [FirestorePath.Outsource.PHASE]: this.phase,
       [FirestorePath.Outsource.PLATFORMS]: this.platforms,
       [FirestorePath.Outsource.ESTIMATE]: this.estimateRef,
-      [FirestorePath.Outsource.TOTAL_COST]: this.totalCost,
       [FirestorePath.Outsource.QUOTED_AT]: this.quotedAt,
       [FirestorePath.Outsource.CONTRACTED_AT]: this.contractedAt,
       [FirestorePath.Outsource.STARTED_AT]: this.startedAt,
@@ -90,7 +87,6 @@ export class Outsource implements FirestoreItem {
       phase: doc[FirestorePath.Outsource.PHASE],
       platforms: doc[FirestorePath.Outsource.PLATFORMS],
       estimateRef: doc[FirestorePath.Outsource.ESTIMATE],
-      totalCost: doc[FirestorePath.Outsource.TOTAL_COST] ?? 0,
       quotedAt: doc[FirestorePath.Outsource.QUOTED_AT],
       contractedAt: doc[FirestorePath.Outsource.CONTRACTED_AT],
       startedAt: doc[FirestorePath.Outsource.STARTED_AT],

@@ -131,6 +131,7 @@ export namespace Estimate {
     description: Localized<string> = { ko: "", en: "" }
     unitPrice: number = 0
     amount: number = 0
+    sortOrder: number = 0
     priceContentRef: DocumentReference | null = null
 
     constructor(partial: Partial<Item> = {}) {
@@ -141,11 +142,12 @@ export namespace Estimate {
       const map: Record<string, unknown> = {
         [FirestorePath.UPDATE_AT]: serverTimestamp(),
         [FirestorePath.DELETED_AT]: this.deletedAt,
-        title: this.title,
-        description: this.description,
-        unitPrice: this.unitPrice,
-        amount: this.amount,
-        priceContentRef: this.priceContentRef,
+        [FirestorePath.Estimate.Item.TITLE]: this.title,
+        [FirestorePath.Estimate.Item.DESCRIPTION]: this.description,
+        [FirestorePath.Estimate.Item.UNIT_PRICE]: this.unitPrice,
+        [FirestorePath.Estimate.Item.AMOUNT]: this.amount,
+        [FirestorePath.Estimate.Item.SORT_ORDER]: this.sortOrder,
+        [FirestorePath.Estimate.Item.PRICE_CONTENT]: this.priceContentRef,
       }
 
       if (!isUpdate) {
@@ -163,11 +165,12 @@ export namespace Estimate {
         createAt: doc[FirestorePath.CREATE_AT],
         updateAt: doc[FirestorePath.UPDATE_AT],
         deletedAt: doc[FirestorePath.DELETED_AT],
-        title: doc.title ?? "",
-        description: doc.description ?? "",
-        unitPrice: doc.unitPrice ?? 0,
-        amount: doc.amount ?? 0,
-        priceContentRef: doc.priceContentRef ?? null,
+        title: doc[FirestorePath.Estimate.Item.TITLE],
+        description: doc[FirestorePath.Estimate.Item.DESCRIPTION],
+        unitPrice: doc[FirestorePath.Estimate.Item.UNIT_PRICE],
+        amount: doc[FirestorePath.Estimate.Item.AMOUNT],
+        sortOrder: doc[FirestorePath.Estimate.Item.SORT_ORDER] ?? 0,
+        priceContentRef: doc[FirestorePath.Estimate.Item.PRICE_CONTENT],
       })
     }
   }

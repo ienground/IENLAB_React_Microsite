@@ -1,5 +1,4 @@
 import {
-  fetchItems,
   type FirestoreListMode,
   getSnapshots,
   type InfScrollStateList,
@@ -23,17 +22,14 @@ import {
   startAfter,
   startAt,
   type Unsubscribe,
-  updateDoc, where
+  updateDoc,
+  where
 } from "firebase/firestore"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
-import i18n from "@/locales/i18n.ts"
-import {
-  type OutsourceRevisionRepository
-} from "@/domain/repository/OutsourceRevisionRepository"
-import type { OutsourceRevisionEditDetails } from "@/domain/model/OutsourceRevisionEditDetails"
-import {OutsourceLogEditDetails} from "@/domain/model/OutsourceLogEditDetails.ts"
+import {type OutsourceRevisionRepository} from "@/domain/repository/OutsourceRevisionRepository"
+import type {OutsourceRevisionEditDetails} from "@/domain/model/OutsourceRevisionEditDetails"
 import {StoragePath} from "@/constant/StoragePath.ts"
 
 export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionRepository {

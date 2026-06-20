@@ -1,10 +1,9 @@
 import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
 import {
-  fetchItems,
+  FileUploadItem,
   type FirestoreListMode,
   getSnapshots,
   type InfScrollStateList,
-  uploadCompressedImage,
   uploadFile,
 } from "@ienlab/react-library"
 import {
@@ -20,7 +19,7 @@ import {
   limit,
   orderBy,
   query,
-  type QueryConstraint, serverTimestamp,
+  type QueryConstraint,
   startAfter,
   startAt,
   type Unsubscribe,
@@ -31,7 +30,6 @@ import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
-import {FileUploadItem} from "@ienlab/react-library"
 import i18n from "@/locales/i18n.ts"
 import {OutsourceRequestEditDetails} from "@/domain/model/OutsourceRequestEditDetails.ts"
 

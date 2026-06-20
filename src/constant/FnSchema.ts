@@ -1,6 +1,15 @@
 import {createCallableFactory} from "@ienlab/react-library"
 
 export const FnSchema = {
+  NaverCustomAuth: {
+    name: "naverCustomAuth",
+    params: {
+      token: "string",
+    },
+    result: {
+      firebase_token: "string"
+    }
+  },
   KakaoCustomAuth: {
     name: "kakaoCustomAuth",
     params: {
@@ -29,7 +38,6 @@ export const FnSchema = {
       code: "number",
     },
   },
-
   VerifyCode: {
     name: "verifyCode",
     params: {
@@ -41,6 +49,28 @@ export const FnSchema = {
       code: "number",
     },
   },
+  UpdateUserEmail: {
+    name: "updateUserEmail",
+    params: {
+      uid: "string",
+      email: "string",
+    },
+    result: {
+      success: "boolean",
+    },
+  },
+
+  CreateEstimatePDF: {
+    name: "createEstimatePDF",
+    params: {
+      itemId: "string"
+    },
+    result: {
+      pdf: "string",
+      name: "string"
+    }
+  },
+
 } as const
 
 export const createCallable = createCallableFactory(FnSchema)

@@ -1,6 +1,6 @@
 import {Outsource} from "@/domain/model/Outsource.ts"
 import dayjs, {type Dayjs} from "dayjs"
-import {type DocumentReference, Timestamp} from "firebase/firestore"
+import {Timestamp} from "firebase/firestore"
 import {FileUploadItem} from "@ienlab/react-library"
 
 export class OutsourceLogEditDetails {

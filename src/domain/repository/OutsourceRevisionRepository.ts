@@ -1,4 +1,4 @@
-import {FileUploadItem, type InfScrollStateList, Localized} from "@ienlab/react-library"
+import {type InfScrollStateList} from "@ienlab/react-library"
 import type {DocumentReference, Unsubscribe} from "firebase/firestore"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import type {OutsourceRevisionEditDetails} from "@/domain/model/OutsourceRevisionEditDetails.ts"

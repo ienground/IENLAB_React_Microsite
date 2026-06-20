@@ -1,5 +1,4 @@
 import {
-  fetchItems,
   type FirestoreListMode,
   getSnapshots,
   type InfScrollStateList,
@@ -19,7 +18,6 @@ import {
   orderBy,
   query,
   type QueryConstraint,
-  serverTimestamp,
   startAfter,
   startAt,
   type Unsubscribe,
@@ -28,15 +26,9 @@ import {
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
-import i18n from "@/locales/i18n.ts"
-import {
-  type OutsourceRevisionRepository
-} from "@/domain/repository/OutsourceRevisionRepository"
 import {OutsourceLogEditDetails} from "@/domain/model/OutsourceLogEditDetails"
 import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
-import {PortfolioEditDetails} from "@/domain/model/PortfolioEditDetails.ts"
 import {StoragePath} from "@/constant/StoragePath.ts"
-import {Portfolio} from "@/domain/model/Portfolio.ts"
 
 export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
   private readonly outsourcesRef

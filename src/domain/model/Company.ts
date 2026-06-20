@@ -2,7 +2,6 @@ import {type BadgeColor, type FirestoreItem, type Localized, snapshotToData} fro
 import {
   type DocumentReference,
   type DocumentSnapshot,
-  type FieldValue,
   type QueryDocumentSnapshot,
   serverTimestamp,
   Timestamp

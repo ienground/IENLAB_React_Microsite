@@ -38,7 +38,7 @@ export const FirestorePath = {
     /** Timestamp */
     EXPIRE_AT: "expireAt",
     /** Timestamp */
-    ESTIMATE_AT: "estimateAt", // Timestamp
+    ESTIMATE_AT: "estimateAt",
     /** string */
     TITLE: "title",
     /** string */
@@ -56,7 +56,22 @@ export const FirestorePath = {
     /** Collection */
     ITEMS: "items",
     /** number */
-    TOTAL_AMOUNT: "totalAmount"
+    TOTAL_AMOUNT: "totalAmount",
+
+    Item: {
+      /** string */
+      TITLE: "title",
+      /** string */
+      DESCRIPTION: "description",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      AMOUNT: "amount",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** DocumentReference */
+      PRICE_CONTENT: "priceContent"
+    }
   },
 
   Price: {
@@ -178,8 +193,6 @@ export const FirestorePath = {
     PAUSED_AT: "pausedAt",
     /** Timestamp | null */
     WAITING_CLIENT_AT: "waitingClientAt",
-    /** number */
-    TOTAL_COST: "totalCost",
 
     /** Collection */
     REVISION_REQUESTS: "revisionRequests",
@@ -288,5 +301,7 @@ export const FirestorePath = {
     CODE: "code",
     /** String */
     UID: "uid",
+    /** number */
+    ATTEMPT_COUNT: "attemptCount"
   },
 }

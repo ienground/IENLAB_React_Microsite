@@ -18,13 +18,16 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {OutsourceEditDetails} from "@/domain/model/OutsourceEditDetails.ts"
 import i18n from "@/locales/i18n.ts"
+import {Estimate} from "@/domain/model/Estimate.ts"
 
 export class OutsourceRepositoryImpl implements OutsourceRepository {
   private readonly outsourcesRef
   private readonly companiesRef
+  private readonly estimatesRef
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
+  private readonly estimateCache = new Map<string, Estimate>
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
   private companyFilterRef: DocumentReference | null = null
@@ -35,6 +38,7 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
   ) {
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
+    this.estimatesRef = collection(firestore, FirestorePath.ESTIMATE)
   }
 
   outsourceInfoStateList: InfScrollStateList<Outsource> = {
@@ -51,7 +55,11 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
 
     const item = Outsource.fromSnapshot(snapshot)
     await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.targetCompanyRef])
-    return new Outsource({...item, targetCompany: this.companyCache.get(item.targetCompanyRef?.path ?? "")})
+    await fetchItems(this.estimatesRef, Estimate.fromSnapshot, this.estimateCache, [item.estimateRef])
+    return new Outsource({...item,
+      targetCompany: item.targetCompanyRef ? this.companyCache.get(item.targetCompanyRef.path) : null,
+      estimate: item.estimateRef ? this.estimateCache.get(item.estimateRef.path) : null
+    })
   }
   
   observe(id: string, callback: (item: (Outsource | null)) => void, cache?: boolean): Unsubscribe {
@@ -63,7 +71,10 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
 
       const item = Outsource.fromSnapshot(snapshot)
       await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, [item.targetCompanyRef])
-      callback(new Outsource({...item, targetCompany: this.companyCache.get(item.targetCompanyRef?.path ?? "")}))
+      callback(new Outsource({...item,
+        targetCompany: item.targetCompanyRef ? this.companyCache.get(item.targetCompanyRef.path) : null,
+        estimate: item.estimateRef ? this.estimateCache.get(item.estimateRef.path) : null
+      }))
     }, { cache: cache })
   }
 
@@ -137,10 +148,13 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
       const newMap = new Map(this.outsourceInfoStateList.itemList)
 
       await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, items.map(item => item.targetCompanyRef))
+      await fetchItems(this.estimatesRef, Estimate.fromSnapshot, this.estimateCache, items.map(item => item.estimateRef))
 
       items.forEach(item => {
-        const path = item.targetCompanyRef?.path
-        newMap.set(item.id, new Outsource({...item, targetCompany: path ? this.companyCache.get(path) ?? null : null}))
+        newMap.set(item.id, new Outsource({...item,
+          targetCompany: item.targetCompanyRef ? this.companyCache.get(item.targetCompanyRef.path) : null,
+          estimate: item.estimateRef ? this.estimateCache.get(item.estimateRef.path) : null
+        }))
       })
   
       this.outsourceInfoStateList = {
