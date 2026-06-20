@@ -5,23 +5,17 @@ import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
   RiCheckboxCircleFill,
-  RiCheckFill,
-  RiDeleteBinFill, RiEditFill,
-  RiErrorWarningFill, RiFileCheckFill,
-  RiProhibited2Line, RiSendInsFill
+  RiDeleteBinFill,
+  RiEditFill,
+  RiErrorWarningFill,
+  RiSendInsFill
 } from "@remixicon/react"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
 import {CrossfadeImage, Seo, useDateTimeFormatters} from "@ienlab/react-library"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend, FieldSet
-} from "@/components/ui/field.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import {toast} from "sonner"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
@@ -29,8 +23,14 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {Carousel} from "motion-plus/react"
 import {
-  Stepper, StepperItem, StepperList, StepperTrigger, StepperSeparator, StepperDescription, StepperTitle,
-  StepperIndicator
+  Stepper,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperList,
+  StepperSeparator,
+  StepperTitle,
+  StepperTrigger
 } from "@/components/ui/stepper"
 import {useIsMobile} from "@/hooks/use-mobile"
 import type {Timestamp} from "firebase/firestore"

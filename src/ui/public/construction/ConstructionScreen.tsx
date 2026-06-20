@@ -1,6 +1,5 @@
 import ImgUnderConstruction from "@/assets/image/img_under_construction.png"
 import {RiArrowLeftLine} from "@remixicon/react"
-import {Button} from "@/components/ui/button.tsx"
 import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"

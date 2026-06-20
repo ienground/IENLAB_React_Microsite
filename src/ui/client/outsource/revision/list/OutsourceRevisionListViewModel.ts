@@ -1,4 +1,3 @@
-import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
 import {createZustandContext, type InfScrollStateList} from "@ienlab/react-library"
 import type {Outsource} from "@/domain/model/Outsource.ts"
 import {createStore} from "zustand"

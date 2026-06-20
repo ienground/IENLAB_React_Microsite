@@ -20,5 +20,5 @@ export const companyRepository: CompanyRepository = new CompanyRepositoryImpl(fb
 export const outsourceRepository: OutsourceRepository = new OutsourceRepositoryImpl(fbFirestore, fbStorage)
 
 export const createOutsourceRequestRepository = (itemId: string): OutsourceRequestRepository => new OutsourceRequestRepositoryImpl(fbFirestore, fbStorage, itemId, false)
-export const createOutsourceRevisionRepository = (itemId: string): OutsourceRevisionRepository => new OutsourceRevisionRepositoryImpl(fbFirestore, fbStorage, itemId)
+export const createOutsourceRevisionRepository = (itemId: string): OutsourceRevisionRepository => new OutsourceRevisionRepositoryImpl(fbFirestore, fbStorage, itemId, false)
 export const createOutsourceLogRepository = (itemId: string): OutsourceLogRepository => new OutsourceLogRepositoryImpl(fbFirestore, fbStorage, itemId)

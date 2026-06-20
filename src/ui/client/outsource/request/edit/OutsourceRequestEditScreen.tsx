@@ -14,17 +14,16 @@ import {
   RiArrowLeftLine,
   RiCheckboxCircleFill,
   RiCloseFill,
-  RiDeleteBinFill,
   RiErrorWarningFill,
   RiLockFill,
-  RiLockUnlockFill,
   RiSaveFill
 } from "@remixicon/react"
 import {Button} from "@/components/ui/button.tsx"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {
-  Field, FieldContent,
+  Field,
+  FieldContent,
   FieldDescription,
   FieldGroup,
   FieldLabel,

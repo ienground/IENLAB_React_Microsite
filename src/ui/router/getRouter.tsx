@@ -129,7 +129,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: "" },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: "" },
               ],
             },
 
@@ -139,7 +139,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.info_request.label"), path: "" }
               ],
             },
@@ -149,7 +149,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.info_request.label"), path: ClientOutsourceDestination.path.request.list(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.info_request.edit"), path: "" }
               ]
@@ -160,7 +160,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" }
               ],
             },
@@ -170,7 +170,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
                 { title: t("strings:outsource_manage.outsource.revision_request.new"), path: "" }
               ],
@@ -181,7 +181,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
                 { title: t("strings:outsource_manage.outsource.revision_request.detail"), path: "" }
               ],
@@ -192,7 +192,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
                 { title: t("strings:outsource_manage.outsource.revision_request.edit"), path: "" }
               ],
@@ -203,7 +203,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.work_logs.label"), path: "" }
               ],
             },
@@ -213,7 +213,7 @@ export function getRouter(t: TFunction) {
               loader: outsourceLoader,
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
-                { title: match.data?.title ? Localized.get(match.data.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
+                { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.work_logs.label"), path: ClientOutsourceDestination.path.log.list(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.work_logs.detail"), path: "" },
               ],

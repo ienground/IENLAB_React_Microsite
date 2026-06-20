@@ -7,14 +7,7 @@ import {
 } from "@/di/container.ts"
 import {type ReactNode, useCallback, useEffect, useMemo} from "react"
 import {Button} from "@/components/ui/button.tsx"
-import {
-  RiArrowLeftLine,
-  RiEditFill,
-  RiFileEditFill,
-  RiHistoryFill,
-  RiInfoCardFill,
-} from "@remixicon/react"
-import {ButtonGroup} from "@/components/ui/button-group.tsx"
+import {RiArrowLeftLine, RiFileEditFill, RiHistoryFill, RiInfoCardFill,} from "@remixicon/react"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"

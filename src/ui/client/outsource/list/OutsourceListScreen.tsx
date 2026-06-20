@@ -1,32 +1,20 @@
 import {outsourceRepository, userRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useLocation, useNavigate} from "react-router"
-import {useEffect, useMemo, useState} from "react"
-import {
-  DataTable,
-  Localized, Seo,
-  useDebouncedSearch,
-  useListScreenLifecycle
-} from "@ienlab/react-library"
+import {useMemo, useState} from "react"
+import {DataTable, Localized, Seo, useDebouncedSearch, useListScreenLifecycle} from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import type {ColumnDef, RowSelectionState} from "@tanstack/react-table"
 import {Checkbox} from "@/components/ui/checkbox.tsx"
-import {
-  RiAddFill,
-  RiCheckboxCircleFill,
-  RiDeleteBinFill, RiEditFill,
-  RiErrorWarningFill, RiSearchLine
-} from "@remixicon/react"
+import {RiDeleteBinFill, RiSearchLine} from "@remixicon/react"
 import {Badge} from "@/components/ui/badge.tsx"
-import {toast} from "sonner"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group.tsx"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx"
 import {motion} from "motion/react"
-import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import {cn} from "@/lib/utils.ts"
 import {OutsourceListViewModel} from "@/ui/client/outsource/list/OutsourceListViewModel.ts"
@@ -53,7 +41,6 @@ function ScreenBody() {
   const refresh = OutsourceListViewModel.use.refresh()
   const infoStateList = OutsourceListViewModel.use.outsourceInfoStateList()
   const loadNextPage = OutsourceListViewModel.use.loadNextPage()
-  const deleteItems = OutsourceListViewModel.use.deleteItems()
   const setSearchKeyword = OutsourceListViewModel.use.setSearchKeyword()
   const clearSearch = OutsourceListViewModel.use.clearSearch()
 
@@ -105,22 +92,6 @@ function ScreenBody() {
       )
     },
   ], [t])
-
-  const onDelete = async () => {
-    setShowDeleteDialog(false)
-    setDeleteProgress(true)
-    await deleteItems(
-      Object.keys(rowSelection).filter((key) => rowSelection[key]),
-      () => {
-        setDeleteProgress(false)
-        toast.success(t("strings:delete_successfully"), {icon: <RiCheckboxCircleFill size={18}/>})
-      },
-      (errorKey) => {
-        setDeleteProgress(false)
-        toast.error(t("strings:error_occurred", {error: errorKey}), {icon: <RiErrorWarningFill size={18}/>})
-      }
-    )
-  }
 
   useListScreenLifecycle({location, navigate, init, refresh, onDisposed})
   useDebouncedSearch(query, setSearchKeyword, clearSearch)
@@ -181,11 +152,6 @@ function ScreenBody() {
           ) : <div className="w-full text-center text-sm text-muted-foreground">{t("strings:list_end")}</div>}
         </AnimatedContent>
       </div>
-      <DeleteAlertDialog
-        visible={showDeleteDialog}
-        onVisibleChange={setShowDeleteDialog}
-        onConfirm={onDelete}
-      />
     </>
   )
 }
