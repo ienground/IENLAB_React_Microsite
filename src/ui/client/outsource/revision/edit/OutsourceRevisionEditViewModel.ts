@@ -100,9 +100,10 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     try {
       let ref: DocumentReference | null = null
       if (props.mode === "create") {
-        ref = await props.revisionRepository.create(uiState.item)
+        ref = await props.revisionRepository.clientCreate(uiState.item)
       } else {
-        await props.revisionRepository.update(props.revisionId, uiState.item)
+        await props.revisionRepository.clientUpdate(props.revisionId, uiState.item)
+      }
       }
 
       await props.revisionRepository.updateState(ref?.id ?? props.revisionId, state)
