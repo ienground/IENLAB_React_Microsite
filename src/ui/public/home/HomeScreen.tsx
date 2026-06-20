@@ -1,22 +1,18 @@
-import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
+import {Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
-import {
-  CrossfadeImage,
-  formatBaseDateTime,
-  Localized,
-  slideFadeProps,
-  useDateTimeFormatters,
-  useTheme
-} from "@ienlab/react-library"
+import {CrossfadeImage, formatBaseDateTime, Localized, Seo, useTheme} from "@ienlab/react-library"
 import {Trans, useTranslation} from "react-i18next"
+import * as React from "react"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
-  RiCloseLargeFill, RiCursorHand,
-  RiGithubFill, RiPagesFill, RiPauseMiniFill, RiPlayFill
+  RiCloseLargeFill,
+  RiGithubFill,
+  RiPagesFill,
+  RiPauseMiniFill,
+  RiPlayFill
 } from "@remixicon/react"
-import * as React from "react"
 import {splitText} from "motion-plus"
 import {animate, delay, stagger, wrap} from "motion"
 import {cn} from "@/lib/utils.ts"
@@ -27,7 +23,7 @@ import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import IcAppStore from "@/assets/icon/app_store.svg?react"
 import IcGooglePlay from "@/assets/icon/google_play.svg?react"
-import {Link, useNavigate} from "react-router"
+import {useNavigate} from "react-router"
 import {Field, FieldDescription, FieldTitle} from "@/components/ui/field"
 import ImgProfile from "@/assets/image/ienground_profile_2024.jpg"
 import ImgFront01 from "@/assets/image/front_01.png"
@@ -56,7 +52,6 @@ import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
-import { Seo } from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
 

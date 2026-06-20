@@ -36,13 +36,14 @@
   "datetime": {
     "month_year": "YYYY.MM"
   },
+  "day_format": "{{day}}일",
   "delete": "삭제",
   "delete_dialog_desc": "이 항목을 삭제합니다.",
   "delete_dialog_title": "삭제할까요?",
   "delete_successfully": "삭제했습니다.",
   "desc_english": "영어 설명",
   "desc_korean": "한국어 설명",
-  "edit": "수정하기",
+  "edit": "수정",
   "email": "이메일",
   "error": {
     "not_found": {
@@ -53,6 +54,10 @@
   "error_occurred": "오류가 발생했습니다: {{error}}",
   "footer": {
     "copyright": "Copyright © 2014-{{year}} ienlab. 모든 권리 보유."
+  },
+  "forbidden_dialog": {
+    "desc": "접근할 수 없습니다. 이전 페이지로 돌아가세요.",
+    "title": "잘못된 접근입니다"
   },
   "go_back": "이전 화면으로",
   "home": {
@@ -110,6 +115,7 @@
   "input_number": "숫자 입력..",
   "input_phone": "전화번호를 입력하세요..",
   "input_summary": "요약을 입력하세요..",
+  "input_text": "텍스트를 입력하세요..",
   "input_title": "제목을 입력하세요..",
   "lang": {
     "english": {
@@ -121,6 +127,8 @@
   },
   "list_end": "항목 끝",
   "login": "로그인",
+  "money_format": "{{money, currency}}",
+  "no_data": "정보 없음",
   "notice": {
     "desc": "새로운 소식을 살펴보세요.",
     "label": "공지사항"
@@ -157,17 +165,32 @@
         "desc": {
           "label": "정보 요청 설명 및 지시사항"
         },
+        "detail": "요청 보기",
+        "edit": "요청 수정",
         "image": {
           "label": "요청할 미디어 항목"
+        },
+        "info": {
+          "label": "정보 요청 내용"
         },
         "label": "정보 요청",
         "max_count": {
           "label": "최대 갯수"
         },
         "media": {
+          "desc": {
+            "count": "최대 {{size}}개",
+            "ratio": "{{size}} 형식",
+            "size": "최대 {{size}}MB",
+            "wh": "최대 {{size}} 크기"
+          },
           "type": {
             "label": "허용된 타입"
-          }
+          },
+          "upload_hint": "이미지를 업로드하세요."
+        },
+        "media_type": {
+          "label": "허용된 타입"
         },
         "outsource": {
           "label": "대상 외주"
@@ -190,7 +213,7 @@
         },
         "text_items": {
           "desc": "최대 {{cnt}}개까지 요청할 수 있습니다.",
-          "label": "요청할 텍스트 항목"
+          "label": "요청된 텍스트 항목"
         },
         "title": {
           "label": "정보 요청 제목"
@@ -206,7 +229,34 @@
         "label": "진행 단계"
       },
       "revision_request": {
-        "label": "수정 요청"
+        "amount_delta": {
+          "label": "금액 추가"
+        },
+        "content": {
+          "desc": "수정이 필요한 내용을 입력하세요..",
+          "label": "세부 내용"
+        },
+        "detail": "요청 보기",
+        "due_date_delta": {
+          "label": "기간 연장"
+        },
+        "edit": "요청 수정",
+        "images": {
+          "desc": "1920x1920 이하의 이미지를 권장하며 최대 {{cnt}}개까지 첨부할 수 있습니다.",
+          "hint": "요청과 관련한 이미지를 업로드하세요.",
+          "label": "첨부 이미지"
+        },
+        "label": "수정 요청",
+        "new": "새 요청",
+        "reason": {
+          "label": "요청 이유"
+        },
+        "sent_date": {
+          "label": "전송 시각"
+        },
+        "state": {
+          "label": "상태"
+        }
       },
       "state": {
         "desc": "현재 진행 상태와 변동일을 작성해 주세요.",
@@ -218,9 +268,15 @@
       },
       "view": "외주 프로젝트 보기",
       "work_logs": {
+        "date": "작업 일시",
+        "detail": "일지 보기",
+        "duration": "작업 시간",
         "label": "작업 일지",
         "latest": {
           "label": "최신 작업 일지"
+        },
+        "state": {
+          "label": "상태"
         }
       }
     },
@@ -260,9 +316,11 @@
   "quit_warning_title": "모든 변경 사항을 취소할까요?",
   "quite_warning_desc": "변경된 모든 사항을 취소하고 이전 화면으로 돌아갑니다.",
   "save": "저장",
+  "save_draft": "임시저장",
   "saved_successfully": "저장되었습니다.",
   "search_placeholder": "검색하기..",
   "select_date": "날짜 선택",
+  "send": "전송",
   "settings": {
     "dark_mode": "어두운 모드",
     "light_mode": "밝은 모드",
@@ -505,18 +563,18 @@
       "hint": "프로필 이미지를 업로드하세요.",
       "label": "프로필 사진",
       "phone": {
+        "email_not_verified": "이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.",
         "expired": "만료되었습니다.",
+        "resend_verification_email": "인증 메일 재발송",
         "send": "인증번호 전송",
         "send_failure_over_limit": "인증번호 발송 횟수를 초과했습니다.",
         "send_failure_unknown": "인증번호 발송에 실패했습니다.",
+        "verification_email_sent": "인증 메일이 발송되었습니다. 이메일을 확인해주세요.",
         "verified": "인증됨",
         "verify": "인증",
         "verify_failure_no_send": "인증번호가 발송되지 않았습니다.",
-        "verify_failure_wrong": "인증번호가 일치하지 않습니다.",
         "verify_failure_unknown": "인증에 실패했습니다.",
-        "verification_email_sent": "인증 메일이 발송되었습니다. 이메일을 확인해주세요.",
-        "email_not_verified": "이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.",
-        "resend_verification_email": "인증 메일 재발송"
+        "verify_failure_wrong": "인증번호가 일치하지 않습니다."
       }
     }
   },

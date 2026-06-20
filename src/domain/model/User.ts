@@ -2,7 +2,6 @@ import {type BadgeColor, type FirestoreItem, snapshotToData} from "@ienlab/react
 import {
   DocumentReference,
   DocumentSnapshot,
-  FieldValue,
   QueryDocumentSnapshot,
   serverTimestamp,
   Timestamp
@@ -34,7 +33,7 @@ export class User implements FirestoreItem {
   }
 
   toHashMap(isUpdate: boolean = false) {
-    const map: Record<string, string | number | boolean | FieldValue | Timestamp | DocumentReference | null> = {
+    const map: Record<string, unknown> = {
       [FirestorePath.UPDATE_AT]: serverTimestamp(),
       [FirestorePath.DELETED_AT]: this.deletedAt,
       [FirestorePath.User.VISIT_AT]: this.visitAt,

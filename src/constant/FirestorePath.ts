@@ -1,6 +1,7 @@
 export const FirestorePath = {
   USER: "user",
   ESTIMATE: "estimate",
+  PRICE: "price",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
@@ -34,25 +35,75 @@ export const FirestorePath = {
   },
 
   Estimate: {
-    IDENTIFIER: "identifier", // string
-    EXPIRE_AT: "expireAt", // Timestamp
-    ESTIMATE_AT: "estimateAt", // Timestamp
-    TITLE: "title", // string
-    NAME: "name", // string
-    COMPANY: "company", // string
-    EMAIL: "email", // string
-    TYPE: "type", // number
-    PLATFORM: "platform", // number[]
-    BUDGET: "budget", // number
-    DESCRIPTION: "description", // string
-    STATE: "state", // number
-    SUMMARY: "summary", // string
-    SIG_NOTE: "sigNote", // string
-    PLANS: "plans", // { string, number }[]
-    CONDITIONS: "conditions", // string[]
-    TECH_STACKS: "techStacks", // string[]
-    RANGE: "range", // string[],
-    COSTS: "costs", // { string, string, number }[]
+    /** Timestamp */
+    EXPIRE_AT: "expireAt",
+    /** Timestamp */
+    ESTIMATE_AT: "estimateAt",
+    /** string */
+    TITLE: "title",
+    /** string */
+    MEMO: "memo",
+    /** number */
+    BUDGET: "budget",
+    /** DocumentReference | null */
+    COMPANY: "company",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** number */
+    STATE: "state",
+    /** Map<{string, number}>[] */
+    PLANS: "plans",
+    /** Collection */
+    ITEMS: "items",
+    /** number */
+    TOTAL_AMOUNT: "totalAmount",
+
+    Item: {
+      /** string */
+      TITLE: "title",
+      /** string */
+      DESCRIPTION: "description",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      AMOUNT: "amount",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** DocumentReference */
+      PRICE_CONTENT: "priceContent"
+    }
+  },
+
+  Price: {
+    CATEGORY: "category",
+    CONTENT: "content",
+
+    /** Collection */
+    ITEMS: "items",
+
+    Category: {
+      /** Record<Locale, string> */
+      NAME: "name",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    },
+
+    Content: {
+      /** DocumentReference | null */
+      CATEGORY: "category",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      CONTENT: "content",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    }
   },
 
   Notice: {
@@ -209,14 +260,12 @@ export const FirestorePath = {
         /** boolean */
         SECURE: "secure",
         /** number */
-        MAX_LENGTH: "maxLength"
+        MAX_LENGTH: "maxLength",
+        /** string */
+        VALUE: "value"
       },
 
       Media: {
-        /** Record<Locale, string> */
-        LABEL: "label",
-        /** Record<Locale, string> */
-        DESCRIPTION: "description",
         /** number */
         MAX_COUNT: "maxCount",
         /** number */
@@ -252,5 +301,7 @@ export const FirestorePath = {
     CODE: "code",
     /** String */
     UID: "uid",
+    /** number */
+    ATTEMPT_COUNT: "attemptCount"
   },
 }

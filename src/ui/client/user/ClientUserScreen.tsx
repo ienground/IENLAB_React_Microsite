@@ -1,41 +1,33 @@
-import {useNavigate, useParams} from "react-router"
-import {useEffect, useMemo, useRef, useState} from "react"
+import {useNavigate} from "react-router"
+import {useEffect, useRef, useState} from "react"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
-  RiCheckboxCircleFill, RiCheckFill, RiCloseFill,
-  RiDeleteBinFill,
+  RiCheckboxCircleFill,
+  RiCheckFill,
+  RiCloseFill,
   RiErrorWarningFill,
-  RiSaveFill, RiSendInsFill, RiVerifiedBadgeFill,
-
+  RiSaveFill,
 } from "@remixicon/react"
-import {ButtonGroup, ButtonGroupText} from "@/components/ui/button-group.tsx"
+import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {useTranslation} from "react-i18next"
 import {
   ImageUploadField,
-  Localized, PhoneVerify, Seo,
-  useDateTimeFormatters, useDebouncedSearch,
+  Localized,
+  PhoneVerify,
+  Seo,
+  useDateTimeFormatters,
+  useDebouncedSearch,
 } from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-  FieldTitle,
-} from "@/components/ui/field.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet,} from "@/components/ui/field.tsx"
 import {Input} from "@/components/ui/input.tsx"
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx"
 import RouterPromptAlertDialog from "@/components/custom/shared/dialog/RouterPromptAlertDialog.tsx"
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import ReactRouterPrompt from "react-router-prompt"
 import {toast} from "sonner"
-import {User} from "@/domain/model/User.ts"
 import {
   Combobox,
   ComboboxContent,

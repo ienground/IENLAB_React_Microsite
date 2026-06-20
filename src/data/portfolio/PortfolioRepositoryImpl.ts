@@ -1,29 +1,37 @@
 import type {PortfolioRepository} from "@/domain/repository/PortfolioRepository.ts"
 import {
   collection,
-  query,
-  type Firestore,
-  type Unsubscribe,
-  orderBy,
-  startAfter, limit, getDocs, doc, getDoc, updateDoc,
   deleteDoc,
-  runTransaction, type QueryConstraint, startAt, endAt,
-  where,
-  setDoc
+  doc,
+  endAt,
+  type Firestore,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  type QueryConstraint,
+  setDoc,
+  startAfter,
+  startAt,
+  type Unsubscribe,
+  updateDoc,
+  where
 } from "firebase/firestore"
-import {deleteObject, listAll, ref, type FirebaseStorage} from "firebase/storage"
+import {deleteObject, type FirebaseStorage, listAll, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {Portfolio} from "@/domain/model/Portfolio.ts"
 import {PortfolioEditDetails} from "@/domain/model/PortfolioEditDetails.ts"
 import {
+  deleteStorageItems,
   type FirestoreListMode,
-  getSnapshots, type ImageCompressionPolicy, FileUploadItem,
-  type InfScrollStateList, uploadCompressedImage,
-  uploadFile, deleteStorageItems
+  getSnapshots,
+  type ImageCompressionPolicy,
+  type InfScrollStateList,
+  uploadCompressedImage
 } from "@ienlab/react-library"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import i18n from "@/locales/i18n.ts"
-import imageCompression from "browser-image-compression"
 
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef

@@ -7,13 +7,13 @@ import {
   startAfter, limit, getDocs, doc, getDoc, updateDoc,
   deleteDoc,
   type DocumentReference, addDoc, type QueryConstraint, startAt, endAt
-} from "firebase/firestore";
-import {FirestorePath} from "@/constant/FirestorePath.ts";
+} from "firebase/firestore"
+import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {
   type FirestoreListMode,
   getSnapshots,
   type InfScrollStateList
-} from "@ienlab/react-library";
+} from "@ienlab/react-library"
 import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
 import i18n from "@/locales/i18n.ts"

@@ -1,6 +1,5 @@
-import { Link, useMatches } from "react-router"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import {Link, useMatches} from "react-router"
+import {SidebarTrigger} from "@/components/ui/sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,

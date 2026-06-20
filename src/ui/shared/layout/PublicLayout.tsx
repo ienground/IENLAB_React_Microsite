@@ -1,4 +1,4 @@
-import {Outlet, ScrollRestoration, useOutlet} from "react-router"
+import {ScrollRestoration, useOutlet} from "react-router"
 import {AnimatePresence, motion} from "motion/react"
 import PublicHeader from "@/components/custom/public/PublicHeader.tsx"
 import PublicFooter from "@/components/custom/public/PublicFooter.tsx"

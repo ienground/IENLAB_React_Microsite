@@ -1,46 +1,53 @@
-import type { UserRepository } from "@/domain/repository/UserRepository.ts"
-import { FirestorePath } from "@/constant/FirestorePath.ts"
+import type {UserRepository} from "@/domain/repository/UserRepository.ts"
+import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {
   collection,
   doc,
-  type DocumentReference,
+  endAt,
   Firestore,
   getDoc,
   getDocs,
   limit,
   orderBy,
   query,
+  type QueryConstraint,
+  serverTimestamp,
   startAfter,
   startAt,
-  endAt,
-  type QueryConstraint,
-  type Unsubscribe, updateDoc, serverTimestamp,
+  type Unsubscribe,
+  updateDoc,
 } from "firebase/firestore"
 import {
+  type Auth,
+  sendEmailVerification,
   signInWithCustomToken,
   signInWithEmailAndPassword,
-  type Auth,
-  type UserCredential,
-  type User as FirebaseUser,
   signOut,
-  sendEmailVerification,
+  type User as FirebaseUser,
+  type UserCredential,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth"
-import { User } from "@/domain/model/User.ts"
+import {User} from "@/domain/model/User.ts"
 import {
+  type CustomAuthRequest,
+  type CustomAuthResponse,
   deleteStorageItems,
   fetchItems,
   type FirestoreListMode,
   getAuthErrorKey,
   getSnapshots,
-  type InfScrollStateList, PhoneVerify,
-  type SignInResult, uploadCompressedImage,
+  type InfScrollStateList,
+  PhoneVerify,
+  type SignInResult,
+  uploadCompressedImage,
 } from "@ienlab/react-library"
-import { FirebaseError } from "firebase/app"
+import {FirebaseError} from "firebase/app"
 import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
-import {type Functions } from "firebase/functions"
+import {type Functions, type HttpsCallable} from "firebase/functions"
 import {createCallable} from "@/constant/FnSchema.ts"
 
 export class UserRepositoryImpl implements UserRepository {
@@ -48,8 +55,11 @@ export class UserRepositoryImpl implements UserRepository {
   private readonly usersRef
   private readonly companiesRef
   private readonly storageRef
+  private readonly naverCustomAuthFunction
+  private readonly kakaoCustomAuthFunction
   private readonly sendPhoneVerifyFn
   private readonly verifyCodeFn
+  private readonly updateUserEmailFn
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -74,8 +84,11 @@ export class UserRepositoryImpl implements UserRepository {
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
     this.storageRef = ref(storage, StoragePath.USER)
     this.auth = auth
+    this.naverCustomAuthFunction = createCallable(functions, "NaverCustomAuth")
+    this.kakaoCustomAuthFunction = createCallable(functions, "KakaoCustomAuth")
     this.sendPhoneVerifyFn = createCallable(functions, "SendPhoneVerify")
     this.verifyCodeFn = createCallable(functions, "VerifyCode")
+    this.updateUserEmailFn = createCallable(functions, "UpdateUserEmail")
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -98,24 +111,83 @@ export class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  async signInWithToken(token: string): Promise<UserCredential | null> {
+  async signInWithToken(token: string): Promise<SignInResult> {
     try {
-      return await signInWithCustomToken(this.auth, token)
+      const credential = await signInWithCustomToken(this.auth, token)
+      return { ok: true, data: credential }
     } catch (e) {
-      console.error(`signInWithToken error ${e}`)
-      return null
+      if (e instanceof FirebaseError) {
+        return {
+          ok: false,
+          errorCode: e.code,
+          errorKey: getAuthErrorKey(e.code) ?? "",
+        }
+      }
+
+      return {
+        ok: false,
+        errorKey: String(e),
+      }
     }
   }
 
-  signInWithNaver(token: string): Promise<UserCredential | null> {
-    throw Error("not implemented")
+  async signInWithGoogle(): Promise<SignInResult> {
+    try {
+      const provider = new GoogleAuthProvider()
+      const credential = await signInWithPopup(this.auth, provider)
+      return { ok: true, data: credential }
+    } catch (e) {
+      console.error(e instanceof FirebaseError ? `${e.code} ${e.message}` : String(e))
+      if (e instanceof FirebaseError) {
+        return {
+          ok: false,
+          errorCode: e.code,
+          errorKey: getAuthErrorKey(e.code) ?? "",
+        }
+      }
+
+      return {
+        ok: false,
+        errorKey: "",
+      }
+    }
   }
 
-  signInWithKakao(token: string): Promise<UserCredential | null> {
-    throw Error("not implemented")
+  private async signInWithCustomProvider(fn: HttpsCallable<CustomAuthRequest, CustomAuthResponse>, token: string): Promise<SignInResult> {
+    try {
+      const result = await fn({ token })
+      const fbToken = result.data.firebase_token
+      console.log(fbToken)
+      if (!fbToken) return { ok: false, errorKey: "strings:error.no_tokens" }
+
+      return await this.signInWithToken(fbToken)
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        return {
+          ok: false,
+          errorCode: e.code,
+          errorKey: getAuthErrorKey(e.code) ?? "",
+        }
+      } else {
+        console.error("signInWithCustomProvider error", e)
+      }
+
+      return {
+        ok: false,
+        errorKey: String(e),
+      }
+    }
   }
 
-  reauth(password: string): Promise<UserCredential | null> {
+  signInWithNaver(token: string): Promise<SignInResult> {
+    return this.signInWithCustomProvider(this.naverCustomAuthFunction, token)
+  }
+
+  async signInWithKakao(token: string): Promise<SignInResult> {
+    return this.signInWithCustomProvider(this.kakaoCustomAuthFunction, token)
+  }
+
+  reauth(password: string): Promise<SignInResult> {
     throw Error("not implemented")
   }
 
@@ -144,6 +216,10 @@ export class UserRepositoryImpl implements UserRepository {
       console.error("sendOobCode error", body)
       throw Error(body.error?.message ?? "sendOobCode failed")
     }
+  }
+
+  async updateUserEmail(uid: string, email: string): Promise<void> {
+    await this.updateUserEmailFn({ uid, email })
   }
 
   async sendEmailVerification(): Promise<void> {

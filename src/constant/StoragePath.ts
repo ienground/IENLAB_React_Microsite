@@ -12,10 +12,13 @@ export const StoragePath = {
   },
 
   Outsource: {
-    IMAGE_URLS: "image_urls"
+    REVISION_REQUEST: "revision_request",
+    WORK_LOG: "work_log",
+    INFO_REQUEST: "info_request",
   },
-
   User: {
     PROFILE_URL: "profile_url"
-  }
+  },
+
+  ESTIMATE: "estimate",
 }
