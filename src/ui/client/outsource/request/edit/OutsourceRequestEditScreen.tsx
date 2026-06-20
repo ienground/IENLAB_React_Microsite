@@ -214,7 +214,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
               <FieldSet>
                 <FieldLegend variant="legend">{t("strings:outsource_manage.outsource.info_request.text_items.label")}</FieldLegend>
                 {uiState.item.textItems.map((item, index) => (
-                  <div className="flex flex-row gap-4">
+                  <div key={index} className="flex flex-row gap-4">
                     <FieldGroup className="grid grid-cols-1 gap-4 w-full">
                       <Field>
                         <FieldLabel>{Localized.get(item.label)}</FieldLabel>
