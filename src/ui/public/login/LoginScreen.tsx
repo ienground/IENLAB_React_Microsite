@@ -10,8 +10,8 @@ import imgPattern from "@/assets/brand/pattern.png"
 import icGoogle from "@/assets/icon/google.png"
 import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
-import {CrossfadeImage, Seo} from "@ienlab/react-library"
-import {type ReactNode, type SubmitEvent, useEffect, useRef} from "react"
+import {CrossfadeImage, NaverLogin, Seo} from "@ienlab/react-library"
+import {type SubmitEvent} from "react"
 import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
@@ -88,38 +88,7 @@ function ScreenBody() {
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
     )
   }
-
-  useEffect(() => {
-    if (!window.opener) return
-
-    const hash = window.location.hash.substring(1)
-    const params = new URLSearchParams(hash)
-    const accessToken = params.get("access_token")
-
-    if (accessToken) {
-      window.opener.postMessage(
-        { type: "naver_login", token: accessToken },
-        window.location.origin
-      )
-    }
-
-    window.close()
-  }, [])
-
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "naver_login") {
-        console.log(event)
-      }
-      if (event.data?.type === "naver_login" && event.data?.token) {
-        naverLogin(event.data.token)
-      }
-    }
-
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [])
-
+  
   return (
     <div className="flex min-h-[80svh] flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
@@ -142,6 +111,7 @@ function ScreenBody() {
                       type="email"
                       placeholder="m@example.com"
                       required
+                      disabled={isLoading}
                       value={uiState.item.email}
                       onChange={e => updateUiState({ email: e.target.value })}
                     />
@@ -159,6 +129,7 @@ function ScreenBody() {
                     <Input
                       id="password" type="password"
                       required
+                      disabled={isLoading}
                       value={uiState.item.password}
                       onChange={e => updateUiState({ password: e.target.value })}
                     />
@@ -203,6 +174,7 @@ function ScreenBody() {
                     {/*  <span className="sr-only">{t("strings:signin.signin_with_apple")}</span>*/}
                     {/*</Button>*/}
                     <NaverLogin
+                      onToken={naverLogin}
                       clientId={import.meta.env.VITE_NAVER_CLIENT_ID}
                       callbackUrl={`${window.location.origin}/login`}
                       render={e =>
@@ -265,45 +237,3 @@ function ScreenBody() {
   )
 }
 
-function NaverLogin(props: {
-  clientId: string,
-  callbackUrl: string,
-  domain?: string,
-  render: (onClick: () => void) => ReactNode
-}) {
-  const hiddenRef = useRef<HTMLDivElement>(null)
-  const naver = window.naver
-
-  useEffect(() => {
-    if (!naver || !hiddenRef.current) return
-    const naverLogin = new naver.LoginWithNaverId({
-      clientId: props.clientId,
-      callbackUrl: props.callbackUrl,
-      isPopup: true,
-      loginButton: {
-        color: "green",
-        type: 3,
-        height: 50,
-      },
-    })
-
-    naverLogin.init()
-  }, [])
-
-  const handleCustomLogin = () => {
-    const anchor = hiddenRef.current?.querySelector("a") as HTMLAnchorElement | null
-    anchor?.click()
-  }
-
-  return (
-    <>
-      <div
-        id="naverIdLogin"
-        ref={hiddenRef}
-        style={{ display: "none" }}
-        aria-hidden="true"
-      />
-      {props.render(handleCustomLogin)}
-    </>
-  )
-}
