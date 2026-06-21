@@ -39,7 +39,7 @@ export function ClientProtectedRoute() {
     return <Navigate to={SignupDestination.root} replace />
   }
 
-  const canAccessConsole = user.level === User.Level.ADMIN
+  const canAccessConsole = user.state === User.State.ACTIVE
 
   if (!canAccessConsole) {
     return <Navigate to="/" replace />

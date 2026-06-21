@@ -6,7 +6,14 @@ import {Button} from "@/components/ui/button.tsx"
 import {Checkbox} from "@/components/ui/checkbox.tsx"
 import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Input} from "@/components/ui/input.tsx"
-import {RiArrowLeftLine, RiArrowRightLine, RiCheckFill, RiCloseFill, RiErrorWarningFill} from "@remixicon/react"
+import {
+  RiArrowLeftLine,
+  RiArrowRightLine,
+  RiCheckFill,
+  RiCloseFill,
+  RiErrorWarningFill,
+  RiLogoutBoxLine
+} from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {useNavigate} from "react-router"
 import {companyRepository, userRepository} from "@/di/container.ts"
@@ -32,6 +39,7 @@ import {REGEXP_ONLY_DIGITS} from "input-otp"
 import {toast} from "sonner"
 import i18n from "@/locales/i18n.ts"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
+import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 
 
 export default function SignupScreen() {
@@ -58,6 +66,7 @@ function ScreenBody() {
   const onDisposed = SignupViewModel.use.onDisposed()
   const updateSignupUiState = SignupViewModel.use.updateSignupUiState()
   const primalMoveStep = SignupViewModel.use.moveStep()
+  const logout = AuthSessionViewModel.use.signOut()
 
   const [direction, setDirection] = useState(1)
 
@@ -110,9 +119,8 @@ function ScreenBody() {
                 transition={{ type: "spring", damping: 30, stiffness: 250 }}
               >
                 <StepTerms
-                  uiState={signupUiState}
-                  onItemValueChanged={updateSignupUiState}
                   onNext={() => moveStep(1)}
+                  onLogout={() => { logout() }}
                 />
               </motion.div>
             )}
@@ -128,7 +136,7 @@ function ScreenBody() {
                 transition={{ type: "spring", damping: 30, stiffness: 250 }}
               >
                 <StepInfo
-                  onSubmit={() => {}}
+                  // onSubmit={() => {}}
                   onBack={() => moveStep(-1)}
                 />
               </motion.div>
@@ -142,6 +150,7 @@ function ScreenBody() {
 
 function StepTerms(props: {
   onNext: () => void
+  onLogout: () => void
 }) {
   const uiState = SignupViewModel.use.signupUiState()
   const updateUiState = SignupViewModel.use.updateSignupUiState()
@@ -172,6 +181,13 @@ function StepTerms(props: {
 
       <ButtonGroup className="w-fit">
         <MagneticButton
+          variant="outline"
+          onClick={props.onLogout}
+        >
+          <RiLogoutBoxLine />
+          {t("strings:signout.label")}
+        </MagneticButton>
+        <MagneticButton
           disabled={!uiState.item.agreedRequired}
           onClick={props.onNext}
         >
@@ -184,7 +200,7 @@ function StepTerms(props: {
 }
 
 function StepInfo(props: {
-  onSubmit: () => void
+  // onSubmit: () => void
   onBack: () => void
 }) {
   const uiState = SignupViewModel.use.userEditUiState()
@@ -412,10 +428,13 @@ function StepInfo(props: {
           {t("strings:back")}
         </MagneticButton>
         <MagneticButton
-          onClick={props.onSubmit}
+          onClick={save}
           disabled={invalid()}
         >
-          <RiCheckFill />
+          <Swap swapped={isProgress}>
+            <SwapOn><Spinner className="size-4" /> </SwapOn>
+            <SwapOff><RiCheckFill /></SwapOff>
+          </Swap>
           {t("strings:signup.submit.label")}
         </MagneticButton>
       </ButtonGroup>

@@ -96,17 +96,12 @@ export function getRouter(t: TFunction) {
               element: <ProjectDetailScreen />
             },
             {
-              element: <GuestRoute />,
-              children: [
-                {
-                  path: LoginDestination.root,
-                  element: <LoginScreen />
-                },
-                {
-                  path: SignupDestination.root,
-                  element: <SignupScreen />
-                },
-              ]
+              path: LoginDestination.root,
+              element: <GuestRoute><LoginScreen /></GuestRoute>
+            },
+            {
+              path: SignupDestination.root,
+              element: <GuestRoute><SignupScreen /></GuestRoute>
             },
             {
               path: "*",

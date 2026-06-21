@@ -304,7 +304,7 @@ export class UserRepositoryImpl implements UserRepository {
 
   async create(id: string, item: UserEditDetails): Promise<void> {
     const target = await this.transformItem(id, item)
-    return await setDoc(doc(this.usersRef, id), target.toHashMap(true))
+    return await setDoc(doc(this.usersRef, id), target.toHashMap(false))
   }
 
   async update(id: string, item: UserEditDetails): Promise<void> {
