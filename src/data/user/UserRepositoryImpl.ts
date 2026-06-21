@@ -48,7 +48,7 @@ import {Company} from "@/domain/model/Company.ts"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import {type Functions, type HttpsCallable} from "firebase/functions"
-import {createCallable} from "@/constant/FnSchema.ts"
+import {createCallable} from "@/constant/CreateCallable.ts"
 
 export class UserRepositoryImpl implements UserRepository {
   private readonly auth: Auth
@@ -60,6 +60,7 @@ export class UserRepositoryImpl implements UserRepository {
   private readonly sendPhoneVerifyFn
   private readonly verifyCodeFn
   private readonly updateUserEmailFn
+  private readonly updateAgreementFn
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -89,6 +90,7 @@ export class UserRepositoryImpl implements UserRepository {
     this.sendPhoneVerifyFn = createCallable(functions, "SendPhoneVerify")
     this.verifyCodeFn = createCallable(functions, "VerifyCode")
     this.updateUserEmailFn = createCallable(functions, "UpdateUserEmail")
+    this.updateAgreementFn = createCallable(functions, "UpdateAgreement")
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -319,6 +321,11 @@ export class UserRepositoryImpl implements UserRepository {
 
     const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
+  }
+
+  async updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean> {
+    const result = await this.updateAgreementFn({ agreedRequired, agreedOptional })
+    return result.data.code === 200
   }
 
   async updateUserEmail(uid: string, email: string): Promise<void> {

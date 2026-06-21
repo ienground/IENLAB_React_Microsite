@@ -1,4 +1,5 @@
 import {createZustandContext, type InfScrollStateList, PhoneVerify} from "@ienlab/react-library"
+import {Timestamp} from "firebase/firestore"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {createStore} from "zustand"
 import {UserEditUiState} from "@/ui/client/user/ClientUserViewModel.ts"
@@ -96,7 +97,8 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   save: async (onSuccess, onFailure) => {
-    const { userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
+    const { signupUiState, userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
+
     try {
       const userId = userRepository.getCurrentUser()?.uid
       if (!userId) {
@@ -105,6 +107,16 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       }
 
       await props.userRepository.create(userId, uiState.item)
+
+      const updateResult = await props.userRepository.updateAgreedAt(
+        signupUiState.item.agreedRequired,
+        signupUiState.item.agreedOptional,
+      )
+
+      if (!updateResult) {
+        onFailure("strings:error_occurred")
+        return
+      }
 
       updateUiState({}, false)
       onSuccess(null)

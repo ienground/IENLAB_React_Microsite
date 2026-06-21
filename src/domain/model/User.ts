@@ -27,6 +27,8 @@ export class User implements FirestoreItem {
   state: User.State = User.State.Default
   phone: string = ""
   email: string = ""
+  agreedRequiredAt: Timestamp | null = null
+  agreedOptionalAt: Timestamp | null = null
 
   constructor(partial: Partial<User> = {}) {
     Object.assign(this, partial)
@@ -40,10 +42,7 @@ export class User implements FirestoreItem {
       [FirestorePath.User.NAME]: this.name,
       [FirestorePath.User.PROFILE_URL]: this.profileUrl,
       [FirestorePath.User.COMPANY]: this.companyRef,
-      [FirestorePath.User.TEMP_COMPANY]: this.tempCompanyRef,
-      [FirestorePath.User.LEVEL]: this.level,
-      [FirestorePath.User.STATE]: this.state,
-      [FirestorePath.User.PHONE]: this.phone
+      [FirestorePath.User.PHONE]: this.phone,
     }
     // email은 Firebase Auth가 SOURCE. 직접 저장하지 않음
 
@@ -70,7 +69,9 @@ export class User implements FirestoreItem {
       level: doc[FirestorePath.User.LEVEL],
       state: doc[FirestorePath.User.STATE],
       phone: doc[FirestorePath.User.PHONE],
-      email: doc[FirestorePath.User.EMAIL] ?? ""
+      email: doc[FirestorePath.User.EMAIL] ?? "",
+      agreedRequiredAt: doc[FirestorePath.User.AGREED_REQUIRED_AT] ?? null,
+      agreedOptionalAt: doc[FirestorePath.User.AGREED_OPTIONAL_AT] ?? null
     })
   }
 }

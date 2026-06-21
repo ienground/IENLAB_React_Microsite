@@ -8,10 +8,31 @@ export const FirestorePath = {
   PORTFOLIO: "portfolio",
   COMPANY: "company",
   OTP: "otp",
+  ENV: "env",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
   DELETED_AT: "deletedAt",
+
+  Env: {
+    AGREEMENT: "agreement",
+    Agreement: {
+      /** Timestamp | null */
+      REQUIRED_UPDATE_AT: "requiredUpdateAt",
+      /** Timestamp | null */
+      OPTIONAL_UPDATE_AT: "optionalUpdateAt",
+
+      /** Collection */
+      REQUIRED: "required",
+      /** Collection */
+      OPTIONAL: "optional",
+
+      Items: {
+        /** Map<Locale, string> */
+        CONTENT: "content"
+      }
+    }
+  },
 
   User: {
     /** Timestamp */
@@ -31,7 +52,11 @@ export const FirestorePath = {
     /** string */
     PHONE: "phone",
     /** string (조회용 사본, Firebase Auth가 SOURCE) */
-    EMAIL: "email"
+    EMAIL: "email",
+    /** Timestamp | null */
+    AGREED_REQUIRED_AT: "agreedRequiredAt",
+    /** Timestamp | null */
+    AGREED_OPTIONAL_AT: "agreedOptionalAt"
   },
 
   Estimate: {
