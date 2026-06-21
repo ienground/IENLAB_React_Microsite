@@ -41,9 +41,24 @@ import i18n from "@/locales/i18n.ts"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 
+import {Navigate} from "react-router"
+import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog.tsx"
 
 export default function SignupScreen() {
   const {t} = useTranslation()
+  const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+
+  if (!isAuthenticated) {
+    return <Navigate to={LoginDestination.root} replace />
+  }
+
   return (
     <>
       <Seo title={`${t("strings:signup.label")} - ${t("strings:app_name")}`}/>
@@ -59,16 +74,15 @@ export default function SignupScreen() {
 
 function ScreenBody() {
   const {t} = useTranslation()
-  const navigate = useNavigate()
   const signupUiState = SignupViewModel.use.signupUiState()
 
   const init = SignupViewModel.use.init()
   const onDisposed = SignupViewModel.use.onDisposed()
-  const updateSignupUiState = SignupViewModel.use.updateSignupUiState()
   const primalMoveStep = SignupViewModel.use.moveStep()
   const logout = AuthSessionViewModel.use.signOut()
 
   const [direction, setDirection] = useState(1)
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false)
 
   const moveStep = (delta: number) => {
     setDirection(delta) // 1이면 앞으로, -1이면 뒤로
@@ -96,19 +110,20 @@ function ScreenBody() {
   }, [init, onDisposed])
 
   return (
-    <div className="w-full flex flex-col">
+    <>
+      <div className="w-full flex flex-col">
       <div className="px-8"><Separator className="bg-foreground"/></div>
 
       <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader
             index={signupUiState.item.step}
-            label={signupUiState.item.step === 1 ? t("strings:terms_of_service") : t("strings:signup.info")}
+            label={signupUiState.item.step === 0 ? t("strings:terms_of_service") : t("strings:signup.info")}
           />
         </aside>
         <div className="col-span-12 xl:col-span-10 relative">
           <AnimatePresence mode="wait" custom={direction}>
-            {signupUiState.item.step === 1 && (
+            {signupUiState.item.step === 0 && (
               <motion.div
                 key="step-1"
                 custom={direction}
@@ -120,12 +135,12 @@ function ScreenBody() {
               >
                 <StepTerms
                   onNext={() => moveStep(1)}
-                  onLogout={() => { logout() }}
+                  onLogout={() => setShowLogoutDialog(true)}
                 />
               </motion.div>
             )}
 
-            {signupUiState.item.step === 2 && (
+            {signupUiState.item.step === 1 && (
               <motion.div
                 key="step-2"
                 custom={direction}
@@ -136,7 +151,6 @@ function ScreenBody() {
                 transition={{ type: "spring", damping: 30, stiffness: 250 }}
               >
                 <StepInfo
-                  // onSubmit={() => {}}
                   onBack={() => moveStep(-1)}
                 />
               </motion.div>
@@ -145,6 +159,28 @@ function ScreenBody() {
         </div>
       </div>
     </div>
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("strings:signout.dialog_title")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("strings:signout.dialog_desc")}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <Button variant="outline" onClick={() => setShowLogoutDialog(false)}>{t("strings:cancel")}</Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                try {
+                  await logout()
+                } catch (e) {
+                  toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})
+                }
+              }}
+            >{t("strings:confirm")}</Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }
 

@@ -12,7 +12,7 @@ import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, Seo} from "@ienlab/react-library"
 import {type SubmitEvent} from "react"
-import {Link, useNavigate, useSearchParams} from "react-router"
+import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
@@ -22,9 +22,18 @@ import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import KakaoLogin from "react-kakao-login"
 import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
+import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
+
 
 export default function LoginScreen() {
   const { t } = useTranslation()
+  const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const user = AuthSessionViewModel.use.user()
+
+  if (isAuthenticated && !user) {
+    return <Navigate to={SignupDestination.root} replace />
+  }
+
   return (
     <>
       <Seo title={`${t("strings:login")} - ${t("strings:app_name")}`} />

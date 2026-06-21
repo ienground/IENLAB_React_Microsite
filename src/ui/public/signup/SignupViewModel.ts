@@ -8,7 +8,7 @@ import {Company} from "@/domain/model/Company.ts"
 import {userRepository} from "@/di/container.ts"
 
 export class SignupDetails {
-  step: number = 2
+  step: number = 0
   agreedRequired: boolean = false
   agreedOptional: boolean = false
 
