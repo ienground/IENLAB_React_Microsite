@@ -40,7 +40,7 @@ import {toast} from "sonner"
 import i18n from "@/locales/i18n.ts"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
-
+import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import {Navigate} from "react-router"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import {
@@ -259,13 +259,13 @@ function StepInfo(props: {
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
 
+  const navigate = useNavigate()
+
   const save = () => {
     setProgress(true)
     primalSave(
-      async (id) => {
-        // todo
-        // setProgress(false)
-        // toast.success(t("strings:saved_successfully"), {icon: <RiCheckboxCircleFill size={18}/>})
+      async (_id) => {
+        navigate(SignupDestination.finish, { replace: true })
       },
       (err) => {
         setProgress(false)

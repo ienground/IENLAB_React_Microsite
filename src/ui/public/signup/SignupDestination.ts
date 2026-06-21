@@ -1,3 +1,4 @@
 export const SignupDestination = {
-  root: "/signup" as const
+  root: "/signup" as const,
+  finish: "/signup/finish" as const
 } as const

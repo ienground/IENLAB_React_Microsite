@@ -40,6 +40,8 @@ import OutsourceRevisionEditScreen from "@/ui/client/outsource/revision/edit/Out
 import {GuestRoute} from "@/ui/router/GuestRoute.tsx"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import SignupScreen from "@/ui/public/signup/SignupScreen.tsx"
+import SignupFinish from "@/ui/public/signup/SignupFinish.tsx"
+import {PendingUserRoute} from "@/ui/router/PendingUserRoute.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -92,16 +94,16 @@ export function getRouter(t: TFunction) {
               element: <ProjectListScreen />
             },
             {
-              path: ProjectDestination.detail,
-              element: <ProjectDetailScreen />
-            },
-            {
               path: LoginDestination.root,
               element: <GuestRoute><LoginScreen /></GuestRoute>
             },
             {
               path: SignupDestination.root,
               element: <GuestRoute><SignupScreen /></GuestRoute>
+            },
+            {
+              path: SignupDestination.finish,
+              element: <PendingUserRoute><SignupFinish /></PendingUserRoute>
             },
             {
               path: "*",

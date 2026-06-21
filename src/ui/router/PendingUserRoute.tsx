@@ -1,16 +1,15 @@
-import { Navigate, useLocation } from "react-router"
+import {Navigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 import {User} from "@/domain/model/User.ts"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
-import PrivateLayout from "@/ui/shared/layout/PrivateLayout.tsx"
+import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
+import type {ReactNode} from "react"
 
-export function ClientProtectedRoute() {
-  const location = useLocation()
+export function PendingUserRoute({children}: { children: ReactNode }) {
   const isLoading = AuthSessionViewModel.use.isLoading()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
-  const isSigningOut = AuthSessionViewModel.use.isSigningOut()
   const user = AuthSessionViewModel.use.user()
   const { t } = useTranslation()
 
@@ -23,27 +22,16 @@ export function ClientProtectedRoute() {
   }
 
   if (!isAuthenticated) {
-    if (isSigningOut) {
-      return <Navigate to="/" replace />
-    }
-    return (
-      <Navigate
-        to={LoginDestination.root}
-        replace
-        state={{ from: location }}
-      />
-    )
+    return <Navigate to={LoginDestination.root} replace />
   }
 
   if (!user) {
     return <Navigate to={SignupDestination.root} replace />
   }
 
-  const canAccessConsole = user.state === User.State.ACTIVE
-
-  if (!canAccessConsole) {
-    return <Navigate to={SignupDestination.finish} replace />
+  if (user.state === User.State.ACTIVE) {
+    return <Navigate to={ClientHomeDestination.root} replace />
   }
 
-  return <PrivateLayout />
+  return children
 }
