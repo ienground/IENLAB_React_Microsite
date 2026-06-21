@@ -38,7 +38,7 @@ export interface UserRepository {
   update(id: string, user: UserEditDetails): Promise<void>
   updateUserEmail(uid: string, email: string): Promise<void>
   updateState(id: string, state: User.State): Promise<void>
-  updateAgreedAt(agreedRequired: Boolean, agreedOptional: Boolean): Promise<boolean>
+  updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean>
   approveTempCompany(id: string): Promise<void>
   rejectTempCompany(id: string): Promise<void>
   delete(credential: UserCredential): Promise<boolean>
