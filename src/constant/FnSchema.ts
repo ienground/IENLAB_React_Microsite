@@ -69,11 +69,22 @@ export const FnSchema = {
     }
   },
 
-  UpdateAgreement: {
-    name: "updateAgreement",
+  UpdateUserAgreement: {
+    name: "updateUserAgreement",
     params: {
       agreedRequired: "boolean",
       agreedOptional: "boolean"
+    },
+    result: {
+      code: "number"
+    }
+  },
+
+  UpdateUserState: {
+    name: "updateUserState",
+    params: {
+      uid: "string",
+      state: "number"
     },
     result: {
       code: "number"

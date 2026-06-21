@@ -35,10 +35,12 @@ export interface UserRepository {
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe
 
   create(id: string, user: UserEditDetails): Promise<void>
-  updateUserEmail(uid: string, email: string): Promise<void>
   update(id: string, user: UserEditDetails): Promise<void>
+  updateUserEmail(uid: string, email: string): Promise<void>
+  updateState(id: string, state: User.State): Promise<void>
   updateAgreedAt(agreedRequired: Boolean, agreedOptional: Boolean): Promise<boolean>
   approveTempCompany(id: string): Promise<void>
+  rejectTempCompany(id: string): Promise<void>
   delete(credential: UserCredential): Promise<boolean>
 
   setSearchKeyword(keyword: string): void

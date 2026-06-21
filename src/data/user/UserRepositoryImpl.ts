@@ -60,7 +60,8 @@ export class UserRepositoryImpl implements UserRepository {
   private readonly sendPhoneVerifyFn
   private readonly verifyCodeFn
   private readonly updateUserEmailFn
-  private readonly updateAgreementFn
+  private readonly updateUserAgreementFn
+  private readonly updateUserStateFn
   private readonly PAGE_SIZE = 20
 
   private readonly companyCache = new Map<string, Company>
@@ -90,7 +91,8 @@ export class UserRepositoryImpl implements UserRepository {
     this.sendPhoneVerifyFn = createCallable(functions, "SendPhoneVerify")
     this.verifyCodeFn = createCallable(functions, "VerifyCode")
     this.updateUserEmailFn = createCallable(functions, "UpdateUserEmail")
-    this.updateAgreementFn = createCallable(functions, "UpdateAgreement")
+    this.updateUserAgreementFn = createCallable(functions, "UpdateUserAgreement")
+    this.updateUserStateFn = createCallable(functions, "UpdateUserState")
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
@@ -323,13 +325,17 @@ export class UserRepositoryImpl implements UserRepository {
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
   }
 
-  async updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean> {
-    const result = await this.updateAgreementFn({ agreedRequired, agreedOptional })
-    return result.data.code === 200
-  }
-
   async updateUserEmail(uid: string, email: string): Promise<void> {
     await this.updateUserEmailFn({ uid, email })
+  }
+
+  async updateState(id: string, state: User.State): Promise<void> {
+    await this.updateUserStateFn({ uid: id, state })
+  }
+
+  async updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean> {
+    const result = await this.updateUserAgreementFn({ agreedRequired, agreedOptional })
+    return result.data.code === 200
   }
 
   async approveTempCompany(id: string): Promise<void> {
