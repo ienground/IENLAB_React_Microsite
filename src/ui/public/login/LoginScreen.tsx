@@ -11,7 +11,7 @@ import icGoogle from "@/assets/icon/google.png"
 import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, Seo} from "@ienlab/react-library"
-import {type SubmitEvent} from "react"
+import {type ReactNode, type SubmitEvent, useEffect, useRef} from "react"
 import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
@@ -23,7 +23,6 @@ import KakaoLogin from "react-kakao-login"
 import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
-
 
 export default function LoginScreen() {
   const { t } = useTranslation()
@@ -89,6 +88,44 @@ function ScreenBody() {
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18} />})
     )
   }
+
+  // useEffect(() => {
+  //   if (!window.opener) return
+  //
+  //   try {
+  //     const naverLogin = new window.naver_id_login(
+  //       import.meta.env.VITE_NAVER_CLIENT_ID,
+  //       `${window.location.origin}/login`
+  useEffect(() => {
+    if (!window.opener) return
+
+    const hash = window.location.hash.substring(1)
+    const params = new URLSearchParams(hash)
+    const accessToken = params.get("access_token")
+
+    if (accessToken) {
+      window.opener.postMessage(
+        { type: "naver_login", token: accessToken },
+        window.location.origin
+      )
+    }
+
+    window.close()
+  }, [])
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "naver_login") {
+        console.log(event)
+      }
+      if (event.data?.type === "naver_login" && event.data?.token) {
+        naverLogin(event.data.token)
+      }
+    }
+
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [])
 
   return (
     <div className="flex min-h-[80svh] flex-col items-center justify-center p-6 md:p-10">
@@ -172,13 +209,19 @@ function ScreenBody() {
                     {/*  <RiAppleFill size={24} />*/}
                     {/*  <span className="sr-only">{t("strings:signin.signin_with_apple")}</span>*/}
                     {/*</Button>*/}
-                    <Button variant="default" type="button" className="bg-naver-background text-naver-foreground hover:bg-naver-background/80">
-                      <Swap swapped={isLoading}>
-                        <SwapOn><Spinner className="size-4" /></SwapOn>
-                        <SwapOff><IcNaver className="size-4" /></SwapOff>
-                      </Swap>
-                      <span className="sr-only">{t("strings:signin.signin_with_naver")}</span>
-                    </Button>
+                    <NaverLogin
+                      clientId={import.meta.env.VITE_NAVER_CLIENT_ID}
+                      callbackUrl={`${window.location.origin}/login`}
+                      render={e =>
+                        <Button variant="default" type="button" onClick={e} className="bg-naver-background text-naver-foreground hover:bg-naver-background/80">
+                          <Swap swapped={isLoading}>
+                            <SwapOn><Spinner className="size-4" /></SwapOn>
+                            <SwapOff><IcNaver className="size-4" /></SwapOff>
+                          </Swap>
+                          <span className="sr-only">{t("strings:signin.signin_with_naver")}</span>
+                        </Button>
+                      }
+                    />
                     <KakaoLogin
                       token={kakaoApiKey}
                       onSuccess={response => kakaoLogin(response.response.access_token)}
@@ -226,5 +269,43 @@ function ScreenBody() {
         </div>
       </div>
     </div>
+  )
+}
+
+function NaverLogin(props: {
+  clientId: string,
+  callbackUrl: string,
+  domain?: string,
+  render: (onClick: () => void) => ReactNode
+}) {
+  const hiddenRef = useRef<HTMLDivElement>(null)
+  const naver = window.naver
+
+  useEffect(() => {
+    if (!naver || !hiddenRef.current) return
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: props.clientId,
+      callbackUrl: props.callbackUrl,
+      isPopup: true,
+    })
+
+    naverLogin.init()
+  }, [])
+
+  const handleCustomLogin = () => {
+    const anchor = hiddenRef.current?.querySelector("a") as HTMLAnchorElement | null
+    anchor?.click()
+  }
+
+  return (
+    <>
+      <div
+        id="naverIdLogin"
+        ref={hiddenRef}
+        style={{ display: "none" }}
+        aria-hidden="true"
+      />
+      {props.render(handleCustomLogin)}
+    </>
   )
 }
