@@ -33,6 +33,7 @@ export interface UserRepository {
   get(id?: string): Promise<User | null>
   observe(callback: (user: User | null) => void, id?: string, cache?: boolean): Unsubscribe
 
+  create(id: string, user: UserEditDetails): Promise<void>
   updateUserEmail(uid: string, email: string): Promise<void>
   update(id: string, user: UserEditDetails): Promise<void>
   approveTempCompany(id: string): Promise<void>

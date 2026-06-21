@@ -1,165 +1,424 @@
-import {Seo} from "@ienlab/react-library"
+import {ImageUploadField, Localized, PhoneVerify, Seo, useDebouncedSearch} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {Checkbox} from "@/components/ui/checkbox.tsx"
-import {Field, FieldGroup, FieldLabel} from "@/components/ui/field.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Input} from "@/components/ui/input.tsx"
-import {RiArrowLeftLine} from "@remixicon/react"
+import {RiArrowLeftLine, RiArrowRightLine, RiCheckFill, RiCloseFill, RiErrorWarningFill} from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {useNavigate} from "react-router"
-import {userRepository} from "@/di/container.ts"
-import {SignupViewModel, type SignupDetails} from "@/ui/public/signup/SignupViewModel.ts"
+import {companyRepository, userRepository} from "@/di/container.ts"
+import {SignupViewModel} from "@/ui/public/signup/SignupViewModel.ts"
+import {AnimatePresence, motion} from "motion/react"
+import {useEffect, useState} from "react"
+import {ButtonGroup} from "@/components/ui/button-group.tsx"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList
+} from "@/components/ui/combobox.tsx"
+import {Company} from "@/domain/model/Company.ts"
+import {InputGroup, InputGroupButton, InputGroupInput} from "@/components/ui/input-group.tsx"
+import {PatternFormat} from "react-number-format"
+import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
+import {Spinner} from "@/components/ui/spinner.tsx"
+import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp.tsx"
+import {REGEXP_ONLY_DIGITS} from "input-otp"
+import {toast} from "sonner"
+import i18n from "@/locales/i18n.ts"
+import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 
 
 export default function SignupScreen() {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   return (
     <>
-      <Seo title={`${t("strings:signin.signup")} - ${t("strings:app_name")}`} />
-      <SignupViewModel.Provider userRepository={userRepository}>
-        <ScreenBody />
+      <Seo title={`${t("strings:signup.label")} - ${t("strings:app_name")}`}/>
+      <SignupViewModel.Provider
+        userRepository={userRepository}
+        companyRepository={companyRepository}
+      >
+        <ScreenBody/>
       </SignupViewModel.Provider>
     </>
   )
 }
 
 function ScreenBody() {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const navigate = useNavigate()
-  const uiState = SignupViewModel.use.uiState()
-  const updateUiState = SignupViewModel.use.updateUiState()
-  const updateItem = SignupViewModel.use.updateItem()
-  const nextStep = SignupViewModel.use.nextStep()
-  const prevStep = SignupViewModel.use.prevStep()
+  const signupUiState = SignupViewModel.use.signupUiState()
+
+  const init = SignupViewModel.use.init()
+  const onDisposed = SignupViewModel.use.onDisposed()
+  const updateSignupUiState = SignupViewModel.use.updateSignupUiState()
+  const primalMoveStep = SignupViewModel.use.moveStep()
+
+  const [direction, setDirection] = useState(1)
+
+  const moveStep = (delta: number) => {
+    setDirection(delta) // 1이면 앞으로, -1이면 뒤로
+    primalMoveStep(delta)
+  }
+
+  const variants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 40 : -40,   // 100% 대신 소폭 이동
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -40 : 40,
+      opacity: 0,
+    }),
+  }
+
+  useEffect(() => {
+    init()
+    return () => onDisposed()
+  }, [init, onDisposed])
 
   return (
     <div className="w-full flex flex-col">
-      <div className="px-8"><Separator className="bg-foreground" /></div>
+      <div className="px-8"><Separator className="bg-foreground"/></div>
 
       <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
         <aside className="col-span-12 xl:col-span-2">
-          <SectionHeader index={uiState.step} label={t(uiState.step === 1 ? "strings:signup.terms" : "strings:signup.info")} />
+          <SectionHeader
+            index={signupUiState.item.step}
+            label={signupUiState.item.step === 1 ? t("strings:terms_of_service") : t("strings:signup.info")}
+          />
         </aside>
-        <div className="col-span-12 xl:col-span-10">
-          {uiState.step === 1 && (
-            <StepTerms
-              agreedRequired={uiState.agreedRequired}
-              agreedOptional={uiState.agreedOptional}
-              onAgreedRequiredChange={checked => updateUiState({ agreedRequired: checked })}
-              onAgreedOptionalChange={checked => updateUiState({ agreedOptional: checked })}
-              onNext={nextStep}
-            />
-          )}
-          {uiState.step === 2 && (
-            <StepInfo
-              item={uiState.item}
-              onItemChange={updateItem}
-              onSubmit={() => {}}
-              onBack={prevStep}
-            />
-          )}
+        <div className="col-span-12 xl:col-span-10 relative">
+          <AnimatePresence mode="wait" custom={direction}>
+            {signupUiState.item.step === 1 && (
+              <motion.div
+                key="step-1"
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: "spring", damping: 30, stiffness: 250 }}
+              >
+                <StepTerms
+                  uiState={signupUiState}
+                  onItemValueChanged={updateSignupUiState}
+                  onNext={() => moveStep(1)}
+                />
+              </motion.div>
+            )}
+
+            {signupUiState.item.step === 2 && (
+              <motion.div
+                key="step-2"
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: "spring", damping: 30, stiffness: 250 }}
+              >
+                <StepInfo
+                  onSubmit={() => {}}
+                  onBack={() => moveStep(-1)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
   )
 }
 
-function StepTerms({ agreedRequired, agreedOptional, onAgreedRequiredChange, onAgreedOptionalChange, onNext }: {
-  agreedRequired: boolean
-  agreedOptional: boolean
-  onAgreedRequiredChange: (checked: boolean) => void
-  onAgreedOptionalChange: (checked: boolean) => void
+function StepTerms(props: {
   onNext: () => void
 }) {
-  const { t } = useTranslation()
+  const uiState = SignupViewModel.use.signupUiState()
+  const updateUiState = SignupViewModel.use.updateSignupUiState()
+
+  const {t} = useTranslation()
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="large-text-title">{t("strings:signup.agree_terms")}</div>
-      <p className="text-muted-foreground">{t("strings:signup.agree_terms_desc")}</p>
+      <h1 className="large-text-title">{t("strings:signup.agree_terms.title")}</h1>
+      <p className="text-muted-foreground">{t("strings:signup.agree_terms.desc")}</p>
 
       <div className="space-y-4 rounded-lg border p-6">
         <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox checked={agreedRequired} onCheckedChange={onAgreedRequiredChange} />
+          <Checkbox
+            checked={uiState.item.agreedRequired}
+            onCheckedChange={value => updateUiState({ agreedRequired: !!value })}
+          />
           <span className="text-sm">{t("strings:signup.agree_required")}</span>
         </label>
         <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox checked={agreedOptional} onCheckedChange={onAgreedOptionalChange} />
+          <Checkbox
+            checked={uiState.item.agreedOptional}
+            onCheckedChange={value => updateUiState({ agreedOptional: !!value })}
+          />
           <span className="text-sm">{t("strings:signup.agree_optional")}</span>
         </label>
       </div>
 
-      <Button disabled={!agreedRequired} onClick={onNext}>
-        {t("strings:next")}
-      </Button>
+      <ButtonGroup className="w-fit">
+        <MagneticButton
+          disabled={!uiState.item.agreedRequired}
+          onClick={props.onNext}
+        >
+          <RiArrowRightLine />
+          {t("strings:next")}
+        </MagneticButton>
+      </ButtonGroup>
     </div>
   )
 }
 
-function StepInfo({ item, onItemChange, onSubmit, onBack }: {
-  item: SignupDetails
-  onItemChange: (partial: Partial<SignupDetails>) => void
+function StepInfo(props: {
   onSubmit: () => void
   onBack: () => void
 }) {
-  const { t } = useTranslation()
+  const uiState = SignupViewModel.use.userEditUiState()
+  const companyInfoStateList = SignupViewModel.use.companyInfoStateList()
+
+  const updateUiState = SignupViewModel.use.updateUserEditUiState()
+  const invalid = SignupViewModel.use.invalid()
+  const primalSave = SignupViewModel.use.save()
+  const primalSendOtpCode = SignupViewModel.use.sendOtpCode()
+  const primalVerifyOtpCode = SignupViewModel.use.verifyOtpCode()
+  const loadNextCompanyPage = SignupViewModel.use.loadNextCompanyPage()
+  const setCompanySearchKeyword = SignupViewModel.use.setCompanySearchKeyword()
+  const clearCompanySearch = SignupViewModel.use.clearCompanySearch()
+
+  const {t} = useTranslation()
+  const [isProgress, setProgress] = useState(false)
+  const otpRequestErrorMsg = PhoneVerify.Request.getMessage(t, uiState.item.otpRequestState)
+  const otpResultErrorMsg = PhoneVerify.Result.getMessage(t, uiState.item.otpResultState)
+
+  const [query, setQuery] = useState("")
+  const [otpTimer, setOtpTimer] = useState<number | null>(null)
+
+  const save = () => {
+    setProgress(true)
+    primalSave(
+      async (id) => {
+        // todo
+        // setProgress(false)
+        // toast.success(t("strings:saved_successfully"), {icon: <RiCheckboxCircleFill size={18}/>})
+      },
+      (err) => {
+        setProgress(false)
+        toast.error(t(err), {icon: <RiErrorWarningFill size={18}/>})
+      }
+    )
+  }
+
+  const sendOtpCode = () => {
+    setOtpTimer(300)
+    primalSendOtpCode(
+      (result) => {
+        if (result === PhoneVerify.Request.SUCCESS) {
+          setOtpTimer(300)
+        }
+      },
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
+    )
+  }
+
+  const verifyOtpCode = () => {
+    primalVerifyOtpCode(
+      (result) => {
+        if (result === PhoneVerify.Result.VERIFIED) {
+          setOtpTimer(null)
+        }
+      },
+      errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
+    )
+  }
+
+  useEffect(() => {
+    if (otpTimer === null || otpTimer <= 0) return
+    const id = setTimeout(() => setOtpTimer(otpTimer - 1), 1000)
+    return () => clearTimeout(id)
+  }, [otpTimer])
+
+  useEffect(() => {
+    const company = uiState.item.company
+    if (!company) return
+
+    setQuery(Localized.get(company.name))
+  }, [uiState.item.company, i18n.resolvedLanguage])
+
+  useDebouncedSearch(query, setCompanySearchKeyword, clearCompanySearch)
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="large-text-title">{t("strings:signup.enter_info")}</div>
-      <p className="text-muted-foreground">{t("strings:signup.enter_info_desc")}</p>
+      <h1 className="large-text-title">{t("strings:signup.enter_info.title")}</h1>
+      <p className="text-muted-foreground">{t("strings:signup.enter_info.desc")}</p>
 
-      <FieldGroup>
-        <Field>
-          <FieldLabel htmlFor="name">{t("strings:name")}</FieldLabel>
-          <Input
-            id="name"
-            value={item.name}
-            onChange={e => onItemChange({ name: e.target.value })}
-            placeholder={t("strings:signup.name_placeholder")}
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="email">{t("strings:email")}</FieldLabel>
-          <Input
-            id="email"
-            type="email"
-            value={item.email}
-            onChange={e => onItemChange({ email: e.target.value })}
-            placeholder="m@example.com"
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="password">{t("strings:password")}</FieldLabel>
-          <Input
-            id="password"
-            type="password"
-            value={item.password}
-            onChange={e => onItemChange({ password: e.target.value })}
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="confirmPassword">{t("strings:signup.confirm_password")}</FieldLabel>
-          <Input
-            id="confirmPassword"
-            type="password"
-            value={item.confirmPassword}
-            onChange={e => onItemChange({ confirmPassword: e.target.value })}
-          />
-        </Field>
-      </FieldGroup>
+      <FieldSet>
+        <ImageUploadField
+          id="profile"
+          label={t("strings:user.profile.label")}
+          uploadHintText={t("strings:user.profile.hint")}
+          descriptionText={t("strings:user.profile.desc")}
+          value={uiState.item.profileUrl}
+          onChange={item => updateUiState({ profileUrl: item })}
+          width="100%"
+          className="max-w-80"
+          components={{
+            Input,
+            Field,
+            FieldLabel,
+            FieldDescription,
+            Button: UploadActionButton,
+            CloseIcon: RiCloseFill
+          }}
+        />
+        <FieldLegend variant="legend">{t("strings:outsource_manage.user.personal.label")}</FieldLegend>
+        <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Field>
+            <FieldLabel>{t("strings:outsource_manage.user.name.label")}</FieldLabel>
+            <Input
+              value={uiState.item.name}
+              onChange={e => updateUiState({name: e.target.value})}
+              placeholder={t("strings:input_name")}
+            />
+          </Field>
+          <Field>
+            <FieldLabel>{t("strings:outsource_manage.user.company.label")}</FieldLabel>
+            <Combobox
+              items={[...companyInfoStateList.itemList.values()]}
+              itemToStringValue={(item: Company) => item.id}
+            >
+              <ComboboxInput
+                placeholder={t("strings:company_placeholder")}
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                showClear
+              />
+              <ComboboxContent>
+                <ComboboxEmpty>{t("strings:list_end")}</ComboboxEmpty>
+                <ComboboxList
+                  onScroll={e => {
+                    const target = e.currentTarget
+                    if (target.scrollHeight - target.scrollTop <= target.clientHeight + 50) {
+                      loadNextCompanyPage()
+                    }
+                  }}
+                >
+                  {(item: Company) => (
+                    <ComboboxItem
+                      key={item.id}
+                      value={item.id}
+                      onClick={() => {
+                        updateUiState({
+                          company: item,
+                          companyRef: item.ref,
+                        })
+                        setQuery(Localized.get(item.name))
+                      }}
+                    >
+                      {Localized.get(item.name)}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+          </Field>
+          <Field>
+            <FieldLabel>{t("strings:outsource_manage.user.phone.label")}</FieldLabel>
+            <InputGroup>
+              <PatternFormat
+                value={uiState.item.phone}
+                onChange={e => updateUiState({phone: e.target.value, otpRequestState: PhoneVerify.Request.IDLE})}
+                type="tel"
+                placeholder={t("strings:input_phone")}
+                format="###-####-####"
+                customInput={InputGroupInput}
+              />
+              <InputGroupButton
+                disabled={!uiState.item.phone}
+                onClick={sendOtpCode}
+              >
+                <Swap swapped={uiState.item.otpRequestState === PhoneVerify.Request.REQUESTING}>
+                  <SwapOn><Spinner className="size-4"/></SwapOn>
+                </Swap>
+                {t("strings:user.profile.phone.send")}
+              </InputGroupButton>
+            </InputGroup>
+            <AnimatePresence initial={false} mode="popLayout">
+              {(uiState.item.otpRequestState === PhoneVerify.Request.SUCCESS) && <motion.div
+                key="otp"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-row w-full items-center gap-2"
+              >
+                <InputOTP
+                  maxLength={6}
+                  pattern={REGEXP_ONLY_DIGITS}
+                  containerClassName="mr-auto"
+                  value={uiState.item.otpCode}
+                  onChange={value => updateUiState({otpCode: value})}
+                  disabled={uiState.item.otpResultState === PhoneVerify.Result.VERIFIED}
+                >
+                  <InputOTPGroup>{Array.from({length: 6}).map((_item, index) => <InputOTPSlot index={index} />)}</InputOTPGroup>
+                </InputOTP>
+                {otpTimer !== null && uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED && (
+                  <span className={otpTimer === 0 ? "text-destructive text-sm" : "text-sm"}>{
+                    otpTimer === 0 ?
+                      t('strings:user.profile.phone.expired')
+                      : `${String(Math.floor(otpTimer / 60)).padStart(2, "0")}:${String(otpTimer % 60).padStart(2, "0")}`}
+                        </span>
+                )}
+                <Button
+                  variant="default"
+                  disabled={uiState.item.otpCode.length !== 6 || otpTimer === 0 || uiState.item.otpResultState === PhoneVerify.Result.REQUESTING || uiState.item.otpResultState === PhoneVerify.Result.VERIFIED}
+                  onClick={verifyOtpCode}
+                >
+                  <Swap swapped={uiState.item.otpResultState === PhoneVerify.Result.REQUESTING}>
+                    <SwapOn><Spinner className="size-4"/></SwapOn>
+                    <SwapOff><RiCheckFill /></SwapOff>
+                  </Swap>
+                  {
+                    uiState.item.otpResultState === PhoneVerify.Result.VERIFIED ? t("strings:user.profile.phone.verified") : t("strings:user.profile.phone.verify")
+                  }
+                </Button>
+              </motion.div>}
+              {otpRequestErrorMsg && <p className="text-destructive text-sm">{otpRequestErrorMsg}</p>}
+              {otpResultErrorMsg && <p className="text-destructive text-sm">{otpResultErrorMsg}</p>}
+            </AnimatePresence>
+          </Field>
+        </FieldGroup>
+      </FieldSet>
 
-      <div className="flex gap-4">
-        <MagneticButton variant="outline" onClick={onBack}>
-          <RiArrowLeftLine />
+      <ButtonGroup>
+        <MagneticButton
+          variant="outline"
+          onClick={props.onBack}
+        >
+          <RiArrowLeftLine/>
           {t("strings:back")}
         </MagneticButton>
-        <Button onClick={onSubmit}>
-          {t("strings:signup.submit")}
-        </Button>
-      </div>
+        <MagneticButton
+          onClick={props.onSubmit}
+          disabled={invalid()}
+        >
+          <RiCheckFill />
+          {t("strings:signup.submit.label")}
+        </MagneticButton>
+      </ButtonGroup>
     </div>
   )
 }

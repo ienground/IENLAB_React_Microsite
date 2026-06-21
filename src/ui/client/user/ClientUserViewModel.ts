@@ -5,9 +5,8 @@ import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
 import type {CompanyRepository} from "@/domain/repository/CompanyRepository"
-import Result = PhoneVerify.Result
 
-class UserEditUiState {
+export class UserEditUiState {
   item: UserEditDetails = new UserEditDetails()
   isInitialized: boolean = false
 
@@ -51,8 +50,6 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   uiState: new UserEditUiState({ isInitialized: false }),
   infoState: { item: null, isInitialized: false },
   companyInfoStateList: props.companyRepository.companyInfoStateList,
-  otpRequestState: PhoneVerify.Request.IDLE,
-  otpResultState: PhoneVerify.Result.IDLE,
 
   init: async () => {
     const { unsubscribe } = get()
@@ -144,7 +141,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
   sendOtpCode: async (onSuccess, onFailure) => {
     const { uiState, updateUiState } = get()
-    updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: Result.IDLE, otpCode: "" })
+    updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: PhoneVerify.Result.IDLE, otpCode: "" })
     try {
       const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
       updateUiState({ otpRequestState: state })

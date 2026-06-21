@@ -188,7 +188,7 @@ function ScreenBody() {
                     />
                   </Field>
                   <FieldDescription className="text-center">
-                    {t("strings:signin.ask_no_account")} <Link to={SignupDestination.root}>{t("strings:signin.signup")}</Link>
+                    {t("strings:signin.ask_no_account")} <Link to={SignupDestination.root}>{t("strings:signup.label")}</Link>
                   </FieldDescription>
                 </FieldGroup>
               </form>

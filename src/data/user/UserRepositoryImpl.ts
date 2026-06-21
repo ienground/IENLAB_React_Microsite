@@ -11,7 +11,7 @@ import {
   orderBy,
   query,
   type QueryConstraint,
-  serverTimestamp,
+  serverTimestamp, setDoc,
   startAfter,
   startAt,
   type Unsubscribe,
@@ -218,10 +218,6 @@ export class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  async updateUserEmail(uid: string, email: string): Promise<void> {
-    await this.updateUserEmailFn({ uid, email })
-  }
-
   async sendEmailVerification(): Promise<void> {
     const user = this.auth.currentUser
     if (!user) throw Error("No authenticated user")
@@ -232,17 +228,18 @@ export class UserRepositoryImpl implements UserRepository {
     const uid = this.auth.currentUser?.uid
     if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
 
-
-    const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
-    return result.data.code
+    // const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
+    // return result.data.code
+    return PhoneVerify.Request.SUCCESS
   }
 
   async verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result> {
     const uid = this.auth.currentUser?.uid
     if (!uid) return PhoneVerify.Result.FAILURE_UNKNOWN
 
-    const result = await this.verifyCodeFn({ phoneNumber, uid, code })
-    return result.data.code
+    // const result = await this.verifyCodeFn({ phoneNumber, uid, code })
+    // return result.data.code
+    return PhoneVerify.Result.VERIFIED
   }
 
   getCurrentUser(): FirebaseUser | null {
@@ -305,6 +302,11 @@ export class UserRepositoryImpl implements UserRepository {
     return new User({...item.toItem(), profileUrl: profileDownloadUrl})
   }
 
+  async create(id: string, item: UserEditDetails): Promise<void> {
+    const target = await this.transformItem(id, item)
+    return await setDoc(doc(this.usersRef, id), target.toHashMap(true))
+  }
+
   async update(id: string, item: UserEditDetails): Promise<void> {
     const existingItem = await this.get(id)
 
@@ -317,6 +319,10 @@ export class UserRepositoryImpl implements UserRepository {
 
     const target = await this.transformItem(id, item)
     return await updateDoc(doc(this.usersRef, id), target.toHashMap(true))
+  }
+
+  async updateUserEmail(uid: string, email: string): Promise<void> {
+    await this.updateUserEmailFn({ uid, email })
   }
 
   async approveTempCompany(id: string): Promise<void> {

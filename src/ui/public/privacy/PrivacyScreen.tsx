@@ -436,7 +436,7 @@ function ScreenBody() {
           <SectionHeader index={0} label={t("strings:privacy_policy.label")} />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="large-text-title">{t("strings:privacy_policy.label")}</div>
+          <h1 className="large-text-title">{t("strings:privacy_policy.label")}</h1>
           <p className="mt-32">{summary}</p>
         </div>
       </div>

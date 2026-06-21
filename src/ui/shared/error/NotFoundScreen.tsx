@@ -19,7 +19,7 @@ export default function NotFoundScreen() {
         </aside>
         <div className="col-span-12 xl:col-span-10">
           <div className="flex flex-col lg:flex-row w-full justify-between">
-            <div className="large-text-title">{t("strings:error.not_found.label")}</div>
+            <h1 className="large-text-title">{t("strings:error.not_found.label")}</h1>
           </div>
           <p className="mt-32">{t("strings:error.not_found.desc")}</p>
 
