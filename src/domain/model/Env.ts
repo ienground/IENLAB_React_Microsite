@@ -67,9 +67,5 @@ export namespace Env {
         })
       }
     }
-
-    export namespace Item {
-
-    }
   }
 }

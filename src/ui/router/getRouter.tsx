@@ -94,6 +94,10 @@ export function getRouter(t: TFunction) {
               element: <ProjectListScreen />
             },
             {
+              path: ProjectDestination.detail,
+              element: <ProjectDetailScreen />
+            },
+            {
               path: LoginDestination.root,
               element: <GuestRoute><LoginScreen /></GuestRoute>
             },

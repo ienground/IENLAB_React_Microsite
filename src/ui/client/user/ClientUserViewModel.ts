@@ -64,8 +64,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
         }
 
         if (!hasCapturedInitial) {
-          const fbUser = props.userRepository.getCurrentUser()
-          newState.uiState = new UserEditUiState({ item: item ? UserEditDetails.fromItem(item, fbUser?.email ?? undefined) : new UserEditDetails({ email: fbUser?.email ?? undefined }), isInitialized: true })
+          newState.uiState = new UserEditUiState({ item: item ? UserEditDetails.fromItem(item) : new UserEditDetails(), isInitialized: true })
           hasCapturedInitial = true
         }
 

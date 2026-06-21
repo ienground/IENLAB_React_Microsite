@@ -97,6 +97,9 @@ export function AppSidebar(props: AppSidebarProps) {
     }
   ], [t])
 
+  const isNaver = props.email?.endsWith(CustomClient.NAVER_ACCOUNT)
+  const isKakao = props.email?.endsWith(CustomClient.KAKAO_ACCOUNT)
+
   return (
     <>
       <Sidebar variant="floating">
@@ -180,24 +183,17 @@ export function AppSidebar(props: AppSidebarProps) {
                         <AvatarImage src={props.user?.profileUrl} />
                         <AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
                       </Avatar>
-                      {(() => {
-                        const isNaver = props.email?.endsWith(CustomClient.NAVER_ACCOUNT)
-                        const isKakao = props.email?.endsWith(CustomClient.KAKAO_ACCOUNT)
-
-                        return (
-                          <div className={cn(
-                            "ml-2 mr-4 grow overflow-hidden flex gap-x-2",
-                            (isNaver || isKakao) ? "flex-row items-center" : "flex-col"
-                          )}>
-                            <div className="text-sm truncate">{props.user?.name}</div>
-                            {
-                              isNaver ? <div className="size-4 bg-naver-background text-naver-foreground flex items-center justify-center"><IcNaver className="size-2.5!" /></div> :
-                                isKakao ? <div className="size-4 bg-kakao-background text-kakao-foreground flex items-center justify-center"><IcKakao className="size-3!" /></div> :
-                                  <div className="text-xs text-muted-foreground truncate">{props.email}</div>
-                            }
-                          </div>
-                        )
-                      })()}
+                      <div className={cn(
+                        "ml-2 mr-4 grow overflow-hidden flex gap-x-2",
+                        (isNaver || isKakao) ? "flex-row items-center" : "flex-col"
+                      )}>
+                        <div className="text-sm truncate">{props.user?.name}</div>
+                        {
+                          isNaver ? <div className="size-4 bg-naver-background text-naver-foreground flex items-center justify-center"><IcNaver className="size-2.5!" /></div> :
+                            isKakao ? <div className="size-4 bg-kakao-background text-kakao-foreground flex items-center justify-center"><IcKakao className="size-3!" /></div> :
+                              <div className="text-xs text-muted-foreground truncate">{props.email}</div>
+                        }
+                      </div>
                       <RiArrowUpSLine/>
                     </div>
                   </SidebarMenuButton>
