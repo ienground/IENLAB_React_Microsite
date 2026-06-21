@@ -1042,9 +1042,9 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
               >
                 <FieldTitle>
                   <Badge variant="secondary" className="border border-border">
-                    {formatBaseDateTime(item.startAt.toDate(), "strings:datetime.month_year")} -{" "}
+                    {formatBaseDateTime(item.startAt.toDate(), t("strings:datetime.month_year"))} -{" "}
                     {item.endAt
-                      ? formatBaseDateTime(item.endAt.toDate(), "strings:datetime.month_year")
+                      ? formatBaseDateTime(item.endAt.toDate(), t("strings:datetime.month_year"))
                       : ""}
                   </Badge>
                 </FieldTitle>
