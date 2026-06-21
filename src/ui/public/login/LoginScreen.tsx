@@ -89,13 +89,6 @@ function ScreenBody() {
     )
   }
 
-  // useEffect(() => {
-  //   if (!window.opener) return
-  //
-  //   try {
-  //     const naverLogin = new window.naver_id_login(
-  //       import.meta.env.VITE_NAVER_CLIENT_ID,
-  //       `${window.location.origin}/login`
   useEffect(() => {
     if (!window.opener) return
 
@@ -287,6 +280,11 @@ function NaverLogin(props: {
       clientId: props.clientId,
       callbackUrl: props.callbackUrl,
       isPopup: true,
+      loginButton: {
+        color: "green",
+        type: 3,
+        height: 50,
+      },
     })
 
     naverLogin.init()

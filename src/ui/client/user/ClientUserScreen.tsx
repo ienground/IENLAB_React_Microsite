@@ -45,6 +45,7 @@ import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp.t
 import {REGEXP_ONLY_DIGITS} from "input-otp"
 import {AnimatePresence, motion} from "motion/react"
 import {InputGroup, InputGroupButton, InputGroupInput} from "@/components/ui/input-group.tsx"
+import {isCustomClient} from "@/constant/CustomClient.ts"
 
 export default function ClientUserScreen() {
   const {t} = useTranslation()
@@ -357,7 +358,7 @@ function ScreenBody() {
                     {otpResultErrorMsg && <p className="text-destructive text-sm">{otpResultErrorMsg}</p>}
                   </AnimatePresence>
                 </Field>
-                <Field>
+                {!isCustomClient(uiState.item.email) && <Field>
                   <FieldLabel>{t("strings:outsource_manage.user.email.label")}</FieldLabel>
                   <Input
                     value={uiState.item.email}
@@ -365,7 +366,7 @@ function ScreenBody() {
                     type="email"
                     placeholder={t("strings:input_email")}
                   />
-                </Field>
+                </Field>}
               </FieldGroup>
             </FieldSet>
             <div/>
