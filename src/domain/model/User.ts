@@ -42,6 +42,7 @@ export class User implements FirestoreItem {
       [FirestorePath.User.NAME]: this.name,
       [FirestorePath.User.PROFILE_URL]: this.profileUrl,
       [FirestorePath.User.COMPANY]: this.companyRef,
+      [FirestorePath.User.TEMP_COMPANY]: this.tempCompanyRef,
       [FirestorePath.User.PHONE]: this.phone,
     }
     // email은 Firebase Auth가 SOURCE. 직접 저장하지 않음

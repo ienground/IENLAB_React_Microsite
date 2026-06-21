@@ -28,6 +28,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
   init: async () => {
     const user = await props.userRepository.get()
+    console.log(user?.companyRef)
     if (user?.companyRef) {
       props.outsourceRepository.setCompanyFilter(user.companyRef)
     }

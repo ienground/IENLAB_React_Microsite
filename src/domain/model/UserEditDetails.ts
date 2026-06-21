@@ -36,6 +36,8 @@ export class UserEditDetails {
       profileUrl: this.profileUrl.url,
       companyRef: this.companyRef,
       company: this.company,
+      tempCompanyRef: this.tempCompanyRef,
+      tempCompany: this.tempCompany,
       state: this.state,
       phone: this.phone,
     })
