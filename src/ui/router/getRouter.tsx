@@ -18,7 +18,7 @@ import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import PrivacyScreen from "@/ui/public/privacy/PrivacyScreen.tsx"
 import {ClientProtectedRoute} from "@/ui/router/ClientProtectedRoute.tsx"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
-import { AuthSessionViewModel } from "../shared/auth/useAuthSession"
+import {AuthSessionViewModel} from "../shared/auth/useAuthSession"
 import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
 import {outsourceRepository, userRepository} from "@/di/container.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
@@ -37,6 +37,11 @@ import OutsourceRevisionListScreen from "@/ui/client/outsource/revision/list/Out
 import OutsourceRevisionDetailScreen from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailScreen.tsx"
 import OutsourceLogDetailScreen from "@/ui/client/outsource/log/detail/OutsourceLogDetailScreen.tsx"
 import OutsourceRevisionEditScreen from "@/ui/client/outsource/revision/edit/OutsourceRevisionEditScreen.tsx"
+import {GuestRoute} from "@/ui/router/GuestRoute.tsx"
+import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
+import SignupScreen from "@/ui/public/signup/SignupScreen.tsx"
+import SignupFinish from "@/ui/public/signup/SignupFinish.tsx"
+import {PendingUserRoute} from "@/ui/router/PendingUserRoute.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -94,7 +99,15 @@ export function getRouter(t: TFunction) {
             },
             {
               path: LoginDestination.root,
-              element: <LoginScreen />
+              element: <GuestRoute><LoginScreen /></GuestRoute>
+            },
+            {
+              path: SignupDestination.root,
+              element: <GuestRoute><SignupScreen /></GuestRoute>
+            },
+            {
+              path: SignupDestination.finish,
+              element: <PendingUserRoute><SignupFinish /></PendingUserRoute>
             },
             {
               path: "*",

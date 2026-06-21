@@ -16,6 +16,8 @@ export class UserEditDetails {
   state: User.State = User.State.Default
   phone: string = ""
   email: string = ""
+  agreedRequired: boolean = false
+  agreedOptional: boolean = false
 
   otpCode: string = ""
   otpRequestState: PhoneVerify.Request = PhoneVerify.Request.Default
@@ -34,15 +36,12 @@ export class UserEditDetails {
       profileUrl: this.profileUrl.url,
       companyRef: this.companyRef,
       company: this.company,
-      tempCompanyRef: this.tempCompanyRef,
-      tempCompany: this.tempCompany,
-      level: this.level,
       state: this.state,
-      phone: this.phone
+      phone: this.phone,
     })
   }
 
-  static fromItem(item: User, email?: string): UserEditDetails {
+  static fromItem(item: User): UserEditDetails {
     return new UserEditDetails({
       deletedAt: item.deletedAt ? dayjs(item.deletedAt.toDate()) : null,
       name: item.name,
@@ -54,7 +53,7 @@ export class UserEditDetails {
       level: item.level,
       state: item.state,
       phone: item.phone,
-      email
+      email: item.email,
     })
   }
 }

@@ -230,6 +230,13 @@
       }
     }
   },
+  "signup": {
+    "finish": {
+      "label": "Signup Complete",
+      "title": "Signup completed!",
+      "desc": "You will be able to use the service after admin approval. We will notify you via email once approved."
+    }
+  },
   "under_construction": {
     "desc": "This page is currently under construction. Please wait a little longer.",
     "label": "Under construction"

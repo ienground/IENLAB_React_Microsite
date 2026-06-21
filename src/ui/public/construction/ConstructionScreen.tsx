@@ -21,7 +21,7 @@ export default function ConstructionScreen() {
         </aside>
         <div className="col-span-12 xl:col-span-10">
           <div className="flex flex-col lg:flex-row w-full justify-between">
-            <div className="large-text-title">{t("strings:under_construction.label")}</div>
+            <h1 className="large-text-title">{t("strings:under_construction.label")}</h1>
             <CrossfadeImage
               alt="Under Construction Character"
               className="max-w-full w-160 h-auto object-contain opacity-90"

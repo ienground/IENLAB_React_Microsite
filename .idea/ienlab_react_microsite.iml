@@ -9,5 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="pretendard" level="application" />
+    <orderEntry type="library" name="naveridlogin_js_sdk_2.0.2" level="application" />
+    <orderEntry type="library" name="naverLogin_implicit-1.0.3" level="application" />
   </component>
 </module>

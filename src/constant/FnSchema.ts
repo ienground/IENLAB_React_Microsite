@@ -1,5 +1,3 @@
-import {createCallableFactory} from "@ienlab/react-library"
-
 export const FnSchema = {
   NaverCustomAuth: {
     name: "naverCustomAuth",
@@ -71,6 +69,26 @@ export const FnSchema = {
     }
   },
 
-} as const
+  UpdateUserAgreement: {
+    name: "updateUserAgreement",
+    params: {
+      agreedRequired: "boolean",
+      agreedOptional: "boolean"
+    },
+    result: {
+      code: "number"
+    }
+  },
 
-export const createCallable = createCallableFactory(FnSchema)
+  UpdateUserState: {
+    name: "updateUserState",
+    params: {
+      uid: "string",
+      state: "number"
+    },
+    result: {
+      code: "number"
+    }
+  }
+
+} as const

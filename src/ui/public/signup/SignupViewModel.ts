@@ -1,23 +1,29 @@
 import {createZustandContext, type InfScrollStateList, PhoneVerify} from "@ienlab/react-library"
-import {createStore} from "zustand"
-import {User} from "@/domain/model/User.ts"
-import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
+import {Timestamp} from "firebase/firestore"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
+import {createStore} from "zustand"
+import {UserEditUiState} from "@/ui/client/user/ClientUserViewModel.ts"
+import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
+import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
-import type {CompanyRepository} from "@/domain/repository/CompanyRepository"
+import {userRepository} from "@/di/container.ts"
 
-export class UserEditUiState {
-  item: UserEditDetails = new UserEditDetails()
-  isInitialized: boolean = false
+export class SignupDetails {
+  step: number = 0
+  agreedRequired: boolean = false
+  agreedOptional: boolean = false
 
-  constructor(partial?: Partial<UserEditUiState>) {
+  constructor(partial: Partial<SignupDetails> = {}) {
     Object.assign(this, partial)
   }
 }
 
-export interface UserInfoState {
-  item: User | null
-  isInitialized: boolean
+class SignupUiState {
+  item: SignupDetails = new SignupDetails()
+
+  constructor(partial?: Partial<SignupUiState>) {
+    Object.assign(this, partial)
+  }
 }
 
 type Props = {
@@ -26,17 +32,18 @@ type Props = {
 }
 
 interface Store {
-  uiState: UserEditUiState
-  infoState: UserInfoState
+  signupUiState: SignupUiState
+  userEditUiState: UserEditUiState
   companyInfoStateList: InfScrollStateList<Company>
 
-  init: () => void
+  init: () => void,
   onDisposed: () => void
-  updateUiState: (item: Partial<UserEditDetails>, isDirty?: boolean) => void
+  updateSignupUiState: (item: Partial<SignupDetails>) => void
+  updateUserEditUiState: (item: Partial<UserEditDetails>, isDirty?: boolean) => void
   invalid: () => boolean
+
+  moveStep: (increment: number) => void
   save: (onSuccess: (id: string | null) => void, onFailure: (errorKey: string) => void) => void
-  del: (onSuccess: () => void, onFailure: (errorKey: string) => void) => void
-  unsubscribe?: () => void
 
   sendOtpCode: (onSuccess: (result: PhoneVerify.Request) => void, onFailure: (errorKey: string) => void) => void
   verifyOtpCode: (onSuccess: (result: PhoneVerify.Result) => void, onFailure: (errorKey: string) => void) => void
@@ -47,72 +54,69 @@ interface Store {
 }
 
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  uiState: new UserEditUiState({ isInitialized: false }),
-  infoState: { item: null, isInitialized: false },
+  signupUiState: new SignupUiState(),
+  userEditUiState: new UserEditUiState(),
   companyInfoStateList: props.companyRepository.companyInfoStateList,
 
-  init: async () => {
-    const { unsubscribe } = get()
-    unsubscribe?.()
-
-    let hasCapturedInitial = false
-    const off = props.userRepository.observe(item => {
-      set(() => {
-        const newState: Partial<Store> = {
-          unsubscribe: off,
-          infoState: { item: item, isInitialized: true }
-        }
-
-        if (!hasCapturedInitial) {
-          newState.uiState = new UserEditUiState({ item: item ? UserEditDetails.fromItem(item) : new UserEditDetails(), isInitialized: true })
-          hasCapturedInitial = true
-        }
-
-        return newState
-      })
-    })
-    set({ unsubscribe: off })
-  },
+  init: () => {},
 
   onDisposed: () => {
-    const { uiState, unsubscribe } = get()
+    const { userEditUiState: uiState } = get()
     uiState.item.profileUrl.revokeIfNeeded()
-    unsubscribe?.()
   },
 
-  updateUiState: (item, isDirty = true) => {
+  updateSignupUiState: (item) => {
     set(state => ({
-      uiState: new UserEditUiState({
-        item: new UserEditDetails({...state.uiState.item, ...item, isDirty}),
-        isInitialized: state.uiState.isInitialized,
+      signupUiState: new SignupUiState({
+        item: new SignupDetails({...state.signupUiState.item, ...item}),
+      })
+    }))
+  },
+
+  updateUserEditUiState: (item, isDirty = true) => {
+    set(state => ({
+      userEditUiState: new UserEditUiState({
+        item: new UserEditDetails({...state.userEditUiState.item, ...item, isDirty}),
+        isInitialized: state.userEditUiState.isInitialized,
       })
     }))
   },
 
   invalid: () => {
-    const { uiState, infoState } = get()
-    const phoneChanged = uiState.item.phone !== infoState.item?.phone
+    const { userEditUiState: uiState } = get()
     return uiState.item.profileUrl.isEmpty
       || uiState.item.name.length === 0
       || uiState.item.company === null
       || uiState.item.phone.length === 0
-      || (phoneChanged && uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED)
+      || (uiState.item.otpResultState !== PhoneVerify.Result.VERIFIED)
+  },
+
+  moveStep: (increment) => {
+    const item = get().signupUiState.item
+    set({ signupUiState: new SignupUiState({ item: new SignupDetails({ ...item, step: item.step + increment }) }) })
   },
 
   save: async (onSuccess, onFailure) => {
-    const { uiState, updateUiState, infoState } = get()
-    if (infoState.item === null) {
-      onFailure("strings:error_occurred")
-      return
-    }
-    try {
-      const currentEmail = props.userRepository.getCurrentUser()?.email
-      const emailChanged = uiState.item.email !== currentEmail
+    const { signupUiState, userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
 
-      if (emailChanged) {
-        await props.userRepository.sendChangeEmailVerification(uiState.item.email)
+    try {
+      const userId = userRepository.getCurrentUser()?.uid
+      if (!userId) {
+        onFailure("strings:error_occurred")
+        return
       }
-      await props.userRepository.update(infoState.item.id, uiState.item)
+
+      await props.userRepository.create(userId, uiState.item)
+
+      const updateResult = await props.userRepository.updateAgreedAt(
+        signupUiState.item.agreedRequired,
+        signupUiState.item.agreedOptional,
+      )
+
+      if (!updateResult) {
+        onFailure("strings:error_occurred")
+        return
+      }
 
       updateUiState({}, false)
       onSuccess(null)
@@ -128,18 +132,8 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     }
   },
 
-  del: async (onSuccess, onFailure) => {
-    throw Error("not implemented")
-    // try {
-    //   await outsourceRepository.deleteOutsource(id)
-    //   onSuccess()
-    // } catch (e) {
-    //   onFailure(String(e))
-    // }
-  },
-
   sendOtpCode: async (onSuccess, onFailure) => {
-    const { uiState, updateUiState } = get()
+    const { userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
     updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: PhoneVerify.Result.IDLE, otpCode: "" })
     try {
       const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
@@ -152,7 +146,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   verifyOtpCode: async (onSuccess, onFailure) => {
-    const { uiState, updateUiState } = get()
+    const { userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
     updateUiState({ otpResultState: PhoneVerify.Result.REQUESTING })
     try {
       const state = await props.userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
@@ -182,4 +176,4 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 }))
 
-export const ClientUserViewModel = createZustandContext<Store, Props>(createViewModel)
+export const SignupViewModel = createZustandContext<Store, Props>(createViewModel)

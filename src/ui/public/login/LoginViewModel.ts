@@ -23,13 +23,18 @@ type Props = {
 
 interface Store {
   uiState: LoginUiState
+  isLoading: boolean,
 
   updateUiState: (item: Partial<LoginDetails>) => void
   login: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  googleLogin: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  naverLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  kakaoLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
 }
 
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   uiState: new LoginUiState({}),
+  isLoading: false,
 
   updateUiState: (item) => {
     set(state => ({ uiState: new LoginUiState({ item: Object.assign(state.uiState.item, item) }) }))
@@ -46,6 +51,48 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       onSuccess(result.data)
     } else {
       onFailure(result.errorKey)
+    }
+  },
+
+  googleLogin: async (onSuccess, onFailure) => {
+    set({ isLoading: true })
+    try {
+      const result = await props.userRepository.signInWithGoogle()
+      if (result.ok) {
+        onSuccess(result.data)
+      } else {
+        onFailure(result.errorKey)
+      }
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  naverLogin: async (token, onSuccess, onFailure) => {
+    set({ isLoading: true })
+    try {
+      const result = await props.userRepository.signInWithNaver(token)
+      if (result.ok) {
+        onSuccess(result.data)
+      } else {
+        onFailure(result.errorKey)
+      }
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  kakaoLogin: async (token, onSuccess, onFailure) => {
+    set({ isLoading: true })
+    try {
+      const result = await props.userRepository.signInWithKakao(token)
+      if (result.ok) {
+        onSuccess(result.data)
+      } else {
+        onFailure(result.errorKey)
+      }
+    } finally {
+      set({ isLoading: false })
     }
   }
 }))

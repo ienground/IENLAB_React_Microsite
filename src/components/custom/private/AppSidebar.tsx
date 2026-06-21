@@ -40,6 +40,10 @@ import {Swap, SwapOff, SwapOn } from "@/components/ui/swap"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {ClientUserDestination} from "@/ui/client/user/ClientUserDestination.ts"
+import {CustomClient, isCustomClient} from "@/constant/CustomClient.ts"
+import IcKakao from "@/assets/icon/kakao.svg?react"
+import IcNaver from "@/assets/icon/naver.svg?react"
+import {cn} from "@/lib/utils.ts"
 
 interface AppSidebarProps {
   user: User | null
@@ -92,6 +96,9 @@ export function AppSidebar(props: AppSidebarProps) {
       ]
     }
   ], [t])
+
+  const isNaver = props.email?.endsWith(CustomClient.NAVER_ACCOUNT)
+  const isKakao = props.email?.endsWith(CustomClient.KAKAO_ACCOUNT)
 
   return (
     <>
@@ -176,9 +183,16 @@ export function AppSidebar(props: AppSidebarProps) {
                         <AvatarImage src={props.user?.profileUrl} />
                         <AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
                       </Avatar>
-                      <div className="ml-2 mr-4 grow overflow-hidden">
+                      <div className={cn(
+                        "ml-2 mr-4 grow overflow-hidden flex gap-x-2",
+                        (isNaver || isKakao) ? "flex-row items-center" : "flex-col"
+                      )}>
                         <div className="text-sm truncate">{props.user?.name}</div>
-                        <div className="text-xs text-muted-foreground truncate">{props.email}</div>
+                        {
+                          isNaver ? <div className="size-4 bg-naver-background text-naver-foreground flex items-center justify-center"><IcNaver className="size-2.5!" /></div> :
+                            isKakao ? <div className="size-4 bg-kakao-background text-kakao-foreground flex items-center justify-center"><IcKakao className="size-3!" /></div> :
+                              <div className="text-xs text-muted-foreground truncate">{props.email}</div>
+                        }
                       </div>
                       <RiArrowUpSLine/>
                     </div>
