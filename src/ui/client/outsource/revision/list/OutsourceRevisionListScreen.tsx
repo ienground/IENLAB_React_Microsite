@@ -1,5 +1,5 @@
 import {
-  createOutsourceRevisionRepository
+  createOutsourceRevisionRepository, outsourceRepository
 } from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
@@ -41,6 +41,7 @@ export default function OutsourceRevisionListScreen() {
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionListViewModel.Provider
         id={itemId ?? ""}
+        outsourceRepository={outsourceRepository}
         revisionRepository={repository}
       >
         <ScreenBody itemId={itemId ?? ""}/>
@@ -54,6 +55,7 @@ function ScreenBody(props: { itemId: string }) {
   const onDisposed = OutsourceRevisionListViewModel.use.onDisposed()
   const refresh = OutsourceRevisionListViewModel.use.refresh()
   const infoStateList = OutsourceRevisionListViewModel.use.requestInfoStateList()
+  const infoState = OutsourceRevisionListViewModel.use.infoState()
   const loadNextPage = OutsourceRevisionListViewModel.use.loadNextPage()
   const deleteItems = OutsourceRevisionListViewModel.use.deleteItems()
   const setSearchKeyword = OutsourceRevisionListViewModel.use.setSearchKeyword()
@@ -149,8 +151,7 @@ function ScreenBody(props: { itemId: string }) {
         <div className="flex flex-row px-4 items-center gap-4">
           <div className="flex flex-col grow">
             <div>{t("strings:outsource_manage.outsource.revision_request.label")}</div>
-            {/*todo*/}
-            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: 3})}</div>
+            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: infoState.item?.revisionRequest?.total ?? 0})}</div>
           </div>
           <ButtonGroup>
             <Button

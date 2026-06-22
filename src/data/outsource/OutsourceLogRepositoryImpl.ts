@@ -21,7 +21,7 @@ import {
   startAfter,
   startAt,
   type Unsubscribe,
-  updateDoc
+  updateDoc, where
 } from "firebase/firestore"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
@@ -66,6 +66,7 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
 
   async getLatestItems(count: number): Promise<Outsource.WorkLog[]> {
     const constraints: QueryConstraint[] = [
+      where(FirestorePath.DELETED_AT, "==", null),
       orderBy(FirestorePath.UPDATE_AT, "desc"),
       limit(count),
     ]
@@ -134,7 +135,7 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
     this.logInfoStateList = {...this.logInfoStateList, isLoading: true}
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Outsource.WorkLog.TITLE))

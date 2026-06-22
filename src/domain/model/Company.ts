@@ -18,6 +18,9 @@ export class Company implements FirestoreItem {
   name: Localized<string> = { ko: "", en: "" }
   state: Company.State = Company.State.Default
 
+  outsource: number = 0
+  estimate: number = 0
+
   constructor(partial: Partial<Company> = {}) {
     Object.assign(this, partial)
   }
@@ -46,7 +49,9 @@ export class Company implements FirestoreItem {
       updateAt: doc[FirestorePath.UPDATE_AT],
       deletedAt: doc[FirestorePath.DELETED_AT],
       name: doc[FirestorePath.Company.NAME],
-      state: doc[FirestorePath.Company.STATE]
+      state: doc[FirestorePath.Company.STATE],
+      outsource: doc[FirestorePath.Company.OUTSOURCE] ?? 0,
+      estimate: doc[FirestorePath.Company.ESTIMATE] ?? 0
     })
   }
 }

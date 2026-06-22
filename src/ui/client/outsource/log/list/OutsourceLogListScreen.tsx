@@ -1,4 +1,4 @@
-import {createOutsourceLogRepository} from "@/di/container.ts"
+import {createOutsourceLogRepository, outsourceRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
@@ -31,6 +31,7 @@ export default function OutsourceLogListScreen() {
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceLogListViewModel.Provider
         id={itemId ?? ""}
+        outsourceRepository={outsourceRepository}
         logRepository={repository}
       >
         <ScreenBody itemId={itemId ?? ""}/>
@@ -44,6 +45,7 @@ function ScreenBody(props: { itemId: string }) {
   const onDisposed = OutsourceLogListViewModel.use.onDisposed()
   const refresh = OutsourceLogListViewModel.use.refresh()
   const infoStateList = OutsourceLogListViewModel.use.logInfoStateList()
+  const infoState = OutsourceLogListViewModel.use.infoState()
   const loadNextPage = OutsourceLogListViewModel.use.loadNextPage()
   const setSearchKeyword = OutsourceLogListViewModel.use.setSearchKeyword()
   const clearSearch = OutsourceLogListViewModel.use.clearSearch()
@@ -89,8 +91,7 @@ function ScreenBody(props: { itemId: string }) {
         <div className="flex flex-row px-4 items-center gap-4">
           <div className="flex flex-col grow">
             <div>{t("strings:outsource_manage.outsource.work_logs.label")}</div>
-            {/*todo*/}
-            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: 3})}</div>
+            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: infoState.item?.workLog ?? 0})}</div>
           </div>
           <InputGroup className="max-w-2/5 md:max-w-1/4">
             <InputGroupInput

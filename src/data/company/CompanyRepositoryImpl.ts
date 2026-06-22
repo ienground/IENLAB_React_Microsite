@@ -6,7 +6,8 @@ import {
   orderBy,
   startAfter, limit, getDocs, doc, getDoc, updateDoc,
   deleteDoc,
-  type DocumentReference, addDoc, type QueryConstraint, startAt, endAt
+  type DocumentReference, addDoc, type QueryConstraint, startAt, endAt,
+  where,
 } from "firebase/firestore"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {
@@ -91,8 +92,8 @@ export class CompanyRepositoryImpl implements CompanyRepository {
     this.companyInfoStateList = { ...this.companyInfoStateList, isLoading: true }
   
     try {
-      const constraints: QueryConstraint[] = []
-  
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
+
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Company.NAME + `.${i18n.resolvedLanguage}`))
         constraints.push(startAt(this.searchKeyword))
