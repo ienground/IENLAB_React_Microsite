@@ -13,11 +13,14 @@ import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequ
 import {OutsourceRequestRepositoryImpl} from "@/data/outsource/OutsourceRequestRepositoryImpl.ts"
 import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
 import {OutsourceLogRepositoryImpl} from "@/data/outsource/OutsourceLogRepositoryImpl.ts"
+import type {EstimateRepository} from "@/domain/repository/EstimateRepository.ts"
+import {EstimateRepositoryImpl} from "@/data/estimate/EstimateRepositoryImpl.ts"
 
 export const portfolioRepository: PortfolioRepository = new PortfolioRepositoryImpl(fbFirestore, fbStorage)
 export const userRepository: UserRepository = new UserRepositoryImpl(fbFirestore, fbStorage, fbAuth, fbFunctions)
 export const companyRepository: CompanyRepository = new CompanyRepositoryImpl(fbFirestore)
 export const outsourceRepository: OutsourceRepository = new OutsourceRepositoryImpl(fbFirestore, fbStorage)
+export const estimateRepository: EstimateRepository = new EstimateRepositoryImpl(fbFirestore, fbFunctions)
 
 export const createOutsourceRequestRepository = (itemId: string): OutsourceRequestRepository => new OutsourceRequestRepositoryImpl(fbFirestore, fbStorage, itemId, false)
 export const createOutsourceRevisionRepository = (itemId: string): OutsourceRevisionRepository => new OutsourceRevisionRepositoryImpl(fbFirestore, fbStorage, itemId, false)

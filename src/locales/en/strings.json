@@ -119,6 +119,13 @@
   "settings": {
     "toggle_theme": "Toggle theme"
   },
+  "signup": {
+    "finish": {
+      "desc": "You will be able to use the service after admin approval. We will notify you via email once approved.",
+      "label": "Signup Complete",
+      "title": "Signup completed!"
+    }
+  },
   "type": {
     "company": {
       "state": {
@@ -228,13 +235,6 @@
           "title": "Published"
         }
       }
-    }
-  },
-  "signup": {
-    "finish": {
-      "label": "Signup Complete",
-      "title": "Signup completed!",
-      "desc": "You will be able to use the service after admin approval. We will notify you via email once approved."
     }
   },
   "under_construction": {

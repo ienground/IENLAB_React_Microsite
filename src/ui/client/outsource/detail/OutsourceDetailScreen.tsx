@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router"
 import {
   createOutsourceLogRepository,
   createOutsourceRequestRepository,
-  createOutsourceRevisionRepository,
+  createOutsourceRevisionRepository, estimateRepository,
   outsourceRepository
 } from "@/di/container.ts"
 import {type ReactNode, useCallback, useEffect, useMemo} from "react"
@@ -36,6 +36,7 @@ export default function OutsourceDetailScreen() {
         outsourceLogRepository={logRepo}
         outsourceRequestRepository={requestRepo}
         outsourceRevisionRepository={revisionRepo}
+        estimateRepository={estimateRepository}
       >
         <ScreenBody/>
       </OutsourceDetailViewModel.Provider>
@@ -66,6 +67,7 @@ function ScreenBody() {
   const init = OutsourceDetailViewModel.use.init()
   const onDisposed = OutsourceDetailViewModel.use.onDisposed()
   const infoState = OutsourceDetailViewModel.use.infoState()
+  const estimateInfoState = OutsourceDetailViewModel.use.estimateInfoState()
   const workLogs = OutsourceDetailViewModel.use.workLogs()
   const workLogsInitialized = OutsourceDetailViewModel.use.workLogsInitialized()
   const infoRequests = OutsourceDetailViewModel.use.infoRequests()
@@ -110,7 +112,10 @@ function ScreenBody() {
           <DetailCard label={t("strings:website_manage.portfolio.platform.label")}>
             <div className="flex flex-row flex-wrap gap-1">
               {item?.platforms.map(p => (
-                <Badge key={p} className={cn(Portfolio.Platform.getBadgeColor(p))}>
+                <Badge
+                  key={p}
+                  className={cn(Portfolio.Platform.getBadgeColor(p))}
+                >
                   {Portfolio.Platform.getLabel(t, p)}
                 </Badge>
               ))}
@@ -140,6 +145,23 @@ function ScreenBody() {
 
           <DetailCard label={t("strings:outsource_manage.outsource.deadline.label")}>
             <span className="text-sm">{formatDate(item?.dueAt ?? null)}</span>
+          </DetailCard>
+
+          <DetailCard label={t("strings:outsource_manage.outsource.estimate.label")}>
+            {estimateInfoState.item ? (
+              <div className="flex flex-row items-center gap-2">
+                <span className="text-sm font-medium">{t("strings:money_format", {money: estimateInfoState.item?.totalAmount || estimateInfoState.item?.budget || 0, currency: "KRW"})}</span>
+                {/*<Button*/}
+                {/*  variant="ghost"*/}
+                {/*  size="icon-sm"*/}
+                {/*  onClick={() => item?.estimateRef && navigate(EstimateDestination.path.edit(item.estimateRef.id))}*/}
+                {/*>*/}
+                {/*  <RiExternalLinkLine/>*/}
+                {/*</Button>*/}
+              </div>
+            ) : (
+              <span className="text-sm text-muted-foreground">{t("strings:no_data")}</span>
+            )}
           </DetailCard>
         </div>
         <div className="grow grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 px-4">
