@@ -1,4 +1,4 @@
-import {outsourceRepository, userRepository} from "@/di/container.ts"
+import {companyRepository, outsourceRepository, userRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useLocation, useNavigate} from "react-router"
 import {useMemo, useState} from "react"
@@ -27,6 +27,7 @@ export default function OutsourceListScreen() {
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceListViewModel.Provider
         outsourceRepository={outsourceRepository}
+        companyRepository={companyRepository}
         userRepository={userRepository}
       >
         <ScreenBody/>
@@ -40,6 +41,7 @@ function ScreenBody() {
   const onDisposed = OutsourceListViewModel.use.onDisposed()
   const refresh = OutsourceListViewModel.use.refresh()
   const infoStateList = OutsourceListViewModel.use.outsourceInfoStateList()
+  const companyInfoState = OutsourceListViewModel.use.companyInfoState()
   const loadNextPage = OutsourceListViewModel.use.loadNextPage()
   const setSearchKeyword = OutsourceListViewModel.use.setSearchKeyword()
   const clearSearch = OutsourceListViewModel.use.clearSearch()
@@ -102,8 +104,7 @@ function ScreenBody() {
         <div className="flex flex-row px-4 items-center gap-4">
           <div className="flex flex-col grow">
             <div>{t("strings:outsource_manage.outsource.label")}</div>
-            {/*todo*/}
-            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: 3})}</div>
+            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: companyInfoState.item?.outsource ?? 0})}</div>
           </div>
           <ButtonGroup>
             <Button

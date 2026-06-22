@@ -1,4 +1,4 @@
-import {createOutsourceRequestRepository} from "@/di/container.ts"
+import {createOutsourceRequestRepository, outsourceRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
@@ -31,6 +31,7 @@ export default function OutsourceRequestListScreen() {
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRequestListViewModel.Provider
         id={itemId ?? ""}
+        outsourceRepository={outsourceRepository}
         outsourceRequestRepository={repository}
       >
         <ScreenBody itemId={itemId ?? ""}/>
@@ -44,6 +45,7 @@ function ScreenBody(props: { itemId: string }) {
   const onDisposed = OutsourceRequestListViewModel.use.onDisposed()
   const refresh = OutsourceRequestListViewModel.use.refresh()
   const infoStateList = OutsourceRequestListViewModel.use.requestInfoStateList()
+  const infoState = OutsourceRequestListViewModel.use.infoState()
   const loadNextPage = OutsourceRequestListViewModel.use.loadNextPage()
   const setSearchKeyword = OutsourceRequestListViewModel.use.setSearchKeyword()
   const clearSearch = OutsourceRequestListViewModel.use.clearSearch()
@@ -91,8 +93,7 @@ function ScreenBody(props: { itemId: string }) {
         <div className="flex flex-row px-4 items-center gap-4">
           <div className="flex flex-col grow">
             <div>{t("strings:outsource_manage.outsource.info_request.label")}</div>
-            {/*todo*/}
-            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: 3})}</div>
+            <div className="text-xs text-muted-foreground">{t("strings:content_count", {cnt: infoState.item?.infoRequest ? (infoState.item.infoRequest.total - (infoState.item.infoRequest.draft ?? 0)) : 0})}</div>
           </div>
           <InputGroup className="max-w-2/5 md:max-w-1/4">
             <InputGroupInput
