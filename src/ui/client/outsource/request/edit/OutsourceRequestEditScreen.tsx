@@ -222,7 +222,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                           <InputGroup>
                             <InputGroupTextarea
                               className="grow"
-                              value={readOnly && item.secure ? t("strings:encrypted") : uiState.item.textItems[index].value}
+                              value={readOnly && item.secure ? t("strings:encrypted") : item.value}
                               onChange={e => {
                                 if (readOnly && item.secure) return
                                 const items = [...uiState.item.textItems]
