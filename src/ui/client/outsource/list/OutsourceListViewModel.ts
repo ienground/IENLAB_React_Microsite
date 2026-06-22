@@ -28,16 +28,17 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
   init: async () => {
     const user = await props.userRepository.get()
-    console.log(user?.companyRef)
     if (user?.companyRef) {
       props.outsourceRepository.setCompanyFilter(user.companyRef)
     }
+
     get().loadNextPage()
   },
 
   onDisposed: () => {},
 
   loadNextPage: async () => {
+    console.log("loadNextPage")
     await props.outsourceRepository.loadNextPage()
     set({ outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList })
   },
