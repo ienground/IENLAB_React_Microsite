@@ -89,6 +89,26 @@ export const FnSchema = {
     result: {
       code: "number"
     }
-  }
+  },
+
+  EncryptText: {
+    name: "encryptText",
+    params: {
+      text: "string",
+    },
+    result: {
+      encrypted: "string",
+    },
+  },
+
+  DecryptText: {
+    name: "decryptText",
+    params: {
+      encrypted: "string",
+    },
+    result: {
+      text: "string",
+    },
+  },
 
 } as const

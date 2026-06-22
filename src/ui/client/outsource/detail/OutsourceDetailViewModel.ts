@@ -5,6 +5,9 @@ import type {OutsourceRevisionRepository} from "@/domain/repository/OutsourceRev
 import {createStore} from "zustand"
 import {createZustandContext} from "@ienlab/react-library"
 import type {Outsource} from "@/domain/model/Outsource.ts"
+import type {EstimateInfoState} from "@/ui/client/estimate/detail/EstimateDetailViewModel.ts"
+import {Estimate} from "@/domain/model/Estimate.ts"
+import type { EstimateRepository } from "@/domain/repository/EstimateRepository"
 
 type Props = {
   id: string
@@ -12,10 +15,12 @@ type Props = {
   outsourceLogRepository: OutsourceLogRepository
   outsourceRequestRepository: OutsourceRequestRepository
   outsourceRevisionRepository: OutsourceRevisionRepository
+  estimateRepository: EstimateRepository
 }
 
 interface Store {
-  infoState: OutsourceInfoState,
+  infoState: OutsourceInfoState
+  estimateInfoState: EstimateInfoState
   workLogs: Outsource.WorkLog[]
   workLogsInitialized: boolean
   infoRequests: Outsource.InfoRequest[]
@@ -26,6 +31,7 @@ interface Store {
   init: () => void
   onDisposed: () => void
   unsubscribe?: () => void
+  unsubEstimate?: () => void
 }
 
 export interface OutsourceInfoState {
@@ -35,6 +41,7 @@ export interface OutsourceInfoState {
 
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   infoState: { item: null, isInitialized: false },
+  estimateInfoState: { item: null, isInitialized: false },
   workLogs: [],
   workLogsInitialized: false,
   infoRequests: [],
@@ -47,7 +54,21 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     unsubscribe?.()
 
     const off = props.outsourceRepository.observe(props.id, async item => {
-      set({ infoState: { item, isInitialized: true }})
+      get().unsubEstimate?.()
+
+      if (item?.estimateRef?.id) {
+        const offEstimate = props.estimateRepository.observe(item.estimateRef.id, async item => {
+          set({ estimateInfoState: { item, isInitialized: true } })
+        })
+
+        set({ unsubEstimate: offEstimate })
+      } else {
+        set({
+          estimateInfoState: { item: null, isInitialized: true },
+        })
+      }
+
+      set({ infoState: { item, isInitialized: true } })
     })
 
     props.outsourceLogRepository.getLatestItems(3).then(items => {

@@ -31,6 +31,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     if (user?.companyRef) {
       props.outsourceRepository.setCompanyFilter(user.companyRef)
     }
+
     get().loadNextPage()
   },
 

@@ -13,6 +13,7 @@ export interface OutsourceRequestRepository {
   update(id: string, item: OutsourceRequestEditDetails): Promise<void>
   clientUpdate(id: string, item: OutsourceRequestEditDetails): Promise<void>
   updateState(id: string, state: Outsource.InfoRequest.State): Promise<void>
+  decryptText(encrypted: string): Promise<string>
   delete(id: string): Promise<void>
 
   getLatestRequests(count: number): Promise<Outsource.InfoRequest[]>

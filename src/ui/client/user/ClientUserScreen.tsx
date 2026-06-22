@@ -279,9 +279,13 @@ function ScreenBody() {
                             key={item.id}
                             value={item.id}
                             onClick={() => {
+                              const hasCompany = uiState.item.companyRef !== null
                               updateUiState({
                                 company: item,
-                                companyRef: item.ref,
+                                ...(hasCompany
+                                  ? { tempCompanyRef: item.ref, tempCompany: item }
+                                  : { companyRef: item.ref }
+                                ),
                               })
                               setQuery(Localized.get(item.name))
                             }}
