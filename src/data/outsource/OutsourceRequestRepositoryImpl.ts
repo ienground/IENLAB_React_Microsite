@@ -1,3 +1,4 @@
+import {createCallable} from "@/constant/CreateCallable.ts"
 import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
 import {
   FileUploadItem,
@@ -26,6 +27,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore"
+import {getFunctions, type HttpsCallable} from "firebase/functions"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {StoragePath} from "@/constant/StoragePath.ts"
@@ -38,6 +40,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   private readonly requestsRef
   private readonly PAGE_SIZE = 20
   private readonly outsourceDocId: string
+  private readonly encryptFn: HttpsCallable<{ text: string }, { encrypted: string }>
 
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
@@ -53,6 +56,9 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     this.requestsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.INFO_REQUESTS)
     this.isAdmin = isAdmin
     this.outsourceDocId = id
+
+    const functions = getFunctions()
+    this.encryptFn = createCallable(functions, "EncryptText")
   }
 
   requestInfoStateList: InfScrollStateList<Outsource.InfoRequest> = {
@@ -61,7 +67,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     isInitialized: false,
     isLoading: false,
     hasMore: true
-}
+  }
 
   async get(id: string): Promise<Outsource.InfoRequest | null> {
     const snapshot = await getDoc(doc(this.requestsRef, id))
@@ -127,19 +133,34 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     return new OutsourceRequestEditDetails({ ...item, media })
   }
 
+  private async encryptTextItems(item: OutsourceRequestEditDetails): Promise<OutsourceRequestEditDetails> {
+    if (item.type !== Outsource.InfoRequest.Type.TEXT || item.textItems.length === 0) return item
+
+    const textItems = await Promise.all(item.textItems.map(async (textItem) => {
+      if (!textItem.secure || !textItem.value) return textItem
+
+      const result = await this.encryptFn({text: textItem.value})
+      return new Outsource.InfoRequest.TextItem({...textItem, value: result.data.encrypted})
+    }))
+
+    return new OutsourceRequestEditDetails({...item, textItems})
+  }
+
   async create(item: OutsourceRequestEditDetails): Promise<DocumentReference> {
     const target = item.toItem()
     return await addDoc(this.requestsRef, target.toHashMap(false))
   }
 
   async update(id: string, item: OutsourceRequestEditDetails): Promise<void> {
-    const target = item.toItem()
+    const encrypted = await this.encryptTextItems(item)
+    const target = encrypted.toItem()
     return await updateDoc(doc(this.requestsRef, id), target.toHashMap(true))
   }
 
   async clientUpdate(id: string, item: OutsourceRequestEditDetails): Promise<void> {
     const transformed = await this.transformMedia(id, item)
-    const target = transformed.toItem()
+    const encrypted = await this.encryptTextItems(transformed)
+    const target = encrypted.toItem()
     return await updateDoc(doc(this.requestsRef, id), target.toClientHashMap())
   }
 

@@ -56,8 +56,12 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
           }
 
           if (!hasCapturedInitial) {
+            const editDetails = item ? OutsourceRequestEditDetails.fromItem(item) : new OutsourceRequestEditDetails()
+            editDetails.textItems = editDetails.textItems.map(ti =>
+              ti.secure ? new Outsource.InfoRequest.TextItem({...ti, value: ""}) : ti
+            )
             newState.uiState = new OutsourceRequestEditUiState({
-              item: item ? OutsourceRequestEditDetails.fromItem(item) : new OutsourceRequestEditDetails(),
+              item: editDetails,
               isInitialized: true
             })
             hasCapturedInitial = true

@@ -222,8 +222,9 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                           <InputGroup>
                             <InputGroupTextarea
                               className="grow"
-                              value={uiState.item.textItems[index].value}
+                              value={readOnly && item.secure ? t("strings:encrypted") : uiState.item.textItems[index].value}
                               onChange={e => {
+                                if (readOnly && item.secure) return
                                 const items = [...uiState.item.textItems]
                                 items[index] = new Outsource.InfoRequest.TextItem({
                                   ...items[index],
@@ -235,9 +236,14 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                               maxLength={item.maxLength ?? undefined}
                               disabled={readOnly}
                             />
-                            <InputGroupAddon align="block-end">
-                              <InputGroupText>{uiState.item.textItems[index].value.length}/{uiState.item.textItems[index].maxLength}</InputGroupText>
-                            </InputGroupAddon>
+                            {readOnly && item.secure
+                              ? <InputGroupAddon align="block-end">
+                                  <InputGroupText>{t("strings:encrypted")}</InputGroupText>
+                                </InputGroupAddon>
+                              : <InputGroupAddon align="block-end">
+                                  <InputGroupText>{uiState.item.textItems[index].value.length}/{uiState.item.textItems[index].maxLength}</InputGroupText>
+                                </InputGroupAddon>
+                            }
 
                           </InputGroup>
                           {item.secure && <RiLockFill className="text-muted-foreground shrink-0"/>}

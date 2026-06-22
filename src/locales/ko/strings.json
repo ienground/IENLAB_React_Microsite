@@ -45,6 +45,7 @@
   "desc_english": "영어 설명",
   "desc_korean": "한국어 설명",
   "edit": "수정",
+  "encrypted": "암호화됨",
   "email": "이메일",
   "error": {
     "not_found": {

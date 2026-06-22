@@ -36,6 +36,7 @@
   "day_format": "{{day}} days",
   "delete": "Delete",
   "email": "Email",
+  "encrypted": "Encrypted",
   "error": {
     "not_found": {
       "desc": "Looks like you're in the wrong place.",
