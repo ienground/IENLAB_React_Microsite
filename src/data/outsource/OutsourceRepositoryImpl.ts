@@ -124,8 +124,6 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
     try {
       const constraints: QueryConstraint[] = []
 
-      console.log("[loadNextPage] companyFilterRef:", this.companyFilterRef?.id, "mode:", this.mode)
-
       if (this.companyFilterRef) {
         constraints.push(where(FirestorePath.Outsource.TARGET_COMPANY, "==", this.companyFilterRef))
       }

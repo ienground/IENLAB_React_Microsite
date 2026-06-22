@@ -40,7 +40,8 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   private readonly requestsRef
   private readonly PAGE_SIZE = 20
   private readonly outsourceDocId: string
-  private readonly encryptFn: HttpsCallable<{ text: string }, { encrypted: string }>
+  private readonly encryptFn
+  private readonly decryptFn
 
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
@@ -56,9 +57,9 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     this.requestsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.INFO_REQUESTS)
     this.isAdmin = isAdmin
     this.outsourceDocId = id
-
     const functions = getFunctions()
     this.encryptFn = createCallable(functions, "EncryptText")
+    this.decryptFn = createCallable(functions, "DecryptText")
   }
 
   requestInfoStateList: InfScrollStateList<Outsource.InfoRequest> = {
@@ -142,8 +143,12 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
       const result = await this.encryptFn({text: textItem.value})
       return new Outsource.InfoRequest.TextItem({...textItem, value: result.data.encrypted})
     }))
-
     return new OutsourceRequestEditDetails({...item, textItems})
+  }
+
+  async decryptText(encrypted: string): Promise<string> {
+    const result = await this.decryptFn({encrypted})
+    return result.data.text
   }
 
   async create(item: OutsourceRequestEditDetails): Promise<DocumentReference> {

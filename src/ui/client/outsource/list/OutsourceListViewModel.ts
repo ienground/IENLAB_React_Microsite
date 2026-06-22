@@ -38,7 +38,6 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   onDisposed: () => {},
 
   loadNextPage: async () => {
-    console.log("loadNextPage")
     await props.outsourceRepository.loadNextPage()
     set({ outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList })
   },

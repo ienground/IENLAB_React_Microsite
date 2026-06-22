@@ -161,7 +161,6 @@ export class UserRepositoryImpl implements UserRepository {
     try {
       const result = await fn({ token })
       const fbToken = result.data.firebase_token
-      console.log(fbToken)
       if (!fbToken) return { ok: false, errorKey: "strings:error.no_tokens" }
 
       return await this.signInWithToken(fbToken)
