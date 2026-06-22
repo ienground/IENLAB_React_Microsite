@@ -50,8 +50,8 @@ export class Company implements FirestoreItem {
       deletedAt: doc[FirestorePath.DELETED_AT],
       name: doc[FirestorePath.Company.NAME],
       state: doc[FirestorePath.Company.STATE],
-      outsource: doc[FirestorePath.Company.OUTSOURCE],
-      estimate: doc[FirestorePath.Company.ESTIMATE]
+      outsource: doc[FirestorePath.Company.OUTSOURCE] ?? 0,
+      estimate: doc[FirestorePath.Company.ESTIMATE] ?? 0
     })
   }
 }
