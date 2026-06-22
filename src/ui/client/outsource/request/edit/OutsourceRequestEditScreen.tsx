@@ -241,7 +241,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
                                   <InputGroupText>{t("strings:encrypted")}</InputGroupText>
                                 </InputGroupAddon>
                               : <InputGroupAddon align="block-end">
-                                  <InputGroupText>{uiState.item.textItems[index].value.length}/{uiState.item.textItems[index].maxLength}</InputGroupText>
+                                  <InputGroupText>{item.value.length}/{item.maxLength}</InputGroupText>
                                 </InputGroupAddon>
                             }
 
