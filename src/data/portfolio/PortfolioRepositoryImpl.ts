@@ -77,6 +77,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   observePrimaries(callback: (items: Portfolio[]) => void) {
     const q = query(
       this.portfoliosRef,
+      where(FirestorePath.DELETED_AT, "==", null),
       where(FirestorePath.Portfolio.IS_PRIMARY, "==", true),
       where(FirestorePath.Portfolio.VISIBILITY, "==", Portfolio.Visibility.PUBLISHED),
     )
@@ -198,7 +199,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     this.portfolioInfoStateList = { ...this.portfolioInfoStateList, isLoading: true }
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Portfolio.TITLE + `.${i18n.resolvedLanguage}`))

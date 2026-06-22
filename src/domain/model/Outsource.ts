@@ -17,6 +17,7 @@ import {Estimate} from "@/domain/model/Estimate.ts"
 import {Portfolio} from "./Portfolio.ts"
 import type {TFunction} from "i18next"
 import {Company} from "@/domain/model/Company.ts"
+import {Env} from "@/domain/model/Env.ts"
 
 export class Outsource implements FirestoreItem {
   id: string = ""
@@ -41,6 +42,10 @@ export class Outsource implements FirestoreItem {
   waitingClientAt: Timestamp | null = null
   cancelledAt: Timestamp | null = null
   pausedAt: Timestamp | null = null
+
+  workLog: number = 0
+  revisionRequest: Env.DataLength.CollectionCount = {total: 0, today: 0, draft: 0, sent: 0, approved: 0, rejected: 0, applied: 0}
+  infoRequest: Env.DataLength.CollectionCount = {total: 0, today: 0, draft: 0, sent: 0, received: 0, rejected: 0}
 
   constructor(partial: Partial<Outsource> = {}) {
     Object.assign(this, partial)
@@ -75,6 +80,8 @@ export class Outsource implements FirestoreItem {
 
   static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Outsource {
     const doc = snapshotToData(snapshot)
+    const get = (colId: string, field: string) => doc[`${colId}.${field}`] ?? 0
+
     return new Outsource({
       id: doc.id,
       ref: snapshot.ref,
@@ -94,7 +101,24 @@ export class Outsource implements FirestoreItem {
       completedAt: doc[FirestorePath.Outsource.COMPLETED_AT],
       cancelledAt: doc[FirestorePath.Outsource.CANCELLED_AT],
       pausedAt: doc[FirestorePath.Outsource.PAUSED_AT],
-      waitingClientAt: doc[FirestorePath.Outsource.WAITING_CLIENT_AT]
+      waitingClientAt: doc[FirestorePath.Outsource.WAITING_CLIENT_AT],
+      workLog: doc[FirestorePath.Outsource.WORK_LOG] ?? 0,
+      revisionRequest: {
+        total: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.TOTAL),
+        today: 0,
+        draft: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.DRAFT),
+        sent: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.SENT),
+        approved: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.APPROVED),
+        rejected: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.REJECTED)
+      },
+      infoRequest: {
+        total: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.TOTAL),
+        today: 0,
+        draft: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.DRAFT),
+        sent: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.SENT),
+        received: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.RECEIVED),
+        rejected: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.REJECTED)
+      }
     })
   }
 }

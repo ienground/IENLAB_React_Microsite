@@ -16,7 +16,7 @@ import {
   startAfter,
   startAt,
   type Unsubscribe,
-  updateDoc
+  updateDoc, where
 } from "firebase/firestore"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {fetchItems, type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
@@ -120,7 +120,7 @@ export class EstimateRepositoryImpl implements EstimateRepository {
     this.estimateInfoStateList = { ...this.estimateInfoStateList, isLoading: true }
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Estimate.TITLE))

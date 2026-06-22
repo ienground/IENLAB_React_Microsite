@@ -70,7 +70,7 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
   }
 
   async getLatestItems(count: number): Promise<Outsource.RevisionRequest[]> {
-    const constraints: QueryConstraint[] = []
+    const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
     if (this.isAdmin) {
       constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "in", [
@@ -189,7 +189,16 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
     this.requestInfoStateList = { ...this.requestInfoStateList, isLoading: true }
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
+
+      if (this.isAdmin) {
+        constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "in", [
+          Outsource.RevisionRequest.State.SENT,
+          Outsource.RevisionRequest.State.APPROVED,
+          Outsource.RevisionRequest.State.REJECTED,
+          Outsource.RevisionRequest.State.APPLIED,
+        ]))
+      }
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Outsource.RevisionRequest.TITLE))
@@ -201,15 +210,6 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
 
       if (this.requestInfoStateList.lastVisibleDocument) {
         constraints.push(startAfter(this.requestInfoStateList.lastVisibleDocument))
-      }
-
-      if (this.isAdmin) {
-        constraints.push(where(FirestorePath.Outsource.RevisionRequest.STATE, "in", [
-          Outsource.RevisionRequest.State.SENT,
-          Outsource.RevisionRequest.State.APPROVED,
-          Outsource.RevisionRequest.State.REJECTED,
-          Outsource.RevisionRequest.State.APPLIED,
-        ]))
       }
 
       constraints.push(limit(this.PAGE_SIZE))

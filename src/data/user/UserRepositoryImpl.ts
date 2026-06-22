@@ -15,7 +15,7 @@ import {
   startAfter,
   startAt,
   type Unsubscribe,
-  updateDoc,
+  updateDoc, where,
 } from "firebase/firestore"
 import {
   type Auth,
@@ -383,7 +383,7 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.User.NAME))

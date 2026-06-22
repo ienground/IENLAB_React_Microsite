@@ -15,7 +15,9 @@ export const FirestorePath = {
   DELETED_AT: "deletedAt",
 
   Env: {
+    DATA_LENGTH: "dataLength",
     AGREEMENT: "agreement",
+
     Agreement: {
       /** Timestamp | null */
       REQUIRED_UPDATE_AT: "requiredUpdateAt",
@@ -31,6 +33,35 @@ export const FirestorePath = {
         /** Map<Locale, string> */
         CONTENT: "content"
       }
+    },
+    DataLength: {
+      /** number */
+      TOTAL: "total",
+      /** number */
+      TODAY: "today",
+
+      /** number */
+      PENDING: "pending",
+      /** number */
+      ACTIVE: "active",
+      /** number */
+      SUSPENDED: "suspended",
+      /** number */
+      ENDED: "ended",
+      /** number */
+      ADMITTED: "admitted",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      ACCEPTED: "accepted",
+      /** number */
+      REJECTED: "rejected",
+      /** number */
+      PAUSED: "paused",
+      /** number */
+      CANCELLED: "cancelled"
     }
   },
 
@@ -187,7 +218,11 @@ export const FirestorePath = {
     /** Record<Locale, string> */
     NAME: "name",
     /** number */
-    STATE: "state"
+    STATE: "state",
+    /** number */
+    ESTIMATE: "estimate",
+    /** number */
+    OUTSOURCE: "outsource",
   },
 
   Outsource: {
@@ -317,8 +352,42 @@ export const FirestorePath = {
           DOWNLOAD_URL: "downloadUrl"
         }
       }
-    }
+    },
 
+    /** number - 부모 문서에 저장되는 count 필드 */
+    WORK_LOG: "workLog",
+
+    RevisionRequestCount: {
+      /** string - revisionRequest.* 필드의 base path */
+      BASE: "revisionRequest",
+      /** number */
+      TOTAL: "total",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      APPROVED: "approved",
+      /** number */
+      REJECTED: "rejected",
+      /** number */
+      APPLIED: "applied",
+    },
+
+    InfoRequestCount: {
+      /** string - infoRequest.* 필드의 base path */
+      BASE: "infoRequest",
+      /** number */
+      TOTAL: "total",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      RECEIVED: "received",
+      /** number */
+      REJECTED: "rejected",
+    },
   },
 
   Otp: {

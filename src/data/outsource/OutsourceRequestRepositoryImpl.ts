@@ -78,7 +78,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   }
 
   async getLatestRequests(count: number): Promise<Outsource.InfoRequest[]> {
-    const constraints: QueryConstraint[] = []
+    const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
 
     if (!this.isAdmin) {
       constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "in", [
@@ -199,7 +199,15 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     this.requestInfoStateList = { ...this.requestInfoStateList, isLoading: true }
 
     try {
-      const constraints: QueryConstraint[] = []
+      const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "==", null)]
+
+      if (!this.isAdmin) {
+        constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "in", [
+          Outsource.InfoRequest.State.SENT,
+          Outsource.InfoRequest.State.RECEIVED,
+          Outsource.InfoRequest.State.REJECTED,
+        ]))
+      }
 
       if (this.mode === "search" && this.searchKeyword) {
         constraints.push(orderBy(FirestorePath.Outsource.InfoRequest.TITLE + `.${i18n.resolvedLanguage}`))
@@ -211,14 +219,6 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
 
       if (this.requestInfoStateList.lastVisibleDocument) {
         constraints.push(startAfter(this.requestInfoStateList.lastVisibleDocument))
-      }
-
-      if (!this.isAdmin) {
-        constraints.push(where(FirestorePath.Outsource.InfoRequest.STATE, "in", [
-          Outsource.InfoRequest.State.SENT,
-          Outsource.InfoRequest.State.RECEIVED,
-          Outsource.InfoRequest.State.REJECTED,
-        ]))
       }
 
       constraints.push(limit(this.PAGE_SIZE))
