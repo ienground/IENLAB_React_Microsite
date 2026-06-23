@@ -1,10 +1,9 @@
 import ImgUnderConstruction from "@/assets/image/img_under_construction.png"
 import {RiArrowLeftLine} from "@remixicon/react"
-import {Button} from "@/components/ui/button.tsx"
 import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {CrossfadeImage} from "@ienlab/react-library"
 import {MagneticButton} from "@/components/motion/components.tsx"
 
@@ -22,7 +21,7 @@ export default function ConstructionScreen() {
         </aside>
         <div className="col-span-12 xl:col-span-10">
           <div className="flex flex-col lg:flex-row w-full justify-between">
-            <div className="large-text-title">{t("strings:under_construction.label")}</div>
+            <h1 className="large-text-title">{t("strings:under_construction.label")}</h1>
             <CrossfadeImage
               alt="Under Construction Character"
               className="max-w-full w-160 h-auto object-contain opacity-90"

@@ -1,7 +1,7 @@
-import {Outlet, ScrollRestoration, useOutlet} from "react-router"
-import PublicHeader from "@/components/custom/PublicHeader.tsx"
-import PublicFooter from "@/components/custom/PublicFooter.tsx"
+import {ScrollRestoration, useOutlet} from "react-router"
 import {AnimatePresence, motion} from "motion/react"
+import PublicHeader from "@/components/custom/public/PublicHeader.tsx"
+import PublicFooter from "@/components/custom/public/PublicFooter.tsx"
 
 export default function PublicLayout() {
   const outlet = useOutlet()

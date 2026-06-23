@@ -1,31 +1,49 @@
-// import { Navigate, Outlet, useLocation } from "react-router"
-// import { useAuthSession } from "@/ui/shared/auth/useAuthSession"
-//
-// export function ClientProtectedRoute() {
-//   const location = useLocation()
-//   const { isLoading, isAuthenticated, role } = useAuthSession()
-//
-//   if (isLoading) {
-//     return (
-//       <div className="flex min-h-screen items-center justify-center">
-//         <p className="text-sm text-muted-foreground">세션 확인 중...</p>
-//       </div>
-//     )
-//   }
-//
-//   if (!isAuthenticated) {
-//     return (
-//       <Navigate
-//         to="/login"
-//         replace
-//         state={{ from: location }}
-//       />
-//     )
-//   }
-//
-//   if (role !== "client") {
-//     return <Navigate to="/" replace />
-//   }
-//
-//   return <Outlet />
-// }
+import { Navigate, useLocation } from "react-router"
+import {useTranslation} from "react-i18next"
+import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
+import {User} from "@/domain/model/User.ts"
+import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
+import PrivateLayout from "@/ui/shared/layout/PrivateLayout.tsx"
+import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
+
+export function ClientProtectedRoute() {
+  const location = useLocation()
+  const isLoading = AuthSessionViewModel.use.isLoading()
+  const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const isSigningOut = AuthSessionViewModel.use.isSigningOut()
+  const user = AuthSessionViewModel.use.user()
+  const { t } = useTranslation()
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-sm text-muted-foreground">{t("strings:check_session")}</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    if (isSigningOut) {
+      return <Navigate to="/" replace />
+    }
+    return (
+      <Navigate
+        to={LoginDestination.root}
+        replace
+        state={{ from: location }}
+      />
+    )
+  }
+
+  if (!user) {
+    return <Navigate to={SignupDestination.root} replace />
+  }
+
+  const canAccessConsole = user.state === User.State.ACTIVE
+
+  if (!canAccessConsole) {
+    return <Navigate to={SignupDestination.finish} replace />
+  }
+
+  return <PrivateLayout />
+}

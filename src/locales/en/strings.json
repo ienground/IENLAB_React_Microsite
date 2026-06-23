@@ -9,6 +9,7 @@
       "label": "@IENGROUND"
     },
     "label": "About",
+    "label2": "About",
     "project": {
       "desc": "Check out my projects."
     }
@@ -16,6 +17,7 @@
   "add_assets": "Add assets",
   "add_new_item": "Add new item",
   "amount": "Amount",
+  "app_name": "IENLAB",
   "available_soon": "Available soon",
   "back_to_home": "Back to home",
   "cancel": "Cancel",
@@ -31,8 +33,10 @@
   "datetime": {
     "month_year": "MMM YYYY"
   },
+  "day_format": "{{day}} days",
   "delete": "Delete",
   "email": "Email",
+  "encrypted": "Encrypted",
   "error": {
     "not_found": {
       "desc": "Looks like you're in the wrong place.",
@@ -92,7 +96,6 @@
       }
     }
   },
-  "ienlab": "IENLAB",
   "lang": {
     "english": {
       "native_label": "English"
@@ -101,18 +104,28 @@
       "native_label": "한국어"
     }
   },
+  "money_format": "{{money, currency}}",
+  "no_data": "No data",
   "notice": {
+    "desc": "Explore the latest news.",
     "label": "Notice"
   },
   "og": {
     "description": "Mobile Developer, Graphic Designer."
   },
   "privacy_policy": {
-    "desc": "Privacy Policy Information",
+    "desc": "It explains how we collect, use, retain, and delete personal information needed for service use.",
     "label": "Privacy Policy"
   },
   "settings": {
     "toggle_theme": "Toggle theme"
+  },
+  "signup": {
+    "finish": {
+      "desc": "You will be able to use the service after admin approval. We will notify you via email once approved.",
+      "label": "Signup Complete",
+      "title": "Signup completed!"
+    }
   },
   "type": {
     "company": {
@@ -228,5 +241,23 @@
   "under_construction": {
     "desc": "This page is currently under construction. Please wait a little longer.",
     "label": "Under construction"
+  },
+  "user": {
+    "profile": {
+      "phone": {
+        "email_not_verified": "Email not verified. Please check your email.",
+        "expired": "Expired.",
+        "resend_verification_email": "Resend verification email",
+        "send": "Send",
+        "send_failure_over_limit": "Send limit exceeded.",
+        "send_failure_unknown": "Failed to send code.",
+        "verification_email_sent": "Verification email sent. Please check your email.",
+        "verified": "Verified",
+        "verify": "Verify",
+        "verify_failure_no_send": "No code sent.",
+        "verify_failure_unknown": "Verification failed.",
+        "verify_failure_wrong": "Code does not match."
+      }
+    }
   }
 }

@@ -1,60 +1,172 @@
 export const FirestorePath = {
   USER: "user",
   ESTIMATE: "estimate",
+  PRICE: "price",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
   NOTICE_CATEGORY: "noticeCategory",
   PORTFOLIO: "portfolio",
   COMPANY: "company",
+  OTP: "otp",
+  ENV: "env",
 
   CREATE_AT: "createAt",
   UPDATE_AT: "updateAt",
   DELETED_AT: "deletedAt",
+
+  Env: {
+    DATA_LENGTH: "dataLength",
+    AGREEMENT: "agreement",
+
+    Agreement: {
+      /** Timestamp | null */
+      REQUIRED_UPDATE_AT: "requiredUpdateAt",
+      /** Timestamp | null */
+      OPTIONAL_UPDATE_AT: "optionalUpdateAt",
+
+      /** Collection */
+      REQUIRED: "required",
+      /** Collection */
+      OPTIONAL: "optional",
+
+      Items: {
+        /** Map<Locale, string> */
+        CONTENT: "content"
+      }
+    },
+    DataLength: {
+      /** number */
+      TOTAL: "total",
+      /** number */
+      TODAY: "today",
+
+      /** number */
+      PENDING: "pending",
+      /** number */
+      ACTIVE: "active",
+      /** number */
+      SUSPENDED: "suspended",
+      /** number */
+      ENDED: "ended",
+      /** number */
+      ADMITTED: "admitted",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      ACCEPTED: "accepted",
+      /** number */
+      REJECTED: "rejected",
+      /** number */
+      PAUSED: "paused",
+      /** number */
+      CANCELLED: "cancelled"
+    }
+  },
 
   User: {
     /** Timestamp */
     VISIT_AT: "visitAt",
     /** string */
     NAME: "name",
+    /** string, url */
+    PROFILE_URL: "profileUrl",
     /** DocumentReference */
     COMPANY: "company",
+    /** DocumentReference */
+    TEMP_COMPANY: "tempCompany",
     /** number */
     LEVEL: "level",
     /** number */
     STATE: "state",
     /** string */
     PHONE: "phone",
-    /** string */
+    /** string (조회용 사본, Firebase Auth가 SOURCE) */
     EMAIL: "email",
+    /** Timestamp | null */
+    AGREED_REQUIRED_AT: "agreedRequiredAt",
+    /** Timestamp | null */
+    AGREED_OPTIONAL_AT: "agreedOptionalAt"
   },
 
   Estimate: {
-    IDENTIFIER: "identifier", // string
-    EXPIRE_AT: "expireAt", // Timestamp
-    ESTIMATE_AT: "estimateAt", // Timestamp
-    TITLE: "title", // string
-    NAME: "name", // string
-    COMPANY: "company", // string
-    EMAIL: "email", // string
-    TYPE: "type", // number
-    PLATFORM: "platform", // number[]
-    BUDGET: "budget", // number
-    DESCRIPTION: "description", // string
-    STATE: "state", // number
-    SUMMARY: "summary", // string
-    SIG_NOTE: "sigNote", // string
-    PLANS: "plans", // { string, number }[]
-    CONDITIONS: "conditions", // string[]
-    TECH_STACKS: "techStacks", // string[]
-    RANGE: "range", // string[],
-    COSTS: "costs", // { string, string, number }[]
+    /** Timestamp */
+    EXPIRE_AT: "expireAt",
+    /** Timestamp */
+    ESTIMATE_AT: "estimateAt",
+    /** string */
+    TITLE: "title",
+    /** string */
+    MEMO: "memo",
+    /** number */
+    BUDGET: "budget",
+    /** DocumentReference | null */
+    COMPANY: "company",
+    /** number[] */
+    PLATFORMS: "platforms",
+    /** number */
+    STATE: "state",
+    /** Map<{string, number}>[] */
+    PLANS: "plans",
+    /** Collection */
+    ITEMS: "items",
+    /** number */
+    TOTAL_AMOUNT: "totalAmount",
+
+    Item: {
+      /** string */
+      TITLE: "title",
+      /** string */
+      DESCRIPTION: "description",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      AMOUNT: "amount",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** DocumentReference */
+      PRICE_CONTENT: "priceContent"
+    }
+  },
+
+  Price: {
+    CATEGORY: "category",
+    CONTENT: "content",
+
+    /** Collection */
+    ITEMS: "items",
+
+    Category: {
+      /** Record<Locale, string> */
+      NAME: "name",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    },
+
+    Content: {
+      /** DocumentReference | null */
+      CATEGORY: "category",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      CONTENT: "content",
+      /** number */
+      UNIT_PRICE: "unitPrice",
+      /** number */
+      SORT_ORDER: "sortOrder",
+      /** boolean */
+      IS_ACTIVE: "isActive"
+    }
   },
 
   Notice: {
     CATEGORY: "category", // string, id
     TITLE: "title", // string
     CONTENT: "content", // string
-    IMAGE_URLS: "imageUrls", // string[\,
+    IMAGE_URLS: "imageUrls", // string[]
     FIXED: "fixed", // boolean
 
     Category: {
@@ -106,11 +218,14 @@ export const FirestorePath = {
     /** Record<Locale, string> */
     NAME: "name",
     /** number */
-    STATE: "state"
+    STATE: "state",
+    /** number */
+    ESTIMATE: "estimate",
+    /** number */
+    OUTSOURCE: "outsource",
   },
 
   Outsource: {
-    /** DocumentReference */
     TARGET_COMPANY: "targetCompany",
     /** Record<Locale, string> */
     TITLE: "title",
@@ -122,10 +237,6 @@ export const FirestorePath = {
     PLATFORMS: "platforms",
     /** DocumentReference */
     ESTIMATE: "estimate",
-    /** number */
-    ESTIMATE_AMOUNT: "estimateAmount",
-    /** number */
-    REVISION_REQUEST_AMOUNT: "revisionRequestAmount",
     /** Timestamp | null */
     QUOTED_AT: "quotedAt",
     /** Timestamp | null */
@@ -146,9 +257,9 @@ export const FirestorePath = {
     /** Collection */
     REVISION_REQUESTS: "revisionRequests",
     RevisionRequest: {
-      /** Record<Locale, string> */
+      /** string */
       TITLE: "title",
-      /** Record<Locale, string> */
+      /** string */
       REASON: "reason",
       /** number */
       AMOUNT_DELTA: "amountDelta",
@@ -163,7 +274,26 @@ export const FirestorePath = {
       /** Timestamp | null */
       REJECTED_AT: "rejectedAt",
       /** Timestamp | null */
-      APPLIED_AT: "appliedAt"
+      APPLIED_AT: "appliedAt",
+      /** string[] */
+      IMAGE_URLS: "imageUrls"
+    },
+
+    /** Collection */
+    WORK_LOGS: "workLogs",
+    WorkLog: {
+      /** string */
+      TITLE: "title",
+      /** string */
+      CONTENT: "content",
+      /** number */
+      STATE: "state",
+      /** Timestamp */
+      WORK_DATE: "workDate",
+      /** number */
+      DURATION_MINUTES: "durationMinutes",
+      /** string[] */
+      IMAGE_URLS: "imageUrls",
     },
 
     /** Collection */
@@ -171,8 +301,6 @@ export const FirestorePath = {
     InfoRequest: {
       /** Timestamp */
       EXPIRE_AT: "expireAt",
-      /** DocumentReference | null */
-      TARGET_OUTSOURCE: "targetOutsource",
       /** number */
       STATE: "state",
       /** Record<Locale, string> */
@@ -190,18 +318,24 @@ export const FirestorePath = {
         /** Record<Locale, string> */
         LABEL: "label",
         /** boolean */
-        SECURE: "secure"
+        SECURE: "secure",
+        /** number */
+        MAX_LENGTH: "maxLength",
+        /** string */
+        VALUE: "value"
       },
 
       Media: {
-        /** Record<Locale, string> */
-        LABEL: "label",
-        /** Record<Locale, string> */
-        DESCRIPTION: "description",
         /** number */
         MAX_COUNT: "maxCount",
         /** number */
         ALLOWED_TYPE: "allowedType",
+        /** number (MB) */
+        MAX_FILE_SIZE: "maxFileSize",
+        /** string | null (e.g. "1/1") */
+        ASPECT_RATIO: "aspectRatio",
+        /** string | null (e.g. "100x100") */
+        SIZE_CONSTRAINT: "sizeConstraint",
         /** Map[] */
         FILES: "files",
 
@@ -218,7 +352,50 @@ export const FirestorePath = {
           DOWNLOAD_URL: "downloadUrl"
         }
       }
-    }
+    },
 
-  }
+    /** number - 부모 문서에 저장되는 count 필드 */
+    WORK_LOG: "workLog",
+
+    RevisionRequestCount: {
+      /** string - revisionRequest.* 필드의 base path */
+      BASE: "revisionRequest",
+      /** number */
+      TOTAL: "total",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      APPROVED: "approved",
+      /** number */
+      REJECTED: "rejected",
+      /** number */
+      APPLIED: "applied",
+    },
+
+    InfoRequestCount: {
+      /** string - infoRequest.* 필드의 base path */
+      BASE: "infoRequest",
+      /** number */
+      TOTAL: "total",
+      /** number */
+      DRAFT: "draft",
+      /** number */
+      SENT: "sent",
+      /** number */
+      RECEIVED: "received",
+      /** number */
+      REJECTED: "rejected",
+    },
+  },
+
+  Otp: {
+    /** String */
+    CODE: "code",
+    /** String */
+    UID: "uid",
+    /** number */
+    ATTEMPT_COUNT: "attemptCount"
+  },
 }

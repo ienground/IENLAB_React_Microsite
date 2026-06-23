@@ -9,10 +9,9 @@ import {useTranslation} from "react-i18next"
 import {type CSSProperties, useEffect} from "react"
 import Router from "@/ui/router/Router.tsx"
 import {ThemeProvider, useTheme} from "@ienlab/react-library"
-import { Toaster } from "@/components/ui/sonner.tsx"
+import {Toaster} from "@/components/ui/sonner.tsx"
 import {TooltipProvider} from "@/components/ui/tooltip.tsx"
 import {HelmetProvider} from "react-helmet-async"
-import LoadingLineReveal from "@/components/custom/LoadingLineReveal.tsx"
 import {Cursor, useCursorState} from "motion-plus/react"
 
 export default function App() {
@@ -28,11 +27,11 @@ export default function App() {
   return (
     <HelmetProvider>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme" themeExpiryHours={THEME_EXPIRY_HOURS}>
-        <LoadingLineReveal>
+        {/*<LoadingLineReveal>*/}
           <TooltipProvider>
             <ScreenBody />
           </TooltipProvider>
-        </LoadingLineReveal>
+        {/*</LoadingLineReveal>*/}
       </ThemeProvider>
     </HelmetProvider>
   )
@@ -48,7 +47,7 @@ function ScreenBody() {
       <Toaster theme={theme} position="bottom-center" richColors/>
       <Cursor
         magnetic
-        className="cursor"
+        className="cursor z-9999999999!"
         variants={{
           default: {
             backgroundColor:
@@ -74,7 +73,7 @@ function ScreenBody() {
           },
         }}
         style={{
-          borderRadius: 10,
+          borderRadius: 32,
           mixBlendMode:
             (zone === "overlay" ? "difference" : "var(--cursor-blend)") as CSSProperties["mixBlendMode"],
         }}

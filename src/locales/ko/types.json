@@ -1,0 +1,280 @@
+{
+  "company": {
+    "state": {
+      "admitted": {
+        "desc": "승인된 상태로, 사용자는 회사를 본인의 정보에 기입할 수 있습니다.",
+        "label": "승인됨"
+      },
+      "pending": {
+        "desc": "승인되지 않았으며, 사용자는 회사를 본인의 정보에 기입할 수 없습니다.",
+        "label": "대기 중"
+      }
+    }
+  },
+  "estimate": {
+    "state": {
+      "accepted": {
+        "desc": "클라이언트가 견적을 수락했습니다.",
+        "label": "수락됨"
+      },
+      "draft": {
+        "desc": "작성 중인 견적입니다.",
+        "label": "초안"
+      },
+      "rejected": {
+        "desc": "클라이언트가 견적을 거절했습니다.",
+        "label": "거절됨"
+      },
+      "sent": {
+        "desc": "클라이언트에게 전송된 견적입니다.",
+        "label": "전송됨"
+      }
+    }
+  },
+  "outsource": {
+    "info_request": {
+      "media": {
+        "type": {
+          "doc": {
+            "desc": "PPTX, HWP, DOCX 등의 문서 파일이 해당합니다.",
+            "label": "문서"
+          },
+          "image": {
+            "desc": "스크린샷, 로고 등의 PNG, JPG, SVG 이미지 파일이 해당합니다.",
+            "label": "이미지"
+          }
+        }
+      },
+      "state": {
+        "draft": {
+          "label": "초안"
+        },
+        "received": {
+          "admin": {
+            "label": "수신됨"
+          },
+          "client": {
+            "label": "전송됨"
+          }
+        },
+        "rejected": {
+          "label": "거부"
+        },
+        "sent": {
+          "admin": {
+            "label": "전송됨"
+          },
+          "client": {
+            "label": "수신됨"
+          }
+        }
+      },
+      "type": {
+        "media": {
+          "desc": "이미지, 문서 등이 해당합니다.",
+          "label": "미디어"
+        },
+        "password": {
+          "desc": "공개가 민감한 API 키나 비밀번호 등이 해당합니다. 암호화가 강제됩니다.",
+          "label": "비밀번호"
+        },
+        "text": {
+          "desc": "이메일이나 아이디, 비밀번호나 혹은 패키지명 등이 해당합니다.",
+          "label": "텍스트"
+        }
+      }
+    },
+    "phase": {
+      "completed": {
+        "label": "개발 완료"
+      },
+      "contract_pending": {
+        "label": "계약 대기 중"
+      },
+      "in_progress": {
+        "label": "개발 중"
+      },
+      "quoting": {
+        "label": "견적서 작성 중"
+      },
+      "waiting_client": {
+        "label": "클라이언트 대기 중"
+      }
+    },
+    "revision": {
+      "state": {
+        "applied": {
+          "label": "적용됨"
+        },
+        "approved": {
+          "admin": {
+            "label": "승인함"
+          },
+          "client": {
+            "label": "승인됨"
+          }
+        },
+        "draft": {
+          "label": "초안"
+        },
+        "rejected": {
+          "admin": {
+            "label": "거부함"
+          },
+          "client": {
+            "label": "거부됨"
+          }
+        },
+        "sent": {
+          "admin": {
+            "label": "수신됨"
+          },
+          "client": {
+            "label": "전송됨"
+          }
+        }
+      }
+    },
+    "state": {
+      "active": {
+        "desc": "현재 진행되거나 완료된 외주입니다. 아래에서 현재 진행 단계도 작성해 주세요.",
+        "label": "활성화됨"
+      },
+      "cancelled": {
+        "desc": "완전히 취소된 외주입니다. 취소된 일자를 작성해 주세요.",
+        "label": "취소됨"
+      },
+      "paused": {
+        "desc": "일시 정지된 외주입니다. 일시 정지된 일자를 작성해 주세요.",
+        "label": "일시 정지"
+      }
+    },
+    "work_log": {
+      "state": {
+        "done": {
+          "label": "완료"
+        },
+        "in_progress": {
+          "label": "진행 중"
+        },
+        "planned": {
+          "label": "계획됨"
+        }
+      }
+    }
+  },
+  "portfolio": {
+    "category": {
+      "creative_computing": {
+        "desc": "p5.js 등 인터랙티브 미디어",
+        "title": "크리에이티브 컴퓨팅"
+      },
+      "game": {
+        "desc": "Unity, p5.js 등으로 제작한 게임",
+        "title": "게임"
+      },
+      "physical_computing": {
+        "desc": "Arduino 등의 물리적 창작물",
+        "title": "피지컬 컴퓨팅"
+      },
+      "social": {
+        "desc": "커뮤니티 형태의 소셜 미디어",
+        "title": "소셜"
+      },
+      "utility": {
+        "desc": "사용할 수 있는 도구 형태",
+        "title": "유틸리티"
+      }
+    },
+    "is_primary": {
+      "false": {
+        "desc": "메인 페이지에 노출하지 않습니다.",
+        "title": "주요 프로젝트 제외"
+      },
+      "true": {
+        "desc": "메인 페이지에 노출하고, 포트폴리오 목록에서 별도 표시합니다.",
+        "title": "주요 프로젝트 선정"
+      }
+    },
+    "platform": {
+      "android": {
+        "desc": "Android용 모바일 어플리케이션",
+        "title": "Android"
+      },
+      "arduino": {
+        "desc": "Arduino 피지컬 제품",
+        "title": "Arduino"
+      },
+      "ios": {
+        "desc": "iOS 및 iPadOS용 모바일 어플리케이션",
+        "title": "iOS · iPadOS"
+      },
+      "pc": {
+        "desc": "Windows 및 macOS용 어플리케이션",
+        "title": "Windows · macOS"
+      },
+      "web": {
+        "desc": "웹용 어플리케이션",
+        "title": "웹"
+      }
+    },
+    "state": {
+      "done": {
+        "desc": "더 이상 유지보수가 이뤄지지 않는 프로젝트입니다.",
+        "title": "종료됨"
+      },
+      "launched": {
+        "desc": "출시가 완료되었고, 유지 보수 및 업데이트 중에 있습니다.",
+        "title": "출시 완료"
+      },
+      "working": {
+        "desc": "아직 개발 중인 프로젝트입니다.",
+        "title": "개발 중"
+      }
+    },
+    "visibility": {
+      "archived": {
+        "desc": "보관되어 목록에 뜨지 않습니다.",
+        "title": "보관됨"
+      },
+      "draft": {
+        "desc": "아직 준비되지 않았으며, 목록에 뜨지 않습니다. 추후 작성을 위해 목록에 우선 표시됩니다.",
+        "title": "초안"
+      },
+      "published": {
+        "desc": "발행되어 목록에 표시됩니다.",
+        "title": "발행됨"
+      }
+    }
+  },
+  "user": {
+    "level": {
+      "admin": {
+        "desc": "관리자 콘솔을 사용할 수 있습니다.",
+        "label": "관리자"
+      },
+      "member": {
+        "desc": "일반 고객 사용자입니다. 웹사이트의 콘솔을 상태에 따라 사용할 수 있습니다.",
+        "label": "회원"
+      }
+    },
+    "state": {
+      "active": {
+        "desc": "관리자의 승인을 받아 웹사이트 콘솔에 접근 가능한 사용자입니다.",
+        "label": "활성화됨"
+      },
+      "ended": {
+        "desc": "계약이 종료되어 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+        "label": "종료됨"
+      },
+      "pending": {
+        "desc": "가입하였으나 관리자의 승인을 받지 않은 사용자입니다.",
+        "label": "대기 중"
+      },
+      "suspended": {
+        "desc": "특정 사유로 웹사이트 콘솔에 접근이 불가한 사용자입니다.",
+        "label": "중지됨"
+      }
+    }
+  }
+}

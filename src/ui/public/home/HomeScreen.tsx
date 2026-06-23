@@ -1,32 +1,39 @@
-import {Carousel, ScrambleText, Ticker, Typewriter, useCarousel} from "motion-plus/react"
+import {Ticker, Typewriter, useCarousel} from "motion-plus/react"
 import {AnimatePresence, motion, MotionConfig, useMotionValue, useScroll, useSpring, useTransform} from "motion/react"
-import {CrossfadeImage, Localized, slideFadeProps, useDateTimeFormatters, useTheme} from "@ienlab/react-library"
+import {CrossfadeImage, formatBaseDateTime, Localized, Seo, useTheme} from "@ienlab/react-library"
 import {Trans, useTranslation} from "react-i18next"
+import * as React from "react"
 import {useEffect, useMemo, useRef, useState} from "react"
 import {
   RiArrowDropDownLine,
   RiArrowRightUpLine,
-  RiCloseLargeFill, RiCursorHand,
-  RiGithubFill, RiPagesFill, RiPauseMiniFill, RiPlayFill
+  RiCloseLargeFill,
+  RiGithubFill,
+  RiPagesFill,
+  RiPauseMiniFill,
+  RiPlayFill
 } from "@remixicon/react"
-import * as React from "react"
 import {splitText} from "motion-plus"
 import {animate, delay, stagger, wrap} from "motion"
 import {cn} from "@/lib/utils.ts"
 import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts"
-import {Portfolio} from "@/domain/model/Portfolio.tsx"
+import {Portfolio} from "@/domain/model/Portfolio.ts"
 import {portfolioRepository} from "@/di/container.ts"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import IcAppStore from "@/assets/icon/app_store.svg?react"
 import IcGooglePlay from "@/assets/icon/google_play.svg?react"
-import {Link, useNavigate} from "react-router"
+import {useNavigate} from "react-router"
 import {Field, FieldDescription, FieldTitle} from "@/components/ui/field"
 import ImgProfile from "@/assets/image/ienground_profile_2024.jpg"
 import ImgFront01 from "@/assets/image/front_01.png"
 import ImgFront02 from "@/assets/image/front_02.png"
 import ImgFront03 from "@/assets/image/front_03.png"
+import ImgFrontMobile01 from "@/assets/image/front_mobile_01.png"
+import ImgFrontMobile02 from "@/assets/image/front_mobile_02.png"
+import ImgFrontMobile03 from "@/assets/image/front_mobile_03.png"
 import ImgFrontForward from "@/assets/image/front_forward.png"
+import ImgFrontForwardMobile from "@/assets/image/front_forward_mobile.png"
 import ImgMobileGraphic from "@/assets/image/img_mobile_graphic.png"
 import ImgIllustGraphic from "@/assets/image/img_illust_graphic.png"
 import ImgWebGraphic from "@/assets/image/img_web_graphic.png"
@@ -47,10 +54,11 @@ import ImgBgColor from "@/assets/brand/img_background_color.png"
 import ImgBgDark from "@/assets/brand/img_background_dark.png"
 import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
-import {Seo} from "@/components/custom/Seo.tsx"
 import {MagneticButton} from "@/components/motion/components.tsx"
+import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
+import {useIsMobile} from "@/hooks/use-mobile.ts"
 
 type CarouselItem = {
   id: string
@@ -95,7 +103,7 @@ export default function HomeScreen() {
   return (
     <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
       <Seo
-        title={t("strings:ienlab")}
+        title={t("strings:app_name")}
         description={t("strings:og.description")}
       />
       <ScreenBody/>
@@ -236,24 +244,20 @@ function ScreenBody() {
         <div
           key="extra-layered-slide"
           className={cn(
-            "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",
+            "w-full overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col",
             "md:relative md:h-auto md:aspect-video xl:aspect-21/9 md:block"
-            // "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"
           )}
         >
           <div className={cn(
             "w-full h-[60svh]",
             "md:h-full"
           )}>
-            <LayeredSlides
-              backgrounds={[ImgFront01, ImgFront02, ImgFront03]}
-              foreground={ImgFrontForward}
-            />
+            <LayeredSlides />
           </div>
 
           <h2
             className={cn(
-              "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",
+              "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] p-8",
               "lg:text-5xl",
               "xl:text-6xl",
               "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",
@@ -281,7 +285,6 @@ function ScreenBody() {
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
         </div>
-        ,
         {/*<Carousel*/}
         {/*  align="center"*/}
         {/*  gap={16}*/}
@@ -547,9 +550,7 @@ function SkillItem({header, children}: { header: string, children: React.ReactNo
       >
         <h3>
           <motion.button
-            // id={id + "-button"}
             aria-expanded={isOpen}
-            // aria-controls={id}
             onClick={() => setIsOpen(!isOpen)}
             onFocus={onlyKeyboardFocus(() => setHasFocus(true))}
             onBlur={() => setHasFocus(false)}
@@ -832,7 +833,7 @@ function PortfolioItemContent({
               <motion.div className="mt-2 flex flex-row items-center gap-1">
                 {item.platforms.map((platform) => (
                   <span key={platform}>
-                    {Portfolio.Platform.getIcon(platform, 18)}
+                    {PortfolioX.Platform.getIcon(platform, 18)}
                   </span>
                 ))}
               </motion.div>
@@ -1006,7 +1007,6 @@ function PortfolioItem({
 function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfolio[], close: VoidFunction }) {
   const {t} = useTranslation()
   const item = items.find((item) => item.id === id)!
-  const {basicDateTimeFormat} = useDateTimeFormatters()
 
   return (
     <>
@@ -1041,9 +1041,9 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
               >
                 <FieldTitle>
                   <Badge variant="secondary" className="border border-border">
-                    {basicDateTimeFormat(item.startAt.toDate(), "strings:datetime.month_year")} -{" "}
+                    {formatBaseDateTime(item.startAt.toDate(), t("strings:datetime.month_year"))} -{" "}
                     {item.endAt
-                      ? basicDateTimeFormat(item.endAt.toDate(), "strings:datetime.month_year")
+                      ? formatBaseDateTime(item.endAt.toDate(), t("strings:datetime.month_year"))
                       : ""}
                   </Badge>
                 </FieldTitle>
@@ -1076,7 +1076,7 @@ function FloatingPortfolioItem({id, items, close}: { id: string, items: Portfoli
                     {item.platforms.map(platform => (
                       <Badge key={platform} className={Portfolio.Platform.getBadgeColor(platform)}>
                         <div data-icon="inline-start" className="mr-1">
-                          {Portfolio.Platform.getIcon(platform, 12)}
+                          {PortfolioX.Platform.getIcon(platform, 12)}
                         </div>
                         <div>{Portfolio.Platform.getLabel(t, platform)}</div>
                       </Badge>
@@ -1109,24 +1109,26 @@ interface PortfolioItemProps {
 }
 
 type LayeredSlidesProps = {
-  backgrounds: string[]
-  foreground: string
   interval?: number
+  onReady?: () => void
 }
 
 function LayeredSlides({
-                         backgrounds,
-                         foreground,
                          interval = 300,
+                         onReady,
                        }: LayeredSlidesProps) {
   const [index, setIndex] = useState(0)
   const [ready, setReady] = useState(false)
+  const bgs = [ImgFront01, ImgFront02, ImgFront03]
+  const bgsMobile = [ImgFrontMobile01, ImgFrontMobile02, ImgFrontMobile03]
+  const fg= ImgFrontForward
+  const fgMobile = ImgFrontForwardMobile
 
   useEffect(() => {
     let cancelled = false
 
     Promise.all(
-      backgrounds.map(
+      bgs.map(
         (src) =>
           new Promise<void>((resolve) => {
             const img = new Image()
@@ -1142,42 +1144,67 @@ function LayeredSlides({
     return () => {
       cancelled = true
     }
-  }, [backgrounds])
+  }, [bgs])
 
   useEffect(() => {
-    if (!ready || backgrounds.length <= 1) return
+    if (!ready) return
+    onReady?.()
+  }, [ready, onReady])
+
+  useEffect(() => {
+    if (!ready || bgs.length <= 1) return
 
     const id = window.setInterval(() => {
-      setIndex((prev) => (prev + 1) % backgrounds.length)
+      setIndex((prev) => (prev + 1) % bgs.length)
     }, interval)
 
     return () => window.clearInterval(id)
-  }, [ready, backgrounds.length, interval])
+  }, [ready, bgs.length, interval])
 
   if (!ready) {
-    return <div className="relative h-full w-full bg-black"/>
+    return <div className="relative h-full w-full"/>
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <motion.div
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{duration: 0.7}}
+      className="relative w-full h-full overflow-hidden"
+    >
       <div className="absolute inset-0 z-0">
         <img
-          src={backgrounds[index]}
+          src={bgs[index]}
           alt=""
-          className="absolute inset-0 h-full w-full object-contain md:object-cover"
+          className="absolute inset-0 h-full w-full object-contain md:object-cover max-md:hidden"
+          draggable={false}
+        />
+        <img
+          src={bgsMobile[index]}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-bottom md:hidden"
           draggable={false}
         />
       </div>
 
-      <div className="pointer-events-none absolute inset-0 z-10">
+      <div className={cn(
+        "pointer-events-none absolute inset-0 z-10 max-md:hidden",
+      )}>
         <CrossfadeImage
-          src={foreground}
+          src={fg}
           alt=""
           className="h-full w-full object-contain md:object-cover"
           draggable={false}
         />
       </div>
-    </div>
+      <CrossfadeImage
+        src={fgMobile}
+        alt=""
+        className="w-[70%] object-contain md:object-cover md:hidden z-10 absolute left-1/2 -translate-x-1/2 bottom-0"
+        draggable={false}
+      />
+
+    </motion.div>
   )
 }
 

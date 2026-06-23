@@ -4,7 +4,8 @@ import IntervalPlural from 'i18next-intervalplural-postprocessor'
 
 import en from "./en/strings.json"
 import ko from "./ko/strings.json"
-import {initIenlabI18n, Localized, setLocalizedLocaleResolver} from "@ienlab/react-library"
+import koTypes from "./ko/types.json"
+import {initIenlabI18n, setLocalizedLocaleResolver} from "@ienlab/react-library"
 
 i18n
   .use(initReactI18next)
@@ -12,12 +13,13 @@ i18n
   .init({
   resources: {
     en: { strings: en },
-    ko: { strings: ko }
+    ko: { strings: ko, types: koTypes }
   },
   lng: 'ko',
   fallbackLng: 'en',
   interpolation: { escapeValue: false }
 })
+
 initIenlabI18n(i18n)
 setLocalizedLocaleResolver(() => i18n.language)
 

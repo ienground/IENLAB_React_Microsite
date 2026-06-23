@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react"
-import {SectionHeader} from "@/components/custom/SectionHeader.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx"
@@ -11,8 +11,7 @@ import {
   RiUser3Fill
 } from "@remixicon/react"
 import {cn} from "@/lib/utils.ts"
-import {Seo} from "@/components/custom/Seo.tsx"
-import OgPolicy from "@/assets/image/og-policy.png"
+import { Seo } from "@ienlab/react-library"
 import {hasLastConsonant} from "@ienlab/react-library"
 
 export default function PrivacyScreen() {
@@ -20,9 +19,8 @@ export default function PrivacyScreen() {
   return (
     <>
       <Seo
-        title={`${t("strings:privacy_policy.label")} | ${t("strings:ienlab")}`}
+        title={`${t("strings:privacy_policy.label")} - ${t("strings:app_name")}`}
         description={t("strings:privacy_policy.desc")}
-        image={OgPolicy}
       />
       <ScreenBody />
     </>
@@ -438,7 +436,7 @@ function ScreenBody() {
           <SectionHeader index={0} label={t("strings:privacy_policy.label")} />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="large-text-title">{t("strings:privacy_policy.label")}</div>
+          <h1 className="large-text-title">{t("strings:privacy_policy.label")}</h1>
           <p className="mt-32">{summary}</p>
         </div>
       </div>
