@@ -1,69 +1,58 @@
-# React + TypeScript + Vite
+# 아이엔랩 ienlab 마이크로사이트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+공식 마이크로사이트입니다. React 19 + TypeScript + Vite 기반으로 개발되었으며, Firebase를 백엔드로 사용합니다.
 
-Currently, two official plugins are available:
+## 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **프레임워크:** React 19, TypeScript
+- **빌드 도구:** Vite 8, SWC
+- **스타일링:** Tailwind CSS v4, shadcn/ui, Radix UI, Base UI
+- **백엔드:** Firebase (Auth, Firestore, Storage, Cloud Functions)
+- **상태 관리:** Zustand, React Router v8
+- **다국어:** i18next, react-i18next
+- **애니메이션:** motion, motion-plus
+- **테마:** next-themes (시스템/라이트/다크)
 
-## Expanding the ESLint configuration
+## 시작하기
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# 의존성 설치
+npm install
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 로컬 개발 서버 실행 (포트 5301)
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 스크립트
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| 명령어 | 설명 |
+|--------|------|
+| `npm run dev` | 로컬 개발 서버 실행 (Vite, 포트 5301) |
+| `npm run build` | 타입스크립트 컴파일 + Vite 빌드 |
+| `npm run preview` | 빌드 결과물 프리뷰 |
+| `npm run lint` | ESLint 검사 |
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 주요 기능
+
+- **회사 소개** — 회사/브랜드 소개, 프로젝트 포트폴리오, 공지사항
+- **외주 관리 시스템** — 외주 CRUD, 정보 요청, 수정 요청, 작업 로그, 견적 관리
+- **사용자 인증** — 이메일 로그인, 카카오 로그인, 네이버 로그인
+- **다국어 지원** — 한국어, 영어
+- **다크모드** — 시스템/라이트/다크 테마 지원
+- **반응형 UI** — 모바일/태블릿/데스크톱 대응
+
+## 페이지 구조
+
+### 공개 영역
+`/` — 홈, `/about` — 회사 소개, `/brand` — 브랜드 소개, `/notice` — 공지사항, `/project` — 프로젝트 포트폴리오, `/login` — 로그인, `/signup` — 회원가입
+
+### 클라이언트 영역 (로그인 필요)
+`/client/outsource` — 외주 관리, `/client/user` — 사용자 정보 수정
+
+## 환경 변수
+
+`.env` 파일에 Firebase 설정 등 환경 변수를 정의합니다.
+
+## 배포
+
+Firebase Hosting을 통해 배포됩니다. 빌드 후 `firebase deploy` 명령어로 배포할 수 있습니다.
