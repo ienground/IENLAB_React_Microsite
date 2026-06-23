@@ -45,8 +45,8 @@
   "desc_english": "영어 설명",
   "desc_korean": "한국어 설명",
   "edit": "수정",
-  "encrypted": "암호화됨",
   "email": "이메일",
+  "encrypted": "암호화됨",
   "error": {
     "not_found": {
       "desc": "뭔가 잘못된 곳에 있는 것 같아요.",
@@ -606,6 +606,15 @@
         "verify_failure_wrong": "인증번호가 일치하지 않습니다."
       }
     }
+  },
+  "version_info": {
+    "app_version": {
+      "title": "웹사이트 버전"
+    },
+    "build_date": {
+      "title": "빌드 날짜"
+    },
+    "title": "버전 정보"
   },
   "view_all": "전체 보기",
   "website_manage": {

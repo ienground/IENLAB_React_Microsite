@@ -42,6 +42,8 @@ import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import SignupScreen from "@/ui/public/signup/SignupScreen.tsx"
 import SignupFinish from "@/ui/public/signup/SignupFinish.tsx"
 import {PendingUserRoute} from "@/ui/router/PendingUserRoute.tsx"
+import {VersionDestination} from "@/ui/public/version/VersionDestination.ts"
+import VersionScreen from "@/ui/public/version/VersionScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
@@ -108,6 +110,10 @@ export function getRouter(t: TFunction) {
             {
               path: SignupDestination.finish,
               element: <PendingUserRoute><SignupFinish /></PendingUserRoute>
+            },
+            {
+              path: VersionDestination.root,
+              element: <VersionScreen />
             },
             {
               path: "*",
