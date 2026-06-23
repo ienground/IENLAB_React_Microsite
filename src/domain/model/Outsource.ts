@@ -386,6 +386,14 @@ export namespace Outsource {
 
     constructor(partial: Partial<InfoRequest> = {}) {
       Object.assign(this, partial)
+      if (partial.textItems) {
+        this.textItems = partial.textItems.map(item =>
+          item instanceof InfoRequest.TextItem ? item : new InfoRequest.TextItem(item)
+        )
+      }
+      if (partial.media && !(partial.media instanceof InfoRequest.Media)) {
+        this.media = new InfoRequest.Media(partial.media)
+      }
     }
 
     toHashMap(isUpdate: boolean = false) {
@@ -558,6 +566,11 @@ export namespace Outsource {
 
       constructor(partial: Partial<Media>) {
         Object.assign(this, partial)
+        if (partial.files) {
+          this.files = partial.files.map(file =>
+            file instanceof Media.UploadedFile ? file : new Media.UploadedFile(file)
+          )
+        }
       }
 
       toHashMap() {

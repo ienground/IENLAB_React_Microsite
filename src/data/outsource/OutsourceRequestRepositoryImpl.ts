@@ -134,11 +134,18 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     return new OutsourceRequestEditDetails({ ...item, media })
   }
 
-  private async encryptTextItems(item: OutsourceRequestEditDetails): Promise<OutsourceRequestEditDetails> {
+  private async encryptTextItems(id: string, item: OutsourceRequestEditDetails): Promise<OutsourceRequestEditDetails> {
     if (item.type !== Outsource.InfoRequest.Type.TEXT || item.textItems.length === 0) return item
 
-    const textItems = await Promise.all(item.textItems.map(async (textItem) => {
-      if (!textItem.secure || !textItem.value) return textItem
+    const existingDoc = await getDoc(doc(this.requestsRef, id))
+    const existingItems = existingDoc.exists() ? existingDoc.data()?.[FirestorePath.Outsource.InfoRequest.TEXT_ITEMS] as any[] : []
+
+    const textItems = await Promise.all(item.textItems.map(async (textItem, index) => {
+      if (!textItem.secure) return textItem
+      if (!textItem.value) {
+        const existingValue = existingItems?.[index]?.[FirestorePath.Outsource.InfoRequest.TextItem.VALUE] ?? ""
+        return new Outsource.InfoRequest.TextItem({...textItem, value: existingValue})
+      }
 
       const result = await this.encryptFn({text: textItem.value})
       return new Outsource.InfoRequest.TextItem({...textItem, value: result.data.encrypted})
@@ -157,14 +164,14 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   }
 
   async update(id: string, item: OutsourceRequestEditDetails): Promise<void> {
-    const encrypted = await this.encryptTextItems(item)
+    const encrypted = await this.encryptTextItems(id, item)
     const target = encrypted.toItem()
     return await updateDoc(doc(this.requestsRef, id), target.toHashMap(true))
   }
 
   async clientUpdate(id: string, item: OutsourceRequestEditDetails): Promise<void> {
     const transformed = await this.transformMedia(id, item)
-    const encrypted = await this.encryptTextItems(transformed)
+    const encrypted = await this.encryptTextItems(id, transformed)
     const target = encrypted.toItem()
     return await updateDoc(doc(this.requestsRef, id), target.toClientHashMap())
   }
