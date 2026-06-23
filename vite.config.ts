@@ -9,7 +9,7 @@ import pkg from "./package.json"
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
   define: {
-    "import.meta.env.VITE_APP_BUILD_DATE": JSON.stringify(Date.now().toString()),
+    "import.meta.env.VITE_APP_BUILD_DATE": JSON.stringify(Date.now()),
     "import.meta.env.VITE_APP_NAME": JSON.stringify(pkg.name),
     "import.meta.env.VITE_APP_VERSION": JSON.stringify(pkg.version),
   },
