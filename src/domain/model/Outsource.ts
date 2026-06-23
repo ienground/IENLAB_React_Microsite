@@ -80,7 +80,8 @@ export class Outsource implements FirestoreItem {
 
   static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Outsource {
     const doc = snapshotToData(snapshot)
-    const get = (colId: string, field: string) => doc[`${colId}.${field}`] ?? 0
+    const group = (base: string) => doc?.[base] ?? {}
+    const get = (base: string, field: string) => group(base)?.[field] ?? 0
 
     return new Outsource({
       id: doc.id,
@@ -104,21 +105,51 @@ export class Outsource implements FirestoreItem {
       waitingClientAt: doc[FirestorePath.Outsource.WAITING_CLIENT_AT],
       workLog: doc[FirestorePath.Outsource.WORK_LOG] ?? 0,
       revisionRequest: {
-        total: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.TOTAL),
+        total: get(
+          FirestorePath.Outsource.RevisionRequestCount.BASE,
+          FirestorePath.Outsource.RevisionRequestCount.TOTAL,
+        ),
         today: 0,
-        draft: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.DRAFT),
-        sent: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.SENT),
-        approved: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.APPROVED),
-        rejected: get(FirestorePath.Outsource.RevisionRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.REJECTED)
+        draft: get(
+          FirestorePath.Outsource.RevisionRequestCount.BASE,
+          FirestorePath.Outsource.RevisionRequestCount.DRAFT,
+        ),
+        sent: get(
+          FirestorePath.Outsource.RevisionRequestCount.BASE,
+          FirestorePath.Outsource.RevisionRequestCount.SENT,
+        ),
+        approved: get(
+          FirestorePath.Outsource.RevisionRequestCount.BASE,
+          FirestorePath.Outsource.RevisionRequestCount.APPROVED,
+        ),
+        rejected: get(
+          FirestorePath.Outsource.RevisionRequestCount.BASE,
+          FirestorePath.Outsource.RevisionRequestCount.REJECTED,
+        ),
       },
       infoRequest: {
-        total: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.RevisionRequestCount.TOTAL),
+        total: get(
+          FirestorePath.Outsource.InfoRequestCount.BASE,
+          FirestorePath.Outsource.InfoRequestCount.TOTAL,
+        ),
         today: 0,
-        draft: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.DRAFT),
-        sent: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.SENT),
-        received: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.RECEIVED),
-        rejected: get(FirestorePath.Outsource.InfoRequestCount.BASE, FirestorePath.Outsource.InfoRequestCount.REJECTED)
-      }
+        draft: get(
+          FirestorePath.Outsource.InfoRequestCount.BASE,
+          FirestorePath.Outsource.InfoRequestCount.DRAFT,
+        ),
+        sent: get(
+          FirestorePath.Outsource.InfoRequestCount.BASE,
+          FirestorePath.Outsource.InfoRequestCount.SENT,
+        ),
+        received: get(
+          FirestorePath.Outsource.InfoRequestCount.BASE,
+          FirestorePath.Outsource.InfoRequestCount.RECEIVED,
+        ),
+        rejected: get(
+          FirestorePath.Outsource.InfoRequestCount.BASE,
+          FirestorePath.Outsource.InfoRequestCount.REJECTED,
+        ),
+      },
     })
   }
 }

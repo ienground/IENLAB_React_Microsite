@@ -82,9 +82,10 @@ export namespace Env {
 
     static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): DataLength {
       const doc = snapshotToData(snapshot)
-      const total = (colId: string) => doc[`${colId}.${FirestorePath.Env.DataLength.TOTAL}`] ?? 0
-      const today = (colId: string) => doc[`${colId}.${FirestorePath.Env.DataLength.TODAY}`] ?? 0
-      const get = (colId: string, field: string) => doc[`${colId}.${field}`] ?? 0
+      const group = (colId: string) => doc?.[colId] ?? {}
+      const total = (colId: string) => group(colId)?.[FirestorePath.Env.DataLength.TOTAL] ?? 0
+      const today = (colId: string) => group(colId)?.[FirestorePath.Env.DataLength.TODAY] ?? 0
+      const get = (colId: string, field: string) => group(colId)?.[field] ?? 0
 
       return new DataLength({
         user: {
