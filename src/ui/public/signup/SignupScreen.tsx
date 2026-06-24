@@ -50,6 +50,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog.tsx"
+import {ScrollArea} from "@/components/ui/scroll-area.tsx"
+import Markdown from "react-markdown"
+import remarkGfm from 'remark-gfm'
+import {markdownComponents} from "@/components/custom/shared/MarkdownComponent.tsx"
+import {Label} from "@/components/ui/label.tsx"
 
 export default function SignupScreen() {
   const {t} = useTranslation()
@@ -219,39 +224,39 @@ function StepTerms(props: {
     <div className="flex flex-col gap-8">
       <h1 className="large-text-title">{t("strings:signup.agree_terms.title")}</h1>
       <p className="text-muted-foreground">{t("strings:signup.agree_terms.desc")}</p>
-                  {/*onCheckedChange={() => toggleAgreementId(item.id)}*/}
-
-      <div className="space-y-4 rounded-lg border p-6">
-        <label className="flex items-center gap-3 cursor-pointer pb-4 border-b">
+      <div className="space-y-4 rounded-4xl border p-6">
+        <div className="flex flex-row gap-x-4">
           <Checkbox
+            id="agreed_toggle_all"
             checked={allAgreed}
             onCheckedChange={toggleAll}
           />
-          <span className="font-medium">{t("strings:agree_all")}</span>
-        </label>
-
+          <Label htmlFor="agreed_toggle_all" className="font-medium">{t("strings:signup.agree_terms.select_all")}</Label>
+        </div>
         {requiredItems.length > 0 && (
           <div className="space-y-3">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              {t("strings:required_agreements")}
+              {t("strings:signup.agree_terms.required_agreements")}
             </p>
             {requiredItems.map(item => (
-              <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
-                <Checkbox
-                  checked={signupUiState.item.agreementIds.includes(item.id)}
-                  onCheckedChange={() => toggleAgreementId(item.id)}
-                  className="mt-0.5"
-                />
-                <div className="flex flex-col gap-1 min-w-0">
-                  <span className="text-sm font-medium group-hover:underline">
-                    {Localized.get(item.content)}
-                    <span className="text-destructive ml-1">({t("strings:required")})</span>
-                  </span>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {Localized.get(item.content, "en")}
-                  </p>
+              <div className="flex flex-col gap-y-4">
+                <ScrollArea className="w-full h-60 rounded-lg border px-4">
+                  <div className="my-4">
+                    <Markdown
+                      components={markdownComponents}
+                      remarkPlugins={[remarkGfm]}
+                    >{Localized.get(item.content)}</Markdown>
+                  </div>
+                </ScrollArea>
+                <div className="flex flex-row gap-x-4 items-center">
+                  <Checkbox
+                    id={item.id}
+                    checked={signupUiState.item.agreementIds.includes(item.id)}
+                    onCheckedChange={() => toggleAgreementId(item.id)}
+                  />
+                  <Label htmlFor={item.id}>{t("strings:signup.agree_terms.required_label")} {Localized.get(item.title)}</Label>
                 </div>
-              </label>
+              </div>
             ))}
           </div>
         )}
@@ -259,25 +264,27 @@ function StepTerms(props: {
         {optionalItems.length > 0 && (
           <div className="space-y-3 pt-2">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              {t("strings:optional_agreements")}
+              {t("strings:signup.agree_terms.optional_agreements")}
             </p>
             {optionalItems.map(item => (
-              <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
-                <Checkbox
-                  checked={signupUiState.item.agreementIds.includes(item.id)}
-                  onCheckedChange={() => toggleAgreementId(item.id)}
-                  className="mt-0.5"
-                />
-                <div className="flex flex-col gap-1 min-w-0">
-                  <span className="text-sm font-medium group-hover:underline">
-                    {Localized.get(item.content)}
-                    <span className="text-muted-foreground ml-1">({t("strings:optional")})</span>
-                  </span>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {Localized.get(item.content, "en")}
-                  </p>
+              <div className="flex flex-col gap-y-4">
+                <ScrollArea className="w-full h-60 rounded-lg border px-4">
+                  <div className="my-4">
+                    <Markdown
+                      components={markdownComponents}
+                      remarkPlugins={[remarkGfm]}
+                    >{Localized.get(item.content)}</Markdown>
+                  </div>
+                </ScrollArea>
+                <div className="flex flex-row gap-x-4 items-center">
+                  <Checkbox
+                    id={item.id}
+                    checked={signupUiState.item.agreementIds.includes(item.id)}
+                    onCheckedChange={() => toggleAgreementId(item.id)}
+                  />
+                  <Label htmlFor={item.id}>{t("strings:signup.agree_terms.optional_label")} {Localized.get(item.title)}</Label>
                 </div>
-              </label>
+              </div>
             ))}
           </div>
         )}
@@ -292,7 +299,7 @@ function StepTerms(props: {
           {t("strings:signout.label")}
         </MagneticButton>
         <MagneticButton
-          disabled={!allRequiredAgreed}
+          disabled={!allRequiredAgreed()}
           onClick={props.onNext}
         >
           <RiArrowRightLine />
@@ -303,7 +310,6 @@ function StepTerms(props: {
   )
 }
 function StepInfo(props: {
-  // onSubmit: () => void
   onBack: () => void
 }) {
   const uiState = SignupViewModel.use.userEditUiState()

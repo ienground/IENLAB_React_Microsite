@@ -7,6 +7,7 @@ export class AgreementItemEditDetails {
   _uid: string
   _docId?: string
   id: string = ""
+  title: Localized<string> = { ko: "", en: "" }
   content: Localized<string> = { ko: "", en: "" }
   required: boolean = true
   sortOrder: number = 0
@@ -21,6 +22,7 @@ export class AgreementItemEditDetails {
   toItem(): Env.Agreement.Item {
     return new Env.Agreement.Item({
       id: this.id,
+      title: this.title,
       content: this.content,
       required: this.required,
       sortOrder: this.sortOrder,
@@ -31,6 +33,7 @@ export class AgreementItemEditDetails {
     return new AgreementItemEditDetails({
       _docId: item.ref?.id,
       id: item.id,
+      title: {...item.title},
       content: {...item.content},
       required: item.required,
       sortOrder: item.sortOrder,

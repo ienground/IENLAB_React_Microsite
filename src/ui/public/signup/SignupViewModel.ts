@@ -64,6 +64,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   unsubscribeAgreementItems: null,
 
   init: () => {
+    get().loadNextCompanyPage()
     const off = props.envRepository.observeAgreementItems(items => {
       set(state => ({
         signupUiState: new SignupUiState({

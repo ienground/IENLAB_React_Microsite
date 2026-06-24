@@ -31,6 +31,7 @@ export namespace Env {
       createAt: Timestamp = Timestamp.now()
       updateAt: Timestamp = Timestamp.now()
       deletedAt: Timestamp | null = null
+      title: Localized<string> = { ko: "", en: "" }
       content: Localized<string> = { ko: "", en: "" }
       required: boolean = true
       sortOrder: number = 0
@@ -43,6 +44,7 @@ export namespace Env {
         const map: Record<string, unknown> = {
           [FirestorePath.Env.Agreement.Items.KEY]: this.id,
           [FirestorePath.DELETED_AT]: this.deletedAt,
+          [FirestorePath.Env.Agreement.Items.TITLE]: this.title,
           [FirestorePath.Env.Agreement.Items.CONTENT]: this.content,
           [FirestorePath.Env.Agreement.Items.REQUIRED]: this.required,
           [FirestorePath.Env.Agreement.Items.SORT_ORDER]: this.sortOrder,
@@ -63,6 +65,7 @@ export namespace Env {
           createAt: doc[FirestorePath.CREATE_AT],
           updateAt: doc[FirestorePath.UPDATE_AT],
           deletedAt: doc[FirestorePath.DELETED_AT],
+          title: doc[FirestorePath.Env.Agreement.Items.TITLE],
           content: doc[FirestorePath.Env.Agreement.Items.CONTENT],
           required: doc[FirestorePath.Env.Agreement.Items.REQUIRED] ?? true,
           sortOrder: doc[FirestorePath.Env.Agreement.Items.SORT_ORDER] ?? 0,

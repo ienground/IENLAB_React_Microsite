@@ -355,6 +355,11 @@
   "signup": {
     "agree_terms": {
       "desc": "필수 항목에 동의하셔야 서비스를 이용하실 수 있으며, 선택 항목은 동의하지 않으셔도 가입이 가능합니다.",
+      "optional_agreements": "선택 약관",
+      "optional_label": "(선택)",
+      "required_agreements": "필수 약관",
+      "required_label": "(필수)",
+      "select_all": "약관 전체동의",
       "title": "이용약관 동의"
     },
     "agree_terms_desc": "서비스 이용을 위해 약관에 동의해 주세요 ",

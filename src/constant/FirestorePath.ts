@@ -24,6 +24,8 @@ export const FirestorePath = {
 
       Items: {
         /** Map<Locale, string> */
+        TITLE: "title",
+        /** Map<Locale, string> */
         CONTENT: "content",
         /** string */
         KEY: "key",
