@@ -11,8 +11,6 @@ import {FirestorePath} from "@/constant/FirestorePath.ts"
 export namespace Env {
   export class Agreement {
     ref: DocumentReference | null = null
-    requiredUpdateAt: Timestamp | null = null
-    optionalUpdateAt: Timestamp | null = null
 
     constructor(partial: Partial<Agreement> = {}) {
       Object.assign(this, partial)
@@ -22,8 +20,6 @@ export namespace Env {
       const doc = snapshotToData(snapshot)
       return new Agreement({
         ref: snapshot.ref,
-        requiredUpdateAt: doc[FirestorePath.Env.Agreement.REQUIRED_UPDATE_AT],
-        optionalUpdateAt: doc[FirestorePath.Env.Agreement.OPTIONAL_UPDATE_AT],
       })
     }
   }
@@ -36,6 +32,8 @@ export namespace Env {
       updateAt: Timestamp = Timestamp.now()
       deletedAt: Timestamp | null = null
       content: Localized<string> = { ko: "", en: "" }
+      required: boolean = true
+      sortOrder: number = 0
 
       constructor(partial: Partial<Item> = {}) {
         Object.assign(this, partial)
@@ -43,9 +41,11 @@ export namespace Env {
 
       toHashMap(isUpdate: boolean = false) {
         const map: Record<string, unknown> = {
-          [FirestorePath.UPDATE_AT]: serverTimestamp(),
+          [FirestorePath.Env.Agreement.Items.KEY]: this.id,
           [FirestorePath.DELETED_AT]: this.deletedAt,
-          [FirestorePath.Env.Agreement.Items.CONTENT]: this.content
+          [FirestorePath.Env.Agreement.Items.CONTENT]: this.content,
+          [FirestorePath.Env.Agreement.Items.REQUIRED]: this.required,
+          [FirestorePath.Env.Agreement.Items.SORT_ORDER]: this.sortOrder,
         }
 
         if (!isUpdate) {
@@ -58,16 +58,19 @@ export namespace Env {
       static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Item {
         const doc = snapshotToData(snapshot)
         return new Item({
-          id: doc.id,
+          id: doc[FirestorePath.Env.Agreement.Items.KEY] ?? "",
           ref: snapshot.ref,
           createAt: doc[FirestorePath.CREATE_AT],
           updateAt: doc[FirestorePath.UPDATE_AT],
           deletedAt: doc[FirestorePath.DELETED_AT],
-          content: doc[FirestorePath.Env.Agreement.Items.CONTENT]
+          content: doc[FirestorePath.Env.Agreement.Items.CONTENT],
+          required: doc[FirestorePath.Env.Agreement.Items.REQUIRED] ?? true,
+          sortOrder: doc[FirestorePath.Env.Agreement.Items.SORT_ORDER] ?? 0,
         })
       }
     }
   }
+
 
   export class DataLength {
     user: Env.DataLength.CollectionCount = {total: 0, today: 0, pending: 0, active: 0, suspended: 0, ended: 0}

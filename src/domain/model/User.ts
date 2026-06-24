@@ -27,8 +27,8 @@ export class User implements FirestoreItem {
   state: User.State = User.State.Default
   phone: string = ""
   email: string = ""
-  agreedRequiredAt: Timestamp | null = null
-  agreedOptionalAt: Timestamp | null = null
+  agreedAt: Timestamp | null = null
+  agreementIds: string[] = []
 
   constructor(partial: Partial<User> = {}) {
     Object.assign(this, partial)
@@ -71,8 +71,8 @@ export class User implements FirestoreItem {
       state: doc[FirestorePath.User.STATE],
       phone: doc[FirestorePath.User.PHONE],
       email: doc[FirestorePath.User.EMAIL] ?? "",
-      agreedRequiredAt: doc[FirestorePath.User.AGREED_REQUIRED_AT] ?? null,
-      agreedOptionalAt: doc[FirestorePath.User.AGREED_OPTIONAL_AT] ?? null
+      agreedAt: doc[FirestorePath.User.AGREED_AT] ?? null,
+      agreementIds: doc[FirestorePath.User.AGREEMENT_IDS] ?? []
     })
   }
 }

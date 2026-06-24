@@ -16,7 +16,7 @@ import {
 } from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {useNavigate} from "react-router"
-import {companyRepository, userRepository} from "@/di/container.ts"
+import {companyRepository, envRepository, userRepository} from "@/di/container.ts"
 import {SignupViewModel} from "@/ui/public/signup/SignupViewModel.ts"
 import {AnimatePresence, motion} from "motion/react"
 import {useEffect, useState} from "react"
@@ -65,6 +65,7 @@ export default function SignupScreen() {
       <SignupViewModel.Provider
         userRepository={userRepository}
         companyRepository={companyRepository}
+        envRepository={envRepository}
       >
         <ScreenBody/>
       </SignupViewModel.Provider>
@@ -188,31 +189,98 @@ function StepTerms(props: {
   onNext: () => void
   onLogout: () => void
 }) {
-  const uiState = SignupViewModel.use.signupUiState()
-  const updateUiState = SignupViewModel.use.updateSignupUiState()
+  const signupUiState = SignupViewModel.use.signupUiState()
+  const updateSignupUiState = SignupViewModel.use.updateSignupUiState()
+  const allRequiredAgreed = SignupViewModel.use.allRequiredAgreed()
 
   const {t} = useTranslation()
+
+  const toggleAgreementId = (id: string) => {
+    const ids = signupUiState.item.agreementIds
+    const updated = ids.includes(id)
+      ? ids.filter(i => i !== id)
+      : [...ids, id]
+    updateSignupUiState({ agreementIds: updated })
+  }
+
+  const requiredItems = signupUiState.agreementItems.filter(i => i.required)
+  const optionalItems = signupUiState.agreementItems.filter(i => !i.required)
+  const allAgreed = signupUiState.agreementItems.every(i => signupUiState.item.agreementIds.includes(i.id))
+
+  const toggleAll = () => {
+    if (allAgreed) {
+      updateSignupUiState({ agreementIds: [] })
+    } else {
+      updateSignupUiState({ agreementIds: signupUiState.agreementItems.map(i => i.id) })
+    }
+  }
 
   return (
     <div className="flex flex-col gap-8">
       <h1 className="large-text-title">{t("strings:signup.agree_terms.title")}</h1>
       <p className="text-muted-foreground">{t("strings:signup.agree_terms.desc")}</p>
+                  {/*onCheckedChange={() => toggleAgreementId(item.id)}*/}
 
       <div className="space-y-4 rounded-lg border p-6">
-        <label className="flex items-center gap-3 cursor-pointer">
+        <label className="flex items-center gap-3 cursor-pointer pb-4 border-b">
           <Checkbox
-            checked={uiState.item.agreedRequired}
-            onCheckedChange={value => updateUiState({ agreedRequired: !!value })}
+            checked={allAgreed}
+            onCheckedChange={toggleAll}
           />
-          <span className="text-sm">{t("strings:signup.agree_required")}</span>
+          <span className="font-medium">{t("strings:agree_all")}</span>
         </label>
-        <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox
-            checked={uiState.item.agreedOptional}
-            onCheckedChange={value => updateUiState({ agreedOptional: !!value })}
-          />
-          <span className="text-sm">{t("strings:signup.agree_optional")}</span>
-        </label>
+
+        {requiredItems.length > 0 && (
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {t("strings:required_agreements")}
+            </p>
+            {requiredItems.map(item => (
+              <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={signupUiState.item.agreementIds.includes(item.id)}
+                  onCheckedChange={() => toggleAgreementId(item.id)}
+                  className="mt-0.5"
+                />
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-sm font-medium group-hover:underline">
+                    {Localized.get(item.content)}
+                    <span className="text-destructive ml-1">({t("strings:required")})</span>
+                  </span>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {Localized.get(item.content, "en")}
+                  </p>
+                </div>
+              </label>
+            ))}
+          </div>
+        )}
+
+        {optionalItems.length > 0 && (
+          <div className="space-y-3 pt-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {t("strings:optional_agreements")}
+            </p>
+            {optionalItems.map(item => (
+              <label key={item.id} className="flex items-start gap-3 cursor-pointer group">
+                <Checkbox
+                  checked={signupUiState.item.agreementIds.includes(item.id)}
+                  onCheckedChange={() => toggleAgreementId(item.id)}
+                  className="mt-0.5"
+                />
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-sm font-medium group-hover:underline">
+                    {Localized.get(item.content)}
+                    <span className="text-muted-foreground ml-1">({t("strings:optional")})</span>
+                  </span>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {Localized.get(item.content, "en")}
+                  </p>
+                </div>
+              </label>
+            ))}
+          </div>
+        )}
       </div>
 
       <ButtonGroup className="w-fit">
@@ -224,7 +292,7 @@ function StepTerms(props: {
           {t("strings:signout.label")}
         </MagneticButton>
         <MagneticButton
-          disabled={!uiState.item.agreedRequired}
+          disabled={!allRequiredAgreed}
           onClick={props.onNext}
         >
           <RiArrowRightLine />
@@ -234,7 +302,6 @@ function StepTerms(props: {
     </div>
   )
 }
-
 function StepInfo(props: {
   // onSubmit: () => void
   onBack: () => void

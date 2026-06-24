@@ -1,0 +1,39 @@
+import {Env} from "@/domain/model/Env.ts"
+import type {Localized} from "@ienlab/react-library"
+
+let uidCounter = 0
+
+export class AgreementItemEditDetails {
+  _uid: string
+  _docId?: string
+  id: string = ""
+  content: Localized<string> = { ko: "", en: "" }
+  required: boolean = true
+  sortOrder: number = 0
+  isDirty: boolean = false
+  isNew: boolean = false
+
+  constructor(partial: Partial<AgreementItemEditDetails> = {}) {
+    this._uid = `edit-${++uidCounter}`
+    Object.assign(this, partial)
+  }
+
+  toItem(): Env.Agreement.Item {
+    return new Env.Agreement.Item({
+      id: this.id,
+      content: this.content,
+      required: this.required,
+      sortOrder: this.sortOrder,
+    })
+  }
+
+  static fromItem(item: Env.Agreement.Item): AgreementItemEditDetails {
+    return new AgreementItemEditDetails({
+      _docId: item.ref?.id,
+      id: item.id,
+      content: {...item.content},
+      required: item.required,
+      sortOrder: item.sortOrder,
+    })
+  }
+}
