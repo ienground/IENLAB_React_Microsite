@@ -6,8 +6,6 @@ import {
   type DocumentReference,
   type Firestore,
   getDoc,
-  getDocs,
-  limit,
   orderBy,
   query,
   serverTimestamp,
