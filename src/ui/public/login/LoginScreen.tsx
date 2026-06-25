@@ -56,6 +56,7 @@ function ScreenBody() {
   const uiState = LoginViewModel.use.uiState()
   const updateUiState = LoginViewModel.use.updateUiState()
   const login = LoginViewModel.use.login()
+  const signup = LoginViewModel.use.signup()
   const primGoogleLogin = LoginViewModel.use.googleLogin()
   const primNaverLogin = LoginViewModel.use.naverLogin()
   const primKakaoLogin = LoginViewModel.use.kakaoLogin()
@@ -63,10 +64,19 @@ function ScreenBody() {
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    login(
-      (credential) => navigate(redirectTo),
-      (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
-    )
+    if (uiState.item.isSignup) {
+      signup(
+        (credential) => {
+          toast.success(t("strings:user.profile.phone.verification_email_sent"))
+        },
+        (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
+      )
+    } else {
+      login(
+        (credential) => navigate(redirectTo),
+        (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
+      )
+    }
   }
 
   const googleLogin = () => {
@@ -146,6 +156,13 @@ function ScreenBody() {
                         value={uiState.item.password}
                         onChange={e => updateUiState({password: e.target.value})}
                       />
+                      {uiState.item.isSignup && uiState.item.password && (
+                        <PasswordStrength
+                          password={uiState.item.password}
+                          confirmPassword={uiState.item.confirmPassword}
+                          t={t}
+                        />
+                      )}
                     </Field>
 
                     <AnimatePresence initial={false}>
@@ -161,7 +178,7 @@ function ScreenBody() {
                             opacity: {duration: 0.2, ease: "easeOut"},
                             layout: {duration: 0.28, ease: [0.16, 1, 0.3, 1]},
                           }}
-                          className="overflow-hidden origin-top"
+                          className="origin-top"
                         >
                           <div>
                             <Field>
@@ -213,7 +230,9 @@ function ScreenBody() {
                             {t(
                               isLoading
                                 ? "strings:signin.loging_in"
-                                : "strings:login"
+                                : uiState.item.isSignup
+                                  ? "strings:signup.label"
+                                  : "strings:login"
                             )}
                           </span>
                         </span>
@@ -366,3 +385,46 @@ function ScreenBody() {
   )
 }
 
+function PasswordStrength({ password, confirmPassword, t }: { password: string; confirmPassword: string; t: (key: string) => string }) {
+  const checks = [
+    { label: t("strings:password_rule.length"), pass: password.length >= 8 },
+    { label: t("strings:password_rule.lowercase"), pass: /[a-z]/.test(password) },
+    { label: t("strings:password_rule.uppercase"), pass: /[A-Z]/.test(password) },
+    { label: t("strings:password_rule.number"), pass: /[0-9]/.test(password) },
+    { label: t("strings:password_rule.special"), pass: /[^a-zA-Z0-9]/.test(password) },
+  ]
+
+  const score = checks.filter(c => c.pass).length
+  const strengthLabel = score <= 1 ? t("strings:password_strength.weak")
+    : score <= 3 ? t("strings:password_strength.medium")
+    : t("strings:password_strength.strong")
+  const barColor = score <= 1 ? "bg-destructive"
+    : score <= 3 ? "bg-yellow-500"
+    : "bg-green-500"
+
+  return (
+    <div className="mt-2 space-y-1.5">
+      <div className="flex items-center gap-2">
+        <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+          <motion.div
+            className={`h-full rounded-full ${barColor}`}
+            initial={{ width: 0 }}
+            animate={{ width: `${(score / 5) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+        <span className="text-xs text-muted-foreground min-w-10 text-right">{strengthLabel}</span>
+      </div>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+        {checks.map(check => (
+          <span key={check.label} className={`text-xs ${check.pass ? "text-green-600 dark:text-green-400" : "text-muted-foreground/60"}`}>
+            {check.pass ? "✓" : "○"} {check.label}
+          </span>
+        ))}
+      </div>
+      {confirmPassword && password !== confirmPassword && (
+        <p className="text-xs text-destructive">{t("strings:password_mismatch")}</p>
+      )}
+    </div>
+  )
+}

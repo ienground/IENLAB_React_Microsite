@@ -30,6 +30,7 @@ interface Store {
 
   updateUiState: (item: Partial<LoginDetails>) => void
   login: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  signup: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   googleLogin: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   naverLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   kakaoLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
@@ -54,6 +55,28 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       onSuccess(result.data)
     } else {
       onFailure(result.errorKey)
+    }
+  },
+
+  signup: async (onSuccess, onFailure) => {
+    set({ isLoading: true })
+    try {
+      const { email, password, confirmPassword } = get().uiState.item
+
+      if (password !== confirmPassword) {
+        onFailure("strings:password_mismatch")
+        return
+      }
+
+      const result = await props.userRepository.createUserWithEmailAndPassword(email, password)
+      if (result.ok) {
+        await props.userRepository.sendEmailVerification()
+        onSuccess(result.data)
+      } else {
+        onFailure(result.errorKey)
+      }
+    } finally {
+      set({ isLoading: false })
     }
   },
 

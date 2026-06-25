@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore"
 import {
   type Auth,
+  createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithCustomToken,
   signInWithEmailAndPassword,
@@ -93,6 +94,26 @@ export class UserRepositoryImpl implements UserRepository {
     this.updateUserEmailFn = createCallable(functions, "UpdateUserEmail")
     this.updateUserAgreementFn = createCallable(functions, "UpdateUserAgreement")
     this.updateUserStateFn = createCallable(functions, "UpdateUserState")
+  }
+
+  async createUserWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
+    try {
+      const credential = await createUserWithEmailAndPassword(this.auth, email, password)
+      return { ok: true, data: credential }
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        return {
+          ok: false,
+          errorCode: e.code,
+          errorKey: getAuthErrorKey(e.code) ?? "",
+        }
+      }
+
+      return {
+        ok: false,
+        errorKey: String(e),
+      }
+    }
   }
 
   async signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
