@@ -10,6 +10,7 @@ export interface UserRepository {
   /**
    * Auth
    */
+  signUp(email: string, password: string): Promise<SignInResult>
   signInWithEmailAndPassword(email: string, password: string): Promise<SignInResult>
   signInWithToken(token: string): Promise<SignInResult>
   signInWithGoogle(): Promise<SignInResult>

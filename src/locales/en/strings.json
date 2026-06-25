@@ -36,6 +36,12 @@
   "day_format": "{{day}} days",
   "delete": "Delete",
   "email": "Email",
+  "email_signup": "Email (Sign up)",
+  "email_verification": {
+    "title": "Email verification required",
+    "desc": "Please check the verification email sent to {{email}}.",
+    "resend": "Resend verification email"
+  },
   "encrypted": "Encrypted",
   "error": {
     "not_found": {
@@ -113,6 +119,23 @@
   "og": {
     "description": "Mobile Developer, Graphic Designer."
   },
+  "password": "Password",
+  "password_confirm": "Confirm password",
+  "password_signup": "Choose a password",
+  "password_mismatch": "Passwords do not match",
+  "password_rule": {
+    "length": "8+ characters",
+    "lowercase": "Lowercase",
+    "uppercase": "Uppercase",
+    "number": "Number",
+    "special": "Special character"
+  },
+  "password_strength": {
+    "weak": "Weak",
+    "medium": "Medium",
+    "strong": "Strong"
+  },
+  "login": "Login",
   "privacy_policy": {
     "desc": "It explains how we collect, use, retain, and delete personal information needed for service use.",
     "label": "Privacy Policy"
@@ -120,7 +143,16 @@
   "settings": {
     "toggle_theme": "Toggle theme"
   },
+  "signin": {
+    "agreement": "By continuing, you agree to our <privacyLink>{{privacyLabel}}</privacyLink>.",
+    "ask_account": "Already have an account?",
+    "ask_no_account": "Don't have an account?",
+    "continue_with": "Or continue with",
+    "loging_in": "Signing in..",
+    "signin_with_google": "Sign in with Google"
+  },
   "signup": {
+    "label": "Sign Up",
     "agree_terms": {
       "required_agreements": "Required Agreements",
       "select_all": "Agree to all terms"

@@ -59,8 +59,15 @@ import {Label} from "@/components/ui/label.tsx"
 export default function SignupScreen() {
   const {t} = useTranslation()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const fbUser = AuthSessionViewModel.use.fbUser()
+
 
   if (!isAuthenticated) {
+    return <Navigate to={LoginDestination.root} replace />
+  }
+
+  const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
+  if (isPasswordUser && !fbUser?.emailVerified) {
     return <Navigate to={LoginDestination.root} replace />
   }
 
