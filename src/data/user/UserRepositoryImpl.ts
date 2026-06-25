@@ -228,21 +228,19 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   async sendPhoneVerifyCode(phoneNumber: string): Promise<PhoneVerify.Request> {
-    return PhoneVerify.Request.SUCCESS
-    // const uid = this.auth.currentUser?.uid
-    // if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
-    //
-    // const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
-    // return result.data.code
+    const uid = this.auth.currentUser?.uid
+    if (!uid) return PhoneVerify.Request.FAILURE_UNKNOWN
+
+    const result = await this.sendPhoneVerifyFn({ phoneNumber, uid })
+    return result.data.code
   }
 
   async verifyPhoneCode(phoneNumber: string, code: string): Promise<PhoneVerify.Result> {
-    return PhoneVerify.Result.VERIFIED
-    // const uid = this.auth.currentUser?.uid
-    // if (!uid) return PhoneVerify.Result.FAILURE_UNKNOWN
-    //
-    // const result = await this.verifyCodeFn({ phoneNumber, uid, code })
-    // return result.data.code
+    const uid = this.auth.currentUser?.uid
+    if (!uid) return PhoneVerify.Result.FAILURE_UNKNOWN
+
+    const result = await this.verifyCodeFn({ phoneNumber, uid, code })
+    return result.data.code
   }
 
   getCurrentUser(): FirebaseUser | null {

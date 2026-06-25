@@ -11,6 +11,7 @@ import {FirestorePath} from "@/constant/FirestorePath.ts"
 export namespace Env {
   export class Agreement {
     ref: DocumentReference | null = null
+    updateAt: Timestamp = Timestamp.now()
 
     constructor(partial: Partial<Agreement> = {}) {
       Object.assign(this, partial)
@@ -20,6 +21,7 @@ export namespace Env {
       const doc = snapshotToData(snapshot)
       return new Agreement({
         ref: snapshot.ref,
+        updateAt: doc[FirestorePath.UPDATE_AT]
       })
     }
   }
