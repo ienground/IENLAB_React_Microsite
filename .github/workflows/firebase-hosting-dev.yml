@@ -43,13 +43,38 @@ jobs:
           EOF
 
       - name: Deploy to Firebase preview channel
+        id: deploy_preview
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebaseServiceAccount.json
         run: |
           CHANNEL_ID="pr${{ github.event.number }}-${{ github.head_ref }}"
           CHANNEL_ID=$(echo "$CHANNEL_ID" | sed 's/[^[:alnum:]_-]/_/g')
 
+          OUTPUT_FILE="$RUNNER_TEMP/firebase-deploy-output.json"
+
           npx firebase-tools@15.22.1 hosting:channel:deploy "$CHANNEL_ID" \
             --project ienlab-ienground \
             --expires 4h \
-            --only public
+            --only public \
+            --json > "$OUTPUT_FILE"
+
+          cat "$OUTPUT_FILE"
+
+          CHANNEL_URL=$(jq -r '.result[]? | select(.type=="CHANNEL_URL") | .url // empty' "$OUTPUT_FILE")
+          if [ -z "$CHANNEL_URL" ]; then
+            CHANNEL_URL=$(jq -r '.. | .url? // empty' "$OUTPUT_FILE" | head -n 1)
+          fi
+
+          echo "channel_id=$CHANNEL_ID" >> "$GITHUB_OUTPUT"
+          echo "channel_url=$CHANNEL_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL on PR
+        if: ${{ steps.deploy_preview.outputs.channel_url != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "🚀 Firebase Preview 배포 완료
+
+  - Channel: \`${{ steps.deploy_preview.outputs.channel_id }}\`
+  - URL: ${{ steps.deploy_preview.outputs.channel_url }}"

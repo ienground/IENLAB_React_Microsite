@@ -45,6 +45,6 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebaseServiceAccount.json
         run: |
           npx firebase-tools@15.22.1 deploy \
-            --only hosting \
             --project ienlab-ienground \
+            --only hosting \
             --non-interactive
