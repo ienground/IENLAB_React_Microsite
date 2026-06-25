@@ -4,14 +4,14 @@ import {Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator} from "@
 import {Input} from "@/components/ui/input.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {Trans, useTranslation} from "react-i18next"
-import {RiErrorWarningFill} from "@remixicon/react"
+import {RiErrorWarningFill, RiMailSendLine} from "@remixicon/react"
 import imgLogoFull from "@/assets/brand/img_logo_full.png"
 import imgPattern from "@/assets/brand/pattern.png"
 import icGoogle from "@/assets/icon/google.png"
 import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, NaverLogin, Seo} from "@ienlab/react-library"
-import {type SubmitEvent} from "react"
+import {type SubmitEvent, useState} from "react"
 import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
@@ -28,8 +28,15 @@ export default function LoginScreen() {
   const {t} = useTranslation()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const user = AuthSessionViewModel.use.user()
+  const fbUser = AuthSessionViewModel.use.fbUser()
 
-  if (isAuthenticated && !user) {
+  const canProceedToSignup = () => {
+    if (!isAuthenticated || user) return false
+    const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
+    return !isPasswordUser || fbUser?.emailVerified
+  }
+
+  if (canProceedToSignup()) {
     return <Navigate
       to={SignupDestination.root}
       replace
@@ -52,6 +59,10 @@ function ScreenBody() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+  const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const fbUser = AuthSessionViewModel.use.fbUser()
+  const authUser = AuthSessionViewModel.use.user()
+  const logout = AuthSessionViewModel.use.signOut()
   const isLoading = LoginViewModel.use.isLoading()
   const uiState = LoginViewModel.use.uiState()
   const updateUiState = LoginViewModel.use.updateUiState()
@@ -60,6 +71,9 @@ function ScreenBody() {
   const primGoogleLogin = LoginViewModel.use.googleLogin()
   const primNaverLogin = LoginViewModel.use.naverLogin()
   const primKakaoLogin = LoginViewModel.use.kakaoLogin()
+
+  const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
+  const showEmailVerification = isAuthenticated && !authUser && isPasswordUser && !fbUser?.emailVerified
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -108,6 +122,12 @@ function ScreenBody() {
         <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
+              {showEmailVerification ? (
+                <EmailVerificationCard
+                  fbUser={fbUser}
+                  logout={logout}
+                />
+              ) : (
               <motion.form
                 layout
                 className="p-6 md:p-8"
@@ -355,6 +375,7 @@ function ScreenBody() {
                   </FieldGroup>
                 </motion.div>
               </motion.form>
+              )}
 
               <div className="relative hidden bg-muted md:block">
                 <CrossfadeImage
@@ -378,6 +399,7 @@ function ScreenBody() {
                 privacyLink: <Link to={PrivacyDestination.root}/>,
               }}
             />
+
           </FieldDescription>
         </div>
       </div>
@@ -425,6 +447,60 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
       {confirmPassword && password !== confirmPassword && (
         <p className="text-xs text-destructive">{t("strings:password_mismatch")}</p>
       )}
+    </div>
+  )
+}
+
+function EmailVerificationCard({ fbUser, logout }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void> }) {
+  const { t } = useTranslation()
+  const [isResending, setResending] = useState(false)
+
+  const resendEmail = async () => {
+    setResending(true)
+    try {
+      await userRepository.sendEmailVerification()
+      toast.success(t("strings:user.profile.phone.verification_email_sent"))
+    } catch {
+      toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})
+    } finally {
+      setResending(false)
+    }
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center p-6 md:p-8 gap-6 text-center">
+      <RiMailSendLine className="size-12 text-muted-foreground" />
+      <div className="space-y-2">
+        <h2 className="text-lg font-semibold">{t("strings:email_verification.title")}</h2>
+        <p className="text-sm text-muted-foreground">
+          {t("strings:email_verification.desc", { email: fbUser?.email ?? "" })}
+        </p>
+      </div>
+      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <Button
+          type="button"
+          disabled={isResending}
+          onClick={resendEmail}
+        >
+          <Swap swapped={isResending}>
+            <SwapOn><Spinner className="size-4"/></SwapOn>
+          </Swap>
+          {t("strings:email_verification.resend")}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={async () => {
+            try {
+              await logout()
+            } catch {
+              toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})
+            }
+          }}
+        >
+          {t("strings:signout.label")}
+        </Button>
+      </div>
     </div>
   )
 }

@@ -47,6 +47,11 @@
   "edit": "수정",
   "email": "이메일",
   "email_signup": "가입할 이메일",
+  "email_verification": {
+    "title": "이메일 인증이 필요합니다",
+    "desc": "{{email}}로 발송된 인증 메일을 확인해주세요.",
+    "resend": "인증 메일 재발송"
+  },
   "encrypted": "암호화됨",
   "error": {
     "not_found": {

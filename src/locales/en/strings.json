@@ -37,6 +37,11 @@
   "delete": "Delete",
   "email": "Email",
   "email_signup": "Email (Sign up)",
+  "email_verification": {
+    "title": "Email verification required",
+    "desc": "Please check the verification email sent to {{email}}.",
+    "resend": "Resend verification email"
+  },
   "encrypted": "Encrypted",
   "error": {
     "not_found": {
