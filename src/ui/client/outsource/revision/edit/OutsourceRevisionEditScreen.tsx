@@ -120,9 +120,15 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
     return () => onDisposed()
   }, [init, onDisposed])
 
+  // useEffect(() => {
+    // if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
+    //   setShowForbiddenDialog(true)
+    // }
+  // }, [infoState.isInitialized, infoState.item?.state, props.mode])
+
   useEffect(() => {
     if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
-      setShowForbiddenDialog(true)
+      window.setTimeout(() => setShowForbiddenDialog(true), 500)
     }
   }, [infoState.isInitialized, infoState.item?.state, props.mode])
 

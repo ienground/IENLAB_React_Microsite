@@ -9,6 +9,7 @@ export class AgreementItemEditDetails {
   id: string = ""
   title: Localized<string> = { ko: "", en: "" }
   content: Localized<string> = { ko: "", en: "" }
+  key: string = ""
   required: boolean = true
   sortOrder: number = 0
   isDirty: boolean = false
@@ -24,6 +25,7 @@ export class AgreementItemEditDetails {
       id: this.id,
       title: this.title,
       content: this.content,
+      key: this.key,
       required: this.required,
       sortOrder: this.sortOrder,
     })
@@ -35,6 +37,7 @@ export class AgreementItemEditDetails {
       id: item.id,
       title: {...item.title},
       content: {...item.content},
+      key: item.key,
       required: item.required,
       sortOrder: item.sortOrder,
     })

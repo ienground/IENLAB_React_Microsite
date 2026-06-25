@@ -128,7 +128,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
 
   useEffect(() => {
     if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state === Outsource.InfoRequest.State.DRAFT) {
-      setShowForbiddenDialog(true)
+      window.setTimeout(() => setShowForbiddenDialog(true), 500)
     }
   }, [infoState.isInitialized, infoState.item?.state, props.mode])
 

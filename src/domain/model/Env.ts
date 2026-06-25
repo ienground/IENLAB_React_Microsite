@@ -49,7 +49,7 @@ export namespace Env {
           [FirestorePath.DELETED_AT]: this.deletedAt,
           [FirestorePath.Env.Agreement.Items.TITLE]: this.title,
           [FirestorePath.Env.Agreement.Items.CONTENT]: this.content,
-          [FirestorePath.Env.Agreement.Items.KEY]: this.id,
+          [FirestorePath.Env.Agreement.Items.KEY]: this.key,
           [FirestorePath.Env.Agreement.Items.REQUIRED]: this.required,
           [FirestorePath.Env.Agreement.Items.SORT_ORDER]: this.sortOrder,
         }
