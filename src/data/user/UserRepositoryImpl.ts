@@ -96,7 +96,7 @@ export class UserRepositoryImpl implements UserRepository {
     this.updateUserStateFn = createCallable(functions, "UpdateUserState")
   }
 
-  async createUserWithEmailAndPassword(email: string, password: string): Promise<SignInResult> {
+  async signUp(email: string, password: string): Promise<SignInResult> {
     try {
       const credential = await createUserWithEmailAndPassword(this.auth, email, password)
       return { ok: true, data: credential }

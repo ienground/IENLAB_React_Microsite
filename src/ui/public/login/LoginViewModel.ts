@@ -68,7 +68,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
         return
       }
 
-      const result = await props.userRepository.createUserWithEmailAndPassword(email, password)
+      const result = await props.userRepository.signUp(email, password)
       if (result.ok) {
         await props.userRepository.sendEmailVerification()
         onSuccess(result.data)
