@@ -29,6 +29,7 @@ jobs:
           VITE_NAVER_CLIENT_ID: ${{ secrets.VITE_NAVER_CLIENT_ID }}
           VITE_NAVER_CLIENT_SECRET: ${{ secrets.VITE_NAVER_CLIENT_SECRET }}
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
+          MOTION_TOKEN: ${{ secrets.MOTION_TOKEN }}
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
