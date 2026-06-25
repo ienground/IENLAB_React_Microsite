@@ -6,11 +6,14 @@ import type { UserCredential } from "firebase/auth"
 interface LoginDetails {
   email: string
   password: string
+  confirmPassword: string
   errorCode: string | null
+
+  isSignup: boolean
 }
 
 class LoginUiState {
-  item: LoginDetails = { email: "", password: "", errorCode: null }
+  item: LoginDetails = { email: "", password: "", confirmPassword: "", errorCode: null, isSignup: false }
 
   constructor(partial?: Partial<LoginUiState>) {
     Object.assign(this, partial)

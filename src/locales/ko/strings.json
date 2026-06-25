@@ -46,6 +46,7 @@
   "desc_korean": "한국어 설명",
   "edit": "수정",
   "email": "이메일",
+  "email_signup": "가입할 이메일",
   "encrypted": "암호화됨",
   "error": {
     "not_found": {
@@ -318,6 +319,8 @@
     }
   },
   "password": "비밀번호",
+  "password_confirm": "비밀번호 확인",
+  "password_signup": "사용할 비밀번호",
   "privacy_policy": {
     "desc": "서비스 이용에 필요한 개인정보의 수집·이용·보관·파기 기준을 설명합니다.",
     "label": "개인정보처리방침"
@@ -337,7 +340,8 @@
     "toggle_theme": "테마 변경하기"
   },
   "signin": {
-    "agreement": "계속 진행하시면 <termsLink>{{termsLabel}}</termsLink> 및 <privacyLink>{{privacyLabel}}</privacyLink>에 동의하는 것으로 간주됩니다.",
+    "agreement": "계속 진행하시면 <privacyLink>{{privacyLabel}}</privacyLink>에 동의하는 것으로 간주됩니다.",
+    "ask_account": "계정이 있으신가요?",
     "ask_no_account": "계정이 없으신가요?",
     "continue_with": "또는 다음으로 계속하기",
     "forgot_password": "비밀번호를 잊으셨나요?",
