@@ -5,7 +5,6 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  checks: write
   contents: read
   pull-requests: write
 
@@ -38,11 +37,11 @@ jobs:
 
       - name: Write Firebase service account
         run: |
-          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'EOF'
+          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'JSON'
           ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
-          EOF
+          JSON
 
-      - name: Deploy to Firebase preview channel
+      - name: Deploy preview channel
         id: deploy_preview
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebaseServiceAccount.json
@@ -58,23 +57,22 @@ jobs:
             --only public \
             --json > "$OUTPUT_FILE"
 
-          cat "$OUTPUT_FILE"
-
           CHANNEL_URL=$(jq -r '.result[]? | select(.type=="CHANNEL_URL") | .url // empty' "$OUTPUT_FILE")
           if [ -z "$CHANNEL_URL" ]; then
             CHANNEL_URL=$(jq -r '.. | .url? // empty' "$OUTPUT_FILE" | head -n 1)
           fi
 
-          echo "channel_id=$CHANNEL_ID" >> "$GITHUB_OUTPUT"
           echo "channel_url=$CHANNEL_URL" >> "$GITHUB_OUTPUT"
 
-      - name: Comment preview URL on PR
+      - name: Comment preview URL
         if: ${{ steps.deploy_preview.outputs.channel_url != '' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} \
-            --body "🚀 Firebase Preview 배포 완료
+          cat > comment.txt <<EOF
+          🚀 Firebase Preview 배포 완료
 
-  - Channel: \`${{ steps.deploy_preview.outputs.channel_id }}\`
-  - URL: ${{ steps.deploy_preview.outputs.channel_url }}"
+          - URL: ${{ steps.deploy_preview.outputs.channel_url }}
+          EOF
+
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt

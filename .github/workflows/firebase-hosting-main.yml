@@ -36,9 +36,9 @@ jobs:
 
       - name: Write Firebase service account
         run: |
-          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'EOF'
+          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'JSON'
           ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
-          EOF
+          JSON
 
       - name: Deploy to Firebase live
         env:
