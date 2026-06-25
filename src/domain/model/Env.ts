@@ -35,6 +35,7 @@ export namespace Env {
       deletedAt: Timestamp | null = null
       title: Localized<string> = { ko: "", en: "" }
       content: Localized<string> = { ko: "", en: "" }
+      key: string = ""
       required: boolean = true
       sortOrder: number = 0
 
@@ -44,10 +45,11 @@ export namespace Env {
 
       toHashMap(isUpdate: boolean = false) {
         const map: Record<string, unknown> = {
-          [FirestorePath.Env.Agreement.Items.KEY]: this.id,
+          [FirestorePath.UPDATE_AT]: serverTimestamp(),
           [FirestorePath.DELETED_AT]: this.deletedAt,
           [FirestorePath.Env.Agreement.Items.TITLE]: this.title,
           [FirestorePath.Env.Agreement.Items.CONTENT]: this.content,
+          [FirestorePath.Env.Agreement.Items.KEY]: this.id,
           [FirestorePath.Env.Agreement.Items.REQUIRED]: this.required,
           [FirestorePath.Env.Agreement.Items.SORT_ORDER]: this.sortOrder,
         }
@@ -62,13 +64,14 @@ export namespace Env {
       static fromSnapshot(snapshot: QueryDocumentSnapshot | DocumentSnapshot): Item {
         const doc = snapshotToData(snapshot)
         return new Item({
-          id: doc[FirestorePath.Env.Agreement.Items.KEY] ?? "",
+          id: snapshot.id,
           ref: snapshot.ref,
           createAt: doc[FirestorePath.CREATE_AT],
           updateAt: doc[FirestorePath.UPDATE_AT],
           deletedAt: doc[FirestorePath.DELETED_AT],
           title: doc[FirestorePath.Env.Agreement.Items.TITLE],
           content: doc[FirestorePath.Env.Agreement.Items.CONTENT],
+          key: doc[FirestorePath.Env.Agreement.Items.KEY],
           required: doc[FirestorePath.Env.Agreement.Items.REQUIRED] ?? true,
           sortOrder: doc[FirestorePath.Env.Agreement.Items.SORT_ORDER] ?? 0,
         })
