@@ -1,17 +1,17 @@
 import {createZustandContext, type InfScrollStateList, PhoneVerify} from "@ienlab/react-library"
-import {Timestamp} from "firebase/firestore"
+import {type Unsubscribe} from "firebase/firestore"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {createStore} from "zustand"
 import {UserEditUiState} from "@/ui/client/user/ClientUserViewModel.ts"
 import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
-import {userRepository} from "@/di/container.ts"
+import {Env} from "@/domain/model/Env.ts"
+import type {EnvRepository} from "@/domain/repository/EnvRepository.ts"
 
 export class SignupDetails {
   step: number = 0
-  agreedRequired: boolean = false
-  agreedOptional: boolean = false
+  agreementIds: string[] = []
 
   constructor(partial: Partial<SignupDetails> = {}) {
     Object.assign(this, partial)
@@ -20,6 +20,7 @@ export class SignupDetails {
 
 class SignupUiState {
   item: SignupDetails = new SignupDetails()
+  agreementItems: Env.Agreement.Item[] = []
 
   constructor(partial?: Partial<SignupUiState>) {
     Object.assign(this, partial)
@@ -29,18 +30,21 @@ class SignupUiState {
 type Props = {
   userRepository: UserRepository
   companyRepository: CompanyRepository
+  envRepository: EnvRepository
 }
 
 interface Store {
   signupUiState: SignupUiState
   userEditUiState: UserEditUiState
   companyInfoStateList: InfScrollStateList<Company>
+  unsubscribeAgreementItems: (() => void) | null
 
   init: () => void,
   onDisposed: () => void
   updateSignupUiState: (item: Partial<SignupDetails>) => void
   updateUserEditUiState: (item: Partial<UserEditDetails>, isDirty?: boolean) => void
   invalid: () => boolean
+  allRequiredAgreed: () => boolean
 
   moveStep: (increment: number) => void
   save: (onSuccess: (id: string | null) => void, onFailure: (errorKey: string) => void) => void
@@ -57,17 +61,31 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   signupUiState: new SignupUiState(),
   userEditUiState: new UserEditUiState(),
   companyInfoStateList: props.companyRepository.companyInfoStateList,
+  unsubscribeAgreementItems: null,
 
-  init: () => {},
+  init: () => {
+    get().loadNextCompanyPage()
+    const off = props.envRepository.observeAgreementItems(items => {
+      set(state => ({
+        signupUiState: new SignupUiState({
+          ...state.signupUiState,
+          agreementItems: items,
+        })
+      }))
+    })
+    set({ unsubscribeAgreementItems: off })
+  },
 
   onDisposed: () => {
-    const { userEditUiState: uiState } = get()
+    const { userEditUiState: uiState, unsubscribeAgreementItems } = get()
     uiState.item.profileUrl.revokeIfNeeded()
+    unsubscribeAgreementItems?.()
   },
 
   updateSignupUiState: (item) => {
     set(state => ({
       signupUiState: new SignupUiState({
+        ...state.signupUiState,
         item: new SignupDetails({...state.signupUiState.item, ...item}),
       })
     }))
@@ -82,6 +100,13 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     }))
   },
 
+  allRequiredAgreed: () => {
+    const { signupUiState } = get()
+    const requiredItems = signupUiState.agreementItems.filter(i => i.required)
+    if (requiredItems.length === 0) return true
+    return requiredItems.every(i => signupUiState.item.agreementIds.includes(i.id))
+  },
+
   invalid: () => {
     const { userEditUiState: uiState } = get()
     return uiState.item.profileUrl.isEmpty
@@ -93,14 +118,14 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
   moveStep: (increment) => {
     const item = get().signupUiState.item
-    set({ signupUiState: new SignupUiState({ item: new SignupDetails({ ...item, step: item.step + increment }) }) })
+    set({ signupUiState: new SignupUiState({ ...get().signupUiState, item: new SignupDetails({ ...item, step: item.step + increment }) }) })
   },
 
   save: async (onSuccess, onFailure) => {
     const { signupUiState, userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
 
     try {
-      const userId = userRepository.getCurrentUser()?.uid
+      const userId = props.userRepository.getCurrentUser()?.uid
       if (!userId) {
         onFailure("strings:error_occurred")
         return
@@ -108,10 +133,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
       await props.userRepository.create(userId, uiState.item)
 
-      const updateResult = await props.userRepository.updateAgreedAt(
-        signupUiState.item.agreedRequired,
-        signupUiState.item.agreedOptional,
-      )
+      const updateResult = await props.userRepository.updateAgreedAt(signupUiState.item.agreementIds)
 
       if (!updateResult) {
         onFailure("strings:error_occurred")

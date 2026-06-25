@@ -10,6 +10,7 @@ import type {ReactNode} from "react"
 export function PendingUserRoute({children}: { children: ReactNode }) {
   const isLoading = AuthSessionViewModel.use.isLoading()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const fbUser = AuthSessionViewModel.use.fbUser()
   const user = AuthSessionViewModel.use.user()
   const { t } = useTranslation()
 
@@ -26,6 +27,10 @@ export function PendingUserRoute({children}: { children: ReactNode }) {
   }
 
   if (!user) {
+    const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password') ?? false
+    if (isPasswordUser && !fbUser?.emailVerified) {
+      return <Navigate to={LoginDestination.root} replace />
+    }
     return <Navigate to={SignupDestination.root} replace />
   }
 

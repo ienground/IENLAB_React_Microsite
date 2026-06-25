@@ -16,7 +16,7 @@ import {
 } from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {useNavigate} from "react-router"
-import {companyRepository, userRepository} from "@/di/container.ts"
+import {companyRepository, envRepository, userRepository} from "@/di/container.ts"
 import {SignupViewModel} from "@/ui/public/signup/SignupViewModel.ts"
 import {AnimatePresence, motion} from "motion/react"
 import {useEffect, useState} from "react"
@@ -50,12 +50,24 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog.tsx"
+import {ScrollArea} from "@/components/ui/scroll-area.tsx"
+import Markdown from "react-markdown"
+import remarkGfm from 'remark-gfm'
+import {markdownComponents} from "@/components/custom/shared/MarkdownComponent.tsx"
+import {Label} from "@/components/ui/label.tsx"
 
 export default function SignupScreen() {
   const {t} = useTranslation()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
+  const fbUser = AuthSessionViewModel.use.fbUser()
+
 
   if (!isAuthenticated) {
+    return <Navigate to={LoginDestination.root} replace />
+  }
+
+  const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
+  if (isPasswordUser && !fbUser?.emailVerified) {
     return <Navigate to={LoginDestination.root} replace />
   }
 
@@ -65,6 +77,7 @@ export default function SignupScreen() {
       <SignupViewModel.Provider
         userRepository={userRepository}
         companyRepository={companyRepository}
+        envRepository={envRepository}
       >
         <ScreenBody/>
       </SignupViewModel.Provider>
@@ -188,31 +201,100 @@ function StepTerms(props: {
   onNext: () => void
   onLogout: () => void
 }) {
-  const uiState = SignupViewModel.use.signupUiState()
-  const updateUiState = SignupViewModel.use.updateSignupUiState()
+  const signupUiState = SignupViewModel.use.signupUiState()
+  const updateSignupUiState = SignupViewModel.use.updateSignupUiState()
+  const allRequiredAgreed = SignupViewModel.use.allRequiredAgreed()
 
   const {t} = useTranslation()
+
+  const toggleAgreementId = (id: string) => {
+    const ids = signupUiState.item.agreementIds
+    const updated = ids.includes(id)
+      ? ids.filter(i => i !== id)
+      : [...ids, id]
+    updateSignupUiState({ agreementIds: updated })
+  }
+
+  const requiredItems = signupUiState.agreementItems.filter(i => i.required)
+  const optionalItems = signupUiState.agreementItems.filter(i => !i.required)
+  const allAgreed = signupUiState.agreementItems.every(i => signupUiState.item.agreementIds.includes(i.id))
+
+  const toggleAll = () => {
+    if (allAgreed) {
+      updateSignupUiState({ agreementIds: [] })
+    } else {
+      updateSignupUiState({ agreementIds: signupUiState.agreementItems.map(i => i.id) })
+    }
+  }
 
   return (
     <div className="flex flex-col gap-8">
       <h1 className="large-text-title">{t("strings:signup.agree_terms.title")}</h1>
       <p className="text-muted-foreground">{t("strings:signup.agree_terms.desc")}</p>
+      <div className="space-y-4 rounded-4xl border p-6">
+        <div className="flex flex-row gap-x-4">
+          <Checkbox
+            id="agreed_toggle_all"
+            checked={allAgreed}
+            onCheckedChange={toggleAll}
+          />
+          <Label htmlFor="agreed_toggle_all" className="font-medium">{t("strings:signup.agree_terms.select_all")}</Label>
+        </div>
+        {requiredItems.length > 0 && (
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {t("strings:signup.agree_terms.required_agreements")}
+            </p>
+            {requiredItems.map(item => (
+              <div className="flex flex-col gap-y-4">
+                <ScrollArea className="w-full h-60 rounded-lg border px-4">
+                  <div className="my-4">
+                    <Markdown
+                      components={markdownComponents}
+                      remarkPlugins={[remarkGfm]}
+                    >{Localized.get(item.content)}</Markdown>
+                  </div>
+                </ScrollArea>
+                <div className="flex flex-row gap-x-4 items-center">
+                  <Checkbox
+                    id={item.id}
+                    checked={signupUiState.item.agreementIds.includes(item.id)}
+                    onCheckedChange={() => toggleAgreementId(item.id)}
+                  />
+                  <Label htmlFor={item.id}>{t("strings:signup.agree_terms.required_label")} {Localized.get(item.title)}</Label>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-      <div className="space-y-4 rounded-lg border p-6">
-        <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox
-            checked={uiState.item.agreedRequired}
-            onCheckedChange={value => updateUiState({ agreedRequired: !!value })}
-          />
-          <span className="text-sm">{t("strings:signup.agree_required")}</span>
-        </label>
-        <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox
-            checked={uiState.item.agreedOptional}
-            onCheckedChange={value => updateUiState({ agreedOptional: !!value })}
-          />
-          <span className="text-sm">{t("strings:signup.agree_optional")}</span>
-        </label>
+        {optionalItems.length > 0 && (
+          <div className="space-y-3 pt-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {t("strings:signup.agree_terms.optional_agreements")}
+            </p>
+            {optionalItems.map(item => (
+              <div className="flex flex-col gap-y-4">
+                <ScrollArea className="w-full h-60 rounded-lg border px-4">
+                  <div className="my-4">
+                    <Markdown
+                      components={markdownComponents}
+                      remarkPlugins={[remarkGfm]}
+                    >{Localized.get(item.content)}</Markdown>
+                  </div>
+                </ScrollArea>
+                <div className="flex flex-row gap-x-4 items-center">
+                  <Checkbox
+                    id={item.id}
+                    checked={signupUiState.item.agreementIds.includes(item.id)}
+                    onCheckedChange={() => toggleAgreementId(item.id)}
+                  />
+                  <Label htmlFor={item.id}>{t("strings:signup.agree_terms.optional_label")} {Localized.get(item.title)}</Label>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <ButtonGroup className="w-fit">
@@ -224,7 +306,7 @@ function StepTerms(props: {
           {t("strings:signout.label")}
         </MagneticButton>
         <MagneticButton
-          disabled={!uiState.item.agreedRequired}
+          disabled={!allRequiredAgreed()}
           onClick={props.onNext}
         >
           <RiArrowRightLine />
@@ -234,9 +316,7 @@ function StepTerms(props: {
     </div>
   )
 }
-
 function StepInfo(props: {
-  // onSubmit: () => void
   onBack: () => void
 }) {
   const uiState = SignupViewModel.use.userEditUiState()

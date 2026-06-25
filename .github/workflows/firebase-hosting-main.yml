@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.18.0'
+          cache: npm
+
       - run: npm ci && npm run build
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
@@ -27,11 +32,19 @@ jobs:
           VITE_NAVER_CLIENT_ID: ${{ secrets.VITE_NAVER_CLIENT_ID }}
           VITE_NAVER_CLIENT_SECRET: ${{ secrets.VITE_NAVER_CLIENT_SECRET }}
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
+          MOTION_TOKEN: ${{ secrets.MOTION_TOKEN }}
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
-          projectId: ienlab-ienground
-          target: public
-          channelId: live
+      - name: Write Firebase service account
+        run: |
+          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'JSON'
+          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
+          JSON
+
+      - name: Deploy to Firebase live
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebaseServiceAccount.json
+        run: |
+          npx firebase-tools@15.22.1 deploy \
+            --project ienlab-ienground \
+            --only hosting \
+            --non-interactive

@@ -19,20 +19,21 @@ export const FirestorePath = {
     AGREEMENT: "agreement",
 
     Agreement: {
-      /** Timestamp | null */
-      REQUIRED_UPDATE_AT: "requiredUpdateAt",
-      /** Timestamp | null */
-      OPTIONAL_UPDATE_AT: "optionalUpdateAt",
-
       /** Collection */
-      REQUIRED: "required",
-      /** Collection */
-      OPTIONAL: "optional",
+      ITEMS: "items",
 
       Items: {
         /** Map<Locale, string> */
-        CONTENT: "content"
-      }
+        TITLE: "title",
+        /** Map<Locale, string> */
+        CONTENT: "content",
+        /** string */
+        KEY: "key",
+        /** boolean */
+        REQUIRED: "required",
+        /** number */
+        SORT_ORDER: "sortOrder",
+      },
     },
     DataLength: {
       /** number */
@@ -85,9 +86,9 @@ export const FirestorePath = {
     /** string (조회용 사본, Firebase Auth가 SOURCE) */
     EMAIL: "email",
     /** Timestamp | null */
-    AGREED_REQUIRED_AT: "agreedRequiredAt",
-    /** Timestamp | null */
-    AGREED_OPTIONAL_AT: "agreedOptionalAt"
+    AGREED_AT: "agreedAt",
+    /** string[] */
+    AGREEMENT_IDS: "agreementIds"
   },
 
   Estimate: {
