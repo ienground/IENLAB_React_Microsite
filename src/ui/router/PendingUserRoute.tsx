@@ -27,7 +27,7 @@ export function PendingUserRoute({children}: { children: ReactNode }) {
   }
 
   if (!user) {
-    const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
+    const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password') ?? false
     if (isPasswordUser && !fbUser?.emailVerified) {
       return <Navigate to={LoginDestination.root} replace />
     }
