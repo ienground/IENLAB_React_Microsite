@@ -11,6 +11,6 @@ export const markdownComponents: Components = {
     <p className="leading-7 not-first:mt-6" {...props} />
   ),
   a: ({ node, ...props }) => (
-    <a className="text-blue-600 underline underline-offset-4" {...props} />
+    <a className="text-blue-600 underline underline-offset-4" target="_blank" rel="noopener noreferrer" {...props} />
   ),
 }
