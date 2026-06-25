@@ -330,8 +330,8 @@ export class UserRepositoryImpl implements UserRepository {
     await this.updateUserStateFn({ uid: id, state })
   }
 
-  async updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean> {
-    const result = await this.updateUserAgreementFn({ agreedRequired, agreedOptional })
+  async updateAgreedAt(agreementIds: string[]): Promise<boolean> {
+    const result = await this.updateUserAgreementFn({ agreementIds })
     return result.data.code === 200
   }
 

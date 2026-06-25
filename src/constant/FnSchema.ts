@@ -72,8 +72,7 @@ export const FnSchema = {
   UpdateUserAgreement: {
     name: "updateUserAgreement",
     params: {
-      agreedRequired: "boolean",
-      agreedOptional: "boolean"
+      agreementIds: "string[]"
     },
     result: {
       code: "number"

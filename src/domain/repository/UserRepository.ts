@@ -3,7 +3,6 @@ import type {User} from "@/domain/model/User.ts"
 import type {Unsubscribe} from "firebase/firestore"
 import {type InfScrollStateList, PhoneVerify, type SignInResult} from "@ienlab/react-library"
 import type {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
-import type {Timestamp} from "firebase/firestore"
 
 export interface UserRepository {
   readonly userInfoStateList: InfScrollStateList<User>
@@ -38,7 +37,7 @@ export interface UserRepository {
   update(id: string, user: UserEditDetails): Promise<void>
   updateUserEmail(uid: string, email: string): Promise<void>
   updateState(id: string, state: User.State): Promise<void>
-  updateAgreedAt(agreedRequired: boolean, agreedOptional: boolean): Promise<boolean>
+  updateAgreedAt(agreementIds: string[]): Promise<boolean>
   approveTempCompany(id: string): Promise<void>
   rejectTempCompany(id: string): Promise<void>
   delete(credential: UserCredential): Promise<boolean>

@@ -16,8 +16,6 @@ export class UserEditDetails {
   state: User.State = User.State.Default
   phone: string = ""
   email: string = ""
-  agreedRequired: boolean = false
-  agreedOptional: boolean = false
 
   otpCode: string = ""
   otpRequestState: PhoneVerify.Request = PhoneVerify.Request.Default

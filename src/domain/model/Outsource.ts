@@ -521,7 +521,10 @@ export namespace Outsource {
       }
     }
 
+    let textItemUidCounter = 0
+
     export class TextItem {
+      _uid: string = `text-item-${++textItemUidCounter}`
       label: Localized<string> = { ko: "", en: "" }
       secure: boolean = false
       maxLength: number | null = TextItem.DefaultMaxLength
