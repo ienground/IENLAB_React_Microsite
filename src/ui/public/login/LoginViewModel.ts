@@ -34,6 +34,7 @@ interface Store {
   googleLogin: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   naverLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   kakaoLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  sendEmailVerification: () => Promise<void>
 }
 
 const userRepository: UserRepository = container.get(UserRepositoryImpl)
@@ -122,7 +123,11 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     } finally {
       set({ isLoading: false })
     }
-  }
+  },
+
+  sendEmailVerification: async () => {
+    await userRepository.sendEmailVerification()
+  },
 }))
 
 export const LoginViewModel = createZustandContext<Store, Props>(createViewModel)

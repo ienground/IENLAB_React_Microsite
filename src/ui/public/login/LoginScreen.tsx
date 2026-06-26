@@ -70,6 +70,7 @@ function ScreenBody() {
   const primGoogleLogin = LoginViewModel.use.googleLogin()
   const primNaverLogin = LoginViewModel.use.naverLogin()
   const primKakaoLogin = LoginViewModel.use.kakaoLogin()
+  const sendEmailVerification = LoginViewModel.use.sendEmailVerification()
 
   const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
   const showEmailVerification = isAuthenticated && !authUser && isPasswordUser && !fbUser?.emailVerified
@@ -125,8 +126,9 @@ function ScreenBody() {
                 <EmailVerificationCard
                   fbUser={fbUser}
                   logout={logout}
+                  sendEmailVerification={sendEmailVerification}
                 />
-              ) : (
+                ) : (
               <motion.form
                 layout
                 className="p-6 md:p-8"
@@ -450,15 +452,14 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
   )
 }
 
-function EmailVerificationCard({ fbUser, logout }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void> }) {
+function EmailVerificationCard({ fbUser, logout, sendEmailVerification }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void>; sendEmailVerification: () => Promise<void> }) {
   const { t } = useTranslation()
   const [isResending, setResending] = useState(false)
 
   const resendEmail = async () => {
     setResending(true)
     try {
-      // todo
-      await userRepository.sendEmailVerification()
+      await sendEmailVerification()
       toast.success(t("strings:user.profile.phone.verification_email_sent"))
     } catch {
       toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})

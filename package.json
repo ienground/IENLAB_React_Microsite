@@ -22,7 +22,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
     "firebase": "^12.15.0",
-    "i18next": "^26.3.2",
+    "i18next": "^26.3.3",
     "i18next-intervalplural-postprocessor": "^3.0.0",
     "input-otp": "^1.4.2",
     "motion": "^12.42.0",
@@ -41,7 +41,7 @@
     "react-router-hash-link": "^2.4.3",
     "react-router-prompt": "^0.8.2",
     "remark-gfm": "^4.0.1",
-    "shadcn": "^4.11.0",
+    "shadcn": "^4.11.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.1",
@@ -50,7 +50,10 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/plugin-proposal-decorators": "^8.0.2",
     "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/react-router-hash-link": "^2.4.9",

@@ -20,7 +20,9 @@ import {ClientProtectedRoute} from "@/ui/router/ClientProtectedRoute.tsx"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import {AuthSessionViewModel} from "../shared/auth/useAuthSession"
 import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
-import {outsourceRepository, userRepository} from "@/di/container.ts"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
@@ -46,6 +48,8 @@ import {VersionDestination} from "@/ui/public/version/VersionDestination.ts"
 import VersionScreen from "@/ui/public/version/VersionScreen.tsx"
 
 export function getRouter(t: TFunction) {
+  const outsourceRepository = container.get(OutsourceRepositoryImpl)
+  const userRepository = container.get(UserRepositoryImpl)
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
     if (!params.itemId) {
       throw new Error("itemId is required")
