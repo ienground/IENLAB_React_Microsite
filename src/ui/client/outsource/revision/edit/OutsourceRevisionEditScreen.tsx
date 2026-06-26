@@ -1,32 +1,22 @@
-import {
-  ImageUploadSortableField,
-  type PageModeProps, Seo,
-  useDateTimeFormatters
-} from "@ienlab/react-library"
+import {ImageUploadSortableField, type PageModeProps, Seo, useDateTimeFormatters} from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import {
   RiArrowLeftLine,
   RiCheckboxCircleFill,
   RiCloseFill,
-  RiDeleteBinFill, RiDraftFill,
+  RiDeleteBinFill,
+  RiDraftFill,
   RiErrorWarningFill,
   RiSaveFill
 } from "@remixicon/react"
 import {Button} from "@/components/ui/button.tsx"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {Spinner} from "@/components/ui/spinner.tsx"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet
-} from "@/components/ui/field.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Input} from "@/components/ui/input.tsx"
 import {Textarea} from "@/components/ui/textarea.tsx"
 import {Card} from "@/components/ui/card.tsx"
@@ -35,7 +25,6 @@ import RouterPromptAlertDialog from "@/components/custom/shared/dialog/RouterPro
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import ForbiddenAlertDialog from "@/components/custom/shared/dialog/ForbiddenAlertDialog.tsx"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
-import {createOutsourceRevisionRepository} from "@/di/container.ts"
 import {toast} from "sonner"
 import {OutsourceRevisionEditViewModel} from "@/ui/client/outsource/revision/edit/OutsourceRevisionEditViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
@@ -44,7 +33,12 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 
 export default function OutsourceRevisionEditScreen(props: PageModeProps) {
   const { itemId, revisionId } = useParams<{ itemId: string, revisionId: string }>()
-  const repository = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+
+  if (!itemId || !revisionId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const { t } = useTranslation()
   return (
     <>
@@ -54,7 +48,6 @@ export default function OutsourceRevisionEditScreen(props: PageModeProps) {
         id={itemId ?? ""}
         revisionId={revisionId ?? ""}
         mode={props.mode}
-        revisionRepository={repository}
       >
         <ScreenBody mode={props.mode} itemId={itemId ?? ""} />
       </OutsourceRevisionEditViewModel.Provider>
@@ -119,12 +112,6 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
     init()
     return () => onDisposed()
   }, [init, onDisposed])
-
-  // useEffect(() => {
-    // if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
-    //   setShowForbiddenDialog(true)
-    // }
-  // }, [infoState.isInitialized, infoState.item?.state, props.mode])
 
   useEffect(() => {
     let timerId: number | undefined

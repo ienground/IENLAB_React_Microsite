@@ -5,6 +5,9 @@ import {UserEditDetails} from "@/domain/model/UserEditDetails.ts"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
 import type {CompanyRepository} from "@/domain/repository/CompanyRepository"
+import {container} from "@/di/container.ts"
+import {CompanyRepositoryImpl} from "@/data/company/CompanyRepositoryImpl.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 
 export class UserEditUiState {
   item: UserEditDetails = new UserEditDetails()
@@ -20,10 +23,7 @@ export interface UserInfoState {
   isInitialized: boolean
 }
 
-type Props = {
-  userRepository: UserRepository
-  companyRepository: CompanyRepository
-}
+type Props = {}
 
 interface Store {
   uiState: UserEditUiState
@@ -46,17 +46,21 @@ interface Store {
   clearCompanySearch: () => void
 }
 
+const companyRepository: CompanyRepository = container.get(CompanyRepositoryImpl)
+const userRepository: UserRepository = container.get(UserRepositoryImpl)
+
+
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   uiState: new UserEditUiState({ isInitialized: false }),
   infoState: { item: null, isInitialized: false },
-  companyInfoStateList: props.companyRepository.companyInfoStateList,
+  companyInfoStateList: companyRepository.companyInfoStateList,
 
   init: async () => {
     const { unsubscribe } = get()
     unsubscribe?.()
 
     let hasCapturedInitial = false
-    const off = props.userRepository.observe(item => {
+    const off = userRepository.observe(item => {
       set(() => {
         const newState: Partial<Store> = {
           unsubscribe: off,
@@ -106,13 +110,13 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
       return
     }
     try {
-      const currentEmail = props.userRepository.getCurrentUser()?.email
+      const currentEmail = userRepository.getCurrentUser()?.email
       const emailChanged = uiState.item.email !== currentEmail
 
       if (emailChanged) {
-        await props.userRepository.sendChangeEmailVerification(uiState.item.email)
+        await userRepository.sendChangeEmailVerification(uiState.item.email)
       }
-      await props.userRepository.update(infoState.item.id, uiState.item)
+      await userRepository.update(infoState.item.id, uiState.item)
 
       updateUiState({}, false)
       onSuccess(null)
@@ -142,7 +146,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     const { uiState, updateUiState } = get()
     updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: PhoneVerify.Result.IDLE, otpCode: "" })
     try {
-      const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
+      const state = await userRepository.sendPhoneVerifyCode(uiState.item.phone)
       updateUiState({ otpRequestState: state })
       onSuccess(state)
     } catch (e) {
@@ -155,7 +159,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     const { uiState, updateUiState } = get()
     updateUiState({ otpResultState: PhoneVerify.Result.REQUESTING })
     try {
-      const state = await props.userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
+      const state = await userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
       updateUiState({ otpResultState: state })
       onSuccess(state)
     } catch (e) {
@@ -166,18 +170,18 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
 
   loadNextCompanyPage: async () => {
-    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
-    await props.companyRepository.loadNextPage()
-    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
+    set({ companyInfoStateList: { ...companyRepository.companyInfoStateList } })
+    await companyRepository.loadNextPage()
+    set({ companyInfoStateList: { ...companyRepository.companyInfoStateList } })
   },
 
   setCompanySearchKeyword: (keyword) => {
-    props.companyRepository.setSearchKeyword(keyword)
+    companyRepository.setSearchKeyword(keyword)
     get().loadNextCompanyPage()
   },
 
   clearCompanySearch: () => {
-    props.companyRepository.clearSearch()
+    companyRepository.clearSearch()
     get().loadNextCompanyPage()
   },
 }))

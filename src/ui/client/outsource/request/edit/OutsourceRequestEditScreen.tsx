@@ -36,7 +36,6 @@ import ReactRouterPrompt from "react-router-prompt"
 import RouterPromptAlertDialog from "@/components/custom/shared/dialog/RouterPromptAlertDialog.tsx"
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import ForbiddenAlertDialog from "@/components/custom/shared/dialog/ForbiddenAlertDialog.tsx"
-import {createOutsourceRequestRepository} from "@/di/container.ts"
 import {toast} from "sonner"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import {OutsourceRequestEditViewModel} from "@/ui/client/outsource/request/edit/OutsourceRequestEditViewModel.ts"
@@ -48,7 +47,12 @@ import {InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea} from "@
 
 export default function OutsourceRequestEditScreen(props: PageModeProps) {
   const {itemId, requestId} = useParams<{ itemId: string, requestId: string }>()
-  const repository = useMemo(() => createOutsourceRequestRepository(itemId ?? ""), [itemId])
+
+  if (!itemId || !requestId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const {t} = useTranslation()
   return (
     <>
@@ -58,7 +62,6 @@ export default function OutsourceRequestEditScreen(props: PageModeProps) {
         id={itemId ?? ""}
         requestId={requestId ?? ""}
         mode={props.mode}
-        outsourceRequestRepository={repository}
       >
         <ScreenBody
           mode={props.mode}

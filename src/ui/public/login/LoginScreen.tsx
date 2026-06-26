@@ -16,7 +16,6 @@ import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
-import {userRepository} from "@/di/container.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import KakaoLogin from "react-kakao-login"
@@ -46,7 +45,7 @@ export default function LoginScreen() {
   return (
     <>
       <Seo title={`${t("strings:login")} - ${t("strings:app_name")}`}/>
-      <LoginViewModel.Provider userRepository={userRepository}>
+      <LoginViewModel.Provider>
         <ScreenBody/>
       </LoginViewModel.Provider>
     </>
@@ -458,6 +457,7 @@ function EmailVerificationCard({ fbUser, logout }: { fbUser: import("firebase/au
   const resendEmail = async () => {
     setResending(true)
     try {
+      // todo
       await userRepository.sendEmailVerification()
       toast.success(t("strings:user.profile.phone.verification_email_sent"))
     } catch {

@@ -1,6 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {createOutsourceRevisionRepository} from "@/di/container.ts"
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
@@ -42,17 +41,21 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 
 export default function OutsourceRevisionDetailScreen() {
   const {itemId, revisionId} = useParams<{ itemId: string, revisionId: string }>()
-  const repository = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+
+  if (!itemId || !revisionId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionDetailViewModel.Provider
-        id={itemId ?? ""}
-        revisionId={revisionId ?? ""}
-        revisionRepository={repository}
+        id={itemId}
+        revisionId={revisionId}
       >
-        <ScreenBody id={itemId ?? ""}/>
+        <ScreenBody id={itemId}/>
       </OutsourceRevisionDetailViewModel.Provider>
     </>
   )

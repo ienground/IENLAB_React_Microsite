@@ -6,6 +6,7 @@ import type {OutsourceInfoState} from "@/ui/client/outsource/detail/OutsourceDet
 import {container} from "@/di/container.ts"
 import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
 import {OutsourceLogRepositoryFactory} from "@/data/outsource/OutsourceLogRepositoryImpl.ts"
+import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 
 type Props = {
   id: string
@@ -24,7 +25,7 @@ interface Store {
   unsub?: Unsubscribe
 }
 
-const outsourceRepository = container.get(OutsourceRepositoryImpl)
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
 const logRepositoryFactory = container.get(OutsourceLogRepositoryFactory)
 
 const createViewModel = (props: Props) => {

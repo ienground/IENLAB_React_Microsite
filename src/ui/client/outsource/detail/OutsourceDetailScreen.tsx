@@ -1,11 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {
-  createOutsourceLogRepository,
-  createOutsourceRequestRepository,
-  createOutsourceRevisionRepository, estimateRepository,
-  outsourceRepository
-} from "@/di/container.ts"
-import {type ReactNode, useCallback, useEffect, useMemo} from "react"
+import {type ReactNode, useCallback, useEffect} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {RiArrowLeftLine, RiFileEditFill, RiHistoryFill, RiInfoCardFill,} from "@remixicon/react"
 import {useTranslation} from "react-i18next"
@@ -23,22 +17,19 @@ import type {Timestamp} from "firebase/firestore"
 
 export default function OutsourceDetailScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const logRepo = useMemo(() => createOutsourceLogRepository(itemId ?? ""), [itemId])
-  const requestRepo = useMemo(() => createOutsourceRequestRepository(itemId ?? ""), [itemId])
-  const revisionRepo = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+  if (!itemId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const { t } = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceDetailViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        outsourceLogRepository={logRepo}
-        outsourceRequestRepository={requestRepo}
-        outsourceRevisionRepository={revisionRepo}
-        estimateRepository={estimateRepository}
+        id={itemId}
       >
-        <ScreenBody/>
+        <ScreenBody />
       </OutsourceDetailViewModel.Provider>
     </>
   )

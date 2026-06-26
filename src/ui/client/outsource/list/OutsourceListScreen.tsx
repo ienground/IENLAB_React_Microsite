@@ -1,4 +1,3 @@
-import {companyRepository, outsourceRepository, userRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useLocation, useNavigate} from "react-router"
 import {useMemo, useState} from "react"
@@ -25,11 +24,7 @@ export default function OutsourceListScreen() {
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
-      <OutsourceListViewModel.Provider
-        outsourceRepository={outsourceRepository}
-        companyRepository={companyRepository}
-        userRepository={userRepository}
-      >
+      <OutsourceListViewModel.Provider>
         <ScreenBody/>
       </OutsourceListViewModel.Provider>
     </>

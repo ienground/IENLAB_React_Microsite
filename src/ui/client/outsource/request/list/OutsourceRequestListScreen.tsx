@@ -1,4 +1,3 @@
-import {createOutsourceRequestRepository, outsourceRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
@@ -24,17 +23,20 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 
 export default function OutsourceRequestListScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const repository = useMemo(() => createOutsourceRequestRepository(itemId ?? ""), [itemId])
+
+  if (!itemId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRequestListViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        outsourceRequestRepository={repository}
+        id={itemId}
       >
-        <ScreenBody itemId={itemId ?? ""}/>
+        <ScreenBody itemId={itemId}/>
       </OutsourceRequestListViewModel.Provider>
     </>
   )

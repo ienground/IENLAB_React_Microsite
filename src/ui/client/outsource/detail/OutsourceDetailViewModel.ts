@@ -1,21 +1,18 @@
 import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
-import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
-import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
-import type {OutsourceRevisionRepository} from "@/domain/repository/OutsourceRevisionRepository.ts"
 import {createStore} from "zustand"
 import {createZustandContext} from "@ienlab/react-library"
 import type {Outsource} from "@/domain/model/Outsource.ts"
 import type {EstimateInfoState} from "@/ui/client/estimate/detail/EstimateDetailViewModel.ts"
-import {Estimate} from "@/domain/model/Estimate.ts"
-import type { EstimateRepository } from "@/domain/repository/EstimateRepository"
+import type {EstimateRepository} from "@/domain/repository/EstimateRepository"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
+import {OutsourceLogRepositoryFactory} from "@/data/outsource/OutsourceLogRepositoryImpl.ts"
+import {OutsourceRequestRepositoryFactory} from "@/data/outsource/OutsourceRequestRepositoryImpl.ts"
+import {EstimateRepositoryImpl} from "@/data/estimate/EstimateRepositoryImpl.ts"
+import {OutsourceRevisionRepositoryFactory} from "@/data/outsource/OutsourceRevisionRepositoryImpl.ts"
 
 type Props = {
   id: string
-  outsourceRepository: OutsourceRepository
-  outsourceLogRepository: OutsourceLogRepository
-  outsourceRequestRepository: OutsourceRequestRepository
-  outsourceRevisionRepository: OutsourceRevisionRepository
-  estimateRepository: EstimateRepository
 }
 
 interface Store {
@@ -39,56 +36,69 @@ export interface OutsourceInfoState {
   isInitialized: boolean
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  infoState: { item: null, isInitialized: false },
-  estimateInfoState: { item: null, isInitialized: false },
-  workLogs: [],
-  workLogsInitialized: false,
-  infoRequests: [],
-  infoRequestsInitialized: false,
-  revisionRequests: [],
-  revisionRequestsInitialized: false,
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
+const logRepositoryFactory = container.get(OutsourceLogRepositoryFactory)
+const requestRepositoryFactory = container.get(OutsourceRequestRepositoryFactory)
+const revisionRepositoryFactory = container.get(OutsourceRevisionRepositoryFactory)
+const estimateRepository: EstimateRepository = container.get(EstimateRepositoryImpl)
 
-  init: () => {
-    const { unsubscribe } = get()
-    unsubscribe?.()
 
-    const off = props.outsourceRepository.observe(props.id, async item => {
-      get().unsubEstimate?.()
+const createViewModel = (props: Props) => {
+  const logRepository = logRepositoryFactory.create(props.id)
+  const requestRepository = requestRepositoryFactory.create(props.id, false)
+  const revisionRepository = revisionRepositoryFactory.create(props.id, false)
 
-      if (item?.estimateRef?.id) {
-        const offEstimate = props.estimateRepository.observe(item.estimateRef.id, async item => {
-          set({ estimateInfoState: { item, isInitialized: true } })
-        })
+  return createStore<Store>((set, get) => ({
+    infoState: { item: null, isInitialized: false },
+    estimateInfoState: { item: null, isInitialized: false },
+    workLogs: [],
+    workLogsInitialized: false,
+    infoRequests: [],
+    infoRequestsInitialized: false,
+    revisionRequests: [],
+    revisionRequestsInitialized: false,
 
-        set({ unsubEstimate: offEstimate })
-      } else {
-        set({
-          estimateInfoState: { item: null, isInitialized: true },
-        })
-      }
+    init: () => {
+      const { unsubscribe } = get()
+      unsubscribe?.()
 
-      set({ infoState: { item, isInitialized: true } })
-    })
+      const off = outsourceRepository.observe(props.id, async item => {
+        get().unsubEstimate?.()
 
-    props.outsourceLogRepository.getLatestItems(3).then(items => {
-      set({ workLogs: items, workLogsInitialized: true })
-    })
+        if (item?.estimateRef?.id) {
+          const offEstimate = estimateRepository.observe(item.estimateRef.id, async item => {
+            set({ estimateInfoState: { item, isInitialized: true } })
+          })
 
-    props.outsourceRequestRepository.getLatestRequests(3).then(items => {
-      set({ infoRequests: items, infoRequestsInitialized: true })
-    })
+          set({ unsubEstimate: offEstimate })
+        } else {
+          set({
+            estimateInfoState: { item: null, isInitialized: true },
+          })
+        }
 
-    props.outsourceRevisionRepository.getLatestItems(3).then(items => {
-      set({ revisionRequests: items, revisionRequestsInitialized: true })
-    })
+        set({ infoState: { item, isInitialized: true } })
+      })
 
-    set({ unsubscribe: off })
-  },
+      logRepository.getLatestItems(3).then(items => {
+        set({ workLogs: items, workLogsInitialized: true })
+      })
 
-  onDisposed: () => {
-    get().unsubscribe?.()
-  }
-}))
+      requestRepository.getLatestRequests(3).then(items => {
+        set({ infoRequests: items, infoRequestsInitialized: true })
+      })
+
+      revisionRepository.getLatestItems(3).then(items => {
+        set({ revisionRequests: items, revisionRequestsInitialized: true })
+      })
+
+      set({ unsubscribe: off })
+    },
+
+    onDisposed: () => {
+      get().unsubscribe?.()
+    }
+  }))
+}
 
 export const OutsourceDetailViewModel = createZustandContext<Store, Props>(createViewModel)
