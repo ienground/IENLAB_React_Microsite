@@ -50,9 +50,11 @@ import {type FirebaseStorage, ref} from "firebase/storage"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import {type Functions, type HttpsCallable} from "firebase/functions"
 import {createCallable} from "@/constant/CreateCallable.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class UserRepositoryImpl implements UserRepository {
-  private readonly auth: Auth
   private readonly usersRef
   private readonly companiesRef
   private readonly storageRef
@@ -78,10 +80,10 @@ export class UserRepositoryImpl implements UserRepository {
   }
 
   constructor(
-    firestore: Firestore,
-    readonly storage: FirebaseStorage,
-    auth: Auth,
-    functions: Functions
+    firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    storage: FirebaseStorage = inject(DiToken.Firebase.Storage),
+    private readonly auth: Auth = inject(DiToken.Firebase.Auth),
+    functions: Functions = inject(DiToken.Firebase.Functions)
   ) {
     this.usersRef = collection(firestore, FirestorePath.USER)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
@@ -334,7 +336,7 @@ export class UserRepositoryImpl implements UserRepository {
 
     if (existingItem) {
       const newUrls = [item.profileUrl.url]
-      await deleteStorageItems(this.storage, [
+      await deleteStorageItems(this.storageRef.storage, [
         { item: item.profileUrl, url: existingItem.profileUrl },
       ].filter(target => !newUrls.includes(target.url)))
     }

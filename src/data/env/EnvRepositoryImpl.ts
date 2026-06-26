@@ -17,13 +17,16 @@ import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {Env} from "@/domain/model/Env"
 import {getSnapshots} from "@ienlab/react-library"
 import type {AgreementItemEditDetails} from "@/domain/model/AgreementItemEditDetails.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class EnvRepositoryImpl implements EnvRepository {
   private readonly agreementItemsRef
   private readonly dataLengthRef
 
   constructor(
-    readonly firestore: Firestore
+    firestore: Firestore = inject(DiToken.Firebase.Firestore)
   ) {
     const envsRef = collection(firestore, FirestorePath.ENV)
     this.agreementItemsRef = collection(envsRef, FirestorePath.Env.AGREEMENT, FirestorePath.Env.Agreement.ITEMS)

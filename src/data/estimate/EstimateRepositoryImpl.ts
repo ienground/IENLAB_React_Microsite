@@ -26,7 +26,10 @@ import {EstimateEditDetails} from "@/domain/model/EstimateEditDetails.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {type Functions} from "firebase/functions"
 import {createCallable} from "@/constant/CreateCallable.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class EstimateRepositoryImpl implements EstimateRepository {
   private readonly estimatesRef
   private readonly companiesRef
@@ -38,8 +41,8 @@ export class EstimateRepositoryImpl implements EstimateRepository {
   private searchKeyword = ""
 
   constructor(
-    readonly firestore: Firestore,
-    readonly functions: Functions,
+    firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    functions: Functions = inject(DiToken.Firebase.Functions),
   ) {
     this.estimatesRef = collection(firestore, FirestorePath.ESTIMATE)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
