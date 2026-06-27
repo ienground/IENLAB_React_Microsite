@@ -326,7 +326,7 @@ function ScreenBody() {
                           <Button
                             variant="default"
                             type="button"
-                            className="bg-kakao-background text-kakao-foreground hover:bg-kakao-foreground/80 dark:hover:bg-kakao-foreground/10"
+                            className="bg-kakao-background text-kakao-foreground hover:bg-kakao-background/85 dark:hover:bg-kakao-background/80"
                             onClick={e.onClick}
                           >
                             <Swap swapped={isLoading}>

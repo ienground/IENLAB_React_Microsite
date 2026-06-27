@@ -17,10 +17,10 @@ export default function PublicFooter() {
     <div
       className={cn(
         "mx-auto pointer-events-auto transition-all duration-300 ease-in-out",
-        "mb-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem] border border-white/15 bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] dark:border-white/10 dark:bg-white/5"
+        "glass-surface mb-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem]"
       )}
     >
-      <div className="flex h-full items-center justify-between px-6 gap-x-4">
+      <div className="flex h-full items-center justify-between gap-x-4 px-4 sm:px-6">
         <div className="flex min-w-0 flex-col justify-center">
           <p className="truncate text-sm font-medium text-foreground/90">
             {t('strings:footer.copyright', { year: year })}
@@ -34,12 +34,12 @@ export default function PublicFooter() {
             <span className="text-muted-foreground/50">|</span>
             <button
               type="button"
-              className="p-0"
+              className="p-0 transition-colors hover:text-foreground"
               onClick={() => i18n.changeLanguage("ko")}
             >{t("strings:lang.korean.native_label")}</button>
             <button
               type="button"
-              className="p-0"
+              className="p-0 transition-colors hover:text-foreground"
               onClick={() => i18n.changeLanguage("en")}
             >{t("strings:lang.english.native_label")}</button>
           </div>

@@ -162,14 +162,14 @@ export default function PublicHeader() {
         className={cn(
           "mx-auto pointer-events-auto transition-all duration-300 ease-in-out",
           scrolled
-            ? "mt-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem] border border-white/15 bg-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] dark:border-white/10 dark:bg-white/5"
-            : "mt-0 h-16 md:h-20 w-full rounded-none border-b border-white/10 bg-white/8 backdrop-blur-lg [-webkit-backdrop-filter:blur(16px)] dark:border-white/10 dark:bg-white/5",
+            ? "glass-surface mt-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem]"
+            : "mt-0 h-16 w-full rounded-none border-b border-white/10 bg-white/10 backdrop-blur-lg [-webkit-backdrop-filter:blur(16px)] md:h-20 dark:border-white/10 dark:bg-white/5",
         )}
       >
         <div
           className={cn(
             "grid h-full grid-cols-[1fr_auto_1fr] items-center transition-all duration-300",
-            scrolled ? "px-4" : "px-8",
+            scrolled ? "px-4" : "px-4 sm:px-6 md:px-8",
           )}
         >
           <div className="flex min-w-0 items-center justify-self-start">
@@ -243,7 +243,7 @@ export default function PublicHeader() {
                       type="button"
                       className={cn(
                         "inline-flex h-11 w-full items-center justify-center rounded-full",
-                        "border border-black/10 bg-white/10 px-4 text-sm",
+                        "border border-border/60 bg-background/30 px-4 text-sm",
                         "text-foreground/85 transition-colors",
                         "hover:bg-accent hover:text-accent-foreground",
                         "dark:border-white/10 dark:bg-white/5"
@@ -443,8 +443,8 @@ export default function PublicHeader() {
                 className={cn(
                   "hidden rounded-full border text-foreground/85 shadow-none transition-all duration-300 hover:bg-white/15 hover:text-foreground md:inline-flex md:items-center md:justify-center dark:hover:bg-white/10",
                   scrolled
-                    ? "border-white/15 bg-white/10 px-3 py-1.5 text-sm dark:border-white/10 dark:bg-white/5"
-                    : "border-white/15 bg-white/10 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5",
+                    ? "border-white/15 bg-white/12 px-3 py-1.5 text-sm dark:border-white/10 dark:bg-white/5"
+                    : "border-white/15 bg-white/12 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5",
                 )}
                 onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
               >

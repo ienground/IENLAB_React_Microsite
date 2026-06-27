@@ -15,7 +15,7 @@ export function SectionHeader({index, label, selected = true, className = "", on
   return (
     <p
       className={cn(
-        "font-jb-mono text-xl tracking-wider pl-11.5 -indent-11.5 md:text-[14px] text-pretty break-keep",
+        "font-jb-mono text-xl tracking-normal pl-11.5 -indent-11.5 md:text-[14px] text-pretty break-keep",
         selected ? "text-foreground" : "text-muted-foreground",
         className
       )}

@@ -435,18 +435,18 @@ function ScreenBody() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="px-8"><Separator className="bg-foreground" /></div>
+      <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground" /></div>
 
-      <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
+      <div className="site-section-tight site-grid">
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader index={0} label={t("strings:privacy_policy.label")} />
         </aside>
         <div className="col-span-12 xl:col-span-10">
           <h1 className="large-text-title">{t("strings:privacy_policy.label")}</h1>
-          <p className="mt-32">{summary}</p>
+          <p className="mt-16 md:mt-24 xl:mt-32">{summary}</p>
         </div>
       </div>
-      <div className="w-full px-8 grid grid-cols-12 gap-y-10 max-xl:flex max-xl:row">
+      <div className="grid w-full grid-cols-12 gap-y-10 px-4 sm:px-6 md:px-8 max-xl:flex max-xl:row">
         <aside className="h-fit sticky top-16 md:top-24 col-span-2 flex flex-row gap-x-4 max-xl:hidden">
           <Separator orientation="vertical" className="bg-foreground" />
           <div className="flex flex-col gap-y-2">
@@ -479,7 +479,7 @@ function ScreenBody() {
                   className="col-span-7"
                 >
                   <h2 className={cn(
-                    "text-[48px] font-medium tracking-[-0.06em] py-2 break-keep",
+                    "py-2 text-[48px] font-medium tracking-tighter break-keep",
                     "max-md:text-[36px]"
                   )}>{item.title}</h2>
                   {item.content}
