@@ -44,13 +44,13 @@ import {Badge} from "@/components/ui/badge.tsx"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {OutsourceRequestEditDetails} from "@/domain/model/OutsourceRequestEditDetails.ts"
 import {InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea} from "@/components/ui/input-group.tsx"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRequestEditScreen(props: PageModeProps) {
   const {itemId, requestId} = useParams<{ itemId: string, requestId: string }>()
 
   if (!itemId || !requestId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const {t} = useTranslation()

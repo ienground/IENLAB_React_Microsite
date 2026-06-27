@@ -14,12 +14,12 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 import {Portfolio} from "@/domain/model/Portfolio.ts"
 import {cn} from "@/lib/utils.ts"
 import type {Timestamp} from "firebase/firestore"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceDetailScreen() {
   const {itemId} = useParams<{ itemId: string }>()
   if (!itemId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const { t } = useTranslation()

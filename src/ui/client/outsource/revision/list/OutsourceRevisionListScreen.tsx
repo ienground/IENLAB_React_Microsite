@@ -19,13 +19,13 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status"
 import {OutsourceRevisionListViewModel} from "@/ui/client/outsource/revision/list/OutsourceRevisionListViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRevisionListScreen() {
   const {itemId} = useParams<{ itemId: string }>()
 
   if (!itemId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const {t} = useTranslation()

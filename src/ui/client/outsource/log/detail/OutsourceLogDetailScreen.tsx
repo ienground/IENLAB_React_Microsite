@@ -10,13 +10,13 @@ import {Button} from "@/components/ui/button.tsx"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
 import {Field, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Carousel} from "motion-plus/react"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceLogDetailScreen() {
   const {itemId, logId} = useParams<{ itemId: string, logId: string }>()
 
   if (!itemId || !logId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const {t} = useTranslation()

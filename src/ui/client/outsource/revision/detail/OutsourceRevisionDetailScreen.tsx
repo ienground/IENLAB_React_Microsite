@@ -38,13 +38,13 @@ import {
   OutsourceRevisionDetailViewModel
 } from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRevisionDetailScreen() {
   const {itemId, revisionId} = useParams<{ itemId: string, revisionId: string }>()
 
   if (!itemId || !revisionId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const {t} = useTranslation()

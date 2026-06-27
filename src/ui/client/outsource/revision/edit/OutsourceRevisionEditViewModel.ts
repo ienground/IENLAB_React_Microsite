@@ -132,10 +132,10 @@ const createViewModel = (props: Props) => {
       try {
         if (props.revisionId) {
           await revisionRepository.delete(props.revisionId)
+          onSuccess()
         } else {
           onFailure("strings:error.no_valid_id")
         }
-        onSuccess()
       } catch (e) {
         onFailure(String(e))
       }
