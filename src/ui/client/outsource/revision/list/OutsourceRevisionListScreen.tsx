@@ -179,7 +179,7 @@ function ScreenBody(props: { itemId: string }) {
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <AnimatedContent initialized={infoStateList.isInitialized}>
+        <AnimatedContent status={infoStateList.isInitialized ? (infoStateList.itemList.size === 0 ? "empty" : "content") : "loading"}>
           <div className="overflow-hidden m-4 rounded-lg border">
             <DataTable
               data={[...infoStateList.itemList.values()]}

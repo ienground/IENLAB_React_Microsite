@@ -1,30 +1,22 @@
-import {AnimatePresence, motion} from "motion/react"
 import {Spinner} from "@/components/ui/spinner.tsx"
-import {slideFadeProps} from "@ienlab/react-library"
+import {AnimatedContent as Base, type AnimatedContentStatus} from "@ienlab/react-library"
 import type {ReactNode} from "react"
+import {useTranslation} from "react-i18next"
 
 type AnimatedContentProps = {
-  initialized: boolean
+  status: AnimatedContentStatus
   className?: string
   children: ReactNode
 }
 
-export function AnimatedContent({initialized, className, children}: AnimatedContentProps) {
+export function AnimatedContent({status, className, children}: AnimatedContentProps) {
+  const { t } = useTranslation()
   return (
-    <AnimatePresence mode="wait">
-      {initialized ? (
-        <motion.div key="content" className={className} {...slideFadeProps}>
-          {children}
-        </motion.div>
-      ) : (
-        <motion.div
-          key="placeholder"
-          className="w-full h-full flex flex-col justify-center items-center"
-          {...slideFadeProps}
-        >
-          <Spinner className="size-9" />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <Base
+      status={status}
+      className={className}
+      loadingFallback={<Spinner className="size-9" />}
+      emptyFallback={t("strings:no_data")}
+    >{children}</Base>
   )
 }

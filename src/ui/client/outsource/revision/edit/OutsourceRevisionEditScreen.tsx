@@ -30,13 +30,14 @@ import {OutsourceRevisionEditViewModel} from "@/ui/client/outsource/revision/edi
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {MaxValue} from "@/constant/MaxValue.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
+import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRevisionEditScreen(props: PageModeProps) {
   const { itemId, revisionId } = useParams<{ itemId: string, revisionId: string }>()
 
   if (!itemId || !revisionId) {
-    // todo
-    return <div>잘못된 접근입니다.</div>
+    return <ClientRouteErrorScreen />
   }
 
   const { t } = useTranslation()
@@ -80,11 +81,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
       async (id) => {
         setSaveProgress(false)
         toast.success(t("strings:saved_successfully"), { icon: <RiCheckboxCircleFill size={18} /> })
-        if (id) {
-          window.setTimeout(() => state === Outsource.RevisionRequest.State.DRAFT ? navigate(ClientOutsourceDestination.path.revision.edit(props.itemId, id), { replace: true }) : navigate(ClientOutsourceDestination.path.revision.detail(props.itemId, id), { replace: true }), 300)
-        } else if (infoState.item?.id && state !== Outsource.RevisionRequest.State.DRAFT) {
-          window.setTimeout(() => navigate(ClientOutsourceDestination.path.revision.detail(props.itemId, infoState.item!.id), { replace: true }), 300)
-        }
+        window.setTimeout(() => navigate(ClientOutsourceDestination.path.revision.list(props.itemId), { replace: true, state: {shouldRefresh: true} }), 300)
       },
       (err) => {
         setSaveProgress(false)
@@ -128,7 +125,10 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
   return (
     <>
       <div className="h-full">
-        <AnimatedContent initialized={infoState.isInitialized && uiState.isInitialized} className="flex flex-col gap-y-4">
+        <AnimatedContent
+          status={(infoState.isInitialized && uiState.isInitialized) ? "content" : "loading"}
+          className="flex flex-col gap-y-4"
+        >
           <div className="flex flex-row px-4 items-center gap-4">
             <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
               <RiArrowLeftLine />

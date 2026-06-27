@@ -52,7 +52,7 @@ function ScreenBody() {
     <>
       <div className="h-full">
         <AnimatedContent
-          initialized={infoState.isInitialized}
+          status={infoState.isInitialized ? (infoState.item === null ? "empty" : "content") : "loading"}
           className="flex flex-col gap-y-4"
         >
           <div className="flex flex-row px-4 items-center gap-4">

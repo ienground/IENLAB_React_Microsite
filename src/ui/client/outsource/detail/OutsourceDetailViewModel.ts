@@ -42,7 +42,6 @@ const requestRepositoryFactory = container.get(OutsourceRequestRepositoryFactory
 const revisionRepositoryFactory = container.get(OutsourceRevisionRepositoryFactory)
 const estimateRepository: EstimateRepository = container.get(EstimateRepositoryImpl)
 
-
 const createViewModel = (props: Props) => {
   const logRepository = logRepositoryFactory.create(props.id)
   const requestRepository = requestRepositoryFactory.create(props.id, false)

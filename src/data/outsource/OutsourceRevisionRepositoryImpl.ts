@@ -33,8 +33,6 @@ import type {OutsourceRevisionEditDetails} from "@/domain/model/OutsourceRevisio
 import {StoragePath} from "@/constant/StoragePath.ts"
 import {inject, injectable} from "@needle-di/core"
 import {DiToken} from "@/di/token.ts"
-import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
-import {OutsourceLogRepositoryImpl} from "@/data/outsource/OutsourceLogRepositoryImpl.ts"
 
 export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionRepository {
   private readonly outsourcesRef

@@ -87,7 +87,10 @@ function ScreenBody() {
 
   return (
     <div className="h-full">
-      <AnimatedContent initialized={infoState.isInitialized} className="flex flex-col gap-4">
+      <AnimatedContent
+        status={infoState.isInitialized ? (infoState.item === null ? "empty" : "content") : "loading"}
+        className="flex flex-col gap-4"
+      >
         <div className="flex flex-row px-4 items-center gap-4">
           <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
             <RiArrowLeftLine/>

@@ -145,7 +145,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
     <>
       <div className="h-full">
         <AnimatedContent
-          initialized={infoState.isInitialized && uiState.isInitialized}
+          status={(infoState.isInitialized && uiState.isInitialized) ? "content" : "loading"}
           className="flex flex-col gap-y-4"
         >
           <div className="flex flex-row px-4 items-center gap-4">
