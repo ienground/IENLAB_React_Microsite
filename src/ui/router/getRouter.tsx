@@ -56,7 +56,7 @@ export function getRouter(t: TFunction) {
     if (!fbAuth.currentUser) {
       const url = new URL(request.url)
       const redirectPath = url.pathname + url.search + url.hash
-      throw redirect(`/login?redirect=${encodeURIComponent(redirectPath)}`)
+      throw redirect(LoginDestination.root + "?redirect=" + encodeURIComponent(redirectPath))
     }
     return null
   }
