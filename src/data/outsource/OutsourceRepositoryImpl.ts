@@ -70,7 +70,26 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
       estimate: item.estimateRef ? this.estimateCache.get(item.estimateRef.path) : null
     })
   }
-  
+
+  async getRecentItems(companyRef: DocumentReference, count: number): Promise<Outsource[]> {
+    const constraints: QueryConstraint[] = [
+      where(FirestorePath.DELETED_AT, "==", null),
+      where(FirestorePath.Outsource.TARGET_COMPANY, "==", companyRef),
+      orderBy(FirestorePath.CREATE_AT, "desc"),
+      limit(count),
+    ]
+
+    const snapshot = await getDocs(query(this.outsourcesRef, ...constraints))
+    const items = snapshot.docs.map(Outsource.fromSnapshot)
+
+    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, items.map(item => item.targetCompanyRef))
+
+    return items.map(item => new Outsource({
+      ...item,
+      targetCompany: item.targetCompanyRef ? this.companyCache.get(item.targetCompanyRef.path) : null,
+    }))
+  }
+
   observe(id: string, callback: (item: (Outsource | null)) => void, cache?: boolean): Unsubscribe {
     return getSnapshots(doc(this.outsourcesRef, id), async snapshot => {
       if (!snapshot.exists()) {
