@@ -106,6 +106,7 @@ export class EnvRepositoryImpl implements EnvRepository {
 
     try {
       const constraints: QueryConstraint[] = [where(FirestorePath.DELETED_AT, "!=", null)]
+      constraints.push(orderBy(FirestorePath.DELETED_AT, "desc"))
       constraints.push(orderBy(FirestorePath.UPDATE_AT, "desc"))
 
       if (this.agmtHistoryInfoStateList.lastVisibleDocument) {
