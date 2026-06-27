@@ -77,6 +77,7 @@ export function getRouter(t: TFunction) {
           <Outlet />
         </AuthSessionViewModel.Provider>
       ),
+      errorElement: <RouteErrorScreen />,
       children: [
         {
           element: <PublicLayout />,
