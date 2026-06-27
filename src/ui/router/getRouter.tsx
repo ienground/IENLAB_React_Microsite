@@ -49,7 +49,6 @@ import VersionScreen from "@/ui/public/version/VersionScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceRepository = container.get(OutsourceRepositoryImpl)
-  const userRepository = container.get(UserRepositoryImpl)
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
     if (!params.itemId) {
       throw new Error("itemId is required")
@@ -61,7 +60,7 @@ export function getRouter(t: TFunction) {
     {
       path: "/",
       element: (
-        <AuthSessionViewModel.Provider userRepository={userRepository}>
+        <AuthSessionViewModel.Provider>
           <AuthSessionInitializer />
           <Outlet />
         </AuthSessionViewModel.Provider>

@@ -3,10 +3,10 @@ import { createStore } from "zustand"
 import { createZustandContext } from "@ienlab/react-library"
 import {User} from "@/domain/model/User.ts"
 import type {UserRepository} from "@/domain/repository/UserRepository.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
+import {container} from "@/di/container.ts"
 
-type Props = {
-  userRepository: UserRepository
-}
+type Props = {}
 
 interface State {
   isLoading: boolean
@@ -19,7 +19,9 @@ interface State {
   signOut: () => Promise<void>
 }
 
-export const createViewModel = ({ userRepository }: Props) => createStore<State>()((set) => ({
+const userRepository: UserRepository = container.get(UserRepositoryImpl)
+
+const createViewModel = (props: Props) => createStore<State>()((set) => ({
   isLoading: true,
   isAuthenticated: false,
   isSigningOut: false,
