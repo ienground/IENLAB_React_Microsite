@@ -8,6 +8,10 @@ import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
 import {Env} from "@/domain/model/Env.ts"
 import type {EnvRepository} from "@/domain/repository/EnvRepository.ts"
+import {container} from "@/di/container.ts"
+import {CompanyRepositoryImpl} from "@/data/company/CompanyRepositoryImpl.ts"
+import {EnvRepositoryImpl} from "@/data/env/EnvRepositoryImpl.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 
 export class SignupDetails {
   step: number = 0
@@ -27,11 +31,7 @@ class SignupUiState {
   }
 }
 
-type Props = {
-  userRepository: UserRepository
-  companyRepository: CompanyRepository
-  envRepository: EnvRepository
-}
+type Props = {}
 
 interface Store {
   signupUiState: SignupUiState
@@ -57,15 +57,19 @@ interface Store {
   clearCompanySearch: () => void
 }
 
+const companyRepository: CompanyRepository = container.get(CompanyRepositoryImpl)
+const envRepository: EnvRepository = container.get(EnvRepositoryImpl)
+const userRepository: UserRepository = container.get(UserRepositoryImpl)
+
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   signupUiState: new SignupUiState(),
   userEditUiState: new UserEditUiState(),
-  companyInfoStateList: props.companyRepository.companyInfoStateList,
+  companyInfoStateList: companyRepository.companyInfoStateList,
   unsubscribeAgreementItems: null,
 
   init: () => {
     get().loadNextCompanyPage()
-    const off = props.envRepository.observeAgreementItems(items => {
+    const off = envRepository.observeAgreementItems(items => {
       set(state => ({
         signupUiState: new SignupUiState({
           ...state.signupUiState,
@@ -125,15 +129,15 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     const { signupUiState, userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
 
     try {
-      const userId = props.userRepository.getCurrentUser()?.uid
+      const userId = userRepository.getCurrentUser()?.uid
       if (!userId) {
         onFailure("strings:error_occurred")
         return
       }
 
-      await props.userRepository.create(userId, uiState.item)
+      await userRepository.create(userId, uiState.item)
 
-      const updateResult = await props.userRepository.updateAgreedAt(signupUiState.item.agreementIds)
+      const updateResult = await userRepository.updateAgreedAt(signupUiState.item.agreementIds)
 
       if (!updateResult) {
         onFailure("strings:error_occurred")
@@ -158,7 +162,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     const { userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
     updateUiState({ otpRequestState: PhoneVerify.Request.REQUESTING, otpResultState: PhoneVerify.Result.IDLE, otpCode: "" })
     try {
-      const state = await props.userRepository.sendPhoneVerifyCode(uiState.item.phone)
+      const state = await userRepository.sendPhoneVerifyCode(uiState.item.phone)
       updateUiState({ otpRequestState: state })
       onSuccess(state)
     } catch (e) {
@@ -171,7 +175,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     const { userEditUiState: uiState, updateUserEditUiState: updateUiState } = get()
     updateUiState({ otpResultState: PhoneVerify.Result.REQUESTING })
     try {
-      const state = await props.userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
+      const state = await userRepository.verifyPhoneCode(uiState.item.phone, uiState.item.otpCode)
       updateUiState({ otpResultState: state })
       onSuccess(state)
     } catch (e) {
@@ -182,18 +186,18 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
 
 
   loadNextCompanyPage: async () => {
-    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
-    await props.companyRepository.loadNextPage()
-    set({ companyInfoStateList: { ...props.companyRepository.companyInfoStateList } })
+    set({ companyInfoStateList: { ...companyRepository.companyInfoStateList } })
+    await companyRepository.loadNextPage()
+    set({ companyInfoStateList: { ...companyRepository.companyInfoStateList } })
   },
 
   setCompanySearchKeyword: (keyword) => {
-    props.companyRepository.setSearchKeyword(keyword)
+    companyRepository.setSearchKeyword(keyword)
     get().loadNextCompanyPage()
   },
 
   clearCompanySearch: () => {
-    props.companyRepository.clearSearch()
+    companyRepository.clearSearch()
     get().loadNextCompanyPage()
   },
 }))

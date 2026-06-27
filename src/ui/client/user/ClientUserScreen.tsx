@@ -37,7 +37,6 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox"
 import {Company} from "@/domain/model/Company.ts"
-import {companyRepository, userRepository} from "@/di/container.ts"
 import {PatternFormat} from "react-number-format"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {ClientUserViewModel} from "@/ui/client/user/ClientUserViewModel.ts"
@@ -52,10 +51,7 @@ export default function ClientUserScreen() {
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.user.label")} - ${t("strings:app_name")}`}/>
-      <ClientUserViewModel.Provider
-        userRepository={userRepository}
-        companyRepository={companyRepository}
-      >
+      <ClientUserViewModel.Provider>
         <ScreenBody/>
       </ClientUserViewModel.Provider>
     </>
@@ -82,18 +78,17 @@ function ScreenBody() {
   const navigate = useNavigate()
   const {dateTimeFormat} = useDateTimeFormatters()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [isSaveProgress, setSaveProgress] = useState(false)
-  const [isDeleteProgress, setDeleteProgress] = useState(false)
+  const [isProgress, setProgress] = useState(false)
   const [query, setQuery] = useState("")
   const [otpTimer, setOtpTimer] = useState<number | null>(null)
   const prevEmailRef = useRef(uiState.item.email)
 
   const onSave = () => {
-    setSaveProgress(true)
+    setProgress(true)
     const emailChanged = uiState.item.email !== prevEmailRef.current
     save(
       async (id) => {
-        setSaveProgress(false)
+        setProgress(false)
         toast.success(t("strings:saved_successfully"), {icon: <RiCheckboxCircleFill size={18}/>})
         if (emailChanged) {
           prevEmailRef.current = uiState.item.email
@@ -101,7 +96,7 @@ function ScreenBody() {
         }
       },
       (err) => {
-        setSaveProgress(false)
+        setProgress(false)
         toast.error(t(err), {icon: <RiErrorWarningFill size={18}/>})
       }
     )
@@ -109,14 +104,14 @@ function ScreenBody() {
 
   const onDelete = () => {
     setShowDeleteDialog(false)
-    setDeleteProgress(true)
+    setProgress(true)
     del(
       () => {
-        setDeleteProgress(false)
+        setProgress(false)
         // navigate(UserDestination.root, {replace: true, state: {shouldRefresh: true}})
       },
       (err) => {
-        setDeleteProgress(false)
+        setProgress(false)
         toast.error(t("strings:error_occurred", {error: err}), {icon: <RiErrorWarningFill size={18}/>})
       }
     )
@@ -178,7 +173,7 @@ function ScreenBody() {
     <>
       <div className="h-full">
         <AnimatedContent
-          initialized={infoState.isInitialized && uiState.isInitialized}
+          status={(infoState.isInitialized && uiState.isInitialized) ? "content" : "loading"}
           className="flex flex-col gap-y-4"
         >
           <div className="flex flex-row px-4 items-center gap-4">
@@ -198,7 +193,7 @@ function ScreenBody() {
                 disabled={invalid()}
                 onClick={onSave}
               >
-                <Swap swapped={isSaveProgress}>
+                <Swap swapped={isProgress}>
                   <SwapOn><Spinner className="size-4"/></SwapOn>
                   <SwapOff><RiSaveFill/></SwapOff>
                 </Swap>

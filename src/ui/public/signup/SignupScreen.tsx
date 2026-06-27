@@ -15,8 +15,7 @@ import {
   RiLogoutBoxLine
 } from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
-import {useNavigate} from "react-router"
-import {companyRepository, envRepository, userRepository} from "@/di/container.ts"
+import {Navigate, useNavigate} from "react-router"
 import {SignupViewModel} from "@/ui/public/signup/SignupViewModel.ts"
 import {AnimatePresence, motion} from "motion/react"
 import {useEffect, useState} from "react"
@@ -41,12 +40,12 @@ import i18n from "@/locales/i18n.ts"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
-import {Navigate} from "react-router"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import {
   AlertDialog,
   AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog.tsx"
@@ -61,7 +60,6 @@ export default function SignupScreen() {
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const fbUser = AuthSessionViewModel.use.fbUser()
 
-
   if (!isAuthenticated) {
     return <Navigate to={LoginDestination.root} replace />
   }
@@ -74,11 +72,7 @@ export default function SignupScreen() {
   return (
     <>
       <Seo title={`${t("strings:signup.label")} - ${t("strings:app_name")}`}/>
-      <SignupViewModel.Provider
-        userRepository={userRepository}
-        companyRepository={companyRepository}
-        envRepository={envRepository}
-      >
+      <SignupViewModel.Provider>
         <ScreenBody/>
       </SignupViewModel.Provider>
     </>

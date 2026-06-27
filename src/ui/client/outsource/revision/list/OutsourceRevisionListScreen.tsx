@@ -1,24 +1,12 @@
-import {
-  createOutsourceRevisionRepository, outsourceRepository
-} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
-import {
-  DataTable,
-  Seo,
-  useDateTimeFormatters, useDebouncedSearch,
-  useListScreenLifecycle
-} from "@ienlab/react-library"
+import {DataTable, Seo, useDateTimeFormatters, useDebouncedSearch, useListScreenLifecycle} from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import type {ColumnDef, RowSelectionState} from "@tanstack/react-table"
 import {Checkbox} from "@/components/ui/checkbox.tsx"
-import {
-  RiAddFill,
-  RiCheckboxCircleFill,
-  RiDeleteBinFill, RiErrorWarningFill, RiSearchLine
-} from "@remixicon/react"
+import {RiAddFill, RiCheckboxCircleFill, RiDeleteBinFill, RiErrorWarningFill, RiSearchLine} from "@remixicon/react"
 import {toast} from "sonner"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {Button} from "@/components/ui/button.tsx"
@@ -34,17 +22,20 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 
 export default function OutsourceRevisionListScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const repository = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+
+  if (!itemId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionListViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        revisionRepository={repository}
+        id={itemId}
       >
-        <ScreenBody itemId={itemId ?? ""}/>
+        <ScreenBody itemId={itemId}/>
       </OutsourceRevisionListViewModel.Provider>
     </>
   )
@@ -188,7 +179,7 @@ function ScreenBody(props: { itemId: string }) {
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <AnimatedContent initialized={infoStateList.isInitialized}>
+        <AnimatedContent status={infoStateList.isInitialized ? (infoStateList.itemList.size === 0 ? "empty" : "content") : "loading"}>
           <div className="overflow-hidden m-4 rounded-lg border">
             <DataTable
               data={[...infoStateList.itemList.values()]}

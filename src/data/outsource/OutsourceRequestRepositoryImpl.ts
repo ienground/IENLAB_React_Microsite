@@ -27,17 +27,20 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore"
-import {getFunctions, type HttpsCallable} from "firebase/functions"
+import {getFunctions} from "firebase/functions"
 import {type FirebaseStorage, ref} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import i18n from "@/locales/i18n.ts"
 import {OutsourceRequestEditDetails} from "@/domain/model/OutsourceRequestEditDetails.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
 export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepository {
   private readonly outsourcesRef
   private readonly requestsRef
+  private readonly storageRef
   private readonly PAGE_SIZE = 20
   private readonly outsourceDocId: string
   private readonly encryptFn
@@ -48,13 +51,14 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
   private readonly isAdmin: boolean
 
   constructor(
-    readonly firestore: Firestore,
-    readonly storage: FirebaseStorage,
+    firestore: Firestore,
+    storage: FirebaseStorage,
     id: string,
     isAdmin: boolean
   ) {
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.requestsRef = collection(this.outsourcesRef, id, FirestorePath.Outsource.INFO_REQUESTS)
+    this.storageRef = ref(storage, `${StoragePath.OUTSOURCE}/${id}/${StoragePath.Outsource.INFO_REQUEST}`)
     this.isAdmin = isAdmin
     this.outsourceDocId = id
     const functions = getFunctions()
@@ -113,10 +117,7 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
     const files = await Promise.all(item.media.files.map(async (file, index) => {
       if (!file.image?.file) return file
 
-      const storageRef = ref(
-        this.storage,
-        `${StoragePath.OUTSOURCE}/${this.outsourceDocId}/${StoragePath.Outsource.INFO_REQUEST}/${id}`
-      )
+      const storageRef = ref(this.storageRef, id)
       const fileName = `${index}_${Date.now()}`
       const downloadUrl = await uploadFile(storageRef, fileName, file.image)
 
@@ -263,5 +264,17 @@ export class OutsourceRequestRepositoryImpl implements OutsourceRequestRepositor
       isLoading: false,
       hasMore: true,
     }
+  }
+}
+
+@injectable()
+export class OutsourceRequestRepositoryFactory {
+  constructor(
+    private readonly firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    private readonly storage: FirebaseStorage = inject(DiToken.Firebase.Storage)
+  ) {}
+
+  create(id: string, isAdmin: boolean): OutsourceRequestRepository {
+    return new OutsourceRequestRepositoryImpl(this.firestore, this.storage, id, isAdmin)
   }
 }

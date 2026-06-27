@@ -16,7 +16,6 @@ import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
-import {userRepository} from "@/di/container.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import KakaoLogin from "react-kakao-login"
@@ -46,7 +45,7 @@ export default function LoginScreen() {
   return (
     <>
       <Seo title={`${t("strings:login")} - ${t("strings:app_name")}`}/>
-      <LoginViewModel.Provider userRepository={userRepository}>
+      <LoginViewModel.Provider>
         <ScreenBody/>
       </LoginViewModel.Provider>
     </>
@@ -71,6 +70,7 @@ function ScreenBody() {
   const primGoogleLogin = LoginViewModel.use.googleLogin()
   const primNaverLogin = LoginViewModel.use.naverLogin()
   const primKakaoLogin = LoginViewModel.use.kakaoLogin()
+  const sendEmailVerification = LoginViewModel.use.sendEmailVerification()
 
   const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
   const showEmailVerification = isAuthenticated && !authUser && isPasswordUser && !fbUser?.emailVerified
@@ -126,8 +126,9 @@ function ScreenBody() {
                 <EmailVerificationCard
                   fbUser={fbUser}
                   logout={logout}
+                  sendEmailVerification={sendEmailVerification}
                 />
-              ) : (
+                ) : (
               <motion.form
                 layout
                 className="p-6 md:p-8"
@@ -451,14 +452,14 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
   )
 }
 
-function EmailVerificationCard({ fbUser, logout }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void> }) {
+function EmailVerificationCard({ fbUser, logout, sendEmailVerification }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void>; sendEmailVerification: () => Promise<void> }) {
   const { t } = useTranslation()
   const [isResending, setResending] = useState(false)
 
   const resendEmail = async () => {
     setResending(true)
     try {
-      await userRepository.sendEmailVerification()
+      await sendEmailVerification()
       toast.success(t("strings:user.profile.phone.verification_email_sent"))
     } catch {
       toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})

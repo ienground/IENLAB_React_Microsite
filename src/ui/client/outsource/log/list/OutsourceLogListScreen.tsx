@@ -1,4 +1,3 @@
-import {createOutsourceLogRepository, outsourceRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
@@ -21,20 +20,24 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
 import {OutsourceLogListViewModel} from "@/ui/client/outsource/log/list/OutsourceLogListViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import {container} from "@/di/container.ts"
 
 export default function OutsourceLogListScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const repository = useMemo(() => createOutsourceLogRepository(itemId ?? ""), [itemId])
+
+  if (!itemId) {
+    // todo
+    return <div>잘못된 접근입니다.</div>
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceLogListViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        logRepository={repository}
+        id={itemId}
       >
-        <ScreenBody itemId={itemId ?? ""}/>
+        <ScreenBody itemId={itemId}/>
       </OutsourceLogListViewModel.Provider>
     </>
   )
@@ -104,7 +107,9 @@ function ScreenBody(props: { itemId: string }) {
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <AnimatedContent initialized={infoStateList.isInitialized}>
+        <AnimatedContent
+          status={infoStateList.isInitialized ? (infoStateList.itemList.size === 0 ? "empty" : "content") : "loading"}
+        >
           <div className="overflow-hidden m-4 rounded-lg border">
             <DataTable
               data={[...infoStateList.itemList.values()]}

@@ -1,7 +1,8 @@
 import {createStore} from "zustand"
 import {createZustandContext} from "@ienlab/react-library"
-import type {OutsourceRevisionRepository} from "@/domain/repository/OutsourceRevisionRepository.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
+import {container} from "@/di/container.ts"
+import {OutsourceRevisionRepositoryFactory} from "@/data/outsource/OutsourceRevisionRepositoryImpl.ts"
 
 export interface OutsourceRevisionInfoState {
   item: Outsource.RevisionRequest | null
@@ -11,7 +12,6 @@ export interface OutsourceRevisionInfoState {
 type Props = {
   id: string
   revisionId: string
-  revisionRepository: OutsourceRevisionRepository
 }
 
 interface Store {
@@ -24,35 +24,41 @@ interface Store {
   updateState: (state: Outsource.RevisionRequest.State) => Promise<void>
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  infoState: { item: null, isInitialized: false },
-  init: () => {
-    const { unsubscribe } = get()
-    unsubscribe?.()
+const revisionRepositoryFactory = container.get(OutsourceRevisionRepositoryFactory)
 
-    const off = props.revisionRepository.observe(props.revisionId, async item => {
-      set({ infoState: { item: item, isInitialized: true } })
-    })
+const createViewModel = (props: Props) => {
+  const revisionRepository = revisionRepositoryFactory.create(props.id, false)
 
-    set({ unsubscribe: off })
-  },
+  return createStore<Store>((set, get) => ({
+    infoState: { item: null, isInitialized: false },
+    init: () => {
+      const { unsubscribe } = get()
+      unsubscribe?.()
 
-  onDisposed: () => {
-    get().unsubscribe?.()
-  },
+      const off = revisionRepository.observe(props.revisionId, async item => {
+        set({ infoState: { item: item, isInitialized: true } })
+      })
 
-  del: async (onSuccess, onFailure) => {
-    try {
-      await props.revisionRepository.delete(props.revisionId)
-      onSuccess()
-    } catch (e) {
-      onFailure(String(e))
+      set({ unsubscribe: off })
+    },
+
+    onDisposed: () => {
+      get().unsubscribe?.()
+    },
+
+    del: async (onSuccess, onFailure) => {
+      try {
+        await revisionRepository.delete(props.revisionId)
+        onSuccess()
+      } catch (e) {
+        onFailure(String(e))
+      }
+    },
+
+    updateState: async (state) => {
+      await revisionRepository.updateState(props.revisionId, state)
     }
-  },
-
-  updateState: async (state) => {
-    await props.revisionRepository.updateState(props.revisionId, state)
-  }
-}))
+  }))
+}
 
 export const OutsourceRevisionDetailViewModel = createZustandContext<Store, Props>(createViewModel)

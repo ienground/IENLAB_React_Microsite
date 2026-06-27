@@ -1,15 +1,15 @@
-import type {OutsourceRequestRepository} from "@/domain/repository/OutsourceRequestRepository.ts"
 import {createZustandContext, type InfScrollStateList} from "@ienlab/react-library"
 import type {Outsource} from "@/domain/model/Outsource.ts"
 import {createStore} from "zustand"
 import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 import type {OutsourceInfoState} from "@/ui/client/outsource/detail/OutsourceDetailViewModel.ts"
 import type {Unsubscribe} from "firebase/firestore"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
+import {OutsourceRequestRepositoryFactory} from "@/data/outsource/OutsourceRequestRepositoryImpl.ts"
 
 type Props = {
   id: string
-  outsourceRepository: OutsourceRepository
-  outsourceRequestRepository: OutsourceRequestRepository
 }
 
 interface Store {
@@ -25,42 +25,49 @@ interface Store {
   unsub?: Unsubscribe
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  requestInfoStateList: props.outsourceRequestRepository.requestInfoStateList,
-  infoState: { item: null, isInitialized: false },
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
+const requestRepositoryFactory = container.get(OutsourceRequestRepositoryFactory)
 
-  init: () => {
-    get().loadNextPage()
-    const unsub = props.outsourceRepository.observe(props.id, item => {
-      set({ infoState: { item, isInitialized: true } })
-    })
-    set({ unsub })
-  },
+const createViewModel = (props: Props) => {
+  const requestRepository = requestRepositoryFactory.create(props.id, false)
 
-  onDisposed: () => {
-    get().unsub?.()
-  },
+  return createStore<Store>((set, get) => ({
+    requestInfoStateList: requestRepository.requestInfoStateList,
+    infoState: { item: null, isInitialized: false },
 
-  loadNextPage: async () => {
-    await props.outsourceRequestRepository.loadNextPage()
-    set({ requestInfoStateList: props.outsourceRequestRepository.requestInfoStateList })
-  },
+    init: () => {
+      get().loadNextPage()
+      const unsub = outsourceRepository.observe(props.id, item => {
+        set({ infoState: { item, isInitialized: true } })
+      })
+      set({ unsub })
+    },
 
-  refresh: () => {
-    props.outsourceRequestRepository.reset()
-    set({ requestInfoStateList: props.outsourceRequestRepository.requestInfoStateList })
-    get().loadNextPage()
-  },
+    onDisposed: () => {
+      get().unsub?.()
+    },
 
-  setSearchKeyword: (keyword) => {
-    props.outsourceRequestRepository.setSearchKeyword(keyword)
-    get().loadNextPage()
-  },
+    loadNextPage: async () => {
+      await requestRepository.loadNextPage()
+      set({ requestInfoStateList: requestRepository.requestInfoStateList })
+    },
 
-  clearSearch: () => {
-    props.outsourceRequestRepository.clearSearch()
-    get().loadNextPage()
-  }
-}))
+    refresh: () => {
+      requestRepository.reset()
+      set({ requestInfoStateList: requestRepository.requestInfoStateList })
+      get().loadNextPage()
+    },
+
+    setSearchKeyword: (keyword) => {
+      requestRepository.setSearchKeyword(keyword)
+      get().loadNextPage()
+    },
+
+    clearSearch: () => {
+      requestRepository.clearSearch()
+      get().loadNextPage()
+    }
+  }))
+}
 
 export const OutsourceRequestListViewModel = createZustandContext<Store, Props>(createViewModel)

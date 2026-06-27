@@ -32,7 +32,10 @@ import {
 } from "@ienlab/react-library"
 import {StoragePath} from "@/constant/StoragePath.ts"
 import i18n from "@/locales/i18n.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class PortfolioRepositoryImpl implements PortfolioRepository {
   private readonly portfoliosRef
   private readonly storageRef
@@ -41,8 +44,8 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   private searchKeyword = ""
 
   constructor(
-    readonly firestore: Firestore,
-    readonly storage: FirebaseStorage
+    firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    storage: FirebaseStorage = inject(DiToken.Firebase.Storage)
   ) {
     this.portfoliosRef = collection(firestore, FirestorePath.PORTFOLIO)
     this.storageRef = ref(storage, StoragePath.PORTFOLIO)
@@ -148,7 +151,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
     if (existingItem) {
       const newUrls = [item.logo.url, item.thumbnail.ko.url, item.thumbnail.en.url, ...item.imageUrls.ko.map(i => i.url), ...item.imageUrls.en.map(i => i.url)]
 
-      await deleteStorageItems(this.storage, [
+      await deleteStorageItems(this.storageRef.storage, [
         [
           { item: item.logo, url: existingItem.logo },
           { item: item.thumbnail.ko, url: existingItem.thumbnail.ko },
@@ -168,7 +171,7 @@ export class PortfolioRepositoryImpl implements PortfolioRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const storageRef = ref(this.storage, `${StoragePath.PORTFOLIO}/${id}`)
+    const storageRef = ref(this.storageRef, id)
     try {
       const result = await listAll(storageRef)
       await Promise.all(result.items.map(item => deleteObject(item)))

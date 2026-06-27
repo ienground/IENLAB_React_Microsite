@@ -19,7 +19,10 @@ import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import {Company} from "@/domain/model/Company.ts"
 import i18n from "@/locales/i18n.ts"
 import {CompanyEditDetails} from "@/domain/model/CompanyEditDetails.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class CompanyRepositoryImpl implements CompanyRepository {
   private readonly companiesRef
   private readonly PAGE_SIZE = 20
@@ -28,7 +31,7 @@ export class CompanyRepositoryImpl implements CompanyRepository {
   private searchKeyword = ""
 
   constructor(
-    readonly firestore: Firestore,
+    firestore: Firestore = inject(DiToken.Firebase.Firestore),
   ) {
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
   }

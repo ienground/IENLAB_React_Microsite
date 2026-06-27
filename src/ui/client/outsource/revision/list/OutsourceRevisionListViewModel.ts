@@ -5,11 +5,12 @@ import type {OutsourceRevisionRepository} from "@/domain/repository/OutsourceRev
 import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 import type {OutsourceInfoState} from "@/ui/client/outsource/detail/OutsourceDetailViewModel.ts"
 import type {Unsubscribe} from "firebase/firestore"
+import {container} from "@/di/container.ts"
+import {OutsourceRevisionRepositoryFactory} from "@/data/outsource/OutsourceRevisionRepositoryImpl.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
 
 type Props = {
   id: string
-  outsourceRepository: OutsourceRepository
-  revisionRepository: OutsourceRevisionRepository
 }
 
 interface Store {
@@ -26,52 +27,59 @@ interface Store {
   unsub?: Unsubscribe
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  requestInfoStateList: props.revisionRepository.requestInfoStateList,
-  infoState: { item: null, isInitialized: false },
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
+const revisionRepositoryFactory = container.get(OutsourceRevisionRepositoryFactory)
 
-  init: () => {
-    get().loadNextPage()
-    const unsub = props.outsourceRepository.observe(props.id, item => {
-      set({ infoState: { item, isInitialized: true } })
-    })
-    set({ unsub })
-  },
+const createViewModel = (props: Props) => {
+  const revisionRepository = revisionRepositoryFactory.create(props.id, false)
 
-  onDisposed: () => {
-    get().unsub?.()
-  },
+  return createStore<Store>((set, get) => ({
+    requestInfoStateList: revisionRepository.requestInfoStateList,
+    infoState: { item: null, isInitialized: false },
 
-  loadNextPage: async () => {
-    await props.revisionRepository.loadNextPage()
-    set({ requestInfoStateList: props.revisionRepository.requestInfoStateList })
-  },
+    init: () => {
+      get().loadNextPage()
+      const unsub = outsourceRepository.observe(props.id, item => {
+        set({ infoState: { item, isInitialized: true } })
+      })
+      set({ unsub })
+    },
 
-  refresh: () => {
-    props.revisionRepository.reset()
-    set({ requestInfoStateList: props.revisionRepository.requestInfoStateList })
-    get().loadNextPage()
-  },
+    onDisposed: () => {
+      get().unsub?.()
+    },
 
-  deleteItems: async (ids, onSuccess, onFailure) => {
-    try {
-      await Promise.all(ids.map(id => props.revisionRepository.delete(id)))
-      get().refresh()
-      onSuccess()
-    } catch (e) {
-      if (e instanceof Error) onFailure(e.message); else onFailure(String(e))
+    loadNextPage: async () => {
+      await revisionRepository.loadNextPage()
+      set({ requestInfoStateList: revisionRepository.requestInfoStateList })
+    },
+
+    refresh: () => {
+      revisionRepository.reset()
+      set({ requestInfoStateList: revisionRepository.requestInfoStateList })
+      get().loadNextPage()
+    },
+
+    deleteItems: async (ids, onSuccess, onFailure) => {
+      try {
+        await Promise.all(ids.map(id => revisionRepository.delete(id)))
+        get().refresh()
+        onSuccess()
+      } catch (e) {
+        if (e instanceof Error) onFailure(e.message); else onFailure(String(e))
+      }
+    },
+
+    setSearchKeyword: (keyword) => {
+      revisionRepository.setSearchKeyword(keyword)
+      get().loadNextPage()
+    },
+
+    clearSearch: () => {
+      revisionRepository.clearSearch()
+      get().loadNextPage()
     }
-  },
-
-  setSearchKeyword: (keyword) => {
-    props.revisionRepository.setSearchKeyword(keyword)
-    get().loadNextPage()
-  },
-
-  clearSearch: () => {
-    props.revisionRepository.clearSearch()
-    get().loadNextPage()
-  }
-}))
+  }))
+}
 
 export const OutsourceRevisionListViewModel = createZustandContext<Store, Props>(createViewModel)
