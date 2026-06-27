@@ -2,7 +2,7 @@ import RouteErrorScreen from "@/ui/shared/error/RouteErrorScreen.tsx"
 import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
 import HomeScreen from "@/ui/public/home/HomeScreen.tsx"
 import PublicLayout from "@/ui/shared/layout/PublicLayout.tsx"
-import {createBrowserRouter, type LoaderFunctionArgs, type LoaderFunction, Outlet, redirect} from "react-router"
+import {createBrowserRouter, type LoaderFunction, type LoaderFunctionArgs, Outlet, redirect} from "react-router"
 import type {TFunction} from "i18next"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import AboutScreen from "@/ui/public/about/AboutScreen.tsx"
@@ -18,11 +18,11 @@ import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import PrivacyScreen from "@/ui/public/privacy/PrivacyScreen.tsx"
 import {ClientProtectedRoute} from "@/ui/router/ClientProtectedRoute.tsx"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
+import ClientHomeScreen from "@/ui/client/home/ClientHomeScreen.tsx"
 import {AuthSessionViewModel} from "../shared/auth/useAuthSession"
 import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
 import {container} from "@/di/container.ts"
 import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
-import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
@@ -142,7 +142,7 @@ export function getRouter(t: TFunction) {
           children: [
             {
               path: ClientHomeDestination.root,
-              element: <></>
+              element: <ClientHomeScreen />,
             },
             {
               path: ClientUserDestination.root,

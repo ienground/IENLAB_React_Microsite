@@ -263,7 +263,7 @@ function ScreenBody() {
                       {t("strings:signin.continue_with")}
                     </FieldSeparator>
 
-                    <Field className="grid grid-cols-3 gap-4 mt-7">
+                    <Field className="grid grid-cols-2 gap-4 mt-7">
                       <Button
                         variant="outline"
                         type="button"
@@ -286,31 +286,31 @@ function ScreenBody() {
                     </span>
                       </Button>
 
-                      <NaverLogin
-                        onToken={naverLogin}
-                        clientId={import.meta.env.VITE_NAVER_CLIENT_ID}
-                        callbackUrl={`${window.location.origin}/login`}
-                        render={e => (
-                          <Button
-                            variant="default"
-                            type="button"
-                            onClick={e}
-                            className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"
-                          >
-                            <Swap swapped={isLoading}>
-                              <SwapOn>
-                                <Spinner className="size-4"/>
-                              </SwapOn>
-                              <SwapOff>
-                                <IcNaver className="size-4"/>
-                              </SwapOff>
-                            </Swap>
-                            <span className="sr-only">
-                          {t("strings:signin.signin_with_naver")}
-                        </span>
-                          </Button>
-                        )}
-                      />
+                      {/*<NaverLogin*/}
+                      {/*  onToken={naverLogin}*/}
+                      {/*  clientId={import.meta.env.VITE_NAVER_CLIENT_ID}*/}
+                      {/*  callbackUrl={`${window.location.origin}/login`}*/}
+                      {/*  render={e => (*/}
+                      {/*    <Button*/}
+                      {/*      variant="default"*/}
+                      {/*      type="button"*/}
+                      {/*      onClick={e}*/}
+                      {/*      className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"*/}
+                      {/*    >*/}
+                      {/*      <Swap swapped={isLoading}>*/}
+                      {/*        <SwapOn>*/}
+                      {/*          <Spinner className="size-4"/>*/}
+                      {/*        </SwapOn>*/}
+                      {/*        <SwapOff>*/}
+                      {/*          <IcNaver className="size-4"/>*/}
+                      {/*        </SwapOff>*/}
+                      {/*      </Swap>*/}
+                      {/*      <span className="sr-only">*/}
+                      {/*    {t("strings:signin.signin_with_naver")}*/}
+                      {/*  </span>*/}
+                      {/*    </Button>*/}
+                      {/*  )}*/}
+                      {/*/>*/}
 
                       <KakaoLogin
                         token={kakaoApiKey}
@@ -364,6 +364,7 @@ function ScreenBody() {
                             <Button
                               type="button"
                               variant="link"
+                              className="text-muted-foreground font-bold"
                               onClick={() => updateUiState({isSignup: true})}
                             >
                               {t("strings:signup.label")}

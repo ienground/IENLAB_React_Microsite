@@ -13,6 +13,8 @@ export interface OutsourceRepository {
   update(id: string, item: OutsourceEditDetails): Promise<void>
   delete(id: string): Promise<void>
 
+  getRecentItems(companyRef: DocumentReference, count: number): Promise<Outsource[]>
+
   setSearchKeyword(keyword: string): void
   clearSearch(): void
   setCompanyFilter(companyRef: DocumentReference | null): void
