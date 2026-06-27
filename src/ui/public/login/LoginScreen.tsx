@@ -12,7 +12,7 @@ import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, NaverLogin, Seo} from "@ienlab/react-library"
 import {type SubmitEvent, useState} from "react"
-import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
+import {Link, Navigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
@@ -25,6 +25,7 @@ import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 
 export default function LoginScreen() {
   const {t} = useTranslation()
+  const [searchParams] = useSearchParams()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const user = AuthSessionViewModel.use.user()
   const fbUser = AuthSessionViewModel.use.fbUser()
@@ -36,10 +37,11 @@ export default function LoginScreen() {
   }
 
   if (canProceedToSignup()) {
-    return <Navigate
-      to={SignupDestination.root}
-      replace
-    />
+    const redirectParam = searchParams.get("redirect")
+    const to = redirectParam
+      ? `${SignupDestination.root}?redirect=${encodeURIComponent(redirectParam)}`
+      : SignupDestination.root
+    return <Navigate to={to} replace />
   }
 
   return (
@@ -55,9 +57,6 @@ export default function LoginScreen() {
 function ScreenBody() {
   const kakaoApiKey: string = import.meta.env.VITE_KAKAO_API_KEY
   const {t} = useTranslation()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const fbUser = AuthSessionViewModel.use.fbUser()
   const authUser = AuthSessionViewModel.use.user()
@@ -87,7 +86,7 @@ function ScreenBody() {
       )
     } else {
       login(
-        (credential) => navigate(redirectTo),
+        () => {},
         (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
       )
     }
@@ -95,7 +94,7 @@ function ScreenBody() {
 
   const googleLogin = () => {
     primGoogleLogin(
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -103,7 +102,7 @@ function ScreenBody() {
   const naverLogin = (token: string) => {
     primNaverLogin(
       token,
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -111,7 +110,7 @@ function ScreenBody() {
   const kakaoLogin = (token: string) => {
     primKakaoLogin(
       token,
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }

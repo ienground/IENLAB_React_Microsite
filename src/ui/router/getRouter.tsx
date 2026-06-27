@@ -2,7 +2,7 @@ import RouteErrorScreen from "@/ui/shared/error/RouteErrorScreen.tsx"
 import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
 import HomeScreen from "@/ui/public/home/HomeScreen.tsx"
 import PublicLayout from "@/ui/shared/layout/PublicLayout.tsx"
-import {createBrowserRouter, type LoaderFunctionArgs, Outlet} from "react-router"
+import {createBrowserRouter, type LoaderFunctionArgs, type LoaderFunction, Outlet, redirect} from "react-router"
 import type {TFunction} from "i18next"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import AboutScreen from "@/ui/public/about/AboutScreen.tsx"
@@ -43,12 +43,24 @@ import {GuestRoute} from "@/ui/router/GuestRoute.tsx"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import SignupScreen from "@/ui/public/signup/SignupScreen.tsx"
 import SignupFinish from "@/ui/public/signup/SignupFinish.tsx"
+import {fbAuth} from "@/constant/FirebaseConfig.ts"
 import {PendingUserRoute} from "@/ui/router/PendingUserRoute.tsx"
 import {VersionDestination} from "@/ui/public/version/VersionDestination.ts"
 import VersionScreen from "@/ui/public/version/VersionScreen.tsx"
 
 export function getRouter(t: TFunction) {
   const outsourceRepository = container.get(OutsourceRepositoryImpl)
+
+  const authGuardLoader: LoaderFunction = async ({request}) => {
+    await fbAuth.authStateReady()
+    if (!fbAuth.currentUser) {
+      const url = new URL(request.url)
+      const redirectPath = url.pathname + url.search + url.hash
+      throw redirect(`/login?redirect=${encodeURIComponent(redirectPath)}`)
+    }
+    return null
+  }
+
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
     if (!params.itemId) {
       throw new Error("itemId is required")
@@ -65,7 +77,6 @@ export function getRouter(t: TFunction) {
           <Outlet />
         </AuthSessionViewModel.Provider>
       ),
-      errorElement: <RouteErrorScreen />,
       children: [
         {
           element: <PublicLayout />,
@@ -126,6 +137,7 @@ export function getRouter(t: TFunction) {
         },
         {
           element: <ClientProtectedRoute />,
+          loader: authGuardLoader,
           children: [
             {
               path: ClientHomeDestination.root,

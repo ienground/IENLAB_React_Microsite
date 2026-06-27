@@ -26,23 +26,25 @@ export function ClientProtectedRoute() {
     if (isSigningOut) {
       return <Navigate to="/" replace />
     }
-    return (
-      <Navigate
-        to={LoginDestination.root}
-        replace
-        state={{ from: location }}
-      />
-    )
+    const redirectPath = location.pathname + location.search + location.hash
+    const to = redirectPath !== "/"
+      ? `${LoginDestination.root}?redirect=${encodeURIComponent(redirectPath)}`
+      : LoginDestination.root
+    return <Navigate to={to} replace />
   }
 
   if (!user) {
-    return <Navigate to={SignupDestination.root} replace />
+    const redirectPath = location.pathname + location.search + location.hash
+    const to = `${SignupDestination.root}?redirect=${encodeURIComponent(redirectPath)}`
+    return <Navigate to={to} replace />
   }
 
   const canAccessConsole = user.state === User.State.ACTIVE
 
   if (!canAccessConsole) {
-    return <Navigate to={SignupDestination.finish} replace />
+    const redirectPath = location.pathname + location.search + location.hash
+    const to = `${SignupDestination.finish}?redirect=${encodeURIComponent(redirectPath)}`
+    return <Navigate to={to} replace />
   }
 
   return <PrivateLayout />

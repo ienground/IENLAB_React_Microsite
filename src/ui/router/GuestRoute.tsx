@@ -1,10 +1,11 @@
-import {Navigate} from "react-router"
+import {Navigate, useSearchParams} from "react-router"
 import {useTranslation} from "react-i18next"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import type {ReactNode} from "react"
 
 export function GuestRoute({children}: { children: ReactNode }) {
+  const [searchParams] = useSearchParams()
   const isLoading = AuthSessionViewModel.use.isLoading()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const user = AuthSessionViewModel.use.user()
@@ -19,7 +20,8 @@ export function GuestRoute({children}: { children: ReactNode }) {
   }
 
   if (isAuthenticated && user) {
-    return <Navigate to={ClientHomeDestination.root} replace />
+    const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+    return <Navigate to={redirectTo} replace />
   }
 
   return children

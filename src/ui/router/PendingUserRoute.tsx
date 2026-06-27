@@ -1,4 +1,4 @@
-import {Navigate} from "react-router"
+import {Navigate, useSearchParams} from "react-router"
 import {useTranslation} from "react-i18next"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 import {User} from "@/domain/model/User.ts"
@@ -8,6 +8,7 @@ import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import type {ReactNode} from "react"
 
 export function PendingUserRoute({children}: { children: ReactNode }) {
+  const [searchParams] = useSearchParams()
   const isLoading = AuthSessionViewModel.use.isLoading()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const fbUser = AuthSessionViewModel.use.fbUser()
@@ -35,7 +36,8 @@ export function PendingUserRoute({children}: { children: ReactNode }) {
   }
 
   if (user.state === User.State.ACTIVE) {
-    return <Navigate to={ClientHomeDestination.root} replace />
+    const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+    return <Navigate to={redirectTo} replace />
   }
 
   return children
