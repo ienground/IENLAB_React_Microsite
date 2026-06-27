@@ -27,9 +27,7 @@ export function ClientProtectedRoute() {
       return <Navigate to="/" replace />
     }
     const redirectPath = location.pathname + location.search + location.hash
-    const to = redirectPath !== "/"
-      ? `${LoginDestination.root}?redirect=${encodeURIComponent(redirectPath)}`
-      : LoginDestination.root
+    const to = LoginDestination.root + "?redirect=" + encodeURIComponent(redirectPath)
     return <Navigate to={to} replace />
   }
 
