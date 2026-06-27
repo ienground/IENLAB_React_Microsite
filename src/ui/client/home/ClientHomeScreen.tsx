@@ -38,7 +38,7 @@ function ScreenBody() {
   const {dateTimeFormat} = useDateTimeFormatters()
   const {minFormat} = useDurationFormatter()
 
-  const greeting = (): string => {
+  const greeting = useMemo(() => {
     const hour = new Date().getHours()
     if (hour >= 5 && hour < 12) {
       return t('strings:client.greeting.morning')
@@ -47,7 +47,7 @@ function ScreenBody() {
     } else {
       return t("strings:client.greeting.night")
     }
-  }
+  }, [t])
 
   useEffect(() => {
     init()
