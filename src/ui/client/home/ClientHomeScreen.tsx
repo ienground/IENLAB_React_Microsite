@@ -1,18 +1,16 @@
 import {useTranslation} from "react-i18next"
-import {useEffect} from "react"
+import {useEffect, useMemo} from "react"
 import {useNavigate} from "react-router"
-import {Seo, Localized, useDateTimeFormatters, useDurationFormatter} from "@ienlab/react-library"
+import {Localized, Seo, useDateTimeFormatters, useDurationFormatter} from "@ienlab/react-library"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
-import {Separator} from "@/components/ui/separator.tsx"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
 import {RiArrowRightLine} from "@remixicon/react"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import {ClientHomeViewModel} from "@/ui/client/home/ClientHomeViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {cn} from "@/lib/utils.ts"
-import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 
 export default function ClientHomeScreen() {
   const {t} = useTranslation()
@@ -92,6 +90,8 @@ function ScreenBody() {
                       <div
                         className="flex flex-col gap-2 rounded-md bg-muted p-4 cursor-pointer hover:bg-muted/80 transition-colors"
                         data-cursor="pointer"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => navigate(ClientOutsourceDestination.path.detail(item.id))}
                         onKeyDown={e => {
                           if (e.key === "Enter" || e.key === " ") {
@@ -125,40 +125,40 @@ function ScreenBody() {
                           {dateTimeFormat(item.createAt.toDate())}
                         </div>
                       </div>
-                      <div>
-                        {entry?.workLog ? (
-                          <div
-                            className="flex flex-col gap-2 bg-card rounded-md p-4 cursor-pointer hover:bg-muted/80 transition-colors"
-                            role="button"
-                            onClick={() => navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))}
-                            onKeyDown={e => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault()
-                                navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))
-                              }
-                            }}
-                          >
-                            <div className="flex flex-row items-center gap-2">
-                              <span className="font-medium text-sm truncate grow">{entry.workLog.title}</span>
-                              <Status variant={Outsource.WorkLog.State.getStatusColor(entry.workLog.state)}>
-                                <StatusIndicator/>
-                                <StatusLabel>{Outsource.WorkLog.State.getLabel(t, entry.workLog.state)}</StatusLabel>
-                              </Status>
-                            </div>
-                            <div className="flex flex-row gap-3 text-xs text-muted-foreground">
-                              <span>{dateTimeFormat(entry.workLog.workDate.toDate())}</span>
-                              <span>{minFormat(entry.workLog.durationMinutes)}</span>
-                            </div>
-                            <div className="text-xs text-muted-foreground line-clamp-2">{entry.workLog.content}</div>
+                      {entry?.workLog ? (
+                        <div
+                          className="flex flex-col gap-2 bg-card rounded-md p-4 cursor-pointer hover:bg-muted/80 transition-colors"
+                          data-cursor="pointer"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))}
+                          onKeyDown={e => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault()
+                              navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))
+                            }
+                          }}
+                        >
+                          <div className="flex flex-row items-center gap-2">
+                            <span className="font-medium text-sm truncate grow">{entry.workLog.title}</span>
+                            <Status variant={Outsource.WorkLog.State.getStatusColor(entry.workLog.state)}>
+                              <StatusIndicator/>
+                              <StatusLabel>{Outsource.WorkLog.State.getLabel(t, entry.workLog.state)}</StatusLabel>
+                            </Status>
                           </div>
-                        ) : (
-                          <div
-                            className="flex flex-col gap-2 bg-muted rounded-xl p-4 opacity-50"
-                          >
-                            <div className="text-xs text-muted-foreground py-2">작업 일지 없음</div>
+                          <div className="flex flex-row gap-3 text-xs text-muted-foreground">
+                            <span>{dateTimeFormat(entry.workLog.workDate.toDate())}</span>
+                            <span>{minFormat(entry.workLog.durationMinutes)}</span>
                           </div>
-                        )}
-                      </div>
+                          <div className="text-xs text-muted-foreground line-clamp-2">{entry.workLog.content}</div>
+                        </div>
+                      ) : (
+                        <div
+                          className="flex flex-col gap-2 bg-muted rounded-xl p-4 opacity-50"
+                        >
+                          <div className="text-xs text-muted-foreground py-2">{t("strings:outsource_manage.outsource.work_log.no_log")}</div>
+                        </div>
+                      )}
                     </div>
                   )
                 })}

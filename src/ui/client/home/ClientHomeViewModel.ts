@@ -40,20 +40,8 @@ const outsourceRepository: OutsourceRepository = container.get(OutsourceReposito
 const userRepository: UserRepository = container.get(UserRepositoryImpl)
 const logRepositoryFactory = container.get(OutsourceLogRepositoryFactory)
 
-// function getGreeting(): Greeting {
-//   const hour = new Date().getHours()
-//   if (hour >= 5 && hour < 12) {
-//     return {message: "좋은 아침입니다!", emoji: "☀️"}
-//   } else if (hour >= 12 && hour < 18) {
-//     return {message: "오후도 힘내실 수 있도록 응원할게요!", emoji: "💪"}
-//   } else {
-//     return {message: "오늘 하루도 수고하셨어요. 따뜻하고 편안한 밤 되세요.", emoji: "🛌"}
-//   }
-// }
-
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   userInfoState: { item: null, isInitialized: false },
-  companyInfoState: {item: null, isInitialized: false},
   recentOutsourceInfoStateList: {itemList: [], isInitialized: false},
   workLogEntryInfoStateList: {itemList: [], isInitialized: false},
 

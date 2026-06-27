@@ -292,6 +292,9 @@
         "label": "대상 회사"
       },
       "view": "외주 프로젝트 보기",
+      "work_log": {
+        "no_log": "작업 일지 없음"
+      },
       "work_logs": {
         "date": "작업 일시",
         "detail": "일지 보기",

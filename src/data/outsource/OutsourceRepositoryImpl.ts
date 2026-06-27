@@ -80,14 +80,7 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
     ]
 
     const snapshot = await getDocs(query(this.outsourcesRef, ...constraints))
-    const items = snapshot.docs.map(Outsource.fromSnapshot)
-
-    await fetchItems(this.companiesRef, Company.fromSnapshot, this.companyCache, items.map(item => item.targetCompanyRef))
-
-    return items.map(item => new Outsource({
-      ...item,
-      targetCompany: item.targetCompanyRef ? this.companyCache.get(item.targetCompanyRef.path) : null,
-    }))
+    return snapshot.docs.map(Outsource.fromSnapshot)
   }
 
   observe(id: string, callback: (item: (Outsource | null)) => void, cache?: boolean): Unsubscribe {
