@@ -36,7 +36,7 @@ import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx
 export default function OutsourceRevisionEditScreen(props: PageModeProps) {
   const { itemId, revisionId } = useParams<{ itemId: string, revisionId: string }>()
 
-  if (!itemId || !revisionId) {
+  if (!itemId) {
     return <ClientRouteErrorScreen />
   }
 
@@ -46,11 +46,11 @@ export default function OutsourceRevisionEditScreen(props: PageModeProps) {
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionEditViewModel.Provider
         key={`${props.mode}:${itemId}:${revisionId}`}
-        id={itemId ?? ""}
-        revisionId={revisionId ?? ""}
+        id={itemId}
+        revisionId={revisionId}
         mode={props.mode}
       >
-        <ScreenBody mode={props.mode} itemId={itemId ?? ""} />
+        <ScreenBody mode={props.mode} itemId={itemId} />
       </OutsourceRevisionEditViewModel.Provider>
     </>
   )

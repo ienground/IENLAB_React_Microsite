@@ -20,7 +20,7 @@ class OutsourceRevisionEditUiState {
 
 type Props = {
   id: string
-  revisionId: string
+  revisionId?: string
   mode: PageMode
 }
 
@@ -46,7 +46,7 @@ const createViewModel = (props: Props) => {
     infoState: {item: null, isInitialized: false},
 
     init: async () => {
-      if (props.mode === "edit") {
+      if (props.mode === "edit" && props.revisionId) {
         const {unsubscribe} = get()
         unsubscribe?.()
 
@@ -103,13 +103,13 @@ const createViewModel = (props: Props) => {
       const {uiState, updateUiState} = get()
       try {
         let ref: DocumentReference | null = null
-        if (props.mode === "create") {
-          ref = await revisionRepository.clientCreate(uiState.item)
-        } else {
+        if (props.mode === "edit" && props.revisionId) {
           await revisionRepository.clientUpdate(props.revisionId, uiState.item)
+          await revisionRepository.updateState(props.revisionId, state)
+        } else {
+          ref = await revisionRepository.clientCreate(uiState.item)
+          await revisionRepository.updateState(ref?.id, state)
         }
-
-        await revisionRepository.updateState(ref?.id ?? props.revisionId, state)
 
         updateUiState({}, false)
         onSuccess(ref?.id ?? null)
@@ -130,7 +130,11 @@ const createViewModel = (props: Props) => {
 
     del: async (onSuccess, onFailure) => {
       try {
-        await revisionRepository.delete(props.revisionId)
+        if (props.revisionId) {
+          await revisionRepository.delete(props.revisionId)
+        } else {
+          onFailure("strings:error.no_valid_id")
+        }
         onSuccess()
       } catch (e) {
         onFailure(String(e))
