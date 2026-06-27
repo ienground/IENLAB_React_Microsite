@@ -20,7 +20,10 @@ export function GuestRoute({children}: { children: ReactNode }) {
   }
 
   if (isAuthenticated && user) {
-    const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+    const redirectParam = searchParams.get("redirect")
+    const redirectTo = (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//"))
+      ? redirectParam
+      : ClientHomeDestination.root
     return <Navigate to={redirectTo} replace />
   }
 

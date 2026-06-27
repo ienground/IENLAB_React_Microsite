@@ -36,7 +36,10 @@ export function PendingUserRoute({children}: { children: ReactNode }) {
   }
 
   if (user.state === User.State.ACTIVE) {
-    const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
+    const redirectParam = searchParams.get("redirect")
+    const redirectTo = (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//"))
+      ? redirectParam
+      : ClientHomeDestination.root
     return <Navigate to={redirectTo} replace />
   }
 
