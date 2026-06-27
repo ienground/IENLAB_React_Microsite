@@ -1,6 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {createOutsourceRevisionRepository} from "@/di/container.ts"
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {
   RiArrowLeftLine,
@@ -39,20 +38,24 @@ import {
   OutsourceRevisionDetailViewModel
 } from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRevisionDetailScreen() {
   const {itemId, revisionId} = useParams<{ itemId: string, revisionId: string }>()
-  const repository = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+
+  if (!itemId || !revisionId) {
+    return <ClientRouteErrorScreen />
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionDetailViewModel.Provider
-        id={itemId ?? ""}
-        revisionId={revisionId ?? ""}
-        revisionRepository={repository}
+        id={itemId}
+        revisionId={revisionId}
       >
-        <ScreenBody id={itemId ?? ""}/>
+        <ScreenBody id={itemId}/>
       </OutsourceRevisionDetailViewModel.Provider>
     </>
   )
@@ -109,7 +112,7 @@ function ScreenBody(props: { id: string }) {
     <>
       <div className="h-full">
         <AnimatedContent
-          initialized={infoState.isInitialized}
+          status={infoState.isInitialized ? (infoState.item === null ? "empty" : "content") : "loading"}
           className="flex flex-col gap-y-4"
         >
           <div className="flex flex-row px-4 items-center gap-4">

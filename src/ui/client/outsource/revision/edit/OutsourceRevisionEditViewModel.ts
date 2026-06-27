@@ -1,12 +1,13 @@
 import {OutsourceRevisionEditDetails} from "@/domain/model/OutsourceRevisionEditDetails.ts"
 import {createZustandContext, type PageMode} from "@ienlab/react-library"
-import type {OutsourceRevisionRepository} from "@/domain/repository/OutsourceRevisionRepository.ts"
 import type {
   OutsourceRevisionInfoState
 } from "@/ui/client/outsource/revision/detail/OutsourceRevisionDetailViewModel.ts"
 import {createStore} from "zustand"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import type {DocumentReference} from "firebase/firestore"
+import {container} from "@/di/container.ts"
+import {OutsourceRevisionRepositoryFactory} from "@/data/outsource/OutsourceRevisionRepositoryImpl.ts"
 
 class OutsourceRevisionEditUiState {
   item: OutsourceRevisionEditDetails = new OutsourceRevisionEditDetails()
@@ -19,9 +20,8 @@ class OutsourceRevisionEditUiState {
 
 type Props = {
   id: string
-  revisionId: string
+  revisionId?: string
   mode: PageMode
-  revisionRepository: OutsourceRevisionRepository
 }
 
 interface Store {
@@ -37,101 +37,110 @@ interface Store {
   unsubscribe?: () => void
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  uiState: new OutsourceRevisionEditUiState({isInitialized: false}),
-  infoState: {item: null, isInitialized: false},
+const revisionRepositoryFactory = container.get(OutsourceRevisionRepositoryFactory)
 
-  init: async () => {
-    if (props.mode === "edit") {
-      const {unsubscribe} = get()
-      unsubscribe?.()
+const createViewModel = (props: Props) => {
+  const revisionRepository = revisionRepositoryFactory.create(props.id, false)
+  return createStore<Store>((set, get) => ({
+    uiState: new OutsourceRevisionEditUiState({isInitialized: false}),
+    infoState: {item: null, isInitialized: false},
 
-      let hasCapturedInitial = false
-      const off = props.revisionRepository.observe(props.revisionId, item => {
-        set(() => {
-          const newState: Partial<Store> = {
-            unsubscribe: off,
-            infoState: {item: item, isInitialized: true}
-          }
+    init: async () => {
+      if (props.mode === "edit" && props.revisionId) {
+        const {unsubscribe} = get()
+        unsubscribe?.()
 
-          if (!hasCapturedInitial) {
-            newState.uiState = new OutsourceRevisionEditUiState({
-              item: item ? OutsourceRevisionEditDetails.fromItem(item) : new OutsourceRevisionEditDetails(),
-              isInitialized: true
-            })
-            hasCapturedInitial = true
-          }
+        let hasCapturedInitial = false
+        const off = revisionRepository.observe(props.revisionId, item => {
+          set(() => {
+            const newState: Partial<Store> = {
+              unsubscribe: off,
+              infoState: {item: item, isInitialized: true}
+            }
 
-          return newState
+            if (!hasCapturedInitial) {
+              newState.uiState = new OutsourceRevisionEditUiState({
+                item: item ? OutsourceRevisionEditDetails.fromItem(item) : new OutsourceRevisionEditDetails(),
+                isInitialized: true
+              })
+              hasCapturedInitial = true
+            }
+
+            return newState
+          })
         })
-      })
-      set({unsubscribe: off})
-    } else {
-      set({
-        infoState: {item: new Outsource.RevisionRequest(), isInitialized: true},
-        uiState: new OutsourceRevisionEditUiState({item: new OutsourceRevisionEditDetails(), isInitialized: true})
-      })
-    }
-  },
-
-  onDisposed: () => {
-    const { uiState, unsubscribe } = get()
-    uiState.item.imageUrls.forEach(item => item.revokeIfNeeded())
-    unsubscribe?.()
-  },
-
-  updateUiState: (item, isDirty = true) => {
-    set(state => ({
-      uiState: new OutsourceRevisionEditUiState({
-        item: new OutsourceRevisionEditDetails({...state.uiState.item, ...item, isDirty}),
-        isInitialized: state.uiState.isInitialized,
-      })
-    }))
-  },
-
-  invalid: () => {
-    const {uiState} = get()
-    return uiState.item.title.length === 0
-      || uiState.item.reason.length === 0
-  },
-
-  save: async (state, onSuccess, onFailure) => {
-    const {uiState, updateUiState} = get()
-    try {
-      let ref: DocumentReference | null = null
-      if (props.mode === "create") {
-        ref = await props.revisionRepository.clientCreate(uiState.item)
+        set({unsubscribe: off})
       } else {
-        await props.revisionRepository.clientUpdate(props.revisionId, uiState.item)
+        set({
+          infoState: {item: new Outsource.RevisionRequest(), isInitialized: true},
+          uiState: new OutsourceRevisionEditUiState({item: new OutsourceRevisionEditDetails(), isInitialized: true})
+        })
       }
+    },
 
-      await props.revisionRepository.updateState(ref?.id ?? props.revisionId, state)
+    onDisposed: () => {
+      const { uiState, unsubscribe } = get()
+      uiState.item.imageUrls.forEach(item => item.revokeIfNeeded())
+      unsubscribe?.()
+    },
 
-      updateUiState({}, false)
-      onSuccess(ref?.id ?? null)
-    } catch (e) {
-      if (e instanceof Error) {
-        switch (e.message) {
-          case "already-exist":
-            onFailure("strings:already_existed_id")
-            return
-          default:
-            onFailure(String(e))
+    updateUiState: (item, isDirty = true) => {
+      set(state => ({
+        uiState: new OutsourceRevisionEditUiState({
+          item: new OutsourceRevisionEditDetails({...state.uiState.item, ...item, isDirty}),
+          isInitialized: state.uiState.isInitialized,
+        })
+      }))
+    },
+
+    invalid: () => {
+      const {uiState} = get()
+      return uiState.item.title.length === 0
+        || uiState.item.reason.length === 0
+    },
+
+    save: async (state, onSuccess, onFailure) => {
+      const {uiState, updateUiState} = get()
+      try {
+        let ref: DocumentReference | null = null
+        if (props.mode === "edit" && props.revisionId) {
+          await revisionRepository.clientUpdate(props.revisionId, uiState.item)
+          await revisionRepository.updateState(props.revisionId, state)
+        } else {
+          ref = await revisionRepository.clientCreate(uiState.item)
+          await revisionRepository.updateState(ref?.id, state)
         }
-      } else {
+
+        updateUiState({}, false)
+        onSuccess(ref?.id ?? null)
+      } catch (e) {
+        if (e instanceof Error) {
+          switch (e.message) {
+            case "already-exist":
+              onFailure("strings:already_existed_id")
+              return
+            default:
+              onFailure(String(e))
+          }
+        } else {
+          onFailure(String(e))
+        }
+      }
+    },
+
+    del: async (onSuccess, onFailure) => {
+      try {
+        if (props.revisionId) {
+          await revisionRepository.delete(props.revisionId)
+          onSuccess()
+        } else {
+          onFailure("strings:error.no_valid_id")
+        }
+      } catch (e) {
         onFailure(String(e))
       }
     }
-  },
-
-  del: async (onSuccess, onFailure) => {
-    try {
-      await props.revisionRepository.delete(props.revisionId)
-      onSuccess()
-    } catch (e) {
-      onFailure(String(e))
-    }
-  }
-}))
+  }))
+}
 
 export const OutsourceRevisionEditViewModel = createZustandContext<Store, Props>(createViewModel)

@@ -31,6 +31,8 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {type OutsourceRevisionRepository} from "@/domain/repository/OutsourceRevisionRepository"
 import type {OutsourceRevisionEditDetails} from "@/domain/model/OutsourceRevisionEditDetails"
 import {StoragePath} from "@/constant/StoragePath.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
 export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionRepository {
   private readonly outsourcesRef
@@ -43,8 +45,8 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
   private readonly isAdmin: boolean
 
   constructor(
-    readonly firestore: Firestore,
-    readonly storage: FirebaseStorage,
+    firestore: Firestore,
+    storage: FirebaseStorage,
     id: string,
     isAdmin: boolean
   ) {
@@ -248,5 +250,18 @@ export class OutsourceRevisionRepositoryImpl implements OutsourceRevisionReposit
       isLoading: false,
       hasMore: true,
     }
+  }
+}
+
+@injectable()
+export class OutsourceRevisionRepositoryFactory {
+  constructor(
+    private readonly firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    private readonly storage: FirebaseStorage = inject(DiToken.Firebase.Storage)
+  ) {}
+
+  // 런타임에 id를 받아서 Impl 객체를 생성 후 반환
+  create(id: string, isAdmin: boolean): OutsourceRevisionRepository {
+    return new OutsourceRevisionRepositoryImpl(this.firestore, this.storage, id, isAdmin)
   }
 }

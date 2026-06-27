@@ -1,17 +1,24 @@
 import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 import {
   addDoc,
-  collection, deleteDoc,
-  doc, type DocumentReference, endAt,
+  collection,
+  deleteDoc,
+  doc,
+  type DocumentReference,
+  endAt,
   type Firestore,
   getDoc,
   getDocs,
   limit,
-  orderBy, query, type QueryConstraint,
-  startAfter, startAt, where,
-  type Unsubscribe, updateDoc
+  orderBy,
+  query,
+  type QueryConstraint,
+  startAfter,
+  startAt,
+  type Unsubscribe,
+  updateDoc,
+  where
 } from "firebase/firestore"
-import type {FirebaseStorage} from "firebase/storage"
 import {FirestorePath} from "@/constant/FirestorePath.ts"
 import {fetchItems, type FirestoreListMode, getSnapshots, type InfScrollStateList} from "@ienlab/react-library"
 import {Outsource} from "@/domain/model/Outsource.ts"
@@ -19,7 +26,10 @@ import {Company} from "@/domain/model/Company.ts"
 import {OutsourceEditDetails} from "@/domain/model/OutsourceEditDetails.ts"
 import i18n from "@/locales/i18n.ts"
 import {Estimate} from "@/domain/model/Estimate.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
+@injectable()
 export class OutsourceRepositoryImpl implements OutsourceRepository {
   private readonly outsourcesRef
   private readonly companiesRef
@@ -33,8 +43,7 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
   private companyFilterRef: DocumentReference | null = null
 
   constructor(
-    readonly firestore: Firestore,
-    readonly storage: FirebaseStorage
+    firestore: Firestore = inject(DiToken.Firebase.Firestore),
   ) {
     this.outsourcesRef = collection(firestore, FirestorePath.OUTSOURCE)
     this.companiesRef = collection(firestore, FirestorePath.COMPANY)
@@ -61,7 +70,19 @@ export class OutsourceRepositoryImpl implements OutsourceRepository {
       estimate: item.estimateRef ? this.estimateCache.get(item.estimateRef.path) : null
     })
   }
-  
+
+  async getRecentItems(companyRef: DocumentReference, count: number): Promise<Outsource[]> {
+    const constraints: QueryConstraint[] = [
+      where(FirestorePath.DELETED_AT, "==", null),
+      where(FirestorePath.Outsource.TARGET_COMPANY, "==", companyRef),
+      orderBy(FirestorePath.CREATE_AT, "desc"),
+      limit(count),
+    ]
+
+    const snapshot = await getDocs(query(this.outsourcesRef, ...constraints))
+    return snapshot.docs.map(Outsource.fromSnapshot)
+  }
+
   observe(id: string, callback: (item: (Outsource | null)) => void, cache?: boolean): Unsubscribe {
     return getSnapshots(doc(this.outsourcesRef, id), async snapshot => {
       if (!snapshot.exists()) {

@@ -2,6 +2,8 @@ import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {createStore} from "zustand"
 import {createZustandContext} from "@ienlab/react-library"
 import type { UserCredential } from "firebase/auth"
+import {container} from "@/di/container.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
 
 interface LoginDetails {
   email: string
@@ -20,9 +22,7 @@ class LoginUiState {
   }
 }
 
-type Props = {
-  userRepository: UserRepository
-}
+type Props = {}
 
 interface Store {
   uiState: LoginUiState
@@ -34,7 +34,10 @@ interface Store {
   googleLogin: (onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   naverLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
   kakaoLogin: (token: string, onSuccess: (credential: UserCredential) => void, onFailure: (errorKey: string) => void) => void
+  sendEmailVerification: () => Promise<void>
 }
+
+const userRepository: UserRepository = container.get(UserRepositoryImpl)
 
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   uiState: new LoginUiState({}),
@@ -45,10 +48,10 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   login: async (onSuccess, onFailure) => {
-    const result = await props.userRepository.signInWithEmailAndPassword(get().uiState.item.email, get().uiState.item.password)
+    const result = await userRepository.signInWithEmailAndPassword(get().uiState.item.email, get().uiState.item.password)
     if (result.ok) {
       if (!result.data.user.emailVerified) {
-        await props.userRepository.signOut()
+        await userRepository.signOut()
         onFailure("strings:user.profile.phone.email_not_verified")
         return
       }
@@ -68,9 +71,9 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
         return
       }
 
-      const result = await props.userRepository.signUp(email, password)
+      const result = await userRepository.signUp(email, password)
       if (result.ok) {
-        await props.userRepository.sendEmailVerification()
+        await userRepository.sendEmailVerification()
         onSuccess(result.data)
       } else {
         onFailure(result.errorKey)
@@ -83,7 +86,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   googleLogin: async (onSuccess, onFailure) => {
     set({ isLoading: true })
     try {
-      const result = await props.userRepository.signInWithGoogle()
+      const result = await userRepository.signInWithGoogle()
       if (result.ok) {
         onSuccess(result.data)
       } else {
@@ -97,7 +100,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   naverLogin: async (token, onSuccess, onFailure) => {
     set({ isLoading: true })
     try {
-      const result = await props.userRepository.signInWithNaver(token)
+      const result = await userRepository.signInWithNaver(token)
       if (result.ok) {
         onSuccess(result.data)
       } else {
@@ -111,7 +114,7 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   kakaoLogin: async (token, onSuccess, onFailure) => {
     set({ isLoading: true })
     try {
-      const result = await props.userRepository.signInWithKakao(token)
+      const result = await userRepository.signInWithKakao(token)
       if (result.ok) {
         onSuccess(result.data)
       } else {
@@ -120,7 +123,11 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
     } finally {
       set({ isLoading: false })
     }
-  }
+  },
+
+  sendEmailVerification: async () => {
+    await userRepository.sendEmailVerification()
+  },
 }))
 
 export const LoginViewModel = createZustandContext<Store, Props>(createViewModel)

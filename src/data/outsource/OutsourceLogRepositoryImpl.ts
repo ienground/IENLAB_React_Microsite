@@ -29,6 +29,8 @@ import {Outsource} from "@/domain/model/Outsource.ts"
 import {OutsourceLogEditDetails} from "@/domain/model/OutsourceLogEditDetails"
 import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
 import {StoragePath} from "@/constant/StoragePath.ts"
+import {inject, injectable} from "@needle-di/core"
+import {DiToken} from "@/di/token.ts"
 
 export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
   private readonly outsourcesRef
@@ -40,7 +42,7 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
   private searchKeyword = ""
 
   constructor(
-    readonly firestore: Firestore,
+    firestore: Firestore,
     storage: FirebaseStorage,
     id: string
   ) {
@@ -185,5 +187,18 @@ export class OutsourceLogRepositoryImpl implements OutsourceLogRepository {
       isLoading: false,
       hasMore: true,
     }
+  }
+}
+
+@injectable()
+export class OutsourceLogRepositoryFactory {
+  constructor(
+    private readonly firestore: Firestore = inject(DiToken.Firebase.Firestore),
+    private readonly storage: FirebaseStorage = inject(DiToken.Firebase.Storage)
+  ) {}
+
+  // 런타임에 id를 받아서 Impl 객체를 생성 후 반환
+  create(id: string): OutsourceLogRepository {
+    return new OutsourceLogRepositoryImpl(this.firestore, this.storage, id)
   }
 }

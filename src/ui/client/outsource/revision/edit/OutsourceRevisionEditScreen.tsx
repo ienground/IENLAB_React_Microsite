@@ -1,32 +1,22 @@
-import {
-  ImageUploadSortableField,
-  type PageModeProps, Seo,
-  useDateTimeFormatters
-} from "@ienlab/react-library"
+import {ImageUploadSortableField, type PageModeProps, Seo, useDateTimeFormatters} from "@ienlab/react-library"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import {
   RiArrowLeftLine,
   RiCheckboxCircleFill,
   RiCloseFill,
-  RiDeleteBinFill, RiDraftFill,
+  RiDeleteBinFill,
+  RiDraftFill,
   RiErrorWarningFill,
   RiSaveFill
 } from "@remixicon/react"
 import {Button} from "@/components/ui/button.tsx"
 import {ButtonGroup} from "@/components/ui/button-group.tsx"
 import {Spinner} from "@/components/ui/spinner.tsx"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet
-} from "@/components/ui/field.tsx"
+import {Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Input} from "@/components/ui/input.tsx"
 import {Textarea} from "@/components/ui/textarea.tsx"
 import {Card} from "@/components/ui/card.tsx"
@@ -35,28 +25,32 @@ import RouterPromptAlertDialog from "@/components/custom/shared/dialog/RouterPro
 import DeleteAlertDialog from "@/components/custom/shared/dialog/DeleteAlertDialog.tsx"
 import ForbiddenAlertDialog from "@/components/custom/shared/dialog/ForbiddenAlertDialog.tsx"
 import {UploadActionButton} from "@/components/custom/shared/Button.tsx"
-import {createOutsourceRevisionRepository} from "@/di/container.ts"
 import {toast} from "sonner"
 import {OutsourceRevisionEditViewModel} from "@/ui/client/outsource/revision/edit/OutsourceRevisionEditViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
 import {MaxValue} from "@/constant/MaxValue.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
+import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRevisionEditScreen(props: PageModeProps) {
   const { itemId, revisionId } = useParams<{ itemId: string, revisionId: string }>()
-  const repository = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+
+  if (!itemId) {
+    return <ClientRouteErrorScreen />
+  }
+
   const { t } = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRevisionEditViewModel.Provider
         key={`${props.mode}:${itemId}:${revisionId}`}
-        id={itemId ?? ""}
-        revisionId={revisionId ?? ""}
+        id={itemId}
+        revisionId={revisionId}
         mode={props.mode}
-        revisionRepository={repository}
       >
-        <ScreenBody mode={props.mode} itemId={itemId ?? ""} />
+        <ScreenBody mode={props.mode} itemId={itemId} />
       </OutsourceRevisionEditViewModel.Provider>
     </>
   )
@@ -87,11 +81,7 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
       async (id) => {
         setSaveProgress(false)
         toast.success(t("strings:saved_successfully"), { icon: <RiCheckboxCircleFill size={18} /> })
-        if (id) {
-          window.setTimeout(() => state === Outsource.RevisionRequest.State.DRAFT ? navigate(ClientOutsourceDestination.path.revision.edit(props.itemId, id), { replace: true }) : navigate(ClientOutsourceDestination.path.revision.detail(props.itemId, id), { replace: true }), 300)
-        } else if (infoState.item?.id && state !== Outsource.RevisionRequest.State.DRAFT) {
-          window.setTimeout(() => navigate(ClientOutsourceDestination.path.revision.detail(props.itemId, infoState.item!.id), { replace: true }), 300)
-        }
+        window.setTimeout(() => navigate(ClientOutsourceDestination.path.revision.list(props.itemId), { replace: true, state: {shouldRefresh: true} }), 300)
       },
       (err) => {
         setSaveProgress(false)
@@ -120,12 +110,6 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
     return () => onDisposed()
   }, [init, onDisposed])
 
-  // useEffect(() => {
-    // if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
-    //   setShowForbiddenDialog(true)
-    // }
-  // }, [infoState.isInitialized, infoState.item?.state, props.mode])
-
   useEffect(() => {
     let timerId: number | undefined
     if (infoState.isInitialized && props.mode === "edit" && infoState.item?.state !== Outsource.RevisionRequest.State.DRAFT) {
@@ -141,7 +125,10 @@ function ScreenBody(props: PageModeProps & { itemId: string }) {
   return (
     <>
       <div className="h-full">
-        <AnimatedContent initialized={infoState.isInitialized && uiState.isInitialized} className="flex flex-col gap-y-4">
+        <AnimatedContent
+          status={(infoState.isInitialized && uiState.isInitialized) ? "content" : "loading"}
+          className="flex flex-col gap-y-4"
+        >
           <div className="flex flex-row px-4 items-center gap-4">
             <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
               <RiArrowLeftLine />

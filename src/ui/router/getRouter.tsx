@@ -2,7 +2,7 @@ import RouteErrorScreen from "@/ui/shared/error/RouteErrorScreen.tsx"
 import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
 import HomeScreen from "@/ui/public/home/HomeScreen.tsx"
 import PublicLayout from "@/ui/shared/layout/PublicLayout.tsx"
-import {createBrowserRouter, type LoaderFunctionArgs, Outlet} from "react-router"
+import {createBrowserRouter, type LoaderFunction, type LoaderFunctionArgs, Outlet, redirect} from "react-router"
 import type {TFunction} from "i18next"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import AboutScreen from "@/ui/public/about/AboutScreen.tsx"
@@ -18,9 +18,11 @@ import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import PrivacyScreen from "@/ui/public/privacy/PrivacyScreen.tsx"
 import {ClientProtectedRoute} from "@/ui/router/ClientProtectedRoute.tsx"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
+import ClientHomeScreen from "@/ui/client/home/ClientHomeScreen.tsx"
 import {AuthSessionViewModel} from "../shared/auth/useAuthSession"
 import AuthSessionInitializer from "@/ui/shared/auth/AuthSessionInitializer.tsx"
-import {outsourceRepository, userRepository} from "@/di/container.ts"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
 import {LoginDestination} from "@/ui/public/login/LoginDestination.ts"
 import LoginScreen from "@/ui/public/login/LoginScreen.tsx"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
@@ -41,11 +43,24 @@ import {GuestRoute} from "@/ui/router/GuestRoute.tsx"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import SignupScreen from "@/ui/public/signup/SignupScreen.tsx"
 import SignupFinish from "@/ui/public/signup/SignupFinish.tsx"
+import {fbAuth} from "@/constant/FirebaseConfig.ts"
 import {PendingUserRoute} from "@/ui/router/PendingUserRoute.tsx"
 import {VersionDestination} from "@/ui/public/version/VersionDestination.ts"
 import VersionScreen from "@/ui/public/version/VersionScreen.tsx"
 
 export function getRouter(t: TFunction) {
+  const outsourceRepository = container.get(OutsourceRepositoryImpl)
+
+  const authGuardLoader: LoaderFunction = async ({request}) => {
+    await fbAuth.authStateReady()
+    if (!fbAuth.currentUser) {
+      const url = new URL(request.url)
+      const redirectPath = url.pathname + url.search + url.hash
+      throw redirect(LoginDestination.root + "?redirect=" + encodeURIComponent(redirectPath))
+    }
+    return null
+  }
+
   const outsourceLoader = async ({params}: LoaderFunctionArgs) => {
     if (!params.itemId) {
       throw new Error("itemId is required")
@@ -57,7 +72,7 @@ export function getRouter(t: TFunction) {
     {
       path: "/",
       element: (
-        <AuthSessionViewModel.Provider userRepository={userRepository}>
+        <AuthSessionViewModel.Provider>
           <AuthSessionInitializer />
           <Outlet />
         </AuthSessionViewModel.Provider>
@@ -123,10 +138,11 @@ export function getRouter(t: TFunction) {
         },
         {
           element: <ClientProtectedRoute />,
+          loader: authGuardLoader,
           children: [
             {
               path: ClientHomeDestination.root,
-              element: <></>
+              element: <ClientHomeScreen />,
             },
             {
               path: ClientUserDestination.root,
@@ -159,7 +175,7 @@ export function getRouter(t: TFunction) {
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.info_request.label"), path: "" }
+                { title: t("strings:outsource_manage.outsource.info_request.label"), path: ClientOutsourceDestination.path.request.list(match.params.itemId ?? "")  }
               ],
             },
             {
@@ -190,7 +206,7 @@ export function getRouter(t: TFunction) {
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
+                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: ClientOutsourceDestination.path.revision.list(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.new"), path: "" }
               ],
             },
@@ -201,7 +217,7 @@ export function getRouter(t: TFunction) {
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
+                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: ClientOutsourceDestination.path.revision.list(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.detail"), path: "" }
               ],
             },
@@ -212,7 +228,7 @@ export function getRouter(t: TFunction) {
               handle: (match: AppMatch<Outsource>) => [
                 { title: t("strings:outsource_manage.outsource.label"), path: ClientOutsourceDestination.root },
                 { title: match.loaderData?.title ? Localized.get(match.loaderData.title) : match.params.itemId, path: ClientOutsourceDestination.path.detail(match.params.itemId ?? "") },
-                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: "" },
+                { title: t("strings:outsource_manage.outsource.revision_request.label"), path: ClientOutsourceDestination.path.revision.list(match.params.itemId ?? "") },
                 { title: t("strings:outsource_manage.outsource.revision_request.edit"), path: "" }
               ],
             },

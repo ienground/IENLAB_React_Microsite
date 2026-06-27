@@ -12,11 +12,10 @@ import IcKakao from "@/assets/icon/kakao.svg?react"
 import IcNaver from "@/assets/icon/naver.svg?react"
 import {CrossfadeImage, NaverLogin, Seo} from "@ienlab/react-library"
 import {type SubmitEvent, useState} from "react"
-import {Link, Navigate, useNavigate, useSearchParams} from "react-router"
+import {Link, Navigate, useSearchParams} from "react-router"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {AnimatePresence, motion} from "motion/react"
 import {toast} from "sonner"
-import {userRepository} from "@/di/container.ts"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import KakaoLogin from "react-kakao-login"
@@ -26,6 +25,7 @@ import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
 
 export default function LoginScreen() {
   const {t} = useTranslation()
+  const [searchParams] = useSearchParams()
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const user = AuthSessionViewModel.use.user()
   const fbUser = AuthSessionViewModel.use.fbUser()
@@ -37,16 +37,17 @@ export default function LoginScreen() {
   }
 
   if (canProceedToSignup()) {
-    return <Navigate
-      to={SignupDestination.root}
-      replace
-    />
+    const redirectParam = searchParams.get("redirect")
+    const to = redirectParam
+      ? `${SignupDestination.root}?redirect=${encodeURIComponent(redirectParam)}`
+      : SignupDestination.root
+    return <Navigate to={to} replace />
   }
 
   return (
     <>
       <Seo title={`${t("strings:login")} - ${t("strings:app_name")}`}/>
-      <LoginViewModel.Provider userRepository={userRepository}>
+      <LoginViewModel.Provider>
         <ScreenBody/>
       </LoginViewModel.Provider>
     </>
@@ -56,9 +57,6 @@ export default function LoginScreen() {
 function ScreenBody() {
   const kakaoApiKey: string = import.meta.env.VITE_KAKAO_API_KEY
   const {t} = useTranslation()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const redirectTo = searchParams.get("redirect") ?? ClientHomeDestination.root
   const isAuthenticated = AuthSessionViewModel.use.isAuthenticated()
   const fbUser = AuthSessionViewModel.use.fbUser()
   const authUser = AuthSessionViewModel.use.user()
@@ -71,6 +69,7 @@ function ScreenBody() {
   const primGoogleLogin = LoginViewModel.use.googleLogin()
   const primNaverLogin = LoginViewModel.use.naverLogin()
   const primKakaoLogin = LoginViewModel.use.kakaoLogin()
+  const sendEmailVerification = LoginViewModel.use.sendEmailVerification()
 
   const isPasswordUser = fbUser?.providerData.some(p => p.providerId === 'password')
   const showEmailVerification = isAuthenticated && !authUser && isPasswordUser && !fbUser?.emailVerified
@@ -87,7 +86,7 @@ function ScreenBody() {
       )
     } else {
       login(
-        (credential) => navigate(redirectTo),
+        () => {},
         (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
       )
     }
@@ -95,7 +94,7 @@ function ScreenBody() {
 
   const googleLogin = () => {
     primGoogleLogin(
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -103,7 +102,7 @@ function ScreenBody() {
   const naverLogin = (token: string) => {
     primNaverLogin(
       token,
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -111,7 +110,7 @@ function ScreenBody() {
   const kakaoLogin = (token: string) => {
     primKakaoLogin(
       token,
-      credential => navigate(redirectTo),
+      () => {},
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -126,8 +125,9 @@ function ScreenBody() {
                 <EmailVerificationCard
                   fbUser={fbUser}
                   logout={logout}
+                  sendEmailVerification={sendEmailVerification}
                 />
-              ) : (
+                ) : (
               <motion.form
                 layout
                 className="p-6 md:p-8"
@@ -263,7 +263,7 @@ function ScreenBody() {
                       {t("strings:signin.continue_with")}
                     </FieldSeparator>
 
-                    <Field className="grid grid-cols-3 gap-4 mt-7">
+                    <Field className="grid grid-cols-2 gap-4 mt-7">
                       <Button
                         variant="outline"
                         type="button"
@@ -286,31 +286,31 @@ function ScreenBody() {
                     </span>
                       </Button>
 
-                      <NaverLogin
-                        onToken={naverLogin}
-                        clientId={import.meta.env.VITE_NAVER_CLIENT_ID}
-                        callbackUrl={`${window.location.origin}/login`}
-                        render={e => (
-                          <Button
-                            variant="default"
-                            type="button"
-                            onClick={e}
-                            className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"
-                          >
-                            <Swap swapped={isLoading}>
-                              <SwapOn>
-                                <Spinner className="size-4"/>
-                              </SwapOn>
-                              <SwapOff>
-                                <IcNaver className="size-4"/>
-                              </SwapOff>
-                            </Swap>
-                            <span className="sr-only">
-                          {t("strings:signin.signin_with_naver")}
-                        </span>
-                          </Button>
-                        )}
-                      />
+                      {/*<NaverLogin*/}
+                      {/*  onToken={naverLogin}*/}
+                      {/*  clientId={import.meta.env.VITE_NAVER_CLIENT_ID}*/}
+                      {/*  callbackUrl={`${window.location.origin}/login`}*/}
+                      {/*  render={e => (*/}
+                      {/*    <Button*/}
+                      {/*      variant="default"*/}
+                      {/*      type="button"*/}
+                      {/*      onClick={e}*/}
+                      {/*      className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"*/}
+                      {/*    >*/}
+                      {/*      <Swap swapped={isLoading}>*/}
+                      {/*        <SwapOn>*/}
+                      {/*          <Spinner className="size-4"/>*/}
+                      {/*        </SwapOn>*/}
+                      {/*        <SwapOff>*/}
+                      {/*          <IcNaver className="size-4"/>*/}
+                      {/*        </SwapOff>*/}
+                      {/*      </Swap>*/}
+                      {/*      <span className="sr-only">*/}
+                      {/*    {t("strings:signin.signin_with_naver")}*/}
+                      {/*  </span>*/}
+                      {/*    </Button>*/}
+                      {/*  )}*/}
+                      {/*/>*/}
 
                       <KakaoLogin
                         token={kakaoApiKey}
@@ -364,6 +364,7 @@ function ScreenBody() {
                             <Button
                               type="button"
                               variant="link"
+                              className="text-muted-foreground font-bold"
                               onClick={() => updateUiState({isSignup: true})}
                             >
                               {t("strings:signup.label")}
@@ -451,14 +452,14 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
   )
 }
 
-function EmailVerificationCard({ fbUser, logout }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void> }) {
+function EmailVerificationCard({ fbUser, logout, sendEmailVerification }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void>; sendEmailVerification: () => Promise<void> }) {
   const { t } = useTranslation()
   const [isResending, setResending] = useState(false)
 
   const resendEmail = async () => {
     setResending(true)
     try {
-      await userRepository.sendEmailVerification()
+      await sendEmailVerification()
       toast.success(t("strings:user.profile.phone.verification_email_sent"))
     } catch {
       toast.error(t("libs:unknown_error_occurred"), {icon: <RiErrorWarningFill size={18}/>})

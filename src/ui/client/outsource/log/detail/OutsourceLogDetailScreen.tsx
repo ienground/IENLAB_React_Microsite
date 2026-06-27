@@ -1,6 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {useEffect, useMemo} from "react"
-import {createOutsourceLogRepository} from "@/di/container.ts"
+import {useEffect} from "react"
 import {useTranslation} from "react-i18next"
 import {CrossfadeImage, Seo, useDateTimeFormatters, useDurationFormatter} from "@ienlab/react-library"
 import {OutsourceLogDetailViewModel} from "@/ui/client/outsource/log/detail/OutsourceLogDetailViewModel.ts"
@@ -11,18 +10,22 @@ import {Button} from "@/components/ui/button.tsx"
 import {Status, StatusIndicator, StatusLabel} from "@/components/ui/status.tsx"
 import {Field, FieldLegend, FieldSet} from "@/components/ui/field.tsx"
 import {Carousel} from "motion-plus/react"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceLogDetailScreen() {
   const {itemId, logId} = useParams<{ itemId: string, logId: string }>()
-  const repository = useMemo(() => createOutsourceLogRepository(itemId ?? ""), [itemId])
+
+  if (!itemId || !logId) {
+    return <ClientRouteErrorScreen />
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceLogDetailViewModel.Provider
-        id={itemId ?? ""}
-        logId={logId ?? ""}
-        logRepository={repository}
+        id={itemId}
+        logId={logId}
       >
         <ScreenBody />
       </OutsourceLogDetailViewModel.Provider>
@@ -49,7 +52,7 @@ function ScreenBody() {
     <>
       <div className="h-full">
         <AnimatedContent
-          initialized={infoState.isInitialized}
+          status={infoState.isInitialized ? (infoState.item === null ? "empty" : "content") : "loading"}
           className="flex flex-col gap-y-4"
         >
           <div className="flex flex-row px-4 items-center gap-4">

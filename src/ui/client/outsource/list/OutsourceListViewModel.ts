@@ -6,17 +6,17 @@ import type {UserRepository} from "@/domain/repository/UserRepository.ts"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import type {CompanyRepository} from "@/domain/repository/CompanyRepository.ts"
 import type {Company} from "@/domain/model/Company.ts"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
+import {UserRepositoryImpl} from "@/data/user/UserRepositoryImpl.ts"
+import {CompanyRepositoryImpl} from "@/data/company/CompanyRepositoryImpl.ts"
 
 interface CompanyInfoState {
   item: Company | null
   isInitialized: boolean
 }
 
-type Props = {
-  outsourceRepository: OutsourceRepository
-  companyRepository: CompanyRepository
-  userRepository: UserRepository
-}
+type Props = {}
 
 interface Store {
   outsourceInfoStateList: InfScrollStateList<Outsource>
@@ -33,16 +33,20 @@ interface Store {
   unsubCompany?: Unsubscribe
 }
 
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
+const userRepository: UserRepository = container.get(UserRepositoryImpl)
+const companyRepository: CompanyRepository = container.get(CompanyRepositoryImpl)
+
 const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList,
+  outsourceInfoStateList: outsourceRepository.outsourceInfoStateList,
   companyInfoState: { item: null, isInitialized: false },
 
   init: async () => {
-    const user = await props.userRepository.get()
+    const user = await userRepository.get()
     if (user?.companyRef) {
-      props.outsourceRepository.setCompanyFilter(user.companyRef)
+      outsourceRepository.setCompanyFilter(user.companyRef)
 
-      const unsubCompany = props.companyRepository.observe(user.companyRef.id, item => {
+      const unsubCompany = companyRepository.observe(user.companyRef.id, item => {
         set({ companyInfoState: { item, isInitialized: true } })
       })
       set({ unsubCompany })
@@ -56,33 +60,33 @@ const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
   },
 
   loadNextPage: async () => {
-    await props.outsourceRepository.loadNextPage()
-    set({ outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList })
+    await outsourceRepository.loadNextPage()
+    set({ outsourceInfoStateList: outsourceRepository.outsourceInfoStateList })
   },
 
   refresh: () => {
-    props.outsourceRepository.reset()
-    set({ outsourceInfoStateList: props.outsourceRepository.outsourceInfoStateList })
+    outsourceRepository.reset()
+    set({ outsourceInfoStateList: outsourceRepository.outsourceInfoStateList })
     get().loadNextPage()
   },
 
   setSearchKeyword: (keyword) => {
-    props.outsourceRepository.setSearchKeyword(keyword)
+    outsourceRepository.setSearchKeyword(keyword)
     get().loadNextPage()
   },
 
   clearSearch: () => {
-    props.outsourceRepository.clearSearch()
+    outsourceRepository.clearSearch()
     get().loadNextPage()
   },
 
   setCompanyFilter: (companyRef) => {
-    props.outsourceRepository.setCompanyFilter(companyRef)
+    outsourceRepository.setCompanyFilter(companyRef)
     get().loadNextPage()
   },
 
   clearCompanyFilter: () => {
-    props.outsourceRepository.clearCompanyFilter()
+    outsourceRepository.clearCompanyFilter()
     get().loadNextPage()
   },
 }))

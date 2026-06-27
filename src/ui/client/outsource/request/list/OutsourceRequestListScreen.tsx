@@ -1,4 +1,3 @@
-import {createOutsourceRequestRepository, outsourceRepository} from "@/di/container.ts"
 import {useTranslation} from "react-i18next"
 import {useNavigate, useParams} from "react-router"
 import {useMemo, useState} from "react"
@@ -21,20 +20,23 @@ import {motion} from "motion/react"
 import {Outsource} from "@/domain/model/Outsource.ts"
 import {OutsourceRequestListViewModel} from "@/ui/client/outsource/request/list/OutsourceRequestListViewModel.ts"
 import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceDestination.ts"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceRequestListScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const repository = useMemo(() => createOutsourceRequestRepository(itemId ?? ""), [itemId])
+
+  if (!itemId) {
+    return <ClientRouteErrorScreen />
+  }
+
   const {t} = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceRequestListViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        outsourceRequestRepository={repository}
+        id={itemId}
       >
-        <ScreenBody itemId={itemId ?? ""}/>
+        <ScreenBody itemId={itemId}/>
       </OutsourceRequestListViewModel.Provider>
     </>
   )
@@ -106,7 +108,9 @@ function ScreenBody(props: { itemId: string }) {
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <AnimatedContent initialized={infoStateList.isInitialized}>
+        <AnimatedContent
+          status={infoStateList.isInitialized ? (infoStateList.itemList.size === 0 ? "empty" : "content") : "loading"}
+        >
           <div className="overflow-hidden m-4 rounded-lg border">
             <DataTable
               data={[...infoStateList.itemList.values()]}

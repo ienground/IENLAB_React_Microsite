@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
-import {RiArrowLeftLine} from "@remixicon/react"
+import {RiArrowGoBackFill, RiArrowLeftLine} from "@remixicon/react"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 
@@ -28,7 +28,7 @@ export default function NotFoundScreen() {
             variant="outline"
             className="mt-8"
           >
-            <RiArrowLeftLine />
+            <RiArrowGoBackFill />
             {t("strings:go_back")}
           </MagneticButton>
         </div>

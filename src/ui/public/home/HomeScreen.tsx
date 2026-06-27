@@ -18,7 +18,6 @@ import {animate, delay, stagger, wrap} from "motion"
 import {cn} from "@/lib/utils.ts"
 import {HomeViewModel, type PortfolioInfoStateList} from "@/ui/public/home/HomeViewModel.ts"
 import {Portfolio} from "@/domain/model/Portfolio.ts"
-import {portfolioRepository} from "@/di/container.ts"
 import {Badge} from "@/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import IcAppStore from "@/assets/icon/app_store.svg?react"
@@ -58,7 +57,6 @@ import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
-import {useIsMobile} from "@/hooks/use-mobile.ts"
 
 type CarouselItem = {
   id: string
@@ -101,7 +99,7 @@ const sampleProfiles = [
 export default function HomeScreen() {
   const {t} = useTranslation()
   return (
-    <HomeViewModel.Provider portfolioRepository={portfolioRepository}>
+    <HomeViewModel.Provider>
       <Seo
         title={t("strings:app_name")}
         description={t("strings:og.description")}

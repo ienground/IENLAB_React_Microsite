@@ -1,11 +1,5 @@
 import {useNavigate, useParams} from "react-router"
-import {
-  createOutsourceLogRepository,
-  createOutsourceRequestRepository,
-  createOutsourceRevisionRepository, estimateRepository,
-  outsourceRepository
-} from "@/di/container.ts"
-import {type ReactNode, useCallback, useEffect, useMemo} from "react"
+import {type ReactNode, useCallback, useEffect} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {RiArrowLeftLine, RiFileEditFill, RiHistoryFill, RiInfoCardFill,} from "@remixicon/react"
 import {useTranslation} from "react-i18next"
@@ -20,25 +14,22 @@ import {ClientOutsourceDestination} from "@/ui/client/outsource/ClientOutsourceD
 import {Portfolio} from "@/domain/model/Portfolio.ts"
 import {cn} from "@/lib/utils.ts"
 import type {Timestamp} from "firebase/firestore"
+import ClientRouteErrorScreen from "@/ui/shared/error/ClientRouteErrorScreen.tsx"
 
 export default function OutsourceDetailScreen() {
   const {itemId} = useParams<{ itemId: string }>()
-  const logRepo = useMemo(() => createOutsourceLogRepository(itemId ?? ""), [itemId])
-  const requestRepo = useMemo(() => createOutsourceRequestRepository(itemId ?? ""), [itemId])
-  const revisionRepo = useMemo(() => createOutsourceRevisionRepository(itemId ?? ""), [itemId])
+  if (!itemId) {
+    return <ClientRouteErrorScreen />
+  }
+
   const { t } = useTranslation()
   return (
     <>
       <Seo title={`${t("strings:outsource_manage.outsource.label")} - ${t("strings:app_name")}`}/>
       <OutsourceDetailViewModel.Provider
-        id={itemId ?? ""}
-        outsourceRepository={outsourceRepository}
-        outsourceLogRepository={logRepo}
-        outsourceRequestRepository={requestRepo}
-        outsourceRevisionRepository={revisionRepo}
-        estimateRepository={estimateRepository}
+        id={itemId}
       >
-        <ScreenBody/>
+        <ScreenBody />
       </OutsourceDetailViewModel.Provider>
     </>
   )
@@ -96,7 +87,10 @@ function ScreenBody() {
 
   return (
     <div className="h-full">
-      <AnimatedContent initialized={infoState.isInitialized} className="flex flex-col gap-4">
+      <AnimatedContent
+        status={infoState.isInitialized ? (infoState.item === null ? "empty" : "content") : "loading"}
+        className="flex flex-col gap-4"
+      >
         <div className="flex flex-row px-4 items-center gap-4">
           <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
             <RiArrowLeftLine/>

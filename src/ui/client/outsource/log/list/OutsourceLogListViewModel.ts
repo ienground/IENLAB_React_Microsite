@@ -1,15 +1,15 @@
 import {createZustandContext, type InfScrollStateList} from "@ienlab/react-library"
 import type {Outsource} from "@/domain/model/Outsource.ts"
 import {createStore} from "zustand"
-import type {OutsourceLogRepository} from "@/domain/repository/OutsourceLogRepository.ts"
-import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 import type {Unsubscribe} from "firebase/firestore"
 import type {OutsourceInfoState} from "@/ui/client/outsource/detail/OutsourceDetailViewModel.ts"
+import {container} from "@/di/container.ts"
+import {OutsourceRepositoryImpl} from "@/data/outsource/OutsourceRepositoryImpl.ts"
+import {OutsourceLogRepositoryFactory} from "@/data/outsource/OutsourceLogRepositoryImpl.ts"
+import type {OutsourceRepository} from "@/domain/repository/OutsourceRepository.ts"
 
 type Props = {
   id: string
-  outsourceRepository: OutsourceRepository
-  logRepository: OutsourceLogRepository
 }
 
 interface Store {
@@ -25,42 +25,49 @@ interface Store {
   unsub?: Unsubscribe
 }
 
-const createViewModel = (props: Props) => createStore<Store>((set, get) => ({
-  logInfoStateList: props.logRepository.logInfoStateList,
-  infoState: { item: null, isInitialized: false },
+const outsourceRepository: OutsourceRepository = container.get(OutsourceRepositoryImpl)
+const logRepositoryFactory = container.get(OutsourceLogRepositoryFactory)
 
-  init: () => {
-    get().loadNextPage()
-    const unsub = props.outsourceRepository.observe(props.id, item => {
-      set({ infoState: { item, isInitialized: true } })
-    })
-    set({ unsub })
-  },
+const createViewModel = (props: Props) => {
+  const logRepository = logRepositoryFactory.create(props.id)
 
-  onDisposed: () => {
-    get().unsub?.()
-  },
+  return createStore<Store>((set, get) => ({
+    logInfoStateList: logRepository.logInfoStateList,
+    infoState: { item: null, isInitialized: false },
 
-  loadNextPage: async () => {
-    await props.logRepository.loadNextPage()
-    set({ logInfoStateList: props.logRepository.logInfoStateList })
-  },
+    init: () => {
+      get().loadNextPage()
+      const unsub = outsourceRepository.observe(props.id, item => {
+        set({ infoState: { item, isInitialized: true } })
+      })
+      set({ unsub })
+    },
 
-  refresh: () => {
-    props.logRepository.reset()
-    set({ logInfoStateList: props.logRepository.logInfoStateList })
-    get().loadNextPage()
-  },
+    onDisposed: () => {
+      get().unsub?.()
+    },
 
-  setSearchKeyword: (keyword) => {
-    props.logRepository.setSearchKeyword(keyword)
-    get().loadNextPage()
-  },
+    loadNextPage: async () => {
+      await logRepository.loadNextPage()
+      set({ logInfoStateList: logRepository.logInfoStateList })
+    },
 
-  clearSearch: () => {
-    props.logRepository.clearSearch()
-    get().loadNextPage()
-  }
-}))
+    refresh: () => {
+      logRepository.reset()
+      set({ logInfoStateList: logRepository.logInfoStateList })
+      get().loadNextPage()
+    },
+
+    setSearchKeyword: (keyword) => {
+      logRepository.setSearchKeyword(keyword)
+      get().loadNextPage()
+    },
+
+    clearSearch: () => {
+      logRepository.clearSearch()
+      get().loadNextPage()
+    }
+  }))
+}
 
 export const OutsourceLogListViewModel = createZustandContext<Store, Props>(createViewModel)
