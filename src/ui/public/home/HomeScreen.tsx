@@ -57,6 +57,7 @@ import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
+import {useIsMobile} from "@/hooks/use-mobile.ts"
 
 type CarouselItem = {
   id: string
@@ -112,6 +113,7 @@ export default function HomeScreen() {
 function ScreenBody() {
   const {t, i18n} = useTranslation()
   const {resolvedTheme} = useTheme()
+  const isMobile = useIsMobile()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
@@ -160,7 +162,7 @@ function ScreenBody() {
     target: skillsHorizontalScrollContainerRef,
     offset: ["start start", "end end"]
   })
-  const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
+  const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", isMobile ? "-64%" : "-48%"])
   const skillItems: SkillItem[] = [
     {
       id: "mobile",
