@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
+  checks: write
   contents: read
   pull-requests: write
 
@@ -16,10 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
+          # Pinned exact: Node 24.17.0 has an http.Agent regression that makes
+          # node-fetch (used by firebase-tools' bundled google-auth-library) throw
+          # "Premature close" on the sts.googleapis.com token exchange, breaking
+          # WIF-authenticated deploys. Fixed in 24.18.0. A bare '24' is not enough
+          # — setup-node serves the runner-cached 24.17.0. Bump/relax once newer
+          # 24.x are uniformly safe. See nodejs/node#63989 (fix: #64004).
           node-version: '24.18.0'
-          cache: npm
+          cache: 'npm'
 
       - run: npm ci && npm run build
         env:
@@ -33,46 +41,11 @@ jobs:
           VITE_NAVER_CLIENT_ID: ${{ secrets.VITE_NAVER_CLIENT_ID }}
           VITE_NAVER_CLIENT_SECRET: ${{ secrets.VITE_NAVER_CLIENT_SECRET }}
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
-          MOTION_TOKEN: ${{ secrets.MOTION_TOKEN }}
 
-      - name: Write Firebase service account
-        run: |
-          cat > "$RUNNER_TEMP/firebaseServiceAccount.json" <<'JSON'
-          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
-          JSON
-
-      - name: Deploy preview channel
-        id: deploy_preview
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebaseServiceAccount.json
-        run: |
-          CHANNEL_ID="pr${{ github.event.number }}-${{ github.head_ref }}"
-          CHANNEL_ID=$(echo "$CHANNEL_ID" | sed 's/[^[:alnum:]_-]/_/g')
-
-          OUTPUT_FILE="$RUNNER_TEMP/firebase-deploy-output.json"
-
-          npx firebase-tools@15.22.1 hosting:channel:deploy "$CHANNEL_ID" \
-            --project ienlab-ienground \
-            --expires 4h \
-            --only public \
-            --json > "$OUTPUT_FILE"
-
-          CHANNEL_URL=$(jq -r '.result[]? | select(.type=="CHANNEL_URL") | .url // empty' "$OUTPUT_FILE")
-          if [ -z "$CHANNEL_URL" ]; then
-            CHANNEL_URL=$(jq -r '.. | .url? // empty' "$OUTPUT_FILE" | head -n 1)
-          fi
-
-          echo "channel_url=$CHANNEL_URL" >> "$GITHUB_OUTPUT"
-
-      - name: Comment preview URL
-        if: ${{ steps.deploy_preview.outputs.channel_url != '' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cat > comment.txt <<EOF
-          🚀 Firebase Preview 배포 완료
-
-          - URL: ${{ steps.deploy_preview.outputs.channel_url }}
-          EOF
-
-          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IENLAB_IENGROUND }}
+          projectId: ienlab-ienground
+          target: public
+          expires: 4h
