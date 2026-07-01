@@ -1,0 +1,337 @@
+.
+├── components.json
+├── components.json.bak
+├── eslint.config.js
+├── firebase.json
+├── index.html
+├── package-lock.json
+├── package.json
+├── public
+│   ├── CNAME
+│   ├── favicon.ico
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── og
+│   │   ├── og-default.png
+│   │   └── og-policy.png
+│   └── robots.txt
+├── README.md
+├── scripts
+│   └── generate-og-pages.js
+├── src
+│   ├── App.css
+│   ├── App.tsx
+│   ├── assets
+│   │   ├── brand
+│   │   │   ├── ic_ienlab.svg
+│   │   │   ├── img_background_color.png
+│   │   │   ├── img_background_dark.png
+│   │   │   ├── img_logo_full_white.png
+│   │   │   ├── img_logo_full.png
+│   │   │   ├── img_logo_short_white.png
+│   │   │   ├── img_logo_short.png
+│   │   │   ├── img_logo_typo_white.png
+│   │   │   ├── img_logo_typo.png
+│   │   │   ├── logo_solid.svg
+│   │   │   ├── logo512.png
+│   │   │   └── pattern.png
+│   │   ├── font
+│   │   │   ├── JetBrainsMono-Light.woff2
+│   │   │   ├── JetBrainsMono-Regular.woff2
+│   │   │   ├── MapoFlowerIsland.woff2
+│   │   │   ├── MapoGoldenPier.woff2
+│   │   │   ├── mona-sans.woff
+│   │   │   └── mona-sans.woff2
+│   │   ├── icon
+│   │   │   ├── android.svg
+│   │   │   ├── app_store.svg
+│   │   │   ├── arduino.svg
+│   │   │   ├── google_play.svg
+│   │   │   ├── google.png
+│   │   │   ├── ic_ienlab_solid.svg
+│   │   │   ├── ic_sogang_univ.svg
+│   │   │   ├── ic_tistory.svg
+│   │   │   ├── kakao.svg
+│   │   │   └── naver.svg
+│   │   └── image
+│   │       ├── error
+│   │       │   ├── img_error_400_dark.png
+│   │       │   ├── img_error_400_light.png
+│   │       │   ├── img_error_401_dark.png
+│   │       │   ├── img_error_401_light.png
+│   │       │   ├── img_error_403_dark.png
+│   │       │   ├── img_error_403_light.png
+│   │       │   ├── img_error_404_dark.png
+│   │       │   └── img_error_404_light.png
+│   │       ├── front_01.png
+│   │       ├── front_02.png
+│   │       ├── front_03.png
+│   │       ├── front_forward_mobile.png
+│   │       ├── front_forward.png
+│   │       ├── front_mobile_01.png
+│   │       ├── front_mobile_02.png
+│   │       ├── front_mobile_03.png
+│   │       ├── ienground_profile_2024.jpg
+│   │       ├── img_firebase_graphic.png
+│   │       ├── img_illust_graphic.png
+│   │       ├── img_mobile_graphic.png
+│   │       ├── img_profile_sample_01.png
+│   │       ├── img_profile_sample_02.png
+│   │       ├── img_profile_sample_03.png
+│   │       ├── img_profile_sample_04.png
+│   │       ├── img_profile_sample_05.png
+│   │       ├── img_profile_sample_06.png
+│   │       ├── img_profile_sample_07.png
+│   │       ├── img_profile_sample_08.png
+│   │       ├── img_profile_sample_09.png
+│   │       ├── img_profile_sample_10.png
+│   │       ├── img_profile_sample_11.png
+│   │       ├── img_profile_sample_12.png
+│   │       ├── img_under_construction.png
+│   │       └── img_web_graphic.png
+│   ├── components
+│   │   ├── custom
+│   │   │   ├── private
+│   │   │   │   ├── AppHeader.tsx
+│   │   │   │   └── AppSidebar.tsx
+│   │   │   ├── public
+│   │   │   │   ├── PublicFooter.tsx
+│   │   │   │   └── PublicHeader.tsx
+│   │   │   └── shared
+│   │   │       ├── AnimatedContent.tsx
+│   │   │       ├── Button.tsx
+│   │   │       ├── dialog
+│   │   │       │   ├── DeleteAlertDialog.tsx
+│   │   │       │   ├── ForbiddenAlertDialog.tsx
+│   │   │       │   └── RouterPromptAlertDialog.tsx
+│   │   │       ├── LoadingLineReveal.tsx
+│   │   │       ├── MarkdownComponent.tsx
+│   │   │       └── SectionHeader.tsx
+│   │   ├── motion
+│   │   │   └── components.tsx
+│   │   └── ui
+│   │       ├── alert-dialog.tsx
+│   │       ├── alert.tsx
+│   │       ├── avatar.tsx
+│   │       ├── badge.tsx
+│   │       ├── breadcrumb.tsx
+│   │       ├── button-group.tsx
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       ├── checkbox.tsx
+│   │       ├── collapsible.tsx
+│   │       ├── combobox.tsx
+│   │       ├── dropdown-menu.tsx
+│   │       ├── empty.tsx
+│   │       ├── field.tsx
+│   │       ├── input-group.tsx
+│   │       ├── input-otp.tsx
+│   │       ├── input.tsx
+│   │       ├── label.tsx
+│   │       ├── navigation-menu.tsx
+│   │       ├── popover.tsx
+│   │       ├── radio-group.tsx
+│   │       ├── scroll-area.tsx
+│   │       ├── select.tsx
+│   │       ├── separator.tsx
+│   │       ├── sheet.tsx
+│   │       ├── sidebar.tsx
+│   │       ├── skeleton.tsx
+│   │       ├── sonner.tsx
+│   │       ├── spinner.tsx
+│   │       ├── status.tsx
+│   │       ├── stepper.tsx
+│   │       ├── swap.tsx
+│   │       ├── table.tsx
+│   │       ├── textarea.tsx
+│   │       └── tooltip.tsx
+│   ├── constant
+│   │   ├── CreateCallable.ts
+│   │   ├── CustomClient.ts
+│   │   ├── FirebaseConfig.ts
+│   │   ├── FirestorePath.ts
+│   │   ├── FnSchema.ts
+│   │   ├── MaxValue.ts
+│   │   ├── PlaceholderValue.ts
+│   │   └── StoragePath.ts
+│   ├── data
+│   │   ├── company
+│   │   │   └── CompanyRepositoryImpl.ts
+│   │   ├── env
+│   │   │   └── EnvRepositoryImpl.ts
+│   │   ├── estimate
+│   │   │   └── EstimateRepositoryImpl.ts
+│   │   ├── outsource
+│   │   │   ├── OutsourceLogRepositoryImpl.ts
+│   │   │   ├── OutsourceRepositoryImpl.ts
+│   │   │   ├── OutsourceRequestRepositoryImpl.ts
+│   │   │   └── OutsourceRevisionRepositoryImpl.ts
+│   │   ├── portfolio
+│   │   │   └── PortfolioRepositoryImpl.ts
+│   │   └── user
+│   │       └── UserRepositoryImpl.ts
+│   ├── di
+│   │   ├── container.ts
+│   │   └── token.ts
+│   ├── domain
+│   │   ├── model
+│   │   │   ├── AgreementItemEditDetails.ts
+│   │   │   ├── Company.ts
+│   │   │   ├── CompanyEditDetails.ts
+│   │   │   ├── Env.ts
+│   │   │   ├── Estimate.ts
+│   │   │   ├── EstimateEditDetails.ts
+│   │   │   ├── Outsource.ts
+│   │   │   ├── OutsourceEditDetails.ts
+│   │   │   ├── OutsourceLogEditDetails.ts
+│   │   │   ├── OutsourceRequestEditDetails.ts
+│   │   │   ├── OutsourceRevisionEditDetails.ts
+│   │   │   ├── Portfolio.ts
+│   │   │   ├── PortfolioEditDetails.ts
+│   │   │   ├── PortfolioX.tsx
+│   │   │   ├── User.ts
+│   │   │   └── UserEditDetails.ts
+│   │   └── repository
+│   │       ├── CompanyRepository.ts
+│   │       ├── EnvRepository.ts
+│   │       ├── EstimateRepository.ts
+│   │       ├── OutsourceLogRepository.ts
+│   │       ├── OutsourceRepository.ts
+│   │       ├── OutsourceRequestRepository.ts
+│   │       ├── OutsourceRevisionRepository.ts
+│   │       ├── PortfolioRepository.ts
+│   │       └── UserRepository.ts
+│   ├── hooks
+│   │   ├── use-as-ref.ts
+│   │   ├── use-isomorphic-layout-effect.ts
+│   │   ├── use-lazy-ref.ts
+│   │   └── use-mobile.ts
+│   ├── index.css
+│   ├── lib
+│   │   ├── compose-refs.ts
+│   │   └── utils.ts
+│   ├── locales
+│   │   ├── en
+│   │   │   ├── libs.json
+│   │   │   └── strings.json
+│   │   ├── i18n.ts
+│   │   └── ko
+│   │       ├── libs.json
+│   │       ├── strings.json
+│   │       └── types.json
+│   ├── main.tsx
+│   ├── types
+│   ├── ui
+│   │   ├── client
+│   │   │   ├── estimate
+│   │   │   │   ├── detail
+│   │   │   │   │   └── EstimateDetailViewModel.ts
+│   │   │   │   └── list
+│   │   │   ├── home
+│   │   │   │   ├── ClientHomeDestination.ts
+│   │   │   │   ├── ClientHomeScreen.tsx
+│   │   │   │   └── ClientHomeViewModel.ts
+│   │   │   ├── outsource
+│   │   │   │   ├── ClientOutsourceDestination.ts
+│   │   │   │   ├── detail
+│   │   │   │   │   ├── OutsourceDetailScreen.tsx
+│   │   │   │   │   └── OutsourceDetailViewModel.ts
+│   │   │   │   ├── list
+│   │   │   │   │   ├── OutsourceListScreen.tsx
+│   │   │   │   │   └── OutsourceListViewModel.ts
+│   │   │   │   ├── log
+│   │   │   │   │   ├── detail
+│   │   │   │   │   │   ├── OutsourceLogDetailScreen.tsx
+│   │   │   │   │   │   └── OutsourceLogDetailViewModel.ts
+│   │   │   │   │   └── list
+│   │   │   │   │       ├── OutsourceLogListScreen.tsx
+│   │   │   │   │       └── OutsourceLogListViewModel.ts
+│   │   │   │   ├── request
+│   │   │   │   │   ├── edit
+│   │   │   │   │   │   ├── OutsourceRequestEditScreen.tsx
+│   │   │   │   │   │   └── OutsourceRequestEditViewModel.ts
+│   │   │   │   │   └── list
+│   │   │   │   │       ├── OutsourceRequestListScreen.tsx
+│   │   │   │   │       └── OutsourceRequestListViewModel.ts
+│   │   │   │   └── revision
+│   │   │   │       ├── detail
+│   │   │   │       │   ├── OutsourceRevisionDetailScreen.tsx
+│   │   │   │       │   └── OutsourceRevisionDetailViewModel.ts
+│   │   │   │       ├── edit
+│   │   │   │       │   ├── OutsourceRevisionEditScreen.tsx
+│   │   │   │       │   └── OutsourceRevisionEditViewModel.ts
+│   │   │   │       └── list
+│   │   │   │           ├── OutsourceRevisionListScreen.tsx
+│   │   │   │           └── OutsourceRevisionListViewModel.ts
+│   │   │   └── user
+│   │   │       ├── ClientUserDestination.ts
+│   │   │       ├── ClientUserScreen.tsx
+│   │   │       └── ClientUserViewModel.ts
+│   │   ├── public
+│   │   │   ├── about
+│   │   │   │   ├── AboutDestination.ts
+│   │   │   │   └── AboutScreen.tsx
+│   │   │   ├── brand
+│   │   │   │   ├── BrandDestination.ts
+│   │   │   │   └── BrandScreen.tsx
+│   │   │   ├── construction
+│   │   │   │   └── ConstructionScreen.tsx
+│   │   │   ├── home
+│   │   │   │   ├── HomeScreen.tsx
+│   │   │   │   └── HomeViewModel.ts
+│   │   │   ├── login
+│   │   │   │   ├── LoginDestination.ts
+│   │   │   │   ├── LoginScreen.tsx
+│   │   │   │   └── LoginViewModel.ts
+│   │   │   ├── notice
+│   │   │   │   ├── detail
+│   │   │   │   │   └── NoticeDetailScreen.tsx
+│   │   │   │   ├── list
+│   │   │   │   │   └── NoticeListScreen.tsx
+│   │   │   │   └── NoticeDestination.ts
+│   │   │   ├── privacy
+│   │   │   │   ├── PrivacyDestination.ts
+│   │   │   │   └── PrivacyScreen.tsx
+│   │   │   ├── project
+│   │   │   │   ├── detail
+│   │   │   │   │   └── ProjectDetailScreen.tsx
+│   │   │   │   ├── list
+│   │   │   │   │   └── ProjectListScreen.tsx
+│   │   │   │   └── ProjectDestination.ts
+│   │   │   ├── signup
+│   │   │   │   ├── SignupDestination.ts
+│   │   │   │   ├── SignupFinish.tsx
+│   │   │   │   ├── SignupScreen.tsx
+│   │   │   │   └── SignupViewModel.ts
+│   │   │   └── version
+│   │   │       ├── VersionDestination.ts
+│   │   │       └── VersionScreen.tsx
+│   │   ├── router
+│   │   │   ├── ClientProtectedRoute.tsx
+│   │   │   ├── getRouter.tsx
+│   │   │   ├── GuestRoute.tsx
+│   │   │   ├── PendingUserRoute.tsx
+│   │   │   └── Router.tsx
+│   │   ├── shared
+│   │   │   ├── auth
+│   │   │   │   ├── AuthSessionInitializer.tsx
+│   │   │   │   └── useAuthSession.ts
+│   │   │   ├── error
+│   │   │   │   ├── ClientRouteErrorScreen.tsx
+│   │   │   │   ├── NotFoundScreen.tsx
+│   │   │   │   └── RouteErrorScreen.tsx
+│   │   │   └── layout
+│   │   │       ├── PrivateLayout.tsx
+│   │   │       └── PublicLayout.tsx
+│   │   └── utils
+│   │       └── LinkHelper.ts
+│   └── vite-env.d.ts
+├── tailwind.config.js
+├── tree.txt
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+78 directories, 257 files

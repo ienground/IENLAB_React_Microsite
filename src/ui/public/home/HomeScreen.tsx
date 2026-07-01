@@ -117,6 +117,20 @@ function ScreenBody() {
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
+  const {scrollY} = useScroll()
+  const heroFloatProgress = useSpring(useTransform(scrollY, [0, 120], [0, 1]), {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.35,
+  })
+  const heroPaddingX = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "16px" : "32px"])
+  const heroPaddingY = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "16px" : "24px"])
+  const heroRadius = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "28px" : "36px"])
+  const heroShadow = useTransform(
+    heroFloatProgress,
+    [0, 1],
+    ["0 0 0 rgba(0,0,0,0)", "0 24px 80px rgba(0,0,0,0.20)"]
+  )
 
   useEffect(() => {
     init()
@@ -239,13 +253,23 @@ function ScreenBody() {
     <div
       className="w-full flex flex-col items-center overflow-x-clip"
     >
-      <section className="w-full px-4 py-4 sm:px-6 md:px-8 md:py-6">
-        <div
+      <motion.section
+        className="w-full"
+        style={{
+          paddingInline: heroPaddingX,
+          paddingBlock: heroPaddingY,
+        }}
+      >
+        <motion.div
           key="extra-layered-slide"
           className={cn(
-            "w-full overflow-hidden rounded-4xl border border-border bg-muted flex flex-col",
+            "w-full overflow-hidden border border-border bg-muted flex flex-col",
             "md:relative md:h-auto md:aspect-video xl:aspect-21/9 md:block"
           )}
+          style={{
+            borderRadius: heroRadius,
+            boxShadow: heroShadow,
+          }}
         >
           <div className={cn(
             "w-full h-[60svh]",
@@ -284,8 +308,8 @@ function ScreenBody() {
 
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
       <section className="w-full px-4 py-8 sm:px-6 md:px-8 md:py-10 xl:py-12">
         <div className="w-full">
           <div className="site-grid">
