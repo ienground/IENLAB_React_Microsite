@@ -1,6 +1,17 @@
-import ConstructionScreen from "@/ui/public/construction/ConstructionScreen.tsx"
-import { Seo } from "@ienlab/react-library"
+import {Localized, Seo, useDateTimeFormatters} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
+import {Separator} from "@/components/ui/separator.tsx"
+import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
+import {NoticeListViewModel} from "@/ui/public/notice/list/NoticeListViewModel.ts"
+import {useEffect} from "react"
+import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
+import {motion} from "motion/react"
+import {Spinner} from "@/components/ui/spinner.tsx"
+import {Badge} from "@/components/ui/badge.tsx"
+import {RiArrowRightUpLine} from "@remixicon/react"
+import {useNavigate} from "react-router"
+import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
+import type {Notice} from "@/domain/model/Notice.ts"
 
 export default function NoticeListScreen() {
   const { t } = useTranslation()
@@ -10,7 +21,118 @@ export default function NoticeListScreen() {
         title={`${t("strings:notice.label")} - ${t("strings:app_name")}`}
         description={t("strings:notice.desc")}
       />
-      <ConstructionScreen />
+      <NoticeListViewModel.Provider>
+        <ScreenBody />
+      </NoticeListViewModel.Provider>
     </>
+  )
+}
+
+function ScreenBody() {
+  const init = NoticeListViewModel.use.init()
+  const onDisposed = NoticeListViewModel.use.onDisposed()
+  const loadNextPage = NoticeListViewModel.use.loadNextPage()
+  const noticeInfoStateList = NoticeListViewModel.use.noticeInfoStateList()
+
+  const {t} = useTranslation()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    init()
+    return () => onDisposed()
+  }, [init, onDisposed])
+
+  const notices = [...noticeInfoStateList.itemList.values()]
+  const status = noticeInfoStateList.isInitialized
+    ? (notices.length === 0 ? "empty" : "content")
+    : "loading"
+
+  return (
+    <div className="w-full flex flex-col">
+      <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground"/></div>
+
+      <div className="site-section-tight site-grid">
+        <aside className="col-span-12 xl:col-span-2">
+          <SectionHeader index={0} label={t("strings:notice.label")} />
+        </aside>
+        <div className="col-span-12 xl:col-span-10">
+          <div className="flex flex-col gap-4 md:gap-6">
+            <h1 className="large-text-title">{t("strings:notice.label")}</h1>
+            <p className="max-w-2xl text-muted-foreground">{t("strings:notice.desc")}</p>
+          </div>
+
+          <AnimatedContent status={status} className="mt-12 md:mt-16">
+            <div className="flex flex-col border-y border-foreground">
+              {notices.map((item, index) => (
+                <NoticeRow
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  onClick={() => navigate(NoticeDestination.path.detail(item.id))}
+                />
+              ))}
+            </div>
+
+            {noticeInfoStateList.hasMore ? (
+              <motion.div
+                className="w-full flex flex-row items-center justify-center py-10"
+                onViewportEnter={loadNextPage}
+              >
+                <Spinner className="size-9"/>
+              </motion.div>
+            ) : (
+              <div className="w-full py-10 text-center text-sm text-muted-foreground">
+                {t("strings:notice.list_end")}
+              </div>
+            )}
+          </AnimatedContent>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function NoticeRow(props: {
+  item: Notice.Content
+  index: number
+  onClick: () => void
+}) {
+  const {t} = useTranslation()
+  const {dateTimeFormatShort} = useDateTimeFormatters()
+  const title = Localized.get(props.item.title)
+  const content = Localized.get(props.item.content)
+  const category = props.item.category ? Localized.get(props.item.category.name) : t("strings:notice.label")
+  const summary = content
+    .replace(/[#*_`>\-[\]()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+
+  return (
+    <button
+      type="button"
+      onClick={props.onClick}
+      className="group grid w-full grid-cols-12 gap-y-4 border-b border-border py-6 text-left transition-colors last:border-b-0 hover:bg-muted/45 md:gap-x-6 md:px-4 md:py-8"
+    >
+      <div className="col-span-12 flex items-center gap-3 text-sm text-muted-foreground md:col-span-3">
+        <span className="font-jb-mono tabular-nums">{String(props.index + 1).padStart(2, "0")}</span>
+        <Badge variant="outline">{category}</Badge>
+      </div>
+
+      <div className="col-span-11 flex min-w-0 flex-col gap-3 md:col-span-8">
+        <h2 className="text-xl font-medium leading-tight md:text-2xl">{title}</h2>
+        {summary && (
+          <p className="line-clamp-2 text-sm leading-6 text-muted-foreground md:text-base">
+            {summary}
+          </p>
+        )}
+        <time className="text-xs text-muted-foreground" dateTime={props.item.updateAt.toDate().toISOString()}>
+          {dateTimeFormatShort(props.item.updateAt.toDate())}
+        </time>
+      </div>
+
+      <div className="col-span-1 flex justify-end">
+        <RiArrowRightUpLine className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+      </div>
+    </button>
   )
 }
