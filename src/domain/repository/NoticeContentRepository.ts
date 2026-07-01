@@ -14,6 +14,9 @@ export interface NoticeContentRepository {
   delete(id: string): Promise<void>
   uploadContentImage(file: File): Promise<string>
 
+  setState(state: Notice.Content.State): void
+  clearState(): void
+
   setSearchKeyword(keyword: string): void
   clearSearch(): void
 

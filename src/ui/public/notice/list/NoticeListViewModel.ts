@@ -1,14 +1,22 @@
-import {createZustandContext, type InfScrollStateList} from "@ienlab/react-library"
+import {createZustandContext, type InfScrollStateList, Localized} from "@ienlab/react-library"
 import {createStore} from "zustand"
 import {container} from "@/di/container.ts"
 import {Notice} from "@/domain/model/Notice.ts"
 import type {NoticeContentRepository} from "@/domain/repository/NoticeContentRepository.ts"
 import {NoticeContentRepositoryImpl} from "@/data/notice/NoticeContentRepositoryImpl.ts"
+import {extractNoticeEditorTextSummary} from "@/ui/public/notice/detail/NoticeEditorContentMapper.ts"
 
 type Props = {}
 
+export type NoticeListItemState = {
+  item: Notice.Content
+  title: string
+  category: string
+  summary: string
+}
+
 interface Store {
-  noticeInfoStateList: InfScrollStateList<Notice.Content>
+  contentInfoStateList: InfScrollStateList<NoticeListItemState>
 
   init: () => void
   onDisposed: () => void
@@ -16,45 +24,42 @@ interface Store {
   refresh: () => void
 }
 
-const noticeContentRepository: NoticeContentRepository = container.get(NoticeContentRepositoryImpl)
+const contentRepository: NoticeContentRepository = container.get(NoticeContentRepositoryImpl)
 
-const toPublishedList = (stateList: InfScrollStateList<Notice.Content>): InfScrollStateList<Notice.Content> => {
-  const itemList = new Map(
-    [...stateList.itemList].filter(([, item]) => item.state === Notice.Content.State.PUBLISHED)
-  )
+const toListItemState = (item: Notice.Content): NoticeListItemState => ({
+  item,
+  title: Localized.get(item.title),
+  category: item.category ? Localized.get(item.category.name) : "",
+  summary: extractNoticeEditorTextSummary(Localized.get(item.content)),
+})
 
-  return {
-    ...stateList,
-    itemList,
-  }
-}
+const toListState = (stateList: InfScrollStateList<Notice.Content>): InfScrollStateList<NoticeListItemState> => ({
+  ...stateList,
+  itemList: new Map([...stateList.itemList].map(([id, item]) => [id, toListItemState(item)])),
+})
 
 const createViewModel = (_props: Props) => createStore<Store>((set, get) => ({
-  noticeInfoStateList: toPublishedList(noticeContentRepository.contentInfoStateList),
+  contentInfoStateList: toListState(contentRepository.contentInfoStateList),
 
   init: () => {
-    noticeContentRepository.reset()
-    set({noticeInfoStateList: toPublishedList(noticeContentRepository.contentInfoStateList)})
+    contentRepository.setState(Notice.Content.State.PUBLISHED)
+    contentRepository.reset()
+    set({contentInfoStateList: toListState(contentRepository.contentInfoStateList)})
     get().loadNextPage()
   },
 
   onDisposed: () => {
-    noticeContentRepository.reset()
+    contentRepository.reset()
   },
 
   loadNextPage: async () => {
-    await noticeContentRepository.loadNextPage()
-    const noticeInfoStateList = toPublishedList(noticeContentRepository.contentInfoStateList)
-    set({noticeInfoStateList})
-
-    if (noticeInfoStateList.isInitialized && noticeInfoStateList.itemList.size === 0 && noticeInfoStateList.hasMore) {
-      get().loadNextPage()
-    }
+    await contentRepository.loadNextPage()
+    set({ contentInfoStateList: toListState(contentRepository.contentInfoStateList) })
   },
 
   refresh: () => {
-    noticeContentRepository.reset()
-    set({noticeInfoStateList: toPublishedList(noticeContentRepository.contentInfoStateList)})
+    contentRepository.reset()
+    set({ contentInfoStateList: toListState(contentRepository.contentInfoStateList) })
     get().loadNextPage()
   }
 }))

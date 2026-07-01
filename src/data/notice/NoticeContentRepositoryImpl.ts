@@ -40,6 +40,7 @@ export class NoticeContentRepositoryImpl implements NoticeContentRepository {
   private readonly categoryCache = new Map<string, Notice.Category>
   private mode: FirestoreListMode = "list"
   private searchKeyword = ""
+  private state: Notice.Content.State | null = null
 
   constructor(
     firestore: Firestore = inject(DiToken.Firebase.Firestore),
@@ -115,6 +116,16 @@ export class NoticeContentRepositoryImpl implements NoticeContentRepository {
     return getDownloadURL(imageRef)
   }
 
+  setState(state: Notice.Content.State) {
+    this.state = state
+    this.reset()
+  }
+
+  clearState() {
+    this.state = null
+    this.reset()
+  }
+
   setSearchKeyword(keyword: string) {
     const normalized = keyword.trim().toLowerCase()
 
@@ -143,6 +154,10 @@ export class NoticeContentRepositoryImpl implements NoticeContentRepository {
         constraints.push(endAt(this.searchKeyword + "\uf8ff"))
       } else {
         constraints.push(orderBy(FirestorePath.UPDATE_AT, "desc"))
+      }
+
+      if (this.state !== null) {
+        constraints.push(where(FirestorePath.Notice.Content.STATE, "==", this.state))
       }
 
       if (this.contentInfoStateList.lastVisibleDocument) {

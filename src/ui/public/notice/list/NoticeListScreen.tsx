@@ -1,4 +1,4 @@
-import {Localized, Seo, useDateTimeFormatters} from "@ienlab/react-library"
+import {Seo, useDateTimeFormatters} from "@ienlab/react-library"
 import {useTranslation} from "react-i18next"
 import {Separator} from "@/components/ui/separator.tsx"
 import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
@@ -11,7 +11,7 @@ import {Badge} from "@/components/ui/badge.tsx"
 import {RiArrowRightUpLine} from "@remixicon/react"
 import {useNavigate} from "react-router"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
-import type {Notice} from "@/domain/model/Notice.ts"
+import type {NoticeListItemState} from "@/ui/public/notice/list/NoticeListViewModel.ts"
 
 export default function NoticeListScreen() {
   const { t } = useTranslation()
@@ -32,7 +32,7 @@ function ScreenBody() {
   const init = NoticeListViewModel.use.init()
   const onDisposed = NoticeListViewModel.use.onDisposed()
   const loadNextPage = NoticeListViewModel.use.loadNextPage()
-  const noticeInfoStateList = NoticeListViewModel.use.noticeInfoStateList()
+  const noticeInfoStateList = NoticeListViewModel.use.contentInfoStateList()
 
   const {t} = useTranslation()
   const navigate = useNavigate()
@@ -65,10 +65,10 @@ function ScreenBody() {
             <div className="flex flex-col border-y border-foreground">
               {notices.map((item, index) => (
                 <NoticeRow
-                  key={item.id}
+                  key={item.item.id}
                   item={item}
                   index={index}
-                  onClick={() => navigate(NoticeDestination.path.detail(item.id))}
+                  onClick={() => navigate(NoticeDestination.path.detail(item.item.id))}
                 />
               ))}
             </div>
@@ -93,19 +93,11 @@ function ScreenBody() {
 }
 
 function NoticeRow(props: {
-  item: Notice.Content
+  item: NoticeListItemState
   index: number
   onClick: () => void
 }) {
-  const {t} = useTranslation()
   const {dateTimeFormatShort} = useDateTimeFormatters()
-  const title = Localized.get(props.item.title)
-  const content = Localized.get(props.item.content)
-  const category = props.item.category ? Localized.get(props.item.category.name) : t("strings:notice.label")
-  const summary = content
-    .replace(/[#*_`>\-[\]()]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
 
   return (
     <button
@@ -115,18 +107,18 @@ function NoticeRow(props: {
     >
       <div className="col-span-12 flex items-center gap-3 text-sm text-muted-foreground md:col-span-3">
         <span className="font-jb-mono tabular-nums">{String(props.index + 1).padStart(2, "0")}</span>
-        <Badge variant="outline">{category}</Badge>
+        {props.item.category && <Badge variant="outline">{props.item.category}</Badge>}
       </div>
 
       <div className="col-span-11 flex min-w-0 flex-col gap-3 md:col-span-8">
-        <h2 className="text-xl font-medium leading-tight md:text-2xl">{title}</h2>
-        {summary && (
+        <h2 className="text-xl font-medium leading-tight md:text-2xl">{props.item.title}</h2>
+        {props.item.summary && (
           <p className="line-clamp-2 text-sm leading-6 text-muted-foreground md:text-base">
-            {summary}
+            {props.item.summary}
           </p>
         )}
-        <time className="text-xs text-muted-foreground" dateTime={props.item.updateAt.toDate().toISOString()}>
-          {dateTimeFormatShort(props.item.updateAt.toDate())}
+        <time className="text-xs text-muted-foreground" dateTime={props.item.item.updateAt.toDate().toISOString()}>
+          {dateTimeFormatShort(props.item.item.updateAt.toDate())}
         </time>
       </div>
 

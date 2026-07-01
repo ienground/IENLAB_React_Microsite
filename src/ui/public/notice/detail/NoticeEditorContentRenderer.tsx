@@ -1,6 +1,10 @@
 import type {ReactNode} from "react"
 import {cn} from "@/lib/utils.ts"
-import type {NoticeContentBlock, NoticeInlineContent, NoticeInlineMark} from "@/ui/public/notice/detail/NoticeEditorContentMapper.ts"
+import type {
+  NoticeContentBlock,
+  NoticeInlineContent,
+  NoticeInlineMark
+} from "@/ui/public/notice/detail/NoticeEditorContentMapper.ts"
 
 type Props = {
   blocks: NoticeContentBlock[]
@@ -34,77 +38,119 @@ const renderBlock = (block: NoticeContentBlock, index: number): ReactNode => {
         block.level === 2 && "mt-7 text-2xl md:text-3xl",
         block.level === 3 && "mt-6 text-xl md:text-2xl"
       )
-      if (block.level === 1) return <h2 key={index} className={className}>{renderInline(block.content)}</h2>
-      if (block.level === 2) return <h3 key={index} className={className}>{renderInline(block.content)}</h3>
-      return <h4 key={index} className={className}>{renderInline(block.content)}</h4>
+      if (block.level === 1) return <h2
+        key={index}
+        className={className}
+      >{renderInline(block.content)}</h2>
+      if (block.level === 2) return <h3
+        key={index}
+        className={className}
+      >{renderInline(block.content)}</h3>
+      return <h4
+        key={index}
+        className={className}
+      >{renderInline(block.content)}</h4>
     }
     case "blockquote":
       return (
-        <blockquote key={index} className="border-l-2 border-foreground/70 pl-4 text-muted-foreground">
+        <blockquote
+          key={index}
+          className="border-l-2 border-foreground/70 pl-4 text-muted-foreground"
+        >
           <div className="flex flex-col gap-y-3">{renderBlocks(block.content)}</div>
         </blockquote>
       )
     case "codeBlock":
       return (
-        <pre key={index} className="overflow-x-auto rounded-md border bg-muted/40 p-4 text-sm leading-6">
+        <pre
+          key={index}
+          className="overflow-x-auto rounded-md border bg-muted/40 p-4 text-sm leading-6"
+        >
           <code>{block.text}</code>
         </pre>
       )
     case "bulletList":
       return (
-        <ul key={index} className="list-disc space-y-2 pl-5">
+        <ul
+          key={index}
+          className="list-disc space-y-2 pl-5"
+        >
           {block.items.map((item, itemIndex) => <li key={itemIndex}>{renderListItem(item)}</li>)}
         </ul>
       )
     case "orderedList":
       return (
-        <ol key={index} className="list-decimal space-y-2 pl-5" start={block.start}>
+        <ol
+          key={index}
+          className="list-decimal space-y-2 pl-5"
+          start={block.start}
+        >
           {block.items.map((item, itemIndex) => <li key={itemIndex}>{renderListItem(item)}</li>)}
         </ol>
       )
     case "taskList":
       return (
-        <ul key={index} className="space-y-2">
+        <ul
+          key={index}
+          className="space-y-2"
+        >
           {block.items.map((item, itemIndex) => (
-            <li key={itemIndex} className="flex items-start gap-3">
-              <input type="checkbox" checked={item.checked} readOnly className="mt-2" />
+            <li
+              key={itemIndex}
+              className="flex items-start gap-3"
+            >
+              <input
+                type="checkbox"
+                checked={item.checked}
+                readOnly
+                className="mt-2"
+              />
               <div className="min-w-0 flex-1">{renderListItem(item.content)}</div>
             </li>
           ))}
         </ul>
       )
     case "horizontalRule":
-      return <hr key={index} className="my-3 border-foreground/20" />
+      return <hr
+        key={index}
+        className="my-3 border-foreground/20"
+      />
     case "imageBlock":
       return renderImage(block, index)
     case "imageRow":
       return (
-        <div key={index} className="grid gap-3 md:grid-flow-col md:auto-cols-fr">
+        <div
+          key={index}
+          className="grid gap-3 md:grid-flow-col md:auto-cols-fr"
+        >
           {block.images.map((image, imageIndex) => renderImage(image, imageIndex))}
         </div>
       )
     case "table":
       return (
-        <div key={index} className="overflow-x-auto rounded-md border">
+        <div
+          key={index}
+          className="overflow-x-auto rounded-md border"
+        >
           <table className="w-full table-fixed border-collapse text-sm">
             <tbody>
-              {block.rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.cells.map((cell, cellIndex) => {
-                    const Tag = cell.header ? "th" : "td"
-                    return (
-                      <Tag
-                        key={cellIndex}
-                        className={cn("border p-2 text-left align-top", cell.header && "bg-muted font-semibold text-muted-foreground")}
-                        colSpan={cell.colspan}
-                        rowSpan={cell.rowspan}
-                      >
-                        <div className="flex flex-col gap-y-2">{renderBlocks(cell.content)}</div>
-                      </Tag>
-                    )
-                  })}
-                </tr>
-              ))}
+            {block.rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {row.cells.map((cell, cellIndex) => {
+                  const Tag = cell.header ? "th" : "td"
+                  return (
+                    <Tag
+                      key={cellIndex}
+                      className={cn("border p-2 text-left align-top", cell.header && "bg-muted font-semibold text-muted-foreground")}
+                      colSpan={cell.colspan}
+                      rowSpan={cell.rowspan}
+                    >
+                      <div className="flex flex-col gap-y-2">{renderBlocks(cell.content)}</div>
+                    </Tag>
+                  )
+                })}
+              </tr>
+            ))}
             </tbody>
           </table>
         </div>
@@ -127,8 +173,18 @@ const renderImage = (block: Extract<NoticeContentBlock, { type: "imageBlock" }>,
   const widthStyle = block.width ? {width: `${block.width}%`} : undefined
 
   return (
-    <figure key={index} className={cn("flex max-w-full flex-col gap-2", alignClass)} style={widthStyle}>
-      <img src={block.src} alt={block.alt} className="max-h-[70vh] w-full rounded-md border object-contain" loading="lazy" />
+    <figure
+      key={index}
+      className={cn("flex max-w-full flex-col gap-2", alignClass)}
+      style={widthStyle}
+    >
+      <img
+        draggable={false}
+        src={block.src}
+        alt={block.alt}
+        className="max-h-[70vh] w-full rounded-md border object-contain"
+        loading="lazy"
+      />
       {block.caption && <figcaption className="text-center text-sm text-muted-foreground">{block.caption}</figcaption>}
     </figure>
   )
@@ -138,8 +194,11 @@ const renderInline = (content: NoticeInlineContent[]): ReactNode[] => {
   if (content.length === 0) return []
 
   return content.map((node, index) => {
-    if (node.type === "hardBreak") return <br key={index} />
-    return <FragmentWithMarks key={index} marks={node.marks}>{node.text}</FragmentWithMarks>
+    if (node.type === "hardBreak") return <br key={index}/>
+    return <FragmentWithMarks
+      key={index}
+      marks={node.marks}
+    >{node.text}</FragmentWithMarks>
   })
 }
 

@@ -52,12 +52,29 @@ const asNode = (value: unknown): EditorJsonNode => {
   return isRecord(value) ? value as EditorJsonNode : emptyEditorContent
 }
 
-const parseEditorContent = (value: string | null | undefined): EditorJsonNode => {
+const looksLikeJson = (value: string): boolean => {
+  const trimmed = value.trim()
+  return trimmed.startsWith("{") || trimmed.startsWith("[")
+}
+
+const parseEditorContent = (value: unknown): EditorJsonNode => {
   if (!value) return emptyEditorContent
+
+  if (isRecord(value)) {
+    return asNode(value)
+  }
+
+  if (typeof value !== "string") {
+    return emptyEditorContent
+  }
 
   try {
     return asNode(JSON.parse(value))
   } catch {
+    if (looksLikeJson(value)) {
+      return emptyEditorContent
+    }
+
     return {
       type: "doc",
       content: [
@@ -68,6 +85,28 @@ const parseEditorContent = (value: string | null | undefined): EditorJsonNode =>
       ],
     }
   }
+}
+
+const collectTextNodes = (node: EditorJsonNode): string[] => {
+  if (node.type === "text") {
+    return typeof node.text === "string" ? [node.text] : []
+  }
+
+  if (!Array.isArray(node.content)) {
+    return []
+  }
+
+  return node.content.flatMap(collectTextNodes)
+}
+
+const compactSummaryText = (value: string): string => {
+  return value
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+export const extractNoticeEditorTextSummary = (value: unknown): string => {
+  return compactSummaryText(collectTextNodes(parseEditorContent(value)).join(" "))
 }
 
 const toStringValue = (value: unknown): string => {
