@@ -127,7 +127,10 @@ function ScreenBody() {
                       </div>
                       {entry?.workLog ? (
                         <div
-                          className="flex flex-col gap-2 bg-muted/80 rounded-md p-4 cursor-pointer hover:bg-muted/80 transition-colors"
+                          className="flex flex-col gap-2 bg-muted/80 rounded-md p-4 cursor-pointer hover:bg-muted transition-colors"
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { /* 클릭 이벤트 핸들러 호출 */ } }}
                           data-cursor="pointer"
                           role="button"
                           tabIndex={0}
