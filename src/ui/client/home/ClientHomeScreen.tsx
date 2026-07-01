@@ -127,8 +127,7 @@ function ScreenBody() {
                       </div>
                       {entry?.workLog ? (
                         <div
-                          className="flex flex-col gap-2 bg-card rounded-md p-4 cursor-pointer hover:bg-muted/80 transition-colors"
-                          data-cursor="pointer"
+                          className="flex flex-col gap-2 bg-muted/80 rounded-md p-4 cursor-pointer hover:bg-muted transition-colors"
                           role="button"
                           tabIndex={0}
                           onClick={() => navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))}

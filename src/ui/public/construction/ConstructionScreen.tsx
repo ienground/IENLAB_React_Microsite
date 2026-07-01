@@ -13,14 +13,14 @@ export default function ConstructionScreen() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="px-8"><Separator className="bg-foreground"/></div>
+      <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground"/></div>
 
-      <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
+      <div className="site-section-tight site-grid">
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader index={0} label="" />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="flex flex-col lg:flex-row w-full justify-between">
+          <div className="flex w-full flex-col justify-between gap-8 lg:flex-row">
             <h1 className="large-text-title">{t("strings:under_construction.label")}</h1>
             <CrossfadeImage
               alt="Under Construction Character"
@@ -28,7 +28,7 @@ export default function ConstructionScreen() {
               src={ImgUnderConstruction}
             />
           </div>
-          <p className="mt-32">{t("strings:under_construction.desc")}</p>
+          <p className="mt-16 md:mt-24 xl:mt-32">{t("strings:under_construction.desc")}</p>
 
           <MagneticButton
             onClick={() => navigate("/")}

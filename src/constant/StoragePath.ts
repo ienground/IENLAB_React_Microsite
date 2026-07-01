@@ -2,6 +2,7 @@ export const StoragePath = {
   PORTFOLIO: "portfolio",
   OUTSOURCE: "outsource",
   USER: "user",
+  NOTICE: "notice",
 
   Portfolio: {
     LOGO: "logo",
@@ -18,6 +19,10 @@ export const StoragePath = {
   },
   User: {
     PROFILE_URL: "profile_url"
+  },
+
+  Notice: {
+    CONTENT_IMAGES: "content_images",
   },
 
   ESTIMATE: "estimate",

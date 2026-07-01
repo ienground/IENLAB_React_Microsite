@@ -57,6 +57,7 @@ import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
 import {MagneticButton} from "@/components/motion/components.tsx"
 import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
+import {useIsMobile} from "@/hooks/use-mobile.ts"
 
 type CarouselItem = {
   id: string
@@ -112,9 +113,24 @@ export default function HomeScreen() {
 function ScreenBody() {
   const {t, i18n} = useTranslation()
   const {resolvedTheme} = useTheme()
+  const isMobile = useIsMobile()
   const init = HomeViewModel.use.init()
   const portfolioInfoStateList = HomeViewModel.use.portfolioInfoStateList()
   const navigate = useNavigate()
+  const {scrollY} = useScroll()
+  const heroFloatProgress = useSpring(useTransform(scrollY, [0, 120], [0, 1]), {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.35,
+  })
+  const heroPaddingX = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "16px" : "32px"])
+  const heroPaddingY = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "16px" : "24px"])
+  const heroRadius = useTransform(heroFloatProgress, [0, 1], ["0px", isMobile ? "28px" : "36px"])
+  const heroShadow = useTransform(
+    heroFloatProgress,
+    [0, 1],
+    ["0 0 0 rgba(0,0,0,0)", "0 24px 80px rgba(0,0,0,0.20)"]
+  )
 
   useEffect(() => {
     init()
@@ -160,7 +176,7 @@ function ScreenBody() {
     target: skillsHorizontalScrollContainerRef,
     offset: ["start start", "end end"]
   })
-  const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
+  const skillsX = useTransform(scrollYProgress, [0, 1], ["0%", isMobile ? "-64%" : "-48%"])
   const skillItems: SkillItem[] = [
     {
       id: "mobile",
@@ -237,14 +253,23 @@ function ScreenBody() {
     <div
       className="w-full flex flex-col items-center overflow-x-clip"
     >
-      <section className="w-full relative">
-        {/*<section className="max-w-350 w-full relative">*/}
-        <div
+      <motion.section
+        className="w-full"
+        style={{
+          paddingInline: heroPaddingX,
+          paddingBlock: heroPaddingY,
+        }}
+      >
+        <motion.div
           key="extra-layered-slide"
           className={cn(
-            "w-full overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col",
+            "w-full overflow-hidden border border-border bg-muted flex flex-col",
             "md:relative md:h-auto md:aspect-video xl:aspect-21/9 md:block"
           )}
+          style={{
+            borderRadius: heroRadius,
+            boxShadow: heroShadow,
+          }}
         >
           <div className={cn(
             "w-full h-[60svh]",
@@ -255,7 +280,8 @@ function ScreenBody() {
 
           <h2
             className={cn(
-              "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] p-8",
+              "flex flex-col items-start p-6 text-4xl font-medium leading-[0.96] tracking-tighter",
+              "sm:p-8",
               "lg:text-5xl",
               "xl:text-6xl",
               "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",
@@ -282,109 +308,11 @@ function ScreenBody() {
 
             {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}
           </h2>
-        </div>
-        {/*<Carousel*/}
-        {/*  align="center"*/}
-        {/*  gap={16}*/}
-        {/*  className="w-full"*/}
-        {/*  overflow*/}
-        {/*  itemSize="fill"*/}
-        {/*  items={[*/}
-        {/*    <div*/}
-        {/*      key="extra-layered-slide"*/}
-        {/*      className={cn(*/}
-        {/*        "w-full h-screen overflow-hidden rounded-4xl border-border border-2 bg-muted flex flex-col ",*/}
-        {/*        "md:relative md:max-w-350 md:h-auto md:aspect-video md:block"*/}
-        {/*      )}*/}
-        {/*    >*/}
-        {/*      <div className={cn(*/}
-        {/*        "w-full h-[60svh]",*/}
-        {/*        "md:h-full"*/}
-        {/*      )}>*/}
-        {/*        <LayeredSlides*/}
-        {/*          backgrounds={[ImgFront01, ImgFront02, ImgFront03]}*/}
-        {/*          foreground={ImgFrontForward}*/}
-        {/*        />*/}
-        {/*      </div>*/}
-
-
-        {/*      <h2*/}
-        {/*        className={cn(*/}
-        {/*          "flex flex-col items-start font-medium text-4xl leading-[0.92] tracking-[-0.06em] px-8",*/}
-        {/*          "lg:text-5xl",*/}
-        {/*          "xl:text-6xl",*/}
-        {/*          "md:absolute md:left-2/5 md:top-1/2 md:-translate-1/2 md:px-0",*/}
-        {/*        )}*/}
-        {/*      >*/}
-        {/*        <span>{t('strings:home.intro.hello')}</span>*/}
-
-        {/*        {isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}*/}
-        {/*        <div className="relative">*/}
-        {/*          <span className="invisible block">{roleTexts.reduce((a, b) => (a.length > b.length ? a : b))} ㅤ</span>*/}
-        {/*          <Typewriter*/}
-        {/*            as="div"*/}
-        {/*            className="absolute inset-0"*/}
-        {/*            cursorStyle={{background: "var(--chart-3)", width: "3px"}}*/}
-        {/*            onComplete={() => {*/}
-        {/*              delay(() => setIndex(wrap(0, roleTexts.length, index + 1)), 1)*/}
-        {/*            }}*/}
-        {/*          >{roleTexts[index]}</Typewriter>*/}
-        {/*        </div>*/}
-
-        {/*        {!isNameFirst && <span className="mt-4">{t('strings:home.intro.ienground')}</span>}*/}
-        {/*      </h2>*/}
-        {/*    </div>,*/}
-
-        {/*    ...carouselItems.map((item) => (*/}
-        {/*      <div*/}
-        {/*        key={item.id}*/}
-        {/*        className="relative w-full max-w-350 h-screen md:h-auto md:aspect-video overflow-hidden rounded-4xl"*/}
-        {/*      >*/}
-        {/*        /!* background blur *!/*/}
-        {/*        <img*/}
-        {/*          src={item.image}*/}
-        {/*          alt=""*/}
-        {/*          draggable={false}*/}
-        {/*          className="absolute inset-0 z-0 h-full w-full scale-125 object-cover blur-md"*/}
-        {/*        />*/}
-
-        {/*        /!* optional dark overlay *!/*/}
-        {/*        <div className="absolute inset-0 z-10 bg-black/15"/>*/}
-
-        {/*        /!* original image *!/*/}
-        {/*        <CrossfadeImage*/}
-        {/*          draggable={false}*/}
-        {/*          src={item.image}*/}
-        {/*          alt={item.title}*/}
-        {/*          className="relative z-20 w-full h-full object-contain md:object-cover"*/}
-        {/*        />*/}
-
-        {/*        {item.url && item.url.length > 0 && (*/}
-        {/*          <Button*/}
-        {/*            className={cn(*/}
-        {/*              "absolute bottom-16 left-1/2 z-30 -translate-x-1/2",*/}
-        {/*              "bg-primary-foreground/50 text-primary",*/}
-        {/*              "hover:bg-primary-foreground"*/}
-        {/*            )}*/}
-        {/*            size="icon-lg"*/}
-        {/*            onClick={() => navigate(item.url ? item.url : "")}*/}
-        {/*          >*/}
-        {/*            <RiCursorHand/>*/}
-        {/*          </Button>*/}
-        {/*        )}*/}
-        {/*      </div>*/}
-        {/*    )),*/}
-        {/*  ]}*/}
-        {/*>*/}
-        {/*  <AutoplayProgress*/}
-        {/*    duration={4}*/}
-        {/*    className="z-50 absolute bottom-4 left-1/2 -translate-x-1/2"*/}
-        {/*  />*/}
-        {/*</Carousel>*/}
-      </section>
-      <section className="w-full p-8">
+        </motion.div>
+      </motion.section>
+      <section className="w-full px-4 py-8 sm:px-6 md:px-8 md:py-10 xl:py-12">
         <div className="w-full">
-          <div className="grid grid-cols-12 gap-y-10 xl:gap-x-10">
+          <div className="site-grid">
             <aside className="col-span-12 xl:col-span-2">
               <SectionHeader index={1} label={t("strings:home.about.header")}/>
             </aside>
@@ -396,7 +324,7 @@ function ScreenBody() {
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-12 gap-y-4 xl:mt-16 xl:gap-x-4">
+          <div className="mt-8 grid grid-cols-12 gap-y-6 xl:mt-10 xl:gap-x-6">
             <div className="col-span-12 xl:col-span-4">
               <div className="w-full max-w-90">
                 <div className="aspect-3/4 overflow-hidden rounded-4xl">
@@ -409,8 +337,8 @@ function ScreenBody() {
 
                 <div className="mt-4 space-y-0.5">
                   <p
-                    className="text-[18px] font-bold tracking-[-0.03em] md:text-[24px]">{t("strings:home.about.name")}</p>
-                  <p className="text-[18px] tracking-[-0.03em] text-foreground/85 md:text-[16px]">©2024</p>
+                    className="text-[18px] font-bold tracking-normal md:text-[24px]">{t("strings:home.about.name")}</p>
+                  <p className="text-[16px] tracking-normal text-foreground/75">©2024</p>
                 </div>
               </div>
             </div>
@@ -425,7 +353,7 @@ function ScreenBody() {
               )}>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans
+                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland"><Trans
                       i18nKey="strings:home.about.p1" components={{br: <br/>}}/></p>
                   </div>
                 </div>
@@ -433,13 +361,13 @@ function ScreenBody() {
                 <Separator className="max-xl:hidden" orientation="vertical"/>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[24px] leading-[1.22] tracking-[-0.04em] md:text-[30px] xl:text-[31px]"><Trans
+                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland"><Trans
                       i18nKey="strings:home.about.p2" components={{br: <br/>}}/></p>
                   </div>
                 </div>
               </div>
               <MagneticButton
-                className="w-fit mt-8 font-medium"
+                className="mt-6 w-fit font-medium"
                 variant="outline"
                 onClick={() => navigate(AboutDestination.root)}
               >
@@ -451,15 +379,15 @@ function ScreenBody() {
 
         </div>
       </section>
-      <section className="w-full p-8 flex flex-col gap-y-4">
+      <section className="flex w-full flex-col gap-y-5 px-4 py-6 sm:px-6 md:px-8 md:py-8">
         <SectionHeader index={2} label={t("strings:home.project.header")}/>
         <PortfolioSection infoStateList={portfolioInfoStateList}/>
       </section>
-      <section className="w-full p-8">
+      <section className="w-full px-4 py-6 sm:px-6 md:px-8 md:py-8">
         <SectionHeader index={3} label={t("strings:home.skills.header")}/>
-        <div ref={skillsHorizontalScrollContainerRef} className="h-[300vh]">
+        <div ref={skillsHorizontalScrollContainerRef} className="h-[220vh]">
           <div className="sticky top-0 flex h-screen items-center">
-            <motion.div style={{x: skillsX}} className="flex gap-8">
+            <motion.div style={{x: skillsX}} className="flex gap-4 md:gap-6 xl:gap-8">
               {skillItems.map((item, index) => (
                 <SkillCardItem index={index} item={item}/>
               ))}
@@ -469,26 +397,12 @@ function ScreenBody() {
           </div>
         </div>
       </section>
-      {/*<section className="bg-cyan-200 w-full p-8 flex flex-col gap-y-4">*/}
-      {/*  <SectionHeader index={4} label={t("strings:home.services.header")}/>*/}
-      {/*  <div className="flex">*/}
-      {/*    <ul className="m-0 flex flex-col gap-5 p-0 list-none">*/}
-      {/*      {services.map((service, index) => (*/}
-      {/*        <ScrollHighlightItem*/}
-      {/*          key={service.name}*/}
-      {/*          service={service}*/}
-      {/*          index={index}*/}
-      {/*          isHighlighted={activeService === index}*/}
-      {/*          onHighlight={() => setActiveService(index)}*/}
-      {/*        />*/}
-      {/*      ))}*/}
-      {/*    </ul>*/}
-      {/*  </div>*/}
-      {/*</section>*/}
-      <section className="w-full p-8 flex flex-col gap-y-4">
+      <section className="flex w-full flex-col gap-y-5 px-4 py-8 sm:px-6 md:px-8 md:py-10 xl:py-12">
         <SectionHeader index={4} label={t("strings:home.feedback.header")}/>
         <div>
           <Ticker
+            align="stretch"
+            className="home-review-ticker"
             hoverFactor={0}
             overflow
             gap={16}
@@ -498,7 +412,6 @@ function ScreenBody() {
           />
         </div>
       </section>
-      {/*<StyleSheet />*/}
     </div>
   )
 }
@@ -819,8 +732,8 @@ function PortfolioItemContent({
 
           <h2
             className={cn(
-              "mt-2 w-[90%] break-keep text-pretty font-bold leading-[1.05] tracking-tighter drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
-              "text-5xl md:text-4xl",
+              "mt-2 w-[90%] break-keep text-pretty font-bold leading-[1.08] tracking-normal drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]",
+              "text-4xl md:text-4xl",
             )}
           >
             {Localized.get(item.title)}
@@ -849,8 +762,8 @@ function PortfolioItemContent({
                   onClick={() => navigate("")}
                   size="icon-lg"
                   className={cn(
-                    "bg-gray-100 text-gray-700 hover:bg-gray-300 hover:text-gray-900",
-                    "dark:bg-gray-400 dark:text-gray-100 dark:hover:bg-gray-500 dark:hover:text-gray-900",
+                    "bg-background/90 text-foreground hover:bg-background",
+                    "dark:bg-background/85 dark:text-foreground dark:hover:bg-background",
                   )}
                 >
                   <RiArrowRightUpLine/>
@@ -959,7 +872,7 @@ function PortfolioItem({
     <motion.li
       onClick={handleOpen}
       className={cn(
-        "relative box-border h-100 list-none p-0",
+        "relative box-border h-88 list-none p-0 md:h-100",
         "flex-[1_1_100%]",
         "md:flex-[0_0_40%]",
         "md:nth-[4n+1]:flex-[0_1_calc(60%-16px)]",
@@ -1210,7 +1123,7 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
   return (
     <article
       className={cn(
-        "relative flex min-w-120 w-[50vw] h-[calc(100vh-32px)] shrink-0 rounded-4xl overflow-hidden",
+        "relative flex h-[calc(100vh-48px)] min-w-80 w-[78vw] shrink-0 overflow-hidden rounded-4xl md:min-w-120 md:w-[50vw]",
       )}
     >
       <CrossfadeImage
@@ -1255,19 +1168,19 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
         className="absolute inset-0 bg-linear-to-b from-white/12 via-transparent to-black/10 dark:from-black/38 dark:via-black/18 dark:to-black/42"/>
 
       <div
-        className="absolute w-full h-full p-16 flex flex-col gap-y-16"
+        className="absolute flex h-full w-full flex-col gap-y-8 p-6 sm:p-8 md:gap-y-12 lg:p-12 xl:p-16"
       >
         <div className="flex flex-row gap-x-4 items-center text-foreground/50">
           <div className="w-1/16 h-0.5 bg-foreground/50"/>
           <span className="font-medium tracking-wider">{(props.index + 1).toString().padStart(2, '0')}</span>
         </div>
         <h1
-          className="font-black tracking-tighter text-6xl text-foreground text-pretty break-keep">{props.item.title}</h1>
-        <p className="font-medium text-2xl text-accent-foreground/60">{props.item.description}</p>
-        <div className="flex flex-wrap mt-auto gap-4">
+          className="break-keep text-pretty text-4xl font-black leading-none tracking-normal text-foreground md:text-5xl xl:text-6xl">{props.item.title}</h1>
+        <p className="text-lg font-medium leading-relaxed text-accent-foreground/65 md:text-xl xl:text-2xl">{props.item.description}</p>
+        <div className="mt-auto flex flex-wrap gap-2 md:gap-3 xl:gap-4">
           {props.item.tags.map(tag => (
             <div
-              className="px-4 py-2 font-extrabold text-lg rounded-2xl backdrop-blur-md bg-background/20 font-mona"
+              className="rounded-2xl bg-background/25 px-3 py-1.5 font-mona text-sm font-extrabold backdrop-blur-md md:px-4 md:py-2 md:text-base lg:text-lg"
               style={{
                 fontVariationSettings: '"wdth" 125, "opsz" 100',
               }}
@@ -1282,7 +1195,7 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
 function ReviewCardItem(props: { index: number, item: ReviewItem }) {
   return (
     <div
-      className="w-100 h-80 rounded-3xl border border-border bg-card p-6 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
+      className="flex h-full w-[min(25rem,calc(100vw-2rem))] flex-col rounded-3xl border border-border bg-card p-5 shadow-[0_12px_32px_rgba(0,0,0,0.08)] md:p-6">
       <div className="flex items-center gap-4">
         <div className="h-14 w-14 overflow-hidden rounded-full bg-muted-foreground">
           <img
@@ -1293,7 +1206,7 @@ function ReviewCardItem(props: { index: number, item: ReviewItem }) {
         </div>
 
         <div className="flex flex-col">
-          <span className="text-[28px] font-semibold tracking-[-0.03em] text-card-foreground">{props.item.name}</span>
+          <span className="text-[24px] font-semibold tracking-normal text-card-foreground md:text-[28px]">{props.item.name}</span>
           <div className="mt-1 flex items-center gap-2">
             <span className="text-[#62d26f]">★</span>
             <span className="text-[20px] font-bold text-card-foreground">{props.item.star.toFixed(1)}</span>
@@ -1302,7 +1215,7 @@ function ReviewCardItem(props: { index: number, item: ReviewItem }) {
       </div>
 
       <p
-        className="mt-6 text-lg font-medium leading-[1.45] tracking-[-0.03em] text-card-foreground">{props.item.review}</p>
+        className="mt-6 text-base font-medium leading-relaxed tracking-normal text-card-foreground md:text-lg">{props.item.review}</p>
     </div>
   )
 }

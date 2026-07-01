@@ -16,9 +16,9 @@ export default function VersionScreen() {
 
   return (
     <div className="w-full flex flex-col">
-      <div className="px-8"><Separator className="bg-foreground"/></div>
+      <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground"/></div>
 
-      <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
+      <div className="site-section-tight site-grid">
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader
             index={0}
@@ -26,10 +26,10 @@ export default function VersionScreen() {
           />
         </aside>
         <div className="col-span-12 xl:col-span-10">
-          <div className="flex flex-col lg:flex-row w-full justify-between">
+          <div className="flex w-full flex-col justify-between gap-8 lg:flex-row">
             <h1 className="large-text-title">{t("strings:version_info.title")}</h1>
           </div>
-          <FieldSet className="mt-32 grid grid-cols-1 md:grid-cols-2">
+          <FieldSet className="mt-16 grid grid-cols-1 md:mt-24 md:grid-cols-2 xl:mt-32">
             <Field>
               <FieldTitle>{t("strings:version_info.app_version.title")}</FieldTitle>
               <FieldContent>{import.meta.env.VITE_APP_VERSION}</FieldContent>

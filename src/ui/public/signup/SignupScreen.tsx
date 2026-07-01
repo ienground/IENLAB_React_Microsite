@@ -119,9 +119,9 @@ function ScreenBody() {
   return (
     <>
       <div className="w-full flex flex-col">
-      <div className="px-8"><Separator className="bg-foreground"/></div>
+      <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground"/></div>
 
-      <div className="w-full grid grid-cols-12 gap-y-10 xl:gap-x-10 p-8">
+      <div className="site-section-tight site-grid">
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader
             index={signupUiState.item.step}

@@ -4,7 +4,6 @@ export const FirestorePath = {
   PRICE: "price",
   OUTSOURCE: "outsource",
   NOTICE: "notice",
-  NOTICE_CATEGORY: "noticeCategory",
   PORTFOLIO: "portfolio",
   COMPANY: "company",
   OTP: "otp",
@@ -164,15 +163,32 @@ export const FirestorePath = {
   },
 
   Notice: {
-    CATEGORY: "category", // string, id
-    TITLE: "title", // string
-    CONTENT: "content", // string
-    IMAGE_URLS: "imageUrls", // string[]
-    FIXED: "fixed", // boolean
+    CATEGORY: "category",
+    CONTENT: "content",
+
+    /** Collection */
+    ITEMS: "items",
 
     Category: {
-      LABEL_KOR: "labelKor", // string
-      LABEL_ENG: "labelEng", // String
+      /** Timestamp */
+      LAST_USED_AT: "lastUsedAt",
+      /** Record<Locale, string> */
+      NAME: "name",
+      /** boolean */
+      IS_ACTIVE: "isActive",
+      /** number */
+      TOTAL: "total"
+    },
+
+    Content: {
+      /** DocumentReference | null */
+      CATEGORY: "category",
+      /** Record<Locale, string> */
+      TITLE: "title",
+      /** Record<Locale, string> */
+      CONTENT: "content",
+      /** number */
+      STATE: "state"
     }
   },
 
