@@ -130,10 +130,6 @@ function ScreenBody() {
                           className="flex flex-col gap-2 bg-muted/80 rounded-md p-4 cursor-pointer hover:bg-muted transition-colors"
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { /* 클릭 이벤트 핸들러 호출 */ } }}
-                          data-cursor="pointer"
-                          role="button"
-                          tabIndex={0}
                           onClick={() => navigate(ClientOutsourceDestination.path.log.detail(entry.outsourceId, entry.workLog!.id))}
                           onKeyDown={e => {
                             if (e.key === "Enter" || e.key === " ") {
