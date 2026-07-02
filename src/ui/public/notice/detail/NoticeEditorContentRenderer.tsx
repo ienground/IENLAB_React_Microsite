@@ -7,6 +7,7 @@ import type {
 } from "@/ui/public/notice/detail/NoticeEditorContentMapper.ts"
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area.tsx"
 import {Carousel} from "motion-plus/react"
+import {CrossfadeImage} from "@ienlab/react-library"
 
 type Props = {
   blocks: NoticeContentBlock[]
@@ -166,61 +167,13 @@ const renderListItem = (blocks: NoticeContentBlock[]): ReactNode => {
 function ImageRowGallery(props: {
   images: Extract<NoticeContentBlock, { type: "imageBlock" }>[]
 }) {
-  const rootRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(false)
-
-  useEffect(() => {
-    const viewport = rootRef.current?.querySelector<HTMLElement>("[data-slot='scroll-area-viewport']")
-    if (!viewport) return
-
-    const updateScrollState = () => {
-      const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth
-      setCanScrollLeft(viewport.scrollLeft > 1)
-      setCanScrollRight(viewport.scrollLeft < maxScrollLeft - 1)
-    }
-
-    updateScrollState()
-    viewport.addEventListener("scroll", updateScrollState, {passive: true})
-
-    const resizeObserver = new ResizeObserver(updateScrollState)
-    resizeObserver.observe(viewport)
-    if (viewport.firstElementChild) {
-      resizeObserver.observe(viewport.firstElementChild)
-    }
-
-    return () => {
-      viewport.removeEventListener("scroll", updateScrollState)
-      resizeObserver.disconnect()
-    }
-  }, [props.images])
-
   return (
-    <div ref={rootRef} className="relative">
-      <Carousel
-        items={props.images.map((image, imageIndex) => renderImage(image, imageIndex, true))}
-        overflow
-        loop={false}
-      />
-      {/*<ScrollArea className="w-full">*/}
-      {/*  <div className="flex w-max gap-4 py-4">*/}
-      {/*    {props.images.map((image, imageIndex) => renderImage(image, imageIndex, true))}*/}
-      {/*  </div>*/}
-      {/*  <ScrollBar orientation="horizontal" />*/}
-      {/*</ScrollArea>*/}
-      {/*<div*/}
-      {/*  className={cn(*/}
-      {/*    "pointer-events-none absolute inset-y-0 left-0 z-10 w-px origin-center bg-border transition-all duration-200",*/}
-      {/*    canScrollLeft ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"*/}
-      {/*  )}*/}
-      {/*/>*/}
-      {/*<div*/}
-      {/*  className={cn(*/}
-      {/*    "pointer-events-none absolute inset-y-0 right-0 z-10 w-px origin-center bg-border transition-all duration-200",*/}
-      {/*    canScrollRight ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"*/}
-      {/*  )}*/}
-      {/*/>*/}
-    </div>
+    <Carousel
+      items={props.images.map((image, imageIndex) => renderImage(image, imageIndex, true))}
+      overflow
+      gap={16}
+      loop={false}
+    />
   )
 }
 
@@ -230,34 +183,42 @@ const renderImage = (
   isGalleryItem: boolean = false
 ): ReactNode => {
   const alignClass = block.align === "left" ? "mr-auto" : block.align === "right" ? "ml-auto" : "mx-auto"
-  const widthStyle = block.width && !isGalleryItem ? {width: `${block.width}%`} : undefined
 
   return (
     <figure
       key={index}
       className={cn(
         "flex max-w-full flex-col gap-2",
-        isGalleryItem ? "max-w-none shrink-0" : alignClass
+        isGalleryItem ? cn("max-w-none shrink-0", alignClass) : "w-full"
       )}
-      style={widthStyle}
     >
-      {isGalleryItem ? (
-        <img
-          draggable={false}
-          src={block.src}
-          alt={block.alt}
-          className="h-64 w-auto max-w-none rounded-md border object-cover md:h-80 xl:h-96"
-          loading="lazy"
-        />
-      ) : (
-        <img
-          draggable={false}
-          src={block.src}
-          alt={block.alt}
-          className="max-h-[70vh] w-full rounded-md border object-contain"
-          loading="lazy"
-        />
-      )}
+      <div
+        className={cn(
+          "rounded-md border overflow-hidden",
+          isGalleryItem ? "h-64 w-auto max-w-none md:h-80 xl:h-96"
+            : "max-h-[90vh] w-full"
+        )}
+      >
+        {isGalleryItem ? (
+          <CrossfadeImage
+            draggable={false}
+            src={block.src}
+            alt={block.alt}
+            className={cn(
+              "object-cover w-full h-full transition-transform duration-300 hover:scale-102",
+            )}
+            loading="lazy"
+          />
+        ) : (
+          <CrossfadeImage
+            draggable={false}
+            src={block.src}
+            alt={block.alt}
+            className="object-contain transition-transform duration-300 hover:scale-102"
+            loading="lazy"
+          />
+        )}
+      </div>
       {block.caption && <figcaption className="text-center text-sm text-muted-foreground">{block.caption}</figcaption>}
     </figure>
   )

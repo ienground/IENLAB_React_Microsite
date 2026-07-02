@@ -5,13 +5,36 @@ import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {NoticeListViewModel} from "@/ui/public/notice/list/NoticeListViewModel.ts"
 import {useEffect} from "react"
 import {AnimatedContent} from "@/components/custom/shared/AnimatedContent.tsx"
-import {motion} from "motion/react"
+import {motion, type Variants} from "motion/react"
 import {Spinner} from "@/components/ui/spinner.tsx"
 import {Badge} from "@/components/ui/badge.tsx"
 import {RiArrowRightUpLine} from "@remixicon/react"
 import {useNavigate} from "react-router"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
 import type {NoticeListItemState} from "@/ui/public/notice/list/NoticeListViewModel.ts"
+
+const listVariants: Variants = {
+  show: {
+    transition: {
+      staggerChildren: 0.045,
+    },
+  },
+}
+
+const rowVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 16,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.32,
+      ease: "easeOut",
+    },
+  },
+}
 
 export default function NoticeListScreen() {
   const { t } = useTranslation()
@@ -62,7 +85,12 @@ function ScreenBody() {
           </div>
 
           <AnimatedContent status={status} className="mt-12 md:mt-16">
-            <div className="flex flex-col border-y border-foreground">
+            <motion.div
+              variants={listVariants}
+              initial="hidden"
+              animate="show"
+              className="flex flex-col border-y border-foreground"
+            >
               {notices.map((item, index) => (
                 <NoticeRow
                   key={item.item.id}
@@ -71,15 +99,10 @@ function ScreenBody() {
                   onClick={() => navigate(NoticeDestination.path.detail(item.item.id))}
                 />
               ))}
-            </div>
+            </motion.div>
 
             {noticeInfoStateList.hasMore ? (
-              <motion.div
-                className="w-full flex flex-row items-center justify-center py-10"
-                onViewportEnter={loadNextPage}
-              >
-                <Spinner className="size-9"/>
-              </motion.div>
+              <LoadingSpinner key={notices.length} onInView={loadNextPage} />
             ) : (
               <div className="w-full py-10 text-center text-sm text-muted-foreground">
                 {t("strings:notice.list_end")}
@@ -100,7 +123,8 @@ function NoticeRow(props: {
   const {dateTimeFormatShort} = useDateTimeFormatters()
 
   return (
-    <button
+    <motion.button
+      variants={rowVariants}
       type="button"
       onClick={props.onClick}
       className="group grid w-full grid-cols-12 gap-y-4 border-b border-border py-6 text-left transition-colors last:border-b-0 hover:bg-muted/45 md:gap-x-6 md:px-4 md:py-8"
@@ -125,6 +149,19 @@ function NoticeRow(props: {
       <div className="col-span-1 flex justify-end">
         <RiArrowRightUpLine className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
       </div>
-    </button>
+    </motion.button>
+  )
+}
+
+function LoadingSpinner(props: {
+  onInView: () => void
+}) {
+  return (
+    <motion.div
+      className="w-full flex flex-row items-center justify-center py-10"
+      onViewportEnter={props.onInView}
+    >
+      <Spinner className="size-9"/>
+    </motion.div>
   )
 }

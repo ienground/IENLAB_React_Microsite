@@ -48,7 +48,7 @@ function ScreenBody() {
   const item = infoState.item
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col overflow-x-hidden">
       <div className="px-4 sm:px-6 md:px-8"><Separator className="bg-foreground" /></div>
 
       <div className="site-section-tight site-grid">
