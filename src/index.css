@@ -49,6 +49,37 @@ body.custom-cursor-active * {
   cursor: none;
 }
 
+@keyframes button-wipe-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  34% {
+    opacity: 0;
+    transform: translateY(-110%);
+  }
+  35% {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(-14%);
+  }
+  82% {
+    opacity: 1;
+    transform: translateY(6%);
+  }
+  92% {
+    opacity: 1;
+    transform: translateY(-3%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -452,7 +483,7 @@ body.custom-cursor-active * {
 }
 
 .content-description {
-  @apply max-w-2xl text-muted-foreground select-none;
+  @apply text-muted-foreground select-none;
 }
 
 .custom-list {

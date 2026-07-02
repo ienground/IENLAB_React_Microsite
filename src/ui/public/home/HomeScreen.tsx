@@ -55,7 +55,7 @@ import {Separator} from "@/components/ui/separator.tsx"
 import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {SectionHeader} from "@/components/custom/shared/SectionHeader.tsx"
 import {getAppStoreLink, getGooglePlayLink} from "@/ui/utils/LinkHelper.ts"
-import {MagneticButton} from "@/components/motion/components.tsx"
+import {ButtonWipeContent, MagneticButton} from "@/components/motion/components.tsx"
 import {PortfolioX} from "@/domain/model/PortfolioX.tsx"
 import {useIsMobile} from "@/hooks/use-mobile.ts"
 
@@ -96,6 +96,8 @@ const sampleProfiles = [
   ImgProfileSample11,
   ImgProfileSample12,
 ]
+
+const imageHoverClassName = "transition-transform duration-300 hover:scale-102"
 
 export default function HomeScreen() {
   const {t} = useTranslation()
@@ -251,7 +253,7 @@ function ScreenBody() {
 
   return (
     <div
-      className="w-full flex flex-col items-center overflow-x-clip"
+      className="w-full flex flex-col items-center overflow-x-clip select-none"
     >
       <motion.section
         className="w-full"
@@ -331,7 +333,7 @@ function ScreenBody() {
                   <CrossfadeImage
                     src={ImgProfile}
                     alt={t("strings:home.about.name")}
-                    className="h-full w-full object-cover"
+                    className={cn("h-full w-full object-cover", imageHoverClassName)}
                   />
                 </div>
 
@@ -353,16 +355,16 @@ function ScreenBody() {
               )}>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland"><Trans
-                      i18nKey="strings:home.about.p1" components={{br: <br/>}}/></p>
+                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland break-keep text-foreground/80"><Trans
+                      i18nKey="strings:home.about.p1" components={{br: <br/>, strong: <strong className="text-foreground" />}}/></p>
                   </div>
                 </div>
                 <Separator className="xl:hidden"/>
                 <Separator className="max-xl:hidden" orientation="vertical"/>
                 <div className="col-span-12 xl:grow">
                   <div className="max-w-130">
-                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland"><Trans
-                      i18nKey="strings:home.about.p2" components={{br: <br/>}}/></p>
+                    <p className="text-[22px] leading-[1.3] tracking-tighter md:text-[28px] xl:text-[30px] font-flowerisland break-keep text-foreground/80"><Trans
+                      i18nKey="strings:home.about.p2" components={{br: <br/>, strong: <strong className="text-foreground" />}}/></p>
                   </div>
                 </div>
               </div>
@@ -371,8 +373,10 @@ function ScreenBody() {
                 variant="outline"
                 onClick={() => navigate(AboutDestination.root)}
               >
-                {t("strings:home.about.see_more")}
-                <RiArrowRightUpLine/>
+                <ButtonWipeContent>
+                  {t("strings:home.about.see_more")}
+                  <RiArrowRightUpLine/>
+                </ButtonWipeContent>
               </MagneticButton>
             </div>
           </div>
@@ -674,6 +678,7 @@ function PortfolioItemContent({
           <motion.img
             className={cn(
               "block h-full w-full object-cover",
+              imageHoverClassName,
               isOpen
                 ? "mask-[linear-gradient(to_bottom,black_0%,black_52%,black_68%,rgba(0,0,0,0.82)_80%,rgba(0,0,0,0.38)_92%,transparent_100%)]"
                 : "",
@@ -754,8 +759,14 @@ function PortfolioItemContent({
           <AnimatePresence>
             {isOpen && (
               <motion.div className="absolute right-0 top-0 flex flex-col">
-                <MagneticButton onClick={setOpen} size="icon-lg" variant="ghost">
-                  <RiCloseLargeFill/>
+                <MagneticButton
+                  onClick={setOpen}
+                  size="icon-lg"
+                  variant="ghost"
+                >
+                  <ButtonWipeContent>
+                    <RiCloseLargeFill/>
+                  </ButtonWipeContent>
                 </MagneticButton>
 
                 <MagneticButton
@@ -766,7 +777,9 @@ function PortfolioItemContent({
                     "dark:bg-background/85 dark:text-foreground dark:hover:bg-background",
                   )}
                 >
-                  <RiArrowRightUpLine/>
+                  <ButtonWipeContent>
+                    <RiArrowRightUpLine/>
+                  </ButtonWipeContent>
                 </MagneticButton>
               </motion.div>
             )}
@@ -777,45 +790,69 @@ function PortfolioItemContent({
               <motion.div className="absolute bottom-0 right-0 flex flex-row items-end justify-between gap-x-2">
                 <div className="flex flex-row items-center gap-x-2">
                   {item.googlePlayLink && (
-                    <MagneticButton className="google-play-button" size="icon-lg" asChild>
+                    <MagneticButton
+                      className="google-play-button"
+                      size="icon-lg"
+                      asChild
+                    >
                       <a
                         href={getGooglePlayLink(item.googlePlayLink)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <IcGooglePlay/>
+                        <ButtonWipeContent>
+                          <IcGooglePlay/>
+                        </ButtonWipeContent>
                       </a>
                     </MagneticButton>
                   )}
 
                   {item.appStoreLink && (
-                    <MagneticButton className="app-store-button" size="icon-lg" asChild>
+                    <MagneticButton
+                      className="app-store-button"
+                      size="icon-lg"
+                      asChild
+                    >
                       <a
                         href={getAppStoreLink(item.appStoreLink)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <IcAppStore/>
+                        <ButtonWipeContent>
+                          <IcAppStore/>
+                        </ButtonWipeContent>
                       </a>
                     </MagneticButton>
                   )}
 
                   {item.webLink && (
-                    <Button className="website-button" size="icon-lg" asChild>
+                    <Button
+                      className="website-button"
+                      size="icon-lg"
+                      asChild
+                    >
                       <a href={item.webLink} target="_blank" rel="noopener noreferrer">
-                        <RiPagesFill size={60}/>
+                        <ButtonWipeContent>
+                          <RiPagesFill size={60}/>
+                        </ButtonWipeContent>
                       </a>
                     </Button>
                   )}
 
                   {item.githubLink && (
-                    <Button className="github-button" size="icon-lg" asChild>
+                    <Button
+                      className="github-button"
+                      size="icon-lg"
+                      asChild
+                    >
                       <a
                         href={`https://github.com/${item.githubLink}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <RiGithubFill size={60}/>
+                        <ButtonWipeContent>
+                          <RiGithubFill size={60}/>
+                        </ButtonWipeContent>
                       </a>
                     </Button>
                   )}
@@ -1087,13 +1124,13 @@ function LayeredSlides({
         <img
           src={bgs[index]}
           alt=""
-          className="absolute inset-0 h-full w-full object-contain md:object-cover max-md:hidden"
+          className={cn("absolute inset-0 h-full w-full object-contain md:object-cover max-md:hidden", imageHoverClassName)}
           draggable={false}
         />
         <img
           src={bgsMobile[index]}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover object-bottom md:hidden"
+          className={cn("absolute inset-0 h-full w-full object-cover object-bottom md:hidden", imageHoverClassName)}
           draggable={false}
         />
       </div>
@@ -1104,14 +1141,14 @@ function LayeredSlides({
         <CrossfadeImage
           src={fg}
           alt=""
-          className="h-full w-full object-contain md:object-cover"
+          className={cn("h-full w-full object-contain md:object-cover", imageHoverClassName)}
           draggable={false}
         />
       </div>
       <CrossfadeImage
         src={fgMobile}
         alt=""
-        className="w-[70%] object-contain md:object-cover md:hidden z-10 absolute left-1/2 -translate-x-1/2 bottom-0"
+        className={cn("w-[70%] object-contain md:object-cover md:hidden z-10 absolute left-1/2 -translate-x-1/2 bottom-0", imageHoverClassName)}
         draggable={false}
       />
 
@@ -1128,7 +1165,7 @@ function SkillCardItem(props: { index: number, item: SkillItem }) {
     >
       <CrossfadeImage
         src={props.item.image}
-        className="absolute left-0 top-0 w-full h-full object-cover"
+        className={cn("absolute left-0 top-0 w-full h-full object-cover", imageHoverClassName)}
       />
 
       <div className="pointer-events-none absolute inset-0">
@@ -1201,7 +1238,7 @@ function ReviewCardItem(props: { index: number, item: ReviewItem }) {
           <img
             src={sampleProfiles[props.index % sampleProfiles.length]}
             alt="프로필 이미지"
-            className="h-full w-full object-cover"
+            className={cn("h-full w-full object-cover", imageHoverClassName)}
           />
         </div>
 

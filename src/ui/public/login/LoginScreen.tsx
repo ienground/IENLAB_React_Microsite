@@ -22,6 +22,7 @@ import KakaoLogin from "react-kakao-login"
 import {PrivacyDestination} from "@/ui/public/privacy/PrivacyDestination.ts"
 import {SignupDestination} from "@/ui/public/signup/SignupDestination.ts"
 import {AuthSessionViewModel} from "@/ui/shared/auth/useAuthSession.ts"
+import {cn} from "@/lib/utils.ts"
 
 export default function LoginScreen() {
   const {t} = useTranslation()
@@ -41,7 +42,10 @@ export default function LoginScreen() {
     const to = redirectParam
       ? `${SignupDestination.root}?redirect=${encodeURIComponent(redirectParam)}`
       : SignupDestination.root
-    return <Navigate to={to} replace />
+    return <Navigate
+      to={to}
+      replace
+    />
   }
 
   return (
@@ -86,7 +90,8 @@ function ScreenBody() {
       )
     } else {
       login(
-        () => {},
+        () => {
+        },
         (errorKey) => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
       )
     }
@@ -94,7 +99,8 @@ function ScreenBody() {
 
   const googleLogin = () => {
     primGoogleLogin(
-      () => {},
+      () => {
+      },
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -102,7 +108,8 @@ function ScreenBody() {
   const naverLogin = (token: string) => {
     primNaverLogin(
       token,
-      () => {},
+      () => {
+      },
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -110,7 +117,8 @@ function ScreenBody() {
   const kakaoLogin = (token: string) => {
     primKakaoLogin(
       token,
-      () => {},
+      () => {
+      },
       errorKey => toast.error(t(errorKey), {icon: <RiErrorWarningFill size={18}/>})
     )
   }
@@ -127,109 +135,110 @@ function ScreenBody() {
                   logout={logout}
                   sendEmailVerification={sendEmailVerification}
                 />
-                ) : (
-              <motion.form
-                layout
-                className="p-6 md:p-8"
-                onSubmit={handleSubmit}
-              >
-                <motion.div layout>
-                  <FieldGroup className="gap-y-0">
-                    <div className="flex flex-col items-center gap-2 text-center">
-                      <CrossfadeImage
-                        src={imgLogoFull}
-                        alt="Image"
-                        className="w-1/2"
-                      />
-                    </div>
-
-                    <Field className="mt-7">
-                      <FieldLabel htmlFor="email">
-                        {uiState.item.isSignup
-                          ? t("strings:email_signup")
-                          : t("strings:email")}
-                      </FieldLabel>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                        required
-                        disabled={isLoading}
-                        value={uiState.item.email}
-                        onChange={e => updateUiState({email: e.target.value})}
-                      />
-                    </Field>
-
-                    <Field className="mt-7">
-                      <div className="flex items-center">
-                        <FieldLabel htmlFor="password">
-                          {uiState.item.isSignup
-                            ? t("strings:password_signup")
-                            : t("strings:password")}
-                        </FieldLabel>
-                      </div>
-                      <Input
-                        id="password"
-                        type="password"
-                        required
-                        disabled={isLoading}
-                        value={uiState.item.password}
-                        onChange={e => updateUiState({password: e.target.value})}
-                      />
-                      {uiState.item.isSignup && uiState.item.password && (
-                        <PasswordStrength
-                          password={uiState.item.password}
-                          confirmPassword={uiState.item.confirmPassword}
-                          t={t}
+              ) : (
+                <motion.form
+                  layout
+                  className="p-6 md:p-8"
+                  onSubmit={handleSubmit}
+                >
+                  <motion.div layout>
+                    <FieldGroup className="gap-y-0">
+                      <div className="flex flex-col items-center gap-2 text-center">
+                        <CrossfadeImage
+                          src={imgLogoFull}
+                          alt="Image"
+                          draggable={false}
+                          className="w-1/2 select-none"
                         />
-                      )}
-                    </Field>
+                      </div>
 
-                    <AnimatePresence initial={false}>
-                      {uiState.item.isSignup && (
-                        <motion.div
-                          key="confirm_password"
-                          layout
-                          initial={{marginTop: 0, height: 0, opacity: 0}}
-                          animate={{marginTop: 28, height: "auto", opacity: 1}}
-                          exit={{marginTop: 0, height: 0, opacity: 0}}
-                          transition={{
-                            height: {duration: 0.28, ease: [0.16, 1, 0.3, 1]},
-                            opacity: {duration: 0.2, ease: "easeOut"},
-                            layout: {duration: 0.28, ease: [0.16, 1, 0.3, 1]},
-                          }}
-                          className="origin-top"
+                      <Field className="mt-7">
+                        <FieldLabel htmlFor="email">
+                          {uiState.item.isSignup
+                            ? t("strings:email_signup")
+                            : t("strings:email")}
+                        </FieldLabel>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="m@example.com"
+                          required
+                          disabled={isLoading}
+                          value={uiState.item.email}
+                          onChange={e => updateUiState({email: e.target.value})}
+                        />
+                      </Field>
+
+                      <Field className="mt-7">
+                        <div className="flex items-center">
+                          <FieldLabel htmlFor="password">
+                            {uiState.item.isSignup
+                              ? t("strings:password_signup")
+                              : t("strings:password")}
+                          </FieldLabel>
+                        </div>
+                        <Input
+                          id="password"
+                          type="password"
+                          required
+                          disabled={isLoading}
+                          value={uiState.item.password}
+                          onChange={e => updateUiState({password: e.target.value})}
+                        />
+                        {uiState.item.isSignup && uiState.item.password && (
+                          <PasswordStrength
+                            password={uiState.item.password}
+                            confirmPassword={uiState.item.confirmPassword}
+                            t={t}
+                          />
+                        )}
+                      </Field>
+
+                      <AnimatePresence initial={false}>
+                        {uiState.item.isSignup && (
+                          <motion.div
+                            key="confirm_password"
+                            layout
+                            initial={{marginTop: 0, height: 0, opacity: 0}}
+                            animate={{marginTop: 28, height: "auto", opacity: 1}}
+                            exit={{marginTop: 0, height: 0, opacity: 0}}
+                            transition={{
+                              height: {duration: 0.28, ease: [0.16, 1, 0.3, 1]},
+                              opacity: {duration: 0.2, ease: "easeOut"},
+                              layout: {duration: 0.28, ease: [0.16, 1, 0.3, 1]},
+                            }}
+                            className="origin-top"
+                          >
+                            <div>
+                              <Field>
+                                <div className="flex items-center">
+                                  <FieldLabel htmlFor="confirmPassword">
+                                    {t("strings:password_confirm")}
+                                  </FieldLabel>
+                                </div>
+                                <Input
+                                  id="confirmPassword"
+                                  type="password"
+                                  required
+                                  disabled={isLoading}
+                                  value={uiState.item.confirmPassword}
+                                  onChange={e =>
+                                    updateUiState({
+                                      confirmPassword: e.target.value,
+                                    })
+                                  }
+                                />
+                              </Field>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      <Field className="mt-7">
+                        <Button
+                          type="submit"
+                          disabled={isLoading}
                         >
-                          <div>
-                            <Field>
-                              <div className="flex items-center">
-                                <FieldLabel htmlFor="confirmPassword">
-                                  {t("strings:password_confirm")}
-                                </FieldLabel>
-                              </div>
-                              <Input
-                                id="confirmPassword"
-                                type="password"
-                                required
-                                disabled={isLoading}
-                                value={uiState.item.confirmPassword}
-                                onChange={e =>
-                                  updateUiState({
-                                    confirmPassword: e.target.value,
-                                  })
-                                }
-                              />
-                            </Field>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    <Field className="mt-7">
-                      <Button
-                        type="submit"
-                        disabled={isLoading}
-                      >
                         <span className="inline-flex items-center">
                           <AnimatePresence initial={false}>
                             {isLoading ? (
@@ -246,7 +255,12 @@ function ScreenBody() {
                             ) : null}
                           </AnimatePresence>
 
-                          <span className={isLoading ? "ml-2" : ""}>
+                          <span
+                            className={cn(
+                              isLoading ? "ml-2" : "",
+                              "select-none"
+                            )}
+                          >
                             {t(
                               isLoading
                                 ? "strings:signin.loging_in"
@@ -256,139 +270,138 @@ function ScreenBody() {
                             )}
                           </span>
                         </span>
-                      </Button>
-                    </Field>
+                        </Button>
+                      </Field>
 
-                    <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card mt-7">
-                      {t("strings:signin.continue_with")}
-                    </FieldSeparator>
+                      <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card mt-7 select-none">
+                        {t("strings:signin.continue_with")}
+                      </FieldSeparator>
 
-                    <Field className="grid grid-cols-2 gap-4 mt-7">
-                      <Button
-                        variant="outline"
-                        type="button"
-                        onClick={googleLogin}
-                      >
-                        <Swap swapped={isLoading}>
-                          <SwapOn>
-                            <Spinner className="size-4"/>
-                          </SwapOn>
-                          <SwapOff>
-                            <img
-                              src={icGoogle}
-                              alt="google"
-                              className="size-4"
-                            />
-                          </SwapOff>
-                        </Swap>
-                        <span className="sr-only">
-                      {t("strings:signin.signin_with_google")}
-                    </span>
-                      </Button>
+                      <Field className="grid grid-cols-2 gap-4 mt-7 select-none">
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={googleLogin}
+                        >
+                          <Swap swapped={isLoading}>
+                            <SwapOn>
+                              <Spinner className="size-4"/>
+                            </SwapOn>
+                            <SwapOff>
+                              <img
+                                src={icGoogle}
+                                alt="google"
+                                className="size-4"
+                              />
+                            </SwapOff>
+                          </Swap>
+                          <span className="sr-only">{t("strings:signin.signin_with_google")}</span>
+                        </Button>
 
-                      {/*<NaverLogin*/}
-                      {/*  onToken={naverLogin}*/}
-                      {/*  clientId={import.meta.env.VITE_NAVER_CLIENT_ID}*/}
-                      {/*  callbackUrl={`${window.location.origin}/login`}*/}
-                      {/*  render={e => (*/}
-                      {/*    <Button*/}
-                      {/*      variant="default"*/}
-                      {/*      type="button"*/}
-                      {/*      onClick={e}*/}
-                      {/*      className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"*/}
-                      {/*    >*/}
-                      {/*      <Swap swapped={isLoading}>*/}
-                      {/*        <SwapOn>*/}
-                      {/*          <Spinner className="size-4"/>*/}
-                      {/*        </SwapOn>*/}
-                      {/*        <SwapOff>*/}
-                      {/*          <IcNaver className="size-4"/>*/}
-                      {/*        </SwapOff>*/}
-                      {/*      </Swap>*/}
-                      {/*      <span className="sr-only">*/}
-                      {/*    {t("strings:signin.signin_with_naver")}*/}
-                      {/*  </span>*/}
-                      {/*    </Button>*/}
-                      {/*  )}*/}
-                      {/*/>*/}
+                        {/*<NaverLogin*/}
+                        {/*  onToken={naverLogin}*/}
+                        {/*  clientId={import.meta.env.VITE_NAVER_CLIENT_ID}*/}
+                        {/*  callbackUrl={`${window.location.origin}/login`}*/}
+                        {/*  render={e => (*/}
+                        {/*    <Button*/}
+                        {/*      variant="default"*/}
+                        {/*      type="button"*/}
+                        {/*      onClick={e}*/}
+                        {/*      className="bg-naver-background text-naver-foreground hover:bg-naver-background/80"*/}
+                        {/*    >*/}
+                        {/*      <Swap swapped={isLoading}>*/}
+                        {/*        <SwapOn>*/}
+                        {/*          <Spinner className="size-4"/>*/}
+                        {/*        </SwapOn>*/}
+                        {/*        <SwapOff>*/}
+                        {/*          <IcNaver className="size-4"/>*/}
+                        {/*        </SwapOff>*/}
+                        {/*      </Swap>*/}
+                        {/*      <span className="sr-only">*/}
+                        {/*    {t("strings:signin.signin_with_naver")}*/}
+                        {/*  </span>*/}
+                        {/*    </Button>*/}
+                        {/*  )}*/}
+                        {/*/>*/}
 
-                      <KakaoLogin
-                        token={kakaoApiKey}
-                        onSuccess={response =>
-                          kakaoLogin(response.response.access_token)
-                        }
-                        onFail={e =>
-                          toast.error(t(e.error), {
-                            icon: <RiErrorWarningFill size={18}/>,
-                          })
-                        }
-                        render={e => (
-                          <Button
-                            variant="default"
-                            type="button"
-                            className="bg-kakao-background text-kakao-foreground hover:bg-kakao-background/85 dark:hover:bg-kakao-background/80"
-                            onClick={e.onClick}
-                          >
-                            <Swap swapped={isLoading}>
-                              <SwapOn>
-                                <Spinner className="size-4"/>
-                              </SwapOn>
-                              <SwapOff>
-                                <IcKakao className="size-4"/>
-                              </SwapOff>
-                            </Swap>
-                            <span className="sr-only">
+                        <KakaoLogin
+                          token={kakaoApiKey}
+                          onSuccess={response =>
+                            kakaoLogin(response.response.access_token)
+                          }
+                          onFail={e =>
+                            toast.error(t(e.error), {
+                              icon: <RiErrorWarningFill size={18}/>,
+                            })
+                          }
+                          render={e => (
+                            <Button
+                              variant="default"
+                              type="button"
+                              className="bg-kakao-background text-kakao-foreground hover:bg-kakao-background/85 dark:hover:bg-kakao-background/80"
+                              onClick={e.onClick}
+                            >
+                              <Swap swapped={isLoading}>
+                                <SwapOn>
+                                  <Spinner className="size-4"/>
+                                </SwapOn>
+                                <SwapOff>
+                                  <IcKakao className="size-4"/>
+                                </SwapOff>
+                              </Swap>
+                              <span className="sr-only">
                           {t("strings:signin.signin_with_kakao")}
                         </span>
-                          </Button>
-                        )}
-                      />
-                    </Field>
+                            </Button>
+                          )}
+                        />
+                      </Field>
 
-                    <div className="mt-7">
-                      <FieldDescription className="text-center">
-                        {uiState.item.isSignup ? (
-                          <>
-                            {t("strings:signin.ask_account")}
-                            <Button
-                              type="button"
-                              variant="link"
-                              onClick={() => updateUiState({isSignup: false})}
-                            >
-                              {t("strings:login")}
-                            </Button>
-                          </>
-                        ) : (
-                          <>
-                            {t("strings:signin.ask_no_account")}
-                            <Button
-                              type="button"
-                              variant="link"
-                              className="text-muted-foreground font-bold"
-                              onClick={() => updateUiState({isSignup: true})}
-                            >
-                              {t("strings:signup.label")}
-                            </Button>
-                          </>
-                        )}
-                      </FieldDescription>
-                    </div>
-                  </FieldGroup>
-                </motion.div>
-              </motion.form>
+                      <div className="mt-7 select-none">
+                        <FieldDescription className="text-center">
+                          {uiState.item.isSignup ? (
+                            <>
+                              {t("strings:signin.ask_account")}
+                              <Button
+                                type="button"
+                                variant="link"
+                                onClick={() => updateUiState({isSignup: false})}
+                              >
+                                {t("strings:login")}
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              {t("strings:signin.ask_no_account")}
+                              <Button
+                                type="button"
+                                variant="link"
+                                className="text-muted-foreground font-bold"
+                                onClick={() => updateUiState({isSignup: true})}
+                              >
+                                {t("strings:signup.label")}
+                              </Button>
+                            </>
+                          )}
+                        </FieldDescription>
+                      </div>
+                    </FieldGroup>
+                  </motion.div>
+                </motion.form>
               )}
 
               <div className="relative hidden bg-muted md:block">
                 <CrossfadeImage
                   src={imgPattern}
                   alt="Image"
-                  className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                  draggable={false}
+                  className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale select-none"
                 />
               </div>
             </CardContent>
           </Card>
 
-          <FieldDescription className="px-6 text-center">
+          <FieldDescription className="px-6 text-center select-none">
             <Trans
               i18nKey="strings:signin.agreement"
               values={{
@@ -408,22 +421,26 @@ function ScreenBody() {
   )
 }
 
-function PasswordStrength({ password, confirmPassword, t }: { password: string; confirmPassword: string; t: (key: string) => string }) {
+function PasswordStrength({password, confirmPassword, t}: {
+  password: string;
+  confirmPassword: string;
+  t: (key: string) => string
+}) {
   const checks = [
-    { label: t("strings:password_rule.length"), pass: password.length >= 8 },
-    { label: t("strings:password_rule.lowercase"), pass: /[a-z]/.test(password) },
-    { label: t("strings:password_rule.uppercase"), pass: /[A-Z]/.test(password) },
-    { label: t("strings:password_rule.number"), pass: /[0-9]/.test(password) },
-    { label: t("strings:password_rule.special"), pass: /[^a-zA-Z0-9]/.test(password) },
+    {label: t("strings:password_rule.length"), pass: password.length >= 8},
+    {label: t("strings:password_rule.lowercase"), pass: /[a-z]/.test(password)},
+    {label: t("strings:password_rule.uppercase"), pass: /[A-Z]/.test(password)},
+    {label: t("strings:password_rule.number"), pass: /[0-9]/.test(password)},
+    {label: t("strings:password_rule.special"), pass: /[^a-zA-Z0-9]/.test(password)},
   ]
 
   const score = checks.filter(c => c.pass).length
   const strengthLabel = score <= 1 ? t("strings:password_strength.weak")
     : score <= 3 ? t("strings:password_strength.medium")
-    : t("strings:password_strength.strong")
+      : t("strings:password_strength.strong")
   const barColor = score <= 1 ? "bg-destructive"
     : score <= 3 ? "bg-yellow-500"
-    : "bg-green-500"
+      : "bg-green-500"
 
   return (
     <div className="mt-2 space-y-1.5">
@@ -431,16 +448,19 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
         <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
           <motion.div
             className={`h-full rounded-full ${barColor}`}
-            initial={{ width: 0 }}
-            animate={{ width: `${(score / 5) * 100}%` }}
-            transition={{ duration: 0.3 }}
+            initial={{width: 0}}
+            animate={{width: `${(score / 5) * 100}%`}}
+            transition={{duration: 0.3}}
           />
         </div>
         <span className="text-xs text-muted-foreground min-w-10 text-right">{strengthLabel}</span>
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
         {checks.map(check => (
-          <span key={check.label} className={`text-xs ${check.pass ? "text-green-600 dark:text-green-400" : "text-muted-foreground/60"}`}>
+          <span
+            key={check.label}
+            className={`text-xs ${check.pass ? "text-green-600 dark:text-green-400" : "text-muted-foreground/60"}`}
+          >
             {check.pass ? "✓" : "○"} {check.label}
           </span>
         ))}
@@ -452,8 +472,12 @@ function PasswordStrength({ password, confirmPassword, t }: { password: string; 
   )
 }
 
-function EmailVerificationCard({ fbUser, logout, sendEmailVerification }: { fbUser: import("firebase/auth").User | null; logout: () => Promise<void>; sendEmailVerification: () => Promise<void> }) {
-  const { t } = useTranslation()
+function EmailVerificationCard({fbUser, logout, sendEmailVerification}: {
+  fbUser: import("firebase/auth").User | null;
+  logout: () => Promise<void>;
+  sendEmailVerification: () => Promise<void>
+}) {
+  const {t} = useTranslation()
   const [isResending, setResending] = useState(false)
 
   const resendEmail = async () => {
@@ -470,11 +494,11 @@ function EmailVerificationCard({ fbUser, logout, sendEmailVerification }: { fbUs
 
   return (
     <div className="flex flex-col items-center justify-center p-6 md:p-8 gap-6 text-center">
-      <RiMailSendLine className="size-12 text-muted-foreground" />
+      <RiMailSendLine className="size-12 text-muted-foreground"/>
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">{t("strings:email_verification.title")}</h2>
         <p className="text-sm text-muted-foreground">
-          {t("strings:email_verification.desc", { email: fbUser?.email ?? "" })}
+          {t("strings:email_verification.desc", {email: fbUser?.email ?? ""})}
         </p>
       </div>
       <div className="flex flex-col gap-3 w-full max-w-xs">

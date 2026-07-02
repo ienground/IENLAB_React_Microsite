@@ -17,7 +17,7 @@ export default function PublicFooter() {
     <div
       className={cn(
         "mx-auto pointer-events-auto transition-all duration-300 ease-in-out",
-        "glass-surface mb-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem]"
+        "glass-surface mb-3 h-16 w-[min(960px,calc(100%-24px))] rounded-[2rem] select-none"
       )}
     >
       <div className="flex h-full items-center justify-between gap-x-4 px-4 sm:px-6">
@@ -49,6 +49,7 @@ export default function PublicFooter() {
           <CrossfadeImage
             src={resolvedTheme === "dark" ? imgLogoShortWhite : imgLogoShort}
             alt="Logo"
+            draggable={false}
             className={cn(
               "block object-contain transition-all duration-300 md:hidden h-12"
             )}
@@ -57,6 +58,7 @@ export default function PublicFooter() {
           <CrossfadeImage
             src={resolvedTheme === "dark" ? imgLogoFullWhite : imgLogoFull}
             alt="Logo"
+            draggable={false}
             className={cn(
               "hidden object-contain transition-all duration-300 md:block h-8",
             )}
