@@ -1,11 +1,10 @@
-import {useEffect, useRef, useState, type ReactNode} from "react"
+import {useState, type ReactNode} from "react"
 import {cn} from "@/lib/utils.ts"
 import type {
   NoticeContentBlock,
   NoticeInlineContent,
   NoticeInlineMark
 } from "@/ui/public/notice/detail/NoticeEditorContentMapper.ts"
-import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area.tsx"
 import {Carousel} from "motion-plus/react"
 import {CrossfadeImage} from "@ienlab/react-library"
 
@@ -167,9 +166,29 @@ const renderListItem = (blocks: NoticeContentBlock[]): ReactNode => {
 function ImageRowGallery(props: {
   images: Extract<NoticeContentBlock, { type: "imageBlock" }>[]
 }) {
+  const [aspectRatios, setAspectRatios] = useState<string[]>(() => props.images.map(() => DEFAULT_GALLERY_IMAGE_RATIO))
+  const carouselMeasureKey = aspectRatios.join("|")
+
+  const setImageAspectRatio = (index: number, aspectRatio: string) => {
+    setAspectRatios(prev => {
+      if (prev[index] === aspectRatio) return prev
+
+      const next = props.images.map((_, imageIndex) => prev[imageIndex] ?? DEFAULT_GALLERY_IMAGE_RATIO)
+      next[index] = aspectRatio
+      return next
+    })
+  }
+
   return (
     <Carousel
-      items={props.images.map((image, imageIndex) => renderImage(image, imageIndex, true))}
+      key={carouselMeasureKey}
+      items={props.images.map((image, imageIndex) => renderImage(
+        image,
+        imageIndex,
+        true,
+        aspectRatios[imageIndex] ?? DEFAULT_GALLERY_IMAGE_RATIO,
+        aspectRatio => setImageAspectRatio(imageIndex, aspectRatio)
+      ))}
       overflow
       gap={16}
       loop={false}
@@ -180,47 +199,72 @@ function ImageRowGallery(props: {
 const renderImage = (
   block: Extract<NoticeContentBlock, { type: "imageBlock" }>,
   index: number,
-  isGalleryItem: boolean = false
+  isGalleryItem: boolean = false,
+  aspectRatio: string = DEFAULT_GALLERY_IMAGE_RATIO,
+  onAspectRatioLoad?: (aspectRatio: string) => void
 ): ReactNode => {
-  const alignClass = block.align === "left" ? "mr-auto" : block.align === "right" ? "ml-auto" : "mx-auto"
-
   return (
     <figure
       key={index}
       className={cn(
         "flex max-w-full flex-col gap-2",
-        isGalleryItem ? cn("max-w-none shrink-0", alignClass) : "w-full"
+        isGalleryItem ? "max-w-none shrink-0" : "w-full"
       )}
     >
-      <div
-        className={cn(
-          "rounded-md border overflow-hidden",
-          isGalleryItem ? "h-64 w-auto max-w-none md:h-80 xl:h-96"
-            : "max-h-[90vh] w-full"
-        )}
-      >
-        {isGalleryItem ? (
-          <CrossfadeImage
-            draggable={false}
-            src={block.src}
-            alt={block.alt}
-            className={cn(
-              "object-cover w-full h-full transition-transform duration-300 hover:scale-102",
-            )}
-            loading="lazy"
-          />
-        ) : (
-          <CrossfadeImage
-            draggable={false}
-            src={block.src}
-            alt={block.alt}
-            className="object-contain transition-transform duration-300 hover:scale-102"
-            loading="lazy"
-          />
-        )}
-      </div>
+      {isGalleryItem ? (
+        <GalleryImage
+          block={block}
+          aspectRatio={aspectRatio}
+          onAspectRatioLoad={onAspectRatioLoad}
+        />
+      ) : <SingleImage block={block} />}
       {block.caption && <figcaption className="text-center text-sm text-muted-foreground">{block.caption}</figcaption>}
     </figure>
+  )
+}
+
+const DEFAULT_GALLERY_IMAGE_RATIO = "4 / 3"
+
+function GalleryImage(props: {
+  block: Extract<NoticeContentBlock, { type: "imageBlock" }>
+  aspectRatio: string
+  onAspectRatioLoad?: (aspectRatio: string) => void
+}) {
+  return (
+    <div
+      className="h-64 max-w-none overflow-hidden rounded-md border transition-[aspect-ratio] duration-300 md:h-80 xl:h-96"
+      style={{aspectRatio: props.aspectRatio}}
+    >
+      <CrossfadeImage
+        draggable={false}
+        src={props.block.src}
+        alt={props.block.alt}
+        className="h-full w-full object-cover transition-transform duration-300 hover:scale-102"
+        loading="lazy"
+        onLoad={event => {
+          const image = event.currentTarget
+          if (image.naturalWidth > 0 && image.naturalHeight > 0) {
+            props.onAspectRatioLoad?.(`${image.naturalWidth} / ${image.naturalHeight}`)
+          }
+        }}
+      />
+    </div>
+  )
+}
+
+function SingleImage(props: {
+  block: Extract<NoticeContentBlock, { type: "imageBlock" }>
+}) {
+  return (
+    <div className="max-h-[90vh] w-full overflow-hidden rounded-md border">
+      <CrossfadeImage
+        draggable={false}
+        src={props.block.src}
+        alt={props.block.alt}
+        className="object-contain transition-transform duration-300 hover:scale-102"
+        loading="lazy"
+      />
+    </div>
   )
 }
 

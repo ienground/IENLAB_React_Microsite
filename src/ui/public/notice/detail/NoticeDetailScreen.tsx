@@ -70,8 +70,8 @@ function ScreenBody() {
 
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-row flex-wrap items-center gap-3">
-                      {infoState.category && <Badge variant="outline">{infoState.category}</Badge>}
-                      <time className="text-sm text-muted-foreground" dateTime={item.createAt.toDate().toISOString()}>
+                      {infoState.category && <Badge variant="outline" className="select-none">{infoState.category}</Badge>}
+                      <time className="text-sm text-muted-foreground select-none" dateTime={item.createAt.toDate().toISOString()}>
                         {dateTimeFormat(item.createAt.toDate())}
                       </time>
                     </div>
