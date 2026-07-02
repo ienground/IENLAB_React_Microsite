@@ -224,7 +224,7 @@ function StepTerms(props: {
   return (
     <div className="flex flex-col gap-8">
       <h1 className="large-text-title">{t("strings:signup.agree_terms.title")}</h1>
-      <p className="text-muted-foreground">{t("strings:signup.agree_terms.desc")}</p>
+      <p className="content-description">{t("strings:signup.agree_terms.desc")}</p>
       <div className="space-y-4 rounded-4xl border p-6">
         <div className="flex flex-row gap-x-4">
           <Checkbox
@@ -389,7 +389,7 @@ function StepInfo(props: {
   return (
     <div className="flex flex-col gap-8">
       <h1 className="large-text-title">{t("strings:signup.enter_info.title")}</h1>
-      <p className="text-muted-foreground">{t("strings:signup.enter_info.desc")}</p>
+      <p className="content-description">{t("strings:signup.enter_info.desc")}</p>
 
       <FieldSet>
         <ImageUploadField

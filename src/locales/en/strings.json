@@ -115,7 +115,8 @@
   "no_data": "No data",
   "notice": {
     "desc": "Explore the latest news.",
-    "label": "Notice"
+    "label": "Notice",
+    "list_end": "You have reached the end of the notices."
   },
   "og": {
     "description": "Mobile Developer, Graphic Designer."

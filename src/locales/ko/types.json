@@ -31,6 +31,19 @@
       }
     }
   },
+  "notice": {
+    "state": {
+      "archived": {
+        "label": "보관"
+      },
+      "draft": {
+        "label": "임시저장"
+      },
+      "published": {
+        "label": "게시"
+      }
+    }
+  },
   "outsource": {
     "info_request": {
       "media": {

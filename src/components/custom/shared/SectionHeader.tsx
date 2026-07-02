@@ -13,9 +13,9 @@ export function SectionHeader({index, label, selected = true, className = "", on
   }
 
   return (
-    <p
+    <div
       className={cn(
-        "font-jb-mono text-xl tracking-normal pl-11.5 -indent-11.5 md:text-[14px] text-pretty break-keep",
+        "font-jb-mono text-xl tracking-normal pl-11.5 -indent-11.5 md:text-[14px] text-pretty break-keep select-none",
         selected ? "text-foreground" : "text-muted-foreground",
         className
       )}
@@ -23,6 +23,6 @@ export function SectionHeader({index, label, selected = true, className = "", on
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
       role={onClick ? "button" : undefined}
-    >({indexFormatted}) {labelFormatted}</p>
+    >({indexFormatted}) {labelFormatted}</div>
   )
 }

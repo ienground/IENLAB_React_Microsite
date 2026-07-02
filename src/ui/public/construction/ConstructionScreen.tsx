@@ -28,7 +28,7 @@ export default function ConstructionScreen() {
               src={ImgUnderConstruction}
             />
           </div>
-          <p className="mt-16 md:mt-24 xl:mt-32">{t("strings:under_construction.desc")}</p>
+          <p className="content-description mt-16 md:mt-24 xl:mt-32">{t("strings:under_construction.desc")}</p>
 
           <MagneticButton
             onClick={() => navigate("/")}

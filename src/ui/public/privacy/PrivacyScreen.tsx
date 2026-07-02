@@ -443,7 +443,7 @@ function ScreenBody() {
         </aside>
         <div className="col-span-12 xl:col-span-10">
           <h1 className="large-text-title">{t("strings:privacy_policy.label")}</h1>
-          <p className="mt-16 md:mt-24 xl:mt-32">{summary}</p>
+          <p className="content-description mt-16 md:mt-24 xl:mt-32">{summary}</p>
         </div>
       </div>
       <div className="grid w-full grid-cols-12 gap-y-10 px-4 sm:px-6 md:px-8 max-xl:flex max-xl:row">

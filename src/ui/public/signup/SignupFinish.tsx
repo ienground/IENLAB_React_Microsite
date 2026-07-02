@@ -22,7 +22,7 @@ export default function SignupFinish() {
         <RiCheckboxCircleFill size={64} className="text-primary" />
         <div className="inline-flex flex-col space-y-6">
           <h1 className="large-text-title whitespace-nowrap">{t("strings:signup.finish.title")}</h1>
-          <p className="text-muted-foreground w-min min-w-full">{t("strings:signup.finish.desc")}</p>
+          <p className="content-description w-min min-w-full">{t("strings:signup.finish.desc")}</p>
         </div>
         <Button variant="outline" onClick={handleLogout}>
           {t("strings:signout.label")}
