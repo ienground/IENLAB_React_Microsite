@@ -12,6 +12,7 @@ import {RiArrowRightUpLine} from "@remixicon/react"
 import {useNavigate} from "react-router"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
 import type {NoticeListItemState} from "@/ui/public/notice/list/NoticeListViewModel.ts"
+import {MotionButton} from "@/components/motion/components.tsx"
 
 const listVariants: Variants = {
   show: {
@@ -81,7 +82,7 @@ function ScreenBody() {
         <div className="col-span-12 xl:col-span-10">
           <div className="flex flex-col gap-4 md:gap-6">
             <h1 className="large-text-title">{t("strings:notice.label")}</h1>
-            <p className="max-w-2xl text-muted-foreground">{t("strings:notice.desc")}</p>
+            <p className="content-description">{t("strings:notice.desc")}</p>
           </div>
 
           <AnimatedContent status={status} className="mt-12 md:mt-16">
@@ -123,9 +124,8 @@ function NoticeRow(props: {
   const {dateTimeFormatShort} = useDateTimeFormatters()
 
   return (
-    <motion.button
+    <motion.div
       variants={rowVariants}
-      type="button"
       onClick={props.onClick}
       className="group grid w-full grid-cols-12 gap-y-4 border-b border-border py-6 text-left transition-colors last:border-b-0 hover:bg-muted/45 md:gap-x-6 md:px-4 md:py-8"
     >
@@ -147,9 +147,15 @@ function NoticeRow(props: {
       </div>
 
       <div className="col-span-1 flex justify-end">
-        <RiArrowRightUpLine className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
+        <MotionButton
+          variant="ghost"
+          size="icon"
+          className="group-hover:-translate-y-1 group-hover:translate-x-1"
+        >
+          <RiArrowRightUpLine className="size-5 transition-transform" />
+        </MotionButton>
       </div>
-    </motion.button>
+    </motion.div>
   )
 }
 

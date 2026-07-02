@@ -428,6 +428,8 @@ body.custom-cursor-active * {
   line-height: 0.92;
   letter-spacing: -0.06em;
 
+  @apply select-none;
+
   @media (min-width: 640px) {
     font-size: 64px;
   }
@@ -447,6 +449,10 @@ body.custom-cursor-active * {
   @media (min-width: 1536px) {
     font-size: 108px;
   }
+}
+
+.content-description {
+  @apply max-w-2xl text-muted-foreground select-none;
 }
 
 .custom-list {

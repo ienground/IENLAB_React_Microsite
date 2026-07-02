@@ -12,6 +12,7 @@ import NotFoundScreen from "@/ui/shared/error/NotFoundScreen.tsx"
 import {NoticeDetailViewModel} from "@/ui/public/notice/detail/NoticeDetailViewModel.ts"
 import {NoticeEditorContentRenderer} from "@/ui/public/notice/detail/NoticeEditorContentRenderer.tsx"
 import dayjs from "dayjs"
+import {MagneticButton} from "@/components/motion/components.tsx"
 
 export default function NoticeDetailScreen() {
   const { id } = useParams<{ id: string }>()
@@ -63,9 +64,9 @@ function ScreenBody() {
             {item ? (
               <>
                 <div className="flex flex-col gap-8">
-                  <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
+                  <MagneticButton variant="outline" size="icon" onClick={() => navigate(-1)}>
                     <RiArrowLeftLine />
-                  </Button>
+                  </MagneticButton>
 
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-row flex-wrap items-center gap-3">

@@ -21,7 +21,7 @@ export default function NotFoundScreen() {
           <div className="flex flex-col lg:flex-row w-full justify-between">
             <h1 className="large-text-title">{t("strings:error.not_found.label")}</h1>
           </div>
-          <p className="mt-32">{t("strings:error.not_found.desc")}</p>
+          <p className="mt-32 content-description">{t("strings:error.not_found.desc")}</p>
 
           <MagneticButton
             onClick={() => navigate(-1)}
