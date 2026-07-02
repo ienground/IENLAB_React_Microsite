@@ -19,7 +19,7 @@ export function ButtonWipeContent({
 }) {
   return (
     <span className={cn("inline-flex overflow-visible", className)}>
-      <span className="inline-flex items-center justify-center gap-1.5 will-change-transform group-hover/button:animate-[button-wipe-up_700ms_cubic-bezier(0.22,1.35,0.36,1)]">
+      <span className="inline-flex items-center justify-center gap-1.5 will-change-transform group-hover/button:animate-[button-wipe-up_800ms_cubic-bezier(0.22,1.35,0.36,1)]">
         {children}
       </span>
     </span>
