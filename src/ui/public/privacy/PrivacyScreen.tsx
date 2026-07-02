@@ -441,12 +441,12 @@ function ScreenBody() {
         <aside className="col-span-12 xl:col-span-2">
           <SectionHeader index={0} label={t("strings:privacy_policy.label")} />
         </aside>
-        <div className="col-span-12 xl:col-span-10">
+        <div className="col-span-12 xl:col-span-10 bg">
           <h1 className="large-text-title">{t("strings:privacy_policy.label")}</h1>
           <p className="content-description mt-16 md:mt-24 xl:mt-32">{summary}</p>
         </div>
       </div>
-      <div className="grid w-full grid-cols-12 gap-y-10 px-4 sm:px-6 md:px-8 max-xl:flex max-xl:row">
+      <div className="grid w-full grid-cols-12 gap-y-10 px-4 sm:px-6 md:px-8 max-xl:flex max-xl:row gap-4">
         <aside className="h-fit sticky top-16 md:top-24 col-span-2 flex flex-row gap-x-4 max-xl:hidden">
           <Separator orientation="vertical" className="bg-foreground" />
           <div className="flex flex-col gap-y-2">

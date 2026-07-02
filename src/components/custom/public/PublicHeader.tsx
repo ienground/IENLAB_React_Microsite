@@ -275,7 +275,7 @@ export default function PublicHeader() {
                 {navItems.map((item) => (
                   <div
                     key={item.title}
-                    className="relative"
+                    className="relative select-none"
                     onMouseEnter={() => item.items && handleHover(item.title)}
                   >
                     {item.items ? (
@@ -338,7 +338,7 @@ export default function PublicHeader() {
                       y: -8,
                       transition: {duration: 0.15, ease: "easeOut"},
                     }}
-                    className="absolute left-0 top-[calc(100%+8px)] z-50"
+                    className="absolute left-0 top-[calc(100%+8px)] z-50 select-none"
                     onMouseEnter={clearCloseTimer}
                     onMouseLeave={handleLeave}
                   >
@@ -409,11 +409,12 @@ export default function PublicHeader() {
 
           <MagneticLink
             to="/"
-            className="justify-self-center transition-all duration-300"
+            className="justify-self-center transition-all duration-300 select-none"
             aria-label="Home"
           >
             <CrossfadeImage
               src={resolvedTheme === "dark" ? imgLogoShortWhite : imgLogoShort}
+              draggable={false}
               alt="Logo"
               className={cn(
                 "block object-contain transition-all duration-300 md:hidden h-12"
@@ -423,6 +424,7 @@ export default function PublicHeader() {
             <CrossfadeImage
               src={resolvedTheme === "dark" ? imgLogoFullWhite : imgLogoFull}
               alt="Logo"
+              draggable={false}
               className={cn(
                 "hidden object-contain transition-all duration-300 md:block h-8",
               )}

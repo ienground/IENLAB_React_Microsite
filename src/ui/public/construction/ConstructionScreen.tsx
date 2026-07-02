@@ -24,7 +24,8 @@ export default function ConstructionScreen() {
             <h1 className="large-text-title">{t("strings:under_construction.label")}</h1>
             <CrossfadeImage
               alt="Under Construction Character"
-              className="max-w-full w-160 h-auto object-contain opacity-90"
+              className="max-w-full w-160 h-auto object-contain opacity-90 select-none"
+              draggable={false}
               src={ImgUnderConstruction}
             />
           </div>

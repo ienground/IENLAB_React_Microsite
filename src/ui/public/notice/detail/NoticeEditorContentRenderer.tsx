@@ -256,7 +256,7 @@ function SingleImage(props: {
   block: Extract<NoticeContentBlock, { type: "imageBlock" }>
 }) {
   return (
-    <div className="max-h-[90vh] w-full overflow-hidden rounded-md border">
+    <div className="max-h-[90vh] w-full overflow-hidden rounded-md border select-none">
       <CrossfadeImage
         draggable={false}
         src={props.block.src}

@@ -251,7 +251,7 @@ function ScreenBody() {
 
   return (
     <div
-      className="w-full flex flex-col items-center overflow-x-clip"
+      className="w-full flex flex-col items-center overflow-x-clip select-none"
     >
       <motion.section
         className="w-full"

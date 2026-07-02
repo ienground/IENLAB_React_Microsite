@@ -452,7 +452,7 @@ body.custom-cursor-active * {
 }
 
 .content-description {
-  @apply max-w-2xl text-muted-foreground select-none;
+  @apply text-muted-foreground select-none;
 }
 
 .custom-list {

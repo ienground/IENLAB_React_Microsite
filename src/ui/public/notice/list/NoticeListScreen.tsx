@@ -105,7 +105,7 @@ function ScreenBody() {
             {noticeInfoStateList.hasMore ? (
               <LoadingSpinner key={notices.length} onInView={loadNextPage} />
             ) : (
-              <div className="w-full py-10 text-center text-sm text-muted-foreground">
+              <div className="w-full py-10 text-center text-sm text-muted-foreground select-none">
                 {t("strings:notice.list_end")}
               </div>
             )}
@@ -130,8 +130,8 @@ function NoticeRow(props: {
       className="group grid w-full grid-cols-12 gap-y-4 border-b border-border py-6 text-left transition-colors last:border-b-0 hover:bg-muted/45 md:gap-x-6 md:px-4 md:py-8"
     >
       <div className="col-span-12 flex items-center gap-3 text-sm text-muted-foreground md:col-span-3">
-        <span className="font-jb-mono tabular-nums">{String(props.index + 1).padStart(2, "0")}</span>
-        {props.item.category && <Badge variant="outline">{props.item.category}</Badge>}
+        <span className="font-jb-mono tabular-nums select-none">{String(props.index + 1).padStart(2, "0")}</span>
+        {props.item.category && <Badge variant="outline" className="select-none">{props.item.category}</Badge>}
       </div>
 
       <div className="col-span-11 flex min-w-0 flex-col gap-3 md:col-span-8">
