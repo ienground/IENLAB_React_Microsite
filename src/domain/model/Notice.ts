@@ -132,9 +132,9 @@ export namespace Notice {
       }
       export function getLabel(t: TFunction, value: State) {
         const map = {
-          [State.DRAFT]: "임시저장",
-          [State.PUBLISHED]: "게시",
-          [State.ARCHIVED]: "보관"
+          [State.DRAFT]: t("types:notice.state.draft.label"),
+          [State.PUBLISHED]: t('types:notice.state.published.label'),
+          [State.ARCHIVED]: t('types:notice.state.archived.label')
         }
         return map[value]
       }
