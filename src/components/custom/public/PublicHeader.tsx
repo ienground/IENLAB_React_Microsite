@@ -30,7 +30,7 @@ import {AboutDestination} from "@/ui/public/about/AboutDestination.ts"
 import {BrandDestination} from "@/ui/public/brand/BrandDestination.ts"
 import {ProjectDestination} from "@/ui/public/project/ProjectDestination.ts"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
-import {MagneticBaseButton, MagneticLink, MagneticButton} from "@/components/motion/components.tsx"
+import {MagneticBaseButton, MagneticLink, MagneticButton, ButtonWipeContent} from "@/components/motion/components.tsx"
 import {Swap, SwapOff, SwapOn} from "@/components/ui/swap.tsx"
 import {ClientHomeDestination} from "@/ui/client/home/ClientHomeDestination.ts"
 
@@ -450,10 +450,12 @@ export default function PublicHeader() {
                 )}
                 onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
               >
-                <Swap swapped={resolvedTheme === "light"} animation="rotate">
-                  <SwapOn><RiSunFill/></SwapOn>
-                  <SwapOff><RiMoonFill/></SwapOff>
-                </Swap>
+                <ButtonWipeContent>
+                  <Swap swapped={resolvedTheme === "light"} animation="rotate">
+                    <SwapOn><RiSunFill/></SwapOn>
+                    <SwapOff><RiMoonFill/></SwapOff>
+                  </Swap>
+                </ButtonWipeContent>
                 <span className="sr-only">{t("strings:settings.toggle_theme")}</span>
               </MagneticButton>
             </div>

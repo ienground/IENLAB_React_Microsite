@@ -12,7 +12,7 @@ import {RiArrowRightUpLine} from "@remixicon/react"
 import {useNavigate} from "react-router"
 import {NoticeDestination} from "@/ui/public/notice/NoticeDestination.ts"
 import type {NoticeListItemState} from "@/ui/public/notice/list/NoticeListViewModel.ts"
-import {MotionButton} from "@/components/motion/components.tsx"
+import {ButtonWipeContent, MotionButton} from "@/components/motion/components.tsx"
 
 const listVariants: Variants = {
   show: {
@@ -150,9 +150,10 @@ function NoticeRow(props: {
         <MotionButton
           variant="ghost"
           size="icon"
-          className="group-hover:-translate-y-1 group-hover:translate-x-1"
         >
-          <RiArrowRightUpLine className="size-5 transition-transform" />
+          <ButtonWipeContent>
+            <RiArrowRightUpLine className="size-5" />
+          </ButtonWipeContent>
         </MotionButton>
       </div>
     </motion.div>
